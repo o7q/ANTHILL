@@ -4,7 +4,7 @@
 
 #include <SDL3/SDL.h>
 
-#include "../types.hpp"
+#include "../math/vector.hpp"
 
 class Texture
 {

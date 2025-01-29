@@ -7,14 +7,20 @@
 
 #include "world/world.hpp"
 
+#include "math/random.hpp"
+
 Game::Game() : window("ANTHILL", 512, 512, 128)
 {
-    float fps = 60.0f;
+    float fps = 120.0f;
 
-    World world(window.getSDLRenderer(), 512, 512);
+    World world(window.getSDLRenderer(), 128, 128);
+
+    Texture texture(window.getSDLRenderer(), "test.png");
 
     Camera camera;
 
+    Random::seed();
+    Particle particle;
     while (window.isOpen())
     {
         window.clear();
@@ -37,19 +43,31 @@ Game::Game() : window("ANTHILL", 512, 512, 128)
             camera.move(1, 0);
         }
 
+        if (window.getInput().wasPressed(Input::Debug1))
+        {
+            particle.color = Color(255, 227, 150, 255);
+            particle.p_state = Particle::PState::Solid;
+            particle.p_mode = Particle::PMode::Sand;
+        }
+        if (window.getInput().wasPressed(Input::Debug2))
+        {
+            particle.color = Color(31, 169, 255, 200);
+            particle.p_state = Particle::PState::Liquid;
+            particle.p_mode = Particle::PMode::Water;
+        }
+
         Vec2<int> mousePos = window.getInput().getMousePos();
         if (window.getInput().isDown(Input::Action1))
         {
-            Vec2<unsigned int> worldSize = world.getSize();
+            Vec2<int> worldSize = world.getSize();
 
-            Particle particle;
-            particle.color = 0xFFFF00FF;
             Vec2<int> drawPos = camera.transformPoint(mousePos.x + worldSize.x / 2, mousePos.y + worldSize.y / 2);
             world.setParticle(drawPos.x, drawPos.y, particle);
         }
 
         world.update();
 
+        window.renderTexture(texture, &camera);
         window.renderTexture(world.getWorldTexture(), &camera);
 
         window.display();

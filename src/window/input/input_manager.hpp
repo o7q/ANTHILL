@@ -2,7 +2,7 @@
 
 #include <SDL3/SDL.h>
 
-#include "../../types.hpp"
+#include "../../math/vector.hpp"
 
 enum class Input
 {
@@ -10,7 +10,11 @@ enum class Input
     Down,
     Left,
     Right,
-    Action1
+    Action1,
+
+    Debug1,
+    Debug2,
+    Debug3
 };
 
 class InputManager
@@ -73,5 +77,10 @@ private:
     InputData m_down;
     InputData m_left;
     InputData m_right;
+
     InputData m_action1;
+
+    InputData m_debug1;
+    InputData m_debug2;
+    InputData m_debug3;
 };

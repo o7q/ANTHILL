@@ -5,11 +5,9 @@
 #include <SDL3/SDL.h>
 
 #include "input/input_manager.hpp"
-
 #include "../texture/texture.hpp"
-#include "../types.hpp"
-
 #include "../camera/camera.hpp"
+#include "../math/vector.hpp"
 
 class Window
 {

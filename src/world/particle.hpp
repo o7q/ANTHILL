@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../types.hpp"
+#include "../math/color.hpp"
 
 struct Particle
 {
@@ -18,8 +18,18 @@ struct Particle
         Water
     };
 
+    bool isSolidPassable()
+    {
+        return p_state == PState::Gas || p_state == PState::Liquid;
+    }
+
+    bool isLiquidPassable()
+    {
+        return p_state == PState::Gas;
+    }
+
     PState p_state = PState::Gas;
     PMode p_mode = PMode::NoGravity;
 
-    Uint32 color = 0x00000000;
+    Color color;
 };
