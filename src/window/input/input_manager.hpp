@@ -1,0 +1,77 @@
+#pragma once
+
+#include <SDL3/SDL.h>
+
+#include "../../types.hpp"
+
+enum class Input
+{
+    Up,
+    Down,
+    Left,
+    Right,
+    Action1
+};
+
+class InputManager
+{
+private:
+    struct InputData
+    {
+        void setDown(bool down)
+        {
+            m_down = down;
+        }
+
+        bool isDown() const { return m_down; }
+
+        bool wasPressed()
+        {
+            if (m_down && !m_pressed)
+            {
+                m_pressed = true;
+                return true;
+            }
+
+            if (!m_down)
+            {
+                m_pressed = false;
+            }
+
+            return false;
+        }
+
+    private:
+        bool m_down = false;
+        bool m_pressed = false;
+    };
+
+public:
+    void poll(SDL_Event event);
+
+    bool isDown(Input input);
+    bool wasPressed(Input input);
+
+    void updateMouse(unsigned int window_width, unsigned int window_height, unsigned int window_scale);
+    Vec2<int> getMousePos() const { return m_mouse_pos; }
+
+    bool isController() const { return m_controller_mode; };
+
+private:
+    void handle_keydown(SDL_KeyboardEvent event);
+    void handle_keyup(SDL_KeyboardEvent event);
+
+    void handle_mousedown(SDL_MouseButtonEvent event);
+    void handle_mouseup(SDL_MouseButtonEvent event);
+
+private:
+    Vec2<int> m_mouse_pos;
+
+    bool m_controller_mode = false;
+
+    InputData m_up;
+    InputData m_down;
+    InputData m_left;
+    InputData m_right;
+    InputData m_action1;
+};
