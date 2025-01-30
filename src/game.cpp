@@ -22,7 +22,7 @@ Game::Game() : window("ANTHILL", 512, 512, 128)
     Camera camera;
 
     Random::seed();
-    Particle particle;
+    Particle::Preset preset = Particle::Preset::Sand;
     while (window.isOpen())
     {
         window.clear();
@@ -47,15 +47,15 @@ Game::Game() : window("ANTHILL", 512, 512, 128)
 
         if (window.getInput().wasPressed(Input::Debug1))
         {
-            particle.color = Color(255, 227, 150, 255);
-            particle.p_state = Particle::PState::Solid;
-            particle.p_mode = Particle::PMode::Sand;
+            preset = Particle::Preset::Sand;
         }
         if (window.getInput().wasPressed(Input::Debug2))
         {
-            particle.color = Color(31, 169, 255, 200);
-            particle.p_state = Particle::PState::Liquid;
-            particle.p_mode = Particle::PMode::Water;
+            preset = Particle::Preset::Water;
+        }
+        if (window.getInput().wasPressed(Input::Debug3))
+        {
+            preset = Particle::Preset::Blood;
         }
 
         Vec2<int> mousePos = window.getInput().getMousePos();
@@ -64,7 +64,7 @@ Game::Game() : window("ANTHILL", 512, 512, 128)
             Vec2<int> worldSize = world.getSize();
 
             Vec2<int> drawPos = camera.transformPoint(mousePos.x + worldSize.x / 2, mousePos.y + worldSize.y / 2);
-            world.setParticle(drawPos.x, drawPos.y, particle);
+            world.drawParticles(drawPos.x, drawPos.y, 5, preset);
         }
 
         world.update();

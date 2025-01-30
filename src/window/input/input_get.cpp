@@ -28,6 +28,15 @@ bool InputManager::isDown(Input input)
     case Input::Debug3:
         return m_debug3.isDown();
         break;
+    case Input::Debug4:
+        return m_debug4.isDown();
+        break;
+    case Input::Debug5:
+        return m_debug5.isDown();
+        break;
+    case Input::Debug6:
+        return m_debug6.isDown();
+        break;
     default:
         return false;
         break;
@@ -61,6 +70,15 @@ bool InputManager::wasPressed(Input input)
         break;
     case Input::Debug3:
         return m_debug3.wasPressed();
+        break;
+    case Input::Debug4:
+        return m_debug4.wasPressed();
+        break;
+    case Input::Debug5:
+        return m_debug5.wasPressed();
+        break;
+    case Input::Debug6:
+        return m_debug6.wasPressed();
         break;
     default:
         return false;

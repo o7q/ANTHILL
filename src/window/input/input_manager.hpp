@@ -10,11 +10,15 @@ enum class Input
     Down,
     Left,
     Right,
+    
     Action1,
 
     Debug1,
     Debug2,
-    Debug3
+    Debug3,
+    Debug4,
+    Debug5,
+    Debug6
 };
 
 class InputManager
@@ -83,4 +87,7 @@ private:
     InputData m_debug1;
     InputData m_debug2;
     InputData m_debug3;
+    InputData m_debug4;
+    InputData m_debug5;
+    InputData m_debug6;
 };

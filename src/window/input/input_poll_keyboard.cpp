@@ -31,6 +31,15 @@ void InputManager::handle_keydown(SDL_KeyboardEvent event)
     case SDLK_3:
         m_debug3.setDown(true);
         break;
+    case SDLK_4:
+        m_debug4.setDown(true);
+        break;
+    case SDLK_5:
+        m_debug5.setDown(true);
+        break;
+    case SDLK_6:
+        m_debug6.setDown(true);
+        break;
     }
 }
 
@@ -62,6 +71,15 @@ void InputManager::handle_keyup(SDL_KeyboardEvent event)
         break;
     case SDLK_3:
         m_debug3.setDown(false);
+        break;
+    case SDLK_4:
+        m_debug4.setDown(false);
+        break;
+    case SDLK_5:
+        m_debug5.setDown(false);
+        break;
+    case SDLK_6:
+        m_debug6.setDown(false);
         break;
     }
 }
