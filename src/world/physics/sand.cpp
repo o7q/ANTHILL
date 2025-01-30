@@ -7,19 +7,19 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
     Particle p_mod = particle;
     bool moved = false;
 
-    auto move = [&](int offset_x, int offset_y)
+    auto move = [&](int _x, int _y)
     {
         // random chance to make solid passable float above (1 in 4 chance)
         if (Random::genInt(0, 5) == 0)
         {
-            p_swap(x, y, x, y + 1);
+            p_swap(x, y, _x, _y);
         }
         else
         {
             bool will_collide_with_liquid = false;
 
-            // if the particle is a liquid, darken the sands color to give the sense of absorbtion
-            if (p_get(x, y + 1).p_state == Particle::PState::Liquid)
+            // if the particle is a liquid, darken the sand's color to give the sense of absorbtion
+            if (p_get(_x, _y).p_state == Particle::PState::Liquid)
             {
                 p_mod.color = Color(p_mod.color.r / 1.1f, p_mod.color.g / 1.1f, p_mod.color.b / 1.1f);
                 will_collide_with_liquid = true;
@@ -30,7 +30,7 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
                 return;
             }
 
-            p_set(x, y + 1, p_mod);
+            p_set(_x, _y, p_mod);
             p_set(x, y, Particle());
         }
     };
