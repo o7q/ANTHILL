@@ -9,6 +9,8 @@
 #include "../camera/camera.hpp"
 #include "../math/vector.hpp"
 
+#include "../bounding_box/bounding_box.hpp"
+
 class Window
 {
 public:
@@ -31,6 +33,7 @@ public:
 public:
     // rendering
     void renderTexture(const Texture &texture, const Camera *camera = nullptr);
+    void debug_renderBoundingBox(const BoundingBox &boundingBox, Uint8 r, Uint8 g, Uint8 b, Uint8 a, const Camera *camera = nullptr);
     //
 
 public:

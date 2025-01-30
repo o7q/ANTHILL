@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../math/color.hpp"
+#include "../math/vector.hpp"
 
 struct Particle
 {
@@ -32,4 +33,6 @@ struct Particle
     PMode p_mode = PMode::NoGravity;
 
     Color color;
+
+    Vec2<float> velocity = Vec2<float>(0.0f, 1.0f);
 };

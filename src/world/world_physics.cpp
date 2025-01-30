@@ -1,10 +1,8 @@
-#include "world.hpp"
+#include "world_physics.hpp"
 
 #include "../math/random.hpp"
 
-#include <iostream>
-
-void World::update_particles()
+void WorldPhysics::update_particles()
 {
     for (int y = m_size.y - 1; y >= 0; --y)
     {
@@ -25,7 +23,7 @@ void World::update_particles()
     }
 }
 
-void World::update_particle(int x, int y)
+void WorldPhysics::update_particle(int x, int y)
 {
     Particle particle = m_particles[y][x];
 
@@ -40,4 +38,27 @@ void World::update_particle(int x, int y)
         update_water(particle, x, y);
         break;
     }
+}
+
+void WorldPhysics::p_set(int x, int y, Particle particle)
+{
+    m_particles[y][x] = particle;
+    m_world_texture->setPixel(x, y, particle.color.hex());
+}
+
+void WorldPhysics::p_swap(int x1, int y1, int x2, int y2)
+{
+    Particle temp = m_particles[y2][x2];
+    p_set(x2, y2, m_particles[y1][x1]);
+    p_set(x1, y1, temp);
+}
+
+Particle WorldPhysics::p_get(int x, int y)
+{
+    return m_particles[y][x];
+}
+
+bool WorldPhysics::in_bounds(int x, int y)
+{
+    return x > 0 && x < m_size.x && y >= 0 && y < m_size.y;
 }

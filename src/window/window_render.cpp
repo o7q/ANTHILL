@@ -27,3 +27,28 @@ void Window::renderTexture(const Texture &texture, const Camera *camera)
                              texture.getSDLCenterPoint(),
                              texture.getSDLFlipMode());
 }
+
+void Window::debug_renderBoundingBox(const BoundingBox &boundingBox, Uint8 r, Uint8 g, Uint8 b, Uint8 a, const Camera *camera)
+{
+    SDL_SetRenderDrawColor(m_renderer, r, g, b, a);
+
+    Vec2<float> top_left = boundingBox.getP1();
+    Vec2<float> size = boundingBox.getSize();
+
+    SDL_FRect rect;
+    rect.x = top_left.x;
+    rect.y = top_left.y;
+    rect.w = size.x;
+    rect.h = size.y;
+
+    if (camera != nullptr)
+    {
+        Vec2<int> position = camera->getPosition();
+        rect.x -= position.x;
+        rect.y -= position.y;
+    }
+
+    SDL_RenderRect(m_renderer, &rect);
+
+    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 0);
+}

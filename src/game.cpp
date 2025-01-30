@@ -17,6 +17,8 @@ Game::Game() : window("ANTHILL", 512, 512, 128)
 
     Texture texture(window.getSDLRenderer(), "test.png");
 
+    BoundingBox bb(0, 0, 50, 50);
+
     Camera camera;
 
     Random::seed();
@@ -69,6 +71,8 @@ Game::Game() : window("ANTHILL", 512, 512, 128)
 
         window.renderTexture(texture, &camera);
         window.renderTexture(world.getWorldTexture(), &camera);
+
+        window.debug_renderBoundingBox(bb, 0, 255, 255, 255, &camera);
 
         window.display();
 
