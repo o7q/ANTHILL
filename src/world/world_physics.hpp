@@ -23,7 +23,7 @@ private:
     // shorthand operations (unsafe, no out of bounds checking)
     void p_set(int x, int y, Particle particle);
     void p_swap(int x1, int y1, int x2, int y2);
-    Color p_mix(Color a, Color b, float mult_a, float mult_b, float div, bool mixAlpha = true);
+    Color p_mix(Color a, Color b, float mult_a = 1.0f, float mult_b = 1.0f, float div = 2.0f, bool mixAlpha = true);
     Particle p_get(int x, int y);
     //
 

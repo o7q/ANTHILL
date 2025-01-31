@@ -43,8 +43,8 @@ struct Particle
     PState p_state = PState::Gas;
     PMode p_mode = PMode::NoGravity;
 
-    float liquid_saturation = 0.0f;
+    float s_liquid_saturation = 0.0f;
 
     Color color = Color(0, 0, 0, 0);
-    Color liquid_absorption_color = Color(0, 0, 0, 0);
+    Color l_mix_color = Color(0, 0, 0, 0);
 };

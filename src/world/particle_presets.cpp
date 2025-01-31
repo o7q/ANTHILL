@@ -22,7 +22,7 @@ Particle::Particle(Preset particlePreset)
         p_mode = PMode::Water;
 
         color = Color(31, 169, 255, 200);
-        liquid_absorption_color = Color(51, 51, 51, 255);
+        l_mix_color = Color(64, 61, 55, 255);
     }
     break;
     case Preset::Blood:
@@ -31,7 +31,7 @@ Particle::Particle(Preset particlePreset)
         p_mode = PMode::Water;
 
         color = Color(252, 8, 8, 250);
-        liquid_absorption_color = Color(166, 0, 0, 255);
+        l_mix_color = Color(166, 0, 0, 255);
     }
     break;
     }
