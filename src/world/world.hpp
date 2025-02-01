@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <vector>
 
 #include <SDL3/SDL.h>
 
@@ -9,6 +10,7 @@
 #include "particle.hpp"
 #include "../texture/texture.hpp"
 #include "../math/vector.hpp"
+#include "../bounding_box/bounding_box.hpp"
 
 class World
 {
@@ -41,44 +43,15 @@ public:
         draw_particles(x, y, radius, draw_particle, drawShape);
     }
 
+    const std::vector<BoundingBox> &getWorldBounds() const { return m_world_bounds; }
+
 private:
-    void draw_particles(int loc_x, int loc_y, int radius, const Particle particle, DrawShape drawShape = DrawShape::Circle)
-    {
-        switch (drawShape)
-        {
-        case DrawShape::Square:
-            for (int y = 0; y < radius; ++y)
-            {
-                for (int x = 0; x < radius; ++x)
-                {
-                    int x_clamped = std::clamp(loc_x + x - radius / 2, 0, m_size.x - 1);
-                    int y_clamped = std::clamp(loc_y + y - radius / 2, 0, m_size.y - 1);
-
-                    setParticle(x_clamped, y_clamped, particle);
-                }
-            }
-            break;
-        case DrawShape::Circle:
-            for (int y = loc_y - radius; y <= loc_y + radius; ++y)
-            {
-                for (int x = loc_x - radius; x <= loc_x + radius; ++x)
-                {
-                    if ((x - loc_x) * (x - loc_x) + (y - loc_y) * (y - loc_y) <= radius * radius)
-                    {
-                        int x_clamped = std::clamp(x, 0, m_size.x - 1);
-                        int y_clamped = std::clamp(y, 0, m_size.y - 1);
-
-                        setParticle(x_clamped, y_clamped, particle);
-                    }
-                }
-            }
-            break;
-        }
-    }
+    void draw_particles(int loc_x, int loc_y, int radius, const Particle particle, DrawShape drawShape = DrawShape::Circle);
 
     Particle **m_particles = nullptr;
     Texture m_world_texture;
     WorldPhysics m_world_physics;
+    std::vector<BoundingBox> m_world_bounds;
 
     Vec2<int> m_size;
 };

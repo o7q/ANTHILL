@@ -8,6 +8,7 @@ struct Particle
 {
     enum class Preset
     {
+        Stone,
         Sand,
         Water,
         Blood
@@ -43,8 +44,12 @@ struct Particle
     PState p_state = PState::Gas;
     PMode p_mode = PMode::NoGravity;
 
-    float s_liquid_saturation = 0.0f;
+    float f_value1 = 0.0f;
+    float f_value2 = 0.0f;
+    float f_value3 = 0.0f;
 
     Color color = Color(0, 0, 0, 0);
-    Color l_mix_color = Color(0, 0, 0, 0);
+    Color mix_color = Color(0, 0, 0, 0);
+
+    PMode hybrid;
 };

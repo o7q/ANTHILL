@@ -14,10 +14,7 @@ Game::Game() : window("ANTHILL", 512, 512, 128)
     float fps = 120.0f;
 
     World world(window.getSDLRenderer(), 128, 128);
-
     Texture texture(window.getSDLRenderer(), "test.png");
-
-    BoundingBox bb(0, 0, 50, 50);
 
     Camera camera;
 
@@ -47,13 +44,17 @@ Game::Game() : window("ANTHILL", 512, 512, 128)
 
         if (window.getInput().wasPressed(Input::Debug1))
         {
-            preset = Particle::Preset::Sand;
+            preset = Particle::Preset::Stone;
         }
         if (window.getInput().wasPressed(Input::Debug2))
         {
-            preset = Particle::Preset::Water;
+            preset = Particle::Preset::Sand;
         }
         if (window.getInput().wasPressed(Input::Debug3))
+        {
+            preset = Particle::Preset::Water;
+        }
+        if (window.getInput().wasPressed(Input::Debug4))
         {
             preset = Particle::Preset::Blood;
         }
@@ -67,12 +68,17 @@ Game::Game() : window("ANTHILL", 512, 512, 128)
             world.drawParticles(drawPos.x, drawPos.y, 5, preset);
         }
 
+        const std::vector<BoundingBox> bbv = world.getWorldBounds();
+
         world.update();
 
         window.renderTexture(texture, &camera);
         window.renderTexture(world.getWorldTexture(), &camera);
 
-        window.debug_renderBoundingBox(bb, 0, 255, 255, 255, &camera);
+        for (const BoundingBox &bb : bbv)
+        {
+            window.debug_renderBoundingBox(bb, 0, 255, 255, 255, &camera);
+        }
 
         window.display();
 

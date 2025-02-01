@@ -68,5 +68,5 @@ Particle WorldPhysics::p_get(int x, int y)
 
 bool WorldPhysics::in_bounds(int x, int y)
 {
-    return x > 0 && x < m_size.x && y >= 0 && y < m_size.y;
+    return x >= 0 && x < m_size.x && y >= 0 && y < m_size.y;
 }
