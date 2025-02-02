@@ -10,7 +10,8 @@ struct Particle
         Stone,
         Sand,
         Water,
-        Blood
+        Blood,
+        Steam
     };
 
     Particle() = default;
@@ -25,9 +26,10 @@ struct Particle
 
     enum class PMode
     {
-        NoGravity,
+        None,
         Sand,
-        Water
+        Water,
+        Smoke
     };
 
     enum class PCollisionType
@@ -47,8 +49,13 @@ struct Particle
         return p_state == PState::Gas;
     }
 
+    bool isAir()
+    {
+        return p_state == PState::Gas && p_mode == PMode::None;
+    }
+
     PState p_state = PState::Gas;
-    PMode p_mode = PMode::NoGravity;
+    PMode p_mode = PMode::None;
     PCollisionType p_collision_type = PCollisionType::None;
 
     float f_value1 = 0.0f;

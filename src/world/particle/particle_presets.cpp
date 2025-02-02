@@ -7,7 +7,7 @@ Particle::Particle(Preset particlePreset)
     case Preset::Stone:
     {
         p_state = PState::Solid;
-        p_mode = PMode::NoGravity;
+        p_mode = PMode::None;
         p_collision_type = PCollisionType::Solid;
 
         float random_dark = Random::genFloat(0.9, 1.0f);
@@ -50,5 +50,16 @@ Particle::Particle(Preset particlePreset)
         mix_color = Color(166, 0, 0, 255);
     }
     break;
+    case Preset::Steam:
+        p_state = PState::Gas;
+        p_mode = PMode::Smoke;
+        p_collision_type = PCollisionType::None;
+
+        float random_dark = Random::genFloat(0.9, 1.0f);
+        color = Color(220 * random_dark,
+                      220 * random_dark,
+                      220 * random_dark,
+                      255);
+        break;
     }
 }

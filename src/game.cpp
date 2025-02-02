@@ -16,7 +16,7 @@ Game::Game() : window("ANTHILL", 512, 512, 256)
     World world(window.getSDLRenderer(), 256, 256);
     Camera camera;
 
-    window.time().setTargetFramerate(144);
+    window.time().setTargetFramerate(60);
 
     Random::seed();
 
@@ -60,6 +60,10 @@ Game::Game() : window("ANTHILL", 512, 512, 256)
         if (window.input().wasPressed(Input::Debug4))
         {
             preset = Particle::Preset::Blood;
+        }
+        if (window.input().wasPressed(Input::Debug5))
+        {
+            preset = Particle::Preset::Steam;
         }
 
         Vec2<int> mousePos = window.input().getMousePos();

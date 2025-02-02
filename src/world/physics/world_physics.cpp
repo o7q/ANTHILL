@@ -29,13 +29,16 @@ void WorldPhysics::update_particle(int x, int y)
 
     switch (m_particles[y][x].p_mode)
     {
-    case Particle::PMode::NoGravity:
+    case Particle::PMode::None:
         break;
     case Particle::PMode::Sand:
         update_sand(particle, x, y);
         break;
     case Particle::PMode::Water:
         update_water(particle, x, y);
+        break;
+    case Particle::PMode::Smoke:
+        update_smoke(particle, x, y);
         break;
     }
 }
@@ -51,6 +54,13 @@ void WorldPhysics::p_swap(int x1, int y1, int x2, int y2)
     Particle temp = m_particles[y2][x2];
     p_set(x2, y2, m_particles[y1][x1]);
     p_set(x1, y1, temp);
+}
+
+void WorldPhysics::p_move(int x1, int y1, int x2, int y2)
+{
+    Particle temp = m_particles[y1][x1];
+    p_set(x2, y2, temp);
+    p_set(x1, y1, Particle());
 }
 
 Color WorldPhysics::p_mix(Color a, Color b, float mult_a, float mult_b, float div, bool mix_alpha)

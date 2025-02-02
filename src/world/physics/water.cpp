@@ -16,8 +16,8 @@ void WorldPhysics::update_water(Particle particle, int x, int y)
         {
             Particle p_to_mix = m_particles[_y][_x];
 
-            Color mixed_color = p_mix(p_orig.color, p_to_mix.color, 1.0f, 1.0f, 2.0f);
-            Color mixed_mix_color = p_mix(p_orig.mix_color, p_to_mix.mix_color, 1.0f, 1.0f, 2.0f);
+            Color mixed_color = p_mix(p_orig.color, p_to_mix.color, 1.0f, 1.0f, 2.0f, true);
+            Color mixed_mix_color = p_mix(p_orig.mix_color, p_to_mix.mix_color, 1.0f, 1.0f, 2.0f, true);
 
             Particle p_mod = p_orig;
 
@@ -80,7 +80,7 @@ void WorldPhysics::update_water(Particle particle, int x, int y)
     {
         if (m_particles[y + 1][x].isLiquidPassable())
         {
-            p_swap(x, y, x, y + 1);
+            p_move(x, y, x, y + 1);
             moved = true;
         }
     }
@@ -89,7 +89,7 @@ void WorldPhysics::update_water(Particle particle, int x, int y)
     {
         if (m_particles[y][x - 1].isLiquidPassable())
         {
-            p_swap(x, y, x - 1, y);
+            p_move(x, y, x - 1, y);
             moved = true;
         }
     }
@@ -98,7 +98,7 @@ void WorldPhysics::update_water(Particle particle, int x, int y)
     {
         if (m_particles[y][x + 1].isLiquidPassable())
         {
-            p_swap(x, y, x + 1, y);
+            p_move(x, y, x + 1, y);
             moved = true;
         }
     }
