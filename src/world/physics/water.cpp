@@ -1,4 +1,4 @@
-#include "../world_physics.hpp"
+#include "world_physics.hpp"
 
 #include "../../math/random.hpp"
 

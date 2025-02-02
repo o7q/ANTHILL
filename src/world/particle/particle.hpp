@@ -1,8 +1,7 @@
 #pragma once
 
-#include "../math/color.hpp"
-// #include "../math/vector.hpp"
-#include "../math/random.hpp"
+#include "../../math/color.hpp"
+#include "../../math/random.hpp"
 
 struct Particle
 {
@@ -31,6 +30,13 @@ struct Particle
         Water
     };
 
+    enum class PCollisionType
+    {
+        None,
+        Solid,
+        Water
+    };
+
     bool isSolidPassable()
     {
         return p_state == PState::Gas || p_state == PState::Liquid;
@@ -43,6 +49,7 @@ struct Particle
 
     PState p_state = PState::Gas;
     PMode p_mode = PMode::NoGravity;
+    PCollisionType p_collision_type = PCollisionType::None;
 
     float f_value1 = 0.0f;
     float f_value2 = 0.0f;

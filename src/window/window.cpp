@@ -13,6 +13,8 @@ Window::Window(const std::string &title, unsigned int width, unsigned int height
     m_window = SDL_CreateWindow(title.c_str(), width, height, SDL_WINDOW_RESIZABLE);
     m_renderer = SDL_CreateRenderer(m_window, NULL);
 
+    m_font = TTF_OpenFont("assets/fonts/alagard.ttf", 12);
+
     SDL_SetRenderLogicalPresentation(m_renderer, scale, scale, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 }
 
@@ -22,6 +24,8 @@ Window::~Window()
         SDL_DestroyRenderer(m_renderer);
     if (m_window != nullptr)
         SDL_DestroyWindow(m_window);
+    if (m_font != nullptr)
+        TTF_CloseFont(m_font);
 }
 
 void Window::update()

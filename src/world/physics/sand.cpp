@@ -1,4 +1,4 @@
-#include "../world_physics.hpp"
+#include "world_physics.hpp"
 #include "../../math/random.hpp"
 
 #include <cmath>
@@ -17,7 +17,7 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
             return;
         }
 
-        // random chance to make particle below float above (1 in 4 chance)
+        // random chance to make particle below float above (1 oh in 4 chance)
         Particle p_mod = p_orig;
 
         bool will_collide_with_liquid = false;
@@ -35,7 +35,7 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
         }
 
         bool liquid_floats_above = Random::genInt(0, 5) == 0;
-        if (will_collide_with_liquid && liquid_floats_above)
+        if ((will_collide_with_liquid && liquid_floats_above) || p_orig.f_value1 > 0.9f)
         {
             p_swap(x, y, _x, _y);
             moved = true;
@@ -45,7 +45,7 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
         if (will_collide_with_liquid)
         {
             Color liquid_mix_color = m_particles[_y][_x].mix_color;
-            p_mod.color = p_mix(p_mod.color, liquid_mix_color, 10.0f, 1.0f, 11.0f * 1.1f, false);
+            p_mod.color = p_mix(p_mod.color, liquid_mix_color, 1.0f, 3.0f, 4.0f, false);
             p_mod.f_value1 = 1.0f;
         }
 

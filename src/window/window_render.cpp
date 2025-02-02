@@ -24,8 +24,20 @@ void Window::renderTexture(const Texture &texture, const Camera *camera)
                              texture.getSDLSrcRect(),
                              &new_dst_rect,
                              0,
-                             texture.getSDLCenterPoint(),
+                             NULL,
                              texture.getSDLFlipMode());
+}
+
+void Window::renderText(const std::string &text, Vec2<int> position, Color color, Camera *camera)
+{
+    SDL_Surface *surface = TTF_RenderText_Solid(m_font, text.c_str(), text.size(), SDL_Color{color.r, color.g, color.b, color.a});
+
+    Texture texture(m_renderer, surface);
+    texture.setPosition(position.x, position.y);
+    texture.setOrigin(0, 0);
+    SDL_DestroySurface(surface);
+
+    renderTexture(texture, camera);
 }
 
 void Window::debug_renderBoundingBox(const BoundingBox &boundingBox, Uint8 r, Uint8 g, Uint8 b, Uint8 a, const Camera *camera)
@@ -36,10 +48,10 @@ void Window::debug_renderBoundingBox(const BoundingBox &boundingBox, Uint8 r, Ui
     Vec2<float> size = boundingBox.getSize();
 
     SDL_FRect rect;
-    rect.x = top_left.x;
-    rect.y = top_left.y;
-    rect.w = size.x;
-    rect.h = size.y;
+    rect.x = static_cast<int>(top_left.x);
+    rect.y = static_cast<int>(top_left.y);
+    rect.w = static_cast<int>(size.x);
+    rect.h = static_cast<int>(size.y);
 
     if (camera != nullptr)
     {
@@ -49,6 +61,26 @@ void Window::debug_renderBoundingBox(const BoundingBox &boundingBox, Uint8 r, Ui
     }
 
     SDL_RenderRect(m_renderer, &rect);
+
+    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 0);
+}
+
+void Window::debug_renderSegment(const Segment &segment, Uint8 r, Uint8 g, Uint8 b, Uint8 a, const Camera *camera)
+{
+    SDL_SetRenderDrawColor(m_renderer, r, g, b, a);
+
+    Segment seg = segment;
+
+    if (camera != nullptr)
+    {
+        Vec2<int> position = camera->getPosition();
+        seg.a.x -= position.x;
+        seg.a.y -= position.y;
+        seg.b.x -= position.x;
+        seg.b.y -= position.y;
+    }
+
+    SDL_RenderLine(m_renderer, seg.a.x, seg.a.y, seg.b.x, seg.b.y);
 
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 0);
 }

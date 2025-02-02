@@ -2,9 +2,8 @@
 
 #include "../math/vector.hpp"
 
-class BoundingBox
+struct BoundingBox
 {
-public:
     BoundingBox() = default;
     BoundingBox(float x, float y, float width, float height);
 

@@ -2,24 +2,21 @@
 
 void Texture::update_sdl_transforms()
 {
-    src_rect.x = 0;
-    src_rect.y = 0;
-    src_rect.w = size.x;
-    src_rect.h = size.y;
+    m_src_rect.x = 0;
+    m_src_rect.y = 0;
+    m_src_rect.w = m_size.x;
+    m_src_rect.h = m_size.y;
 
-    dst_rect.x = position.x - size.x / 2;
-    dst_rect.y = position.y - size.y / 2;
-    dst_rect.w = size.x;
-    dst_rect.h = size.y;
-
-    center_point.x = size.x / 2;
-    center_point.y = size.y / 2;
+    m_dst_rect.x = m_position.x - m_origin.x;
+    m_dst_rect.y = m_position.y - m_origin.y;
+    m_dst_rect.w = m_size.x;
+    m_dst_rect.h = m_size.y;
 }
 
 void Texture::reset_update_rect()
 {
-    update_rect.x = 0;
-    update_rect.y = 0;
-    update_rect.w = size.x;
-    update_rect.h = size.y;
+    m_update_rect.x = 0;
+    m_update_rect.y = 0;
+    m_update_rect.w = m_size.x;
+    m_update_rect.h = m_size.y;
 }

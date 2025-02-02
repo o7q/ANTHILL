@@ -10,17 +10,20 @@ Texture::Texture(SDL_Renderer *renderer, const std::string &path)
 {
     SDL_Surface *surface = IMG_Load(path.c_str());
     SDL_Surface *formatted = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_RGBA8888);
-    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, formatted->w, formatted->h);
+    m_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, formatted->w, formatted->h);
 
     const unsigned int pixel_count = formatted->w * formatted->h;
-    pixels = new Uint32[pixel_count];
-    std::memcpy(pixels, formatted->pixels, pixel_count * sizeof(Uint32));
+    m_pixels = new Uint32[pixel_count];
+    std::memcpy(m_pixels, formatted->pixels, pixel_count * sizeof(Uint32));
 
-    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
-    SDL_UpdateTexture(texture, NULL, formatted->pixels, formatted->pitch);
+    SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
+    SDL_UpdateTexture(m_texture, NULL, formatted->pixels, formatted->pitch);
 
-    size.x = formatted->w;
-    size.y = formatted->h;
+    m_size.x = formatted->w;
+    m_size.y = formatted->h;
+
+    m_origin.x = formatted->w / 2;
+    m_origin.y = formatted->h / 2;
 
     SDL_DestroySurface(surface);
     SDL_DestroySurface(formatted);
@@ -28,46 +31,79 @@ Texture::Texture(SDL_Renderer *renderer, const std::string &path)
     update_sdl_transforms();
 }
 
+Texture::Texture(SDL_Renderer *renderer, SDL_Surface *surface)
+{
+    SDL_Surface *formatted = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_RGBA8888);
+    m_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, formatted->w, formatted->h);
+
+    const unsigned int pixel_count = formatted->w * formatted->h;
+    m_pixels = new Uint32[pixel_count];
+    std::memcpy(m_pixels, formatted->pixels, pixel_count * sizeof(Uint32));
+
+    SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
+    SDL_UpdateTexture(m_texture, NULL, formatted->pixels, formatted->pitch);
+
+    m_size.x = formatted->w;
+    m_size.y = formatted->h;
+
+    m_origin.x = formatted->w / 2;
+    m_origin.y = formatted->h / 2;
+
+    SDL_DestroySurface(formatted);
+
+    update_sdl_transforms();
+}
+
 Texture::Texture(SDL_Renderer *renderer, unsigned int width, unsigned int height)
 {
-    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, width, height);
+    m_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, width, height);
 
-    pixels = new Uint32[width * height];
+    m_pixels = new Uint32[width * height];
     for (unsigned int i = 0; i < width * height; ++i)
-        pixels[i] = 0xFFFFFFFF;
+        m_pixels[i] = 0xFFFFFFFF;
 
-    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
-    SDL_UpdateTexture(texture, NULL, pixels, width * sizeof(Uint32));
+    SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
+    SDL_UpdateTexture(m_texture, NULL, m_pixels, width * sizeof(Uint32));
 
-    size.x = width;
-    size.y = height;
+    m_size.x = width;
+    m_size.y = height;
+
+    m_origin.x = width / 2;
+    m_origin.y = height / 2;
 
     update_sdl_transforms();
 }
 
 Texture::~Texture()
 {
-    if (texture != nullptr)
-        SDL_DestroyTexture(texture);
-    if (pixels != nullptr)
-        delete[] pixels;
+    if (m_texture != nullptr)
+        SDL_DestroyTexture(m_texture);
+    if (m_pixels != nullptr)
+        delete[] m_pixels;
 }
 
 void Texture::setPosition(int x, int y)
 {
-    position.x = x;
-    position.y = y;
+    m_position.x = x;
+    m_position.y = y;
+    update_sdl_transforms();
+}
+
+void Texture::setOrigin(int x, int y)
+{
+    m_origin.x = x;
+    m_origin.y = y;
     update_sdl_transforms();
 }
 
 void Texture::move(int x, int y)
 {
-    position.x += x;
-    position.y += y;
+    m_position.x += x;
+    m_position.y += y;
     update_sdl_transforms();
 }
 
 void Texture::setFlipMode(SDL_FlipMode flip_mode)
 {
-    this->flip_mode = flip_mode;
+    this->m_flip_mode = flip_mode;
 }

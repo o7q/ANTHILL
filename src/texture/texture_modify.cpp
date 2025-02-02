@@ -4,40 +4,40 @@
 
 void Texture::setPixel(int x, int y, Uint32 color)
 {
-    if (x < 0 || y < 0 || x >= size.x || y >= size.y)
+    if (x < 0 || y < 0 || x >= m_size.x || y >= m_size.y)
     {
         return;
     }
 
-    const unsigned int index = y * size.x + x;
-    pixels[index] = color;
+    const unsigned int index = y * m_size.x + x;
+    m_pixels[index] = color;
 
-    if (x < update_pos1.x)
+    if (x < m_update_pos1.x)
     {
-        update_pos1.x = x;
+        m_update_pos1.x = x;
     }
-    if (y < update_pos1.y)
+    if (y < m_update_pos1.y)
     {
-        update_pos1.y = y;
+        m_update_pos1.y = y;
     }
-    if (x > update_pos2.x)
+    if (x > m_update_pos2.x)
     {
-        update_pos2.x = x;
+        m_update_pos2.x = x;
     }
-    if (y > update_pos2.y)
+    if (y > m_update_pos2.y)
     {
-        update_pos2.y = y;
+        m_update_pos2.y = y;
     }
 
-    update_rect.x = update_pos1.x;
-    update_rect.y = update_pos1.y;
-    update_rect.w = update_pos2.x - update_pos1.x + 1;
-    update_rect.h = update_pos2.y - update_pos1.y + 1;
+    m_update_rect.x = m_update_pos1.x;
+    m_update_rect.y = m_update_pos1.y;
+    m_update_rect.w = m_update_pos2.x - m_update_pos1.x + 1;
+    m_update_rect.h = m_update_pos2.y - m_update_pos1.y + 1;
 }
 
 void Texture::update()
 {
-    void *update_pixels = &pixels[update_rect.y * size.x + update_rect.x];
-    SDL_UpdateTexture(texture, &update_rect, update_pixels, size.x * sizeof(Uint32));
+    void *update_pixels = &m_pixels[m_update_rect.y * m_size.x + m_update_rect.x];
+    SDL_UpdateTexture(m_texture, &m_update_rect, update_pixels, m_size.x * sizeof(Uint32));
     reset_update_rect();
 }

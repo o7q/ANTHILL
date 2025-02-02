@@ -1,6 +1,6 @@
 #include "world_physics.hpp"
 
-#include "../math/random.hpp"
+#include "../../math/random.hpp"
 
 void WorldPhysics::update_particles()
 {
@@ -53,12 +53,12 @@ void WorldPhysics::p_swap(int x1, int y1, int x2, int y2)
     p_set(x1, y1, temp);
 }
 
-Color WorldPhysics::p_mix(Color a, Color b, float mult_a, float mult_b, float div, bool mixAlpha)
+Color WorldPhysics::p_mix(Color a, Color b, float mult_a, float mult_b, float div, bool mix_alpha)
 {
     return Color((a.r * mult_a + b.r * mult_b) / div,
                  (a.g * mult_a + b.g * mult_b) / div,
                  (a.b * mult_a + b.b * mult_b) / div,
-                 mixAlpha ? (a.a * mult_a + b.a * mult_b) / div : a.a);
+                 mix_alpha ? (a.a * mult_a + b.a * mult_b) / div : a.a);
 }
 
 Particle WorldPhysics::p_get(int x, int y)
