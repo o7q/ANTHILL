@@ -36,6 +36,7 @@ private:
     void update_sand(Particle particle, int x, int y);
     void update_water(Particle particle, int x, int y);
     void update_smoke(Particle particle, int x, int y);
+    void update_goop(Particle particle, int x, int y);
 
 private:
     Particle **m_particles = nullptr;

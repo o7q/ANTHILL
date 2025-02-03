@@ -29,7 +29,8 @@ struct Particle
         None,
         Sand,
         Water,
-        Smoke
+        Smoke,
+        Goop
     };
 
     enum class PCollisionType

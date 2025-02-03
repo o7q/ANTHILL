@@ -40,6 +40,9 @@ void WorldPhysics::update_particle(int x, int y)
     case Particle::PMode::Smoke:
         update_smoke(particle, x, y);
         break;
+    case Particle::PMode::Goop:
+        update_goop(particle, x, y);
+        break;
     }
 }
 

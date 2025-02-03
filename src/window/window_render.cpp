@@ -14,10 +14,15 @@ void Window::renderTexture(const Texture &texture, const Camera *camera)
 
     if (camera != nullptr)
     {
-        Vec2<int> position = camera->getPosition();
-        new_dst_rect.x -= position.x;
-        new_dst_rect.y -= position.y;
+        Vec2<float> cam_pos = camera->getPosition();
+        new_dst_rect.x -= static_cast<int>(cam_pos.x);
+        new_dst_rect.y -= static_cast<int>(cam_pos.y);
     }
+
+    new_dst_rect.x = static_cast<int>(new_dst_rect.x);
+    new_dst_rect.y = static_cast<int>(new_dst_rect.y);
+    new_dst_rect.w = static_cast<int>(new_dst_rect.w);
+    new_dst_rect.h = static_cast<int>(new_dst_rect.h);
 
     SDL_RenderTextureRotated(m_renderer,
                              texture.getSDLTexture(),
@@ -48,17 +53,22 @@ void Window::debug_renderBoundingBox(const BoundingBox &boundingBox, Uint8 r, Ui
     Vec2<float> size = boundingBox.getSize();
 
     SDL_FRect rect;
-    rect.x = static_cast<int>(top_left.x);
-    rect.y = static_cast<int>(top_left.y);
-    rect.w = static_cast<int>(size.x);
-    rect.h = static_cast<int>(size.y);
+    rect.x = top_left.x + 1.0f;
+    rect.y = top_left.y + 1.0f;
+    rect.w = size.x;
+    rect.h = size.y;
 
     if (camera != nullptr)
     {
-        Vec2<int> position = camera->getPosition();
-        rect.x -= position.x;
-        rect.y -= position.y;
+        Vec2<float> cam_pos = camera->getPosition();
+        rect.x -= cam_pos.x;
+        rect.y -= cam_pos.y;
     }
+
+    rect.x = static_cast<int>(rect.x);
+    rect.y = static_cast<int>(rect.y);
+    rect.w = static_cast<int>(rect.w);
+    rect.h = static_cast<int>(rect.h);
 
     SDL_RenderRect(m_renderer, &rect);
 
@@ -73,12 +83,17 @@ void Window::debug_renderSegment(const Segment &segment, Uint8 r, Uint8 g, Uint8
 
     if (camera != nullptr)
     {
-        Vec2<int> position = camera->getPosition();
-        seg.a.x -= position.x;
-        seg.a.y -= position.y;
-        seg.b.x -= position.x;
-        seg.b.y -= position.y;
+        Vec2<float> cam_pos = camera->getPosition();
+        seg.a.x -= static_cast<int>(cam_pos.x);
+        seg.a.y -= static_cast<int>(cam_pos.y);
+        seg.b.x -= static_cast<int>(cam_pos.x);
+        seg.b.y -= static_cast<int>(cam_pos.y);
     }
+
+    seg.a.x = static_cast<int>(seg.a.x);
+    seg.a.y = static_cast<int>(seg.a.y);
+    seg.b.x = static_cast<int>(seg.b.x);
+    seg.b.y = static_cast<int>(seg.b.y);
 
     SDL_RenderLine(m_renderer, seg.a.x, seg.a.y, seg.b.x, seg.b.y);
 

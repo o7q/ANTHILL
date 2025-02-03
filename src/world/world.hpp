@@ -31,17 +31,17 @@ public:
     Particle getParticle(int x, int y);
     Vec2<int> getSize() const { return m_size; }
     const Texture &getWorldTexture() const { return m_world_texture; }
-    const std::vector<Segment> &getWorldBounds() const { return m_world_bounds; }
+    const std::vector<Segment> &getWorldCollision() const { return m_world_collision; }
 
     void drawParticles(int x, int y, int radius, Particle particle, DrawShape drawShape = DrawShape::Circle);
     void drawParticles(int x, int y, int radius, Particle::Preset preset, DrawShape drawShape = DrawShape::Circle);
 
 private:
-    void update_bounds();
+    void generate_world_collision();
     void draw_particles(int loc_x, int loc_y, int radius, const Particle particle, DrawShape drawShape = DrawShape::Circle);
 
     Particle **m_particles = nullptr;
-    std::vector<Segment> m_world_bounds;
+    std::vector<Segment> m_world_collision;
     Texture m_world_texture;
     WorldPhysics m_world_physics;
 

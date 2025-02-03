@@ -3,9 +3,9 @@
 #include "../math/vector.hpp"
 #include "../math/segment.hpp"
 
-void World::update_bounds()
+void World::generate_world_collision()
 {
-    m_world_bounds.clear();
+    m_world_collision.clear();
 
     for (int y = 0; y < m_size.y - 1; ++y)
     {
@@ -31,48 +31,48 @@ void World::update_bounds()
             case 0:
                 break;
             case 1:
-                m_world_bounds.push_back(Segment(left  , bottom));
+                m_world_collision.push_back(Segment(left, bottom));
                 break;
             case 2:
-                m_world_bounds.push_back(Segment(bottom, right));
+                m_world_collision.push_back(Segment(bottom, right));
                 break;
             case 3:
-                m_world_bounds.push_back(Segment(left, right));
+                m_world_collision.push_back(Segment(left, right));
                 break;
             case 4:
-                m_world_bounds.push_back(Segment(top, right));
+                m_world_collision.push_back(Segment(top, right));
                 break;
             case 5:
-                m_world_bounds.push_back(Segment(left, top));
-                m_world_bounds.push_back(Segment(bottom, right));
+                m_world_collision.push_back(Segment(left, top));
+                m_world_collision.push_back(Segment(bottom, right));
                 break;
             case 6:
-                m_world_bounds.push_back(Segment(top, bottom));
+                m_world_collision.push_back(Segment(top, bottom));
                 break;
             case 7:
-                m_world_bounds.push_back(Segment(left, top));
+                m_world_collision.push_back(Segment(left, top));
                 break;
             case 8:
-                m_world_bounds.push_back(Segment(left, top));
+                m_world_collision.push_back(Segment(left, top));
                 break;
             case 9:
-                m_world_bounds.push_back(Segment(top, bottom));
+                m_world_collision.push_back(Segment(top, bottom));
                 break;
             case 10:
-                m_world_bounds.push_back(Segment(left, bottom));
-                m_world_bounds.push_back(Segment(top, right));
+                m_world_collision.push_back(Segment(left, bottom));
+                m_world_collision.push_back(Segment(top, right));
                 break;
             case 11:
-                m_world_bounds.push_back(Segment(top, right));
+                m_world_collision.push_back(Segment(top, right));
                 break;
             case 12:
-                m_world_bounds.push_back(Segment(left, right));
+                m_world_collision.push_back(Segment(left, right));
                 break;
             case 13:
-                m_world_bounds.push_back(Segment(bottom, right));
+                m_world_collision.push_back(Segment(bottom, right));
                 break;
             case 14:
-                m_world_bounds.push_back(Segment(left, bottom));
+                m_world_collision.push_back(Segment(left, bottom));
                 break;
             case 15:
                 break;
