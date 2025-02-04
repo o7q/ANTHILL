@@ -22,6 +22,7 @@ World::World(SDL_Renderer *renderer,
     }
 
     m_world_physics.init(m_particles, &m_world_texture, m_size.x, m_size.y);
+    m_world_texture.setOrigin(0, 0);
 }
 
 World::~World()

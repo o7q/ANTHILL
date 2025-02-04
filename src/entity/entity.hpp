@@ -3,133 +3,94 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <array>
+#include <limits>
 
 #include "../math/bounding_box.hpp"
 #include "../math/vector.hpp"
 #include "../math/segment.hpp"
 #include "../world/world.hpp"
+#include "../window/window.hpp"
+
+#include "entity_collision/entity_collision.hpp"
 
 class Entity
 {
 public:
-    Entity(float size_x, float size_y)
+    Entity(int size_x, int size_y)
     {
         m_size.x = size_x;
         m_size.y = size_y;
         update_bounding_box();
     }
 
-    void setPosition(Vec2<float> position)
+    void setPosition(Vec2<int> position)
     {
         m_position = position;
         update_bounding_box();
     }
 
-    void move(Vec2<float> direction)
+    void move(Vec2<int> direction)
     {
         m_position = m_position + direction;
         update_bounding_box();
     }
 
-    void setSize(Vec2<float> size)
+    void setSize(Vec2<int> size)
     {
         m_size = size;
         update_bounding_box();
     }
 
-    void update()
+    bool **generate_solid_map(const World &world)
     {
+        bool **solid_map = new bool *[m_size.y];
+
+        for (int y = 0; y < m_size.y; ++y)
+        {
+            solid_map[y] = new bool[m_size.x];
+        }
+
+        for (int y = 0; y < m_size.y; ++y)
+        {
+            for (int x = 0; x < m_size.x; ++x)
+            {
+                int px = m_position.x - m_size.x / 2.0f + x;
+                int py = m_position.y - m_size.y / 2.0f + y;
+
+                solid_map[y][x] = world.getParticle(px, py).p_collision_type == Particle::PCollisionType::Solid;
+            }
+        }
+
+        return solid_map;
     }
 
-    struct WCollision
+    void delete_solid_map(bool **solid_map)
     {
-        Vec2<float> collision_offsets;
-        bool collided = false;
-    };
-
-    WCollision get_world_collision_data(const std::vector<Segment> &worldCollisionSegments)
-    {
-        WCollision collision_data;
-        for (const Segment &segment : worldCollisionSegments)
+        for (int y = 0; y < m_size.y; ++y)
         {
-            Vec2<float> point = Vec2<float>(
-                (segment.a.x + segment.b.x) / 2.0f,
-                (segment.a.y + segment.b.y) / 2.0f);
-
-            const Vec2<float> p1 = m_bounding_box.getP1();
-            const Vec2<float> p3 = m_bounding_box.getP3();
-
-            bool is_point_colliding = point.x > p1.x &&
-                                      point.y > p1.y &&
-                                      point.x < p3.x &&
-                                      point.y < p3.y;
-
-            if (is_point_colliding)
+            if (solid_map[y])
             {
-                collision_data.collided = true;
-            }
-            else
-            {
-                continue;
-            }
-
-            Vec2<float> r_offset;
-            float c_depth_x = std::fabs(point.x - m_position.x) - m_size.x / 2.0f;
-            float c_depth_y = std::fabs(point.y - m_position.y) - m_size.y / 2.0f;
-
-            c_depth_x *= -1.0f;
-            c_depth_y *= -1.0f;
-
-            c_depth_x = point.x > m_position.x ? -c_depth_x : c_depth_x;
-            c_depth_y = point.y > m_position.y ? -c_depth_y : c_depth_y;
-
-            if (std::fabs(c_depth_x) > std::fabs(collision_data.collision_offsets.x))
-            {
-                collision_data.collision_offsets.x = c_depth_x;
-            }
-
-            if (std::fabs(c_depth_y) > std::fabs(collision_data.collision_offsets.y))
-            {
-                collision_data.collision_offsets.y = c_depth_y;
+                delete[] solid_map[y];
             }
         }
-
-        return collision_data;
+        if (solid_map)
+        {
+            delete[] solid_map;
+        }
     }
 
-    void resolveWorldCollision(const std::vector<Segment> &worldCollisionSegments)
+    void resolveWorldCollision(const World &world, Window &window, Camera *camera)
     {
-        WCollision c = get_world_collision_data(worldCollisionSegments);
+        bool **solid_map = generate_solid_map(world);
 
-        if (!c.collided)
-        {
-            return;
-        }
+        EntityCollision ec(solid_map, m_size);
+        Vec2<int> resolved_position = ec.getResult();
 
-        if (std::fabs(c.collision_offsets.x) < std::fabs(c.collision_offsets.y))
-        {
-            move(Vec2<float>(c.collision_offsets.x, 0.0f));
+        // move(resolved_position);
+        window.debug_renderPoint(m_position.x + resolved_position.x, m_position.y + resolved_position.y, 255, 0, 0, 255);
 
-            // WCollision c2 = get_world_collision_data(worldCollisionSegments);
-
-            // if (c2.collided)
-            // {
-            //     move(Vec2<float>(0.0f, c2.collision_offsets.y));
-            // }
-        }
-        else
-        {
-            move(Vec2<float>(0.0f, c.collision_offsets.y));
-
-            // WCollision c2 = get_world_collision_data(worldCollisionSegments);
-
-            // if (c2.collided)
-            // {
-            //     move(Vec2<float>(c2.collision_offsets.x, 0.0f));
-            // }
-        }
-
-        std::cout << c.collision_offsets.x << " " << c.collision_offsets.y << std::endl;
+        delete_solid_map(solid_map);
     }
 
     const BoundingBox &getBoundingBox() const { return m_bounding_box; }
@@ -142,8 +103,8 @@ private:
     }
 
 private:
-    Vec2<float> m_position;
-    Vec2<float> m_size;
+    Vec2<int> m_position;
+    Vec2<int> m_size;
 
     BoundingBox m_bounding_box;
 };

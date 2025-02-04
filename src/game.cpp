@@ -16,7 +16,7 @@ Game::Game() : window("ANTHILL", 512, 512, 256)
 {
     World world(window.getSDLRenderer(), 256, 256);
     Camera camera;
-    camera.setPosition(Vec2<float>(-world.getSize().x / 2.0f, -world.getSize().y / 2.0f));
+    // camera.setPosition(Vec2<float>(-world.getSize().x / 2.0f, -world.getSize().y / 2.0f));
 
     window.time().setTargetFramerate(60);
 
@@ -34,22 +34,22 @@ Game::Game() : window("ANTHILL", 512, 512, 256)
 
         if (window.input().isDown(Input::Up))
         {
-            entity.move(Vec2<float>(0, -2));
+            entity.move(Vec2<int>(0, -2));
             // camera.move(0, -1);
         }
         if (window.input().isDown(Input::Down))
         {
-            entity.move(Vec2<float>(0, 2));
+            entity.move(Vec2<int>(0, 2));
             // camera.move(0, 1);
         }
         if (window.input().isDown(Input::Left))
         {
-            entity.move(Vec2<float>(-2, 0));
+            entity.move(Vec2<int>(-2, 0));
             // camera.move(-1, 0);
         }
         if (window.input().isDown(Input::Right))
         {
-            entity.move(Vec2<float>(2, 0));
+            entity.move(Vec2<int>(2, 0));
             // camera.move(1, 0);
         }
 
@@ -79,7 +79,7 @@ Game::Game() : window("ANTHILL", 512, 512, 256)
         {
             Vec2<int> worldSize = world.getSize();
 
-            Vec2<float> drawPos = camera.transformPoint(mousePos.x + worldSize.x / 2, mousePos.y + worldSize.y / 2);
+            Vec2<float> drawPos = camera.transformPoint(mousePos.x, mousePos.y);
             world.drawParticles(drawPos.x, drawPos.y, 5, preset);
             // world.setParticle(drawPos.x, drawPos.y, Particle(preset));
         }
@@ -102,8 +102,7 @@ Game::Game() : window("ANTHILL", 512, 512, 256)
         //     SDL_SetRenderDrawColor(window.getSDLRenderer(), 0, 0, 0, 0);
         // }
 
-        entity.update();
-        entity.resolveWorldCollision(worldCollision);
+        entity.resolveWorldCollision(world, window, &camera);
 
         window.renderText(std::to_string((int)window.time().getFramerate()), Vec2<int>(1, window.getScale() - 10), Color(0, 255, 0, 255));
         window.renderText(std::to_string(window.time().getDeltaTime()), Vec2<int>(30, window.getScale() - 10), Color(255, 255, 0, 255));

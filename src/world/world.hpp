@@ -28,7 +28,7 @@ public:
 
     void setParticle(int x, int y, Particle particle);
 
-    Particle getParticle(int x, int y);
+    Particle getParticle(int x, int y) const;
     Vec2<int> getSize() const { return m_size; }
     const Texture &getWorldTexture() const { return m_world_texture; }
     const std::vector<Segment> &getWorldCollision() const { return m_world_collision; }

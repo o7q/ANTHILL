@@ -53,8 +53,8 @@ void Window::debug_renderBoundingBox(const BoundingBox &boundingBox, Uint8 r, Ui
     Vec2<float> size = boundingBox.getSize();
 
     SDL_FRect rect;
-    rect.x = top_left.x + 1.0f;
-    rect.y = top_left.y + 1.0f;
+    rect.x = top_left.x;
+    rect.y = top_left.y;
     rect.w = size.x;
     rect.h = size.y;
 
@@ -97,5 +97,19 @@ void Window::debug_renderSegment(const Segment &segment, Uint8 r, Uint8 g, Uint8
 
     SDL_RenderLine(m_renderer, seg.a.x, seg.a.y, seg.b.x, seg.b.y);
 
+    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 0);
+}
+
+void Window::debug_renderPoint(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a, const Camera *camera)
+{
+    if (camera != nullptr)
+    {
+        Vec2<float> cam_pos = camera->getPosition();
+        x -= static_cast<int>(cam_pos.x);
+        y -= static_cast<int>(cam_pos.y);
+    }
+
+    SDL_SetRenderDrawColor(m_renderer, r, g, b, a);
+    SDL_RenderPoint(m_renderer, x, y);
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 0);
 }

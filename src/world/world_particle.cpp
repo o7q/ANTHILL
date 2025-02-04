@@ -58,7 +58,7 @@ void World::setParticle(int x, int y, Particle particle)
     m_world_texture.setPixel(x, y, particle.color.hex());
 }
 
-Particle World::getParticle(int x, int y)
+Particle World::getParticle(int x, int y) const
 {
     if (x < 0 || y < 0 || x >= m_size.x || y >= m_size.y)
     {

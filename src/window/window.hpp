@@ -43,7 +43,8 @@ public:
     void renderTexture(const Texture &texture, const Camera *camera = nullptr);
     void renderText(const std::string &text, Vec2<int> position, Color color, Camera *camera = nullptr);
     void debug_renderBoundingBox(const BoundingBox &boundingBox, Uint8 r, Uint8 g, Uint8 b, Uint8 a, const Camera *camera = nullptr);
-    void debug_renderSegment(const Segment &segment, Uint8 r, Uint8 g, Uint8 b, Uint8 a, const Camera *camera);
+    void debug_renderSegment(const Segment &segment, Uint8 r, Uint8 g, Uint8 b, Uint8 a, const Camera *camera = nullptr);
+    void debug_renderPoint(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a, const Camera *camera = nullptr);
     //
 
 private:
