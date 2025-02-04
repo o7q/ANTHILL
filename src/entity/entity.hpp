@@ -41,13 +41,15 @@ public:
     {
     }
 
-    void resolveWorldCollision(const std::vector<Segment> &worldCollisionSegments)
+    struct WCollision
     {
-        float max_x_offset = 0.0f;
-        float max_y_offset = 0.0f;
+        Vec2<float> collision_offsets;
+        bool collided = false;
+    };
 
-        bool collision_occurred = false;
-
+    WCollision get_world_collision_data(const std::vector<Segment> &worldCollisionSegments)
+    {
+        WCollision collision_data;
         for (const Segment &segment : worldCollisionSegments)
         {
             Vec2<float> point = Vec2<float>(
@@ -64,7 +66,7 @@ public:
 
             if (is_point_colliding)
             {
-                collision_occurred = true;
+                collision_data.collided = true;
             }
             else
             {
@@ -81,37 +83,53 @@ public:
             c_depth_x = point.x > m_position.x ? -c_depth_x : c_depth_x;
             c_depth_y = point.y > m_position.y ? -c_depth_y : c_depth_y;
 
-            if (std::fabs(c_depth_x) > std::fabs(max_x_offset))
+            if (std::fabs(c_depth_x) > std::fabs(collision_data.collision_offsets.x))
             {
-                max_x_offset = c_depth_x;
+                collision_data.collision_offsets.x = c_depth_x;
             }
 
-            if (std::fabs(c_depth_y) > std::fabs(max_y_offset))
+            if (std::fabs(c_depth_y) > std::fabs(collision_data.collision_offsets.y))
             {
-                max_y_offset = c_depth_y;
+                collision_data.collision_offsets.y = c_depth_y;
             }
         }
 
-        if (!collision_occurred)
+        return collision_data;
+    }
+
+    void resolveWorldCollision(const std::vector<Segment> &worldCollisionSegments)
+    {
+        WCollision c = get_world_collision_data(worldCollisionSegments);
+
+        if (!c.collided)
         {
             return;
         }
 
-        Vec2<float> r_offset;
-        if (std::fabs(max_x_offset) < std::fabs(max_y_offset))
+        if (std::fabs(c.collision_offsets.x) < std::fabs(c.collision_offsets.y))
         {
-            r_offset.x = max_x_offset;
-            r_offset.y = 0.0f;
+            move(Vec2<float>(c.collision_offsets.x, 0.0f));
+
+            // WCollision c2 = get_world_collision_data(worldCollisionSegments);
+
+            // if (c2.collided)
+            // {
+            //     move(Vec2<float>(0.0f, c2.collision_offsets.y));
+            // }
         }
         else
         {
-            r_offset.x = 0.0f;
-            r_offset.y = max_y_offset;
+            move(Vec2<float>(0.0f, c.collision_offsets.y));
+
+            // WCollision c2 = get_world_collision_data(worldCollisionSegments);
+
+            // if (c2.collided)
+            // {
+            //     move(Vec2<float>(c2.collision_offsets.x, 0.0f));
+            // }
         }
 
-        std::cout << "x: " << max_x_offset << "   y: " << max_y_offset << std::endl;
-
-        move(r_offset);
+        std::cout << c.collision_offsets.x << " " << c.collision_offsets.y << std::endl;
     }
 
     const BoundingBox &getBoundingBox() const { return m_bounding_box; }
