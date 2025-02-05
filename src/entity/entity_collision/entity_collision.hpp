@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../math/vector.hpp"
+#include "../../window/window.hpp"
 
 class EntityCollision
 {
@@ -9,28 +10,27 @@ public:
     {
         m_entity_bounds = entity_bounds;
         m_world_solid_map = world_solid_map;
-
-        convex_optimize();
     }
 
-    Vec2<int> getResult() const
+    Vec2<int> getResult(Window &window) const
     {
-        return m_best_point * m_inverse_mult;
+        return m_resolve_vector;
     }
+
+    void convex_optimize(Window &window);
 
 private:
-    void convex_optimize();
-    void convex_optimize_pass(bool is_solid, int x, int y, int max_y_i, int i_x, int i_y);
+    void convex_optimize_pass(bool is_solid, int x, int y, int x_origin, int y_origin, int y_i, Window &window);
 
-    int inverse_x(int x);
-    int inverse_y(int y);
+    int i_x(int x);
+    int i_y(int y);
 
 private:
     bool **m_world_solid_map = nullptr;
     Vec2<int> m_entity_bounds;
 
-    int m_max_ys[4];
+    int m_ys[4];
     float m_min_distance = 0.0f;
-    Vec2<int> m_best_point;
+    Vec2<int> m_resolve_vector;
     Vec2<int> m_inverse_mult;
 };

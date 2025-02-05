@@ -85,10 +85,15 @@ public:
         bool **solid_map = generate_solid_map(world);
 
         EntityCollision ec(solid_map, m_size);
-        Vec2<int> resolved_position = ec.getResult();
+        ec.convex_optimize(window);
+        Vec2<int> resolved_position = ec.getResult(window);
 
         // move(resolved_position);
         window.debug_renderPoint(m_position.x + resolved_position.x, m_position.y + resolved_position.y, 255, 0, 0, 255);
+        BoundingBox bb;
+        bb.setSize(m_size.x, m_size.y);
+        bb.setPosition(m_position.x + resolved_position.x, m_position.y + resolved_position.y);
+        window.debug_renderBoundingBox(bb, 0, 200, 255, 255);
 
         delete_solid_map(solid_map);
     }
