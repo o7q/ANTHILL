@@ -23,6 +23,8 @@ Game::Game() : window("ANTHILL", 512, 512, 256)
     Random::seed();
 
     Entity entity(20, 30);
+    // entity.setPosition(Vec2<int>(105 - 5, 105 + 14));
+    entity.setPosition(Vec2<int>(123, 106));
 
     Particle::Preset preset = Particle::Preset::Sand;
     while (window.isOpen())

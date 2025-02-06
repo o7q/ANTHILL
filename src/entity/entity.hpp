@@ -88,7 +88,7 @@ public:
         ec.convex_optimize(window);
         Vec2<int> resolved_position = ec.getResult(window);
 
-        // move(resolved_position);
+        move(resolved_position);
         window.debug_renderPoint(m_position.x + resolved_position.x, m_position.y + resolved_position.y, 255, 0, 0, 255);
         BoundingBox bb;
         bb.setSize(m_size.x, m_size.y);

@@ -20,7 +20,7 @@ public:
     void convex_optimize(Window &window);
 
 private:
-    void convex_optimize_pass(bool is_solid, int x, int y, int x_origin, int y_origin, int y_i, Window &window);
+    void convex_optimize_pass(bool is_solid, int x, int y, int x_origin, int y_origin, int y_i);
 
     int i_x(int x);
     int i_y(int y);
