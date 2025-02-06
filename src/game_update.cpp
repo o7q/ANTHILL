@@ -16,7 +16,7 @@ void Game::update_scene()
     {
         SceneID scene_result = scene->run();
 
-        if (scene_result != current_scene)
+        if (scene_result != current_scene || scene->shouldReset())
         {
             current_scene = scene_result;
             delete scene;

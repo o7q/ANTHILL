@@ -52,6 +52,10 @@ SceneID MainScene::run()
         {
             preset = Particle::Preset::Steam;
         }
+        if (window.input().wasPressed(Input::Debug6))
+        {
+            reset();
+        }
 
         Vec2<int> mousePos = window.input().getMousePos();
         if (window.input().isDown(Input::Action1))

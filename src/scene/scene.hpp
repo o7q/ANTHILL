@@ -16,6 +16,8 @@ public:
 
     virtual SceneID run() { return SceneID::Main; }
 
+    bool shouldReset() { return m_should_reset; }
+
 protected:
     bool init()
     {
@@ -28,10 +30,16 @@ protected:
 
     bool update() { return true; }
 
+    void reset()
+    {
+        m_should_reset = true;
+    }
+
 protected:
     Window &window;
     Assets &assets;
 
 private:
     bool m_initialized = false;
+    bool m_should_reset = false;
 };
