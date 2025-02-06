@@ -5,15 +5,15 @@
 class Camera
 {
 public:
-    void setPosition(Vec2<float> position);
+    void setPosition(int x, int y);
 
-    void move(float x, float y);
+    void move(int x, int y);
 
-    Vec2<float> transformPoint(Vec2<float> point) const;
-    Vec2<float> transformPoint(float x, float y) const;
+    Vec2<int> transformPoint(Vec2<int> point) const;
+    Vec2<int> transformPoint(int x, int y) const;
 
-    Vec2<float> getPosition() const { return m_position; }
+    Vec2<int> getPosition() const { return m_position; }
 
 private:
-    Vec2<float> m_position;
+    Vec2<int> m_position;
 };

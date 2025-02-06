@@ -5,7 +5,7 @@
 
 void WorldPhysics::update_smoke(Particle particle, int x, int y)
 {
-    const Particle p_orig = particle;
+    // const Particle p_orig = particle;
     bool moved = false;
 
     auto move = [&](int _x, int _y)

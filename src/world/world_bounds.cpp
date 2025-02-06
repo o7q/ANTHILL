@@ -20,11 +20,10 @@ void World::generate_world_bounds()
             int d = m_particles[y    ][x    ].p_collision_type == Particle::PCollisionType::Solid ? 1 : 0;
             int index = a * 1 + b * 2 + c * 4 + d * 8;
 
-            Vec2<float> half_size = Vec2<float>(m_size.x / 2.0f, m_size.y / 2.0f);
-            Vec2<float> left      = Vec2<float>(x              , y + 0.5f) - half_size;
-            Vec2<float> right     = Vec2<float>(x + 1.0f       , y + 0.5f) - half_size;
-            Vec2<float> top       = Vec2<float>(x + 0.5f       , y)        - half_size;
-            Vec2<float> bottom    = Vec2<float>(x + 0.5f       , y + 1.0f) - half_size;
+            Vec2<float> left   = Vec2<float>(x       , y + 0.5f);
+            Vec2<float> right  = Vec2<float>(x + 1.0f, y + 0.5f);
+            Vec2<float> top    = Vec2<float>(x + 0.5f, y       );
+            Vec2<float> bottom = Vec2<float>(x + 0.5f, y + 1.0f);
 
             switch (index)
             {

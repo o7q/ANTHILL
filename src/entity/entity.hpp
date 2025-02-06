@@ -10,23 +10,16 @@
 #include "../math/vector.hpp"
 #include "../math/segment.hpp"
 #include "../world/world.hpp"
-#include "../window/window.hpp"
 
 #include "../collision/bounding_box_world/bb_world_resolver.hpp"
 
 class Entity
 {
 public:
-    Entity(int size_x, int size_y)
+    void setPosition(int x, int y)
     {
-        m_size.x = size_x;
-        m_size.y = size_y;
-        update_bounding_box();
-    }
-
-    void setPosition(Vec2<int> position)
-    {
-        m_position = position;
+        m_position.x = x;
+        m_position.y = y;
         update_bounding_box();
     }
 
@@ -36,13 +29,14 @@ public:
         update_bounding_box();
     }
 
-    void setSize(Vec2<int> size)
+    void setSize(int width, int height)
     {
-        m_size = size;
+        m_size.x = width;
+        m_size.y = height;
         update_bounding_box();
     }
 
-    void resolveWorldCollision(const World &world, Window &window, Camera *camera)
+    void resolveWorldCollision(const World &world)
     {
         BBWorldResolver ec(world, m_bounding_box);
         ec.setYSensitivity(2.0f);

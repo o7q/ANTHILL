@@ -4,7 +4,7 @@
 
 void WorldPhysics::update_goop(Particle particle, int x, int y)
 {
-    const Particle p_orig = particle;
+    // const Particle p_orig = particle;
     bool moved = false;
 
     bool goop_side = Random::genInt(0, 3) == 0;

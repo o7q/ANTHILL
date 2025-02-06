@@ -47,6 +47,6 @@ void World::update()
         m_world_physics.update_particles();
     }
 
-    generate_world_collision();
+    generate_world_bounds();
     m_world_texture.update();
 }

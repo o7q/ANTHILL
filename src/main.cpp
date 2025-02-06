@@ -11,6 +11,7 @@ int main(int argc, char **argv)
     if (!SDL_InitSubSystem(SDL_INIT_VIDEO))
     {
         Logger::log(Logger::LogLevel::Fatal, "Failing to initialize video!", true);
+        return 1;
     }
     // SDL_InitSubSystem(SDL_INIT_AUDIO);
     // SDL_InitSubSystem(SDL_INIT_JOYSTICK);
@@ -20,6 +21,7 @@ int main(int argc, char **argv)
     if (!TTF_Init())
     {
         Logger::log(Logger::LogLevel::Fatal, "Failing to initialize TTF!", true);
+        return 1;
     }
 
     Game game;

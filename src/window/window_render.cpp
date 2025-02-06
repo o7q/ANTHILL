@@ -1,7 +1,5 @@
 #include "window.hpp"
 
-#include <iostream>
-
 void Window::renderTexture(const Texture &texture, const Camera *camera)
 {
     const SDL_FRect *texture_dst_rect = texture.getSDLDstRect();
@@ -14,9 +12,9 @@ void Window::renderTexture(const Texture &texture, const Camera *camera)
 
     if (camera != nullptr)
     {
-        Vec2<float> cam_pos = camera->getPosition();
-        new_dst_rect.x -= static_cast<int>(cam_pos.x);
-        new_dst_rect.y -= static_cast<int>(cam_pos.y);
+        Vec2<int> cam_pos = camera->getPosition();
+        new_dst_rect.x -= cam_pos.x;
+        new_dst_rect.y -= cam_pos.y;
     }
 
     new_dst_rect.x = static_cast<int>(new_dst_rect.x);
@@ -60,7 +58,7 @@ void Window::debug_renderBoundingBox(const BoundingBox &boundingBox, Uint8 r, Ui
 
     if (camera != nullptr)
     {
-        Vec2<float> cam_pos = camera->getPosition();
+        Vec2<int> cam_pos = camera->getPosition();
         rect.x -= cam_pos.x;
         rect.y -= cam_pos.y;
     }
@@ -83,11 +81,11 @@ void Window::debug_renderSegment(const Segment &segment, Uint8 r, Uint8 g, Uint8
 
     if (camera != nullptr)
     {
-        Vec2<float> cam_pos = camera->getPosition();
-        seg.a.x -= static_cast<int>(cam_pos.x);
-        seg.a.y -= static_cast<int>(cam_pos.y);
-        seg.b.x -= static_cast<int>(cam_pos.x);
-        seg.b.y -= static_cast<int>(cam_pos.y);
+        Vec2<int> cam_pos = camera->getPosition();
+        seg.a.x -= cam_pos.x;
+        seg.a.y -= cam_pos.y;
+        seg.b.x -= cam_pos.x;
+        seg.b.y -= cam_pos.y;
     }
 
     seg.a.x = static_cast<int>(seg.a.x);
@@ -104,9 +102,9 @@ void Window::debug_renderPoint(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a,
 {
     if (camera != nullptr)
     {
-        Vec2<float> cam_pos = camera->getPosition();
-        x -= static_cast<int>(cam_pos.x);
-        y -= static_cast<int>(cam_pos.y);
+        Vec2<int> cam_pos = camera->getPosition();
+        x -= cam_pos.x;
+        y -= cam_pos.y;
     }
 
     SDL_SetRenderDrawColor(m_renderer, r, g, b, a);

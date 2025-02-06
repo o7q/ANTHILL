@@ -1,19 +1,17 @@
 #pragma once
 
 #include <string>
-#include <chrono>
-
-#include <iostream>
 
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
 #include "input/input_manager.hpp"
 #include "time/time_manager.hpp"
-#include "../texture/texture.hpp"
+
 #include "../camera/camera.hpp"
 #include "../math/vector.hpp"
 
+#include "../texture/texture.hpp"
 #include "../math/bounding_box.hpp"
 #include "../math/segment.hpp"
 #include "../math/color.hpp"
