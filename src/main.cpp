@@ -35,5 +35,7 @@ int main(int argc, char **argv)
 
     SDL_Quit();
 
+    getchar();
+
     return 0;
 }

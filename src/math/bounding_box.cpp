@@ -1,6 +1,6 @@
 #include "bounding_box.hpp"
 
-BoundingBox::BoundingBox(float x, float y, float width, float height)
+BoundingBox::BoundingBox(int x, int y, int width, int height)
 {
     m_pos.x = x;
     m_pos.y = y;
@@ -11,7 +11,7 @@ BoundingBox::BoundingBox(float x, float y, float width, float height)
     update_points();
 }
 
-void BoundingBox::setPosition(float x, float y)
+void BoundingBox::setPosition(int x, int y)
 {
     m_pos.x = x;
     m_pos.y = y;
@@ -19,7 +19,7 @@ void BoundingBox::setPosition(float x, float y)
     update_points();
 }
 
-void BoundingBox::setSize(float width, float height)
+void BoundingBox::setSize(int width, int height)
 {
     m_size.x = width;
     m_size.y = height;

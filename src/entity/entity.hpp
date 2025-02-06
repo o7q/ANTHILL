@@ -12,7 +12,7 @@
 #include "../world/world.hpp"
 #include "../window/window.hpp"
 
-#include "entity_collision/entity_collision.hpp"
+#include "../collision/bounding_box_world/bb_world_resolver.hpp"
 
 class Entity
 {
@@ -42,60 +42,13 @@ public:
         update_bounding_box();
     }
 
-    bool **generate_solid_map(const World &world)
-    {
-        bool **solid_map = new bool *[m_size.y];
-
-        for (int y = 0; y < m_size.y; ++y)
-        {
-            solid_map[y] = new bool[m_size.x];
-        }
-
-        for (int y = 0; y < m_size.y; ++y)
-        {
-            for (int x = 0; x < m_size.x; ++x)
-            {
-                int px = m_position.x - m_size.x / 2.0f + x;
-                int py = m_position.y - m_size.y / 2.0f + y;
-
-                solid_map[y][x] = world.getParticle(px, py).p_collision_type == Particle::PCollisionType::Solid;
-            }
-        }
-
-        return solid_map;
-    }
-
-    void delete_solid_map(bool **solid_map)
-    {
-        for (int y = 0; y < m_size.y; ++y)
-        {
-            if (solid_map[y])
-            {
-                delete[] solid_map[y];
-            }
-        }
-        if (solid_map)
-        {
-            delete[] solid_map;
-        }
-    }
-
     void resolveWorldCollision(const World &world, Window &window, Camera *camera)
     {
-        bool **solid_map = generate_solid_map(world);
-
-        EntityCollision ec(solid_map, m_size);
-        ec.convex_optimize(window);
-        Vec2<int> resolved_position = ec.getResult(window);
+        BBWorldResolver ec(world, m_bounding_box);
+        ec.setYSensitivity(2.0f);
+        Vec2<int> resolved_position = ec.resolve();
 
         move(resolved_position);
-        window.debug_renderPoint(m_position.x + resolved_position.x, m_position.y + resolved_position.y, 255, 0, 0, 255);
-        BoundingBox bb;
-        bb.setSize(m_size.x, m_size.y);
-        bb.setPosition(m_position.x + resolved_position.x, m_position.y + resolved_position.y);
-        window.debug_renderBoundingBox(bb, 0, 200, 255, 255);
-
-        delete_solid_map(solid_map);
     }
 
     const BoundingBox &getBoundingBox() const { return m_bounding_box; }

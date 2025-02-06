@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <SDL3_mixer/SDL_mixer.h>
 
 #include "texture/texture.hpp"
 
@@ -16,7 +17,7 @@ Game::Game() : window("ANTHILL", 512, 512, 256)
 {
     World world(window.getSDLRenderer(), 256, 256);
     Camera camera;
-    // camera.setPosition(Vec2<float>(-world.getSize().x / 2.0f, -world.getSize().y / 2.0f));
+    // camera.setPosition(Vec2<float>(-world.getSize().x / 2.0f, -world.getSize().y / 2.0f))
 
     window.time().setTargetFramerate(60);
 
@@ -88,7 +89,7 @@ Game::Game() : window("ANTHILL", 512, 512, 256)
 
         world.update();
 
-        const std::vector<Segment> worldCollision = world.getWorldCollision();
+        const std::vector<Segment> worldCollision = world.getWorldBounds();
         window.renderTexture(world.getWorldTexture(), &camera);
 
         // for (const Segment &seg : worldCollision)

@@ -49,8 +49,8 @@ void Window::debug_renderBoundingBox(const BoundingBox &boundingBox, Uint8 r, Ui
 {
     SDL_SetRenderDrawColor(m_renderer, r, g, b, a);
 
-    Vec2<float> top_left = boundingBox.getP1();
-    Vec2<float> size = boundingBox.getSize();
+    Vec2<int> top_left = boundingBox.getP1();
+    Vec2<int> size = boundingBox.getSize();
 
     SDL_FRect rect;
     rect.x = top_left.x;
