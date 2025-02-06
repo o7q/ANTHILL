@@ -16,6 +16,45 @@
 class Entity
 {
 public:
+    Entity(const World &world) : world(world) {}
+
+    void update()
+    {
+        m_on_ground = false;
+        for (int i = 0; i < m_bounding_box.getSize().x; ++i)
+        {
+            int x = m_bounding_box.getPosition().x - m_bounding_box.getSize().x / 2 + i;
+            int y = m_bounding_box.getPosition().y + m_bounding_box.getSize().y / 2;
+
+            if (world.getParticle(x, y).p_collision_type == Particle::PCollisionType::Solid)
+            {
+                m_on_ground = true;
+            }
+        }
+
+        std::cout << m_on_ground << std::endl;
+
+        if (m_velocity.y < terminal_velocity)
+        {
+            m_velocity.y += gravity;
+        }
+
+        if (m_on_ground && m_velocity.y > 0)
+        {
+            m_velocity.y = 0;
+        }
+
+        move(m_velocity.x, m_velocity.y);
+    }
+
+    void jump()
+    {
+        if (m_on_ground)
+        {
+            m_velocity.y = -8.0f;
+        }
+    }
+
     void setPosition(int x, int y)
     {
         m_position.x = x;
@@ -23,9 +62,10 @@ public:
         update_bounding_box();
     }
 
-    void move(Vec2<int> direction)
+    void move(int x, int y)
     {
-        m_position = m_position + direction;
+        m_position.x = m_position.x + x;
+        m_position.y = m_position.y + y;
         update_bounding_box();
     }
 
@@ -39,17 +79,28 @@ public:
     void resolveWorldCollision(const World &world)
     {
         BBWorldResolver ec(world, m_bounding_box);
-        ec.setYSensitivity(2.0f);
+        ec.setYSensitivity(4.0f);
         Vec2<int> resolved_position = ec.resolve();
 
-        move(resolved_position);
+        if (ec.collided())
+        {
+            move(resolved_position.x, resolved_position.y);
+        }
     }
 
     const BoundingBox &getBoundingBox() const { return m_bounding_box; }
 
 protected:
+    const World &world;
+
     Vec2<int> m_position;
     Vec2<int> m_size;
+    Vec2<float> m_velocity;
+
+    const float terminal_velocity = 5.0f;
+    const float gravity = 0.5f;
+
+    bool m_on_ground;
 
     BoundingBox m_bounding_box;
 

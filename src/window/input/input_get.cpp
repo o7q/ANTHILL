@@ -16,9 +16,20 @@ bool InputManager::isDown(Input input)
     case Input::Right:
         return m_right.isDown();
         break;
+
     case Input::Action1:
         return m_action1.isDown();
         break;
+    case Input::Action2:
+        return m_action2.isDown();
+        break;
+    case Input::Action3:
+        return m_action3.isDown();
+        break;
+    case Input::Action4:
+        return m_action4.isDown();
+        break;
+
     case Input::Debug1:
         return m_debug1.isDown();
         break;
@@ -59,9 +70,20 @@ bool InputManager::wasPressed(Input input)
     case Input::Right:
         return m_right.wasPressed();
         break;
+
     case Input::Action1:
         return m_action1.wasPressed();
         break;
+    case Input::Action2:
+        return m_action2.wasPressed();
+        break;
+    case Input::Action3:
+        return m_action3.wasPressed();
+        break;
+    case Input::Action4:
+        return m_action4.wasPressed();
+        break;
+
     case Input::Debug1:
         return m_debug1.wasPressed();
         break;

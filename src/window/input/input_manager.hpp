@@ -10,8 +10,11 @@ enum class Input
     Down,
     Left,
     Right,
-    
+
     Action1,
+    Action2,
+    Action3,
+    Action4,
 
     Debug1,
     Debug2,
@@ -83,6 +86,9 @@ private:
     InputData m_right;
 
     InputData m_action1;
+    InputData m_action2;
+    InputData m_action3;
+    InputData m_action4;
 
     InputData m_debug1;
     InputData m_debug2;

@@ -22,6 +22,11 @@ void InputManager::handle_keydown(SDL_KeyboardEvent event)
     case SDLK_RIGHT:
         m_right.setDown(true);
         break;
+        
+    case SDLK_SPACE:
+        m_action2.setDown(true);
+        break;
+
     case SDLK_1:
         m_debug1.setDown(true);
         break;
@@ -63,6 +68,11 @@ void InputManager::handle_keyup(SDL_KeyboardEvent event)
     case SDLK_RIGHT:
         m_right.setDown(false);
         break;
+
+    case SDLK_SPACE:
+        m_action2.setDown(false);
+        break;
+
     case SDLK_1:
         m_debug1.setDown(false);
         break;

@@ -19,6 +19,11 @@ public:
         return m_resolve_vector;
     }
 
+    bool collided()
+    {
+        return m_resolve_vector.x != 0 || m_resolve_vector.y != 0;
+    }
+
     void setXSensitivity(float x_sensitivity)
     {
         m_x_sensitivity = x_sensitivity;

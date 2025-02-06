@@ -8,17 +8,18 @@ class MainScene : public Scene
 {
 public:
     MainScene(Window &window, Assets &assets) : Scene(window, assets),
-                                                world(window.getSDLRenderer(), 256, 256)
+                                                world(window.getSDLRenderer(), 256, 256),
+                                                player(world)
     {
         player.setPosition(20, 20);
-        player.setSize(20, 30);
+        player.setSize(8, 25);
     }
 
     SceneID run() override;
 
 private:
+    World world;
     Entity player;
     Particle::Preset preset;
-    World world;
     Camera camera;
 };

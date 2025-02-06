@@ -11,25 +11,17 @@ SceneID MainScene::run()
 
     if (update())
     {
-        if (window.input().isDown(Input::Up))
-        {
-            player.move(Vec2<int>(0, -2));
-            // camera.move(0, -1);
-        }
-        if (window.input().isDown(Input::Down))
-        {
-            player.move(Vec2<int>(0, 2));
-            // camera.move(0, 1);
-        }
         if (window.input().isDown(Input::Left))
         {
-            player.move(Vec2<int>(-2, 0));
-            // camera.move(-1, 0);
+            player.move(-2, 0);
         }
         if (window.input().isDown(Input::Right))
         {
-            player.move(Vec2<int>(2, 0));
-            // camera.move(1, 0);
+            player.move(2, 0);
+        }
+        if (window.input().isDown(Input::Action2))
+        {
+            player.jump();
         }
 
         if (window.input().wasPressed(Input::Debug1))
@@ -65,6 +57,7 @@ SceneID MainScene::run()
         }
 
         world.update();
+        player.update();
         player.resolveWorldCollision(world);
 
         window.renderTexture(world.getWorldTexture(), &camera);

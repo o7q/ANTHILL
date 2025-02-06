@@ -1,7 +1,6 @@
 #include "game.hpp"
 
 #include "math/random.hpp"
-#include "scene/scene_main.hpp"
 
 Game::Game() : window("ANTHILL", 512, 512, 256)
 {

@@ -1,0 +1,15 @@
+#include "entity.hpp"
+
+#include "../collision/bounding_box_world/bb_world_resolver.hpp"
+
+void Entity::resolve_world_collision()
+{
+    BBWorldResolver wr(world, m_bounding_box);
+    wr.setYSensitivity(m_y_step_power);
+
+    if (wr.collided())
+    {
+        Vec2<int> resolved_position = wr.get_result();
+        move(resolved_position.x, resolved_position.y);
+    }
+}
