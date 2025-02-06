@@ -1,5 +1,7 @@
 #include "window.hpp"
 
+#include <SDL3_ttf/SDL_ttf.h>
+
 void Window::renderTexture(const Texture &texture, const Camera *camera)
 {
     const SDL_FRect *texture_dst_rect = texture.getSDLDstRect();
@@ -31,9 +33,9 @@ void Window::renderTexture(const Texture &texture, const Camera *camera)
                              texture.getSDLFlipMode());
 }
 
-void Window::renderText(const std::string &text, Vec2<int> position, Color color, Camera *camera)
+void Window::renderText(TTF_Font* font, const std::string &text, Vec2<int> position, Color color, Camera *camera)
 {
-    SDL_Surface *surface = TTF_RenderText_Solid(m_font, text.c_str(), text.size(), SDL_Color{color.r, color.g, color.b, color.a});
+    SDL_Surface *surface = TTF_RenderText_Solid(font, text.c_str(), text.size(), SDL_Color{color.r, color.g, color.b, color.a});
 
     Texture texture(m_renderer, surface);
     texture.setPosition(position.x, position.y);

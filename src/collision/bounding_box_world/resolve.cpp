@@ -58,7 +58,7 @@ void BBWorldResolver::convex_optimize_pass(Particle p, int x, int y, int x_origi
         m_ys[corner_index] = y;
 
         float d = std::sqrt(
-            std::pow(x - x_origin, 2) +
+            std::pow(x - x_origin, 2) * (1.0f / m_x_sensitivity)+
             std::pow(y - y_origin, 2) * (1.0f / m_y_sensitivity));
 
         if (m_min_distance >= d)

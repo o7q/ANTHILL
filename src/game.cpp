@@ -8,17 +8,13 @@ Game::Game() : window("ANTHILL", 512, 512, 256)
     Random::seed();
     window.time().setTargetFramerate(60);
 
-    scene = new MainScene(window);
-
     while (window.isOpen())
     {
         window.time().frameStart();
-
         window.update();
 
         window.clear();
-        update();
-        scene->run();
+        update_scene();
         window.display();
 
         window.time().frameEnd();

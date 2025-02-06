@@ -39,7 +39,7 @@ public:
 public:
     // rendering
     void renderTexture(const Texture &texture, const Camera *camera = nullptr);
-    void renderText(const std::string &text, Vec2<int> position, Color color, Camera *camera = nullptr);
+    void renderText(TTF_Font *font, const std::string &text, Vec2<int> position, Color color, Camera *camera = nullptr);
     void debug_renderBoundingBox(const BoundingBox &boundingBox, Uint8 r, Uint8 g, Uint8 b, Uint8 a, const Camera *camera = nullptr);
     void debug_renderSegment(const Segment &segment, Uint8 r, Uint8 g, Uint8 b, Uint8 a, const Camera *camera = nullptr);
     void debug_renderPoint(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a, const Camera *camera = nullptr);
@@ -48,8 +48,6 @@ public:
 private:
     SDL_Window *m_window = nullptr;
     SDL_Renderer *m_renderer = nullptr;
-
-    TTF_Font *m_font = nullptr;
 
     InputManager m_input_manager;
     TimeManager m_time_manager;

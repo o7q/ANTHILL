@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void MainScene::run()
+SceneID MainScene::run()
 {
     if (init())
     {
@@ -63,13 +63,14 @@ void MainScene::run()
         world.update();
         player.resolveWorldCollision(world);
 
-        for (const Segment &seg : world.getWorldBounds())
-            window.debug_renderSegment(seg, 255, 50, 100, 255, &camera);
-
         window.renderTexture(world.getWorldTexture(), &camera);
+        // for (const Segment &seg : world.getWorldBounds())
+        //     window.debug_renderSegment(seg, 255, 50, 100, 255, &camera);
         window.debug_renderBoundingBox(player.getBoundingBox(), 0, 255, 100, 255, &camera);
 
-        window.renderText(std::to_string((int)window.time().getFramerate()), Vec2<int>(1, window.getScale() - 10), Color(0, 255, 0, 255));
-        window.renderText(std::to_string(window.time().getDeltaTime()), Vec2<int>(30, window.getScale() - 10), Color(255, 255, 0, 255));
+        window.renderText(assets.fonts.alagard_font, std::to_string((int)window.time().getFramerate()), Vec2<int>(1, window.getScale() - 10), Color(0, 255, 0, 255));
+        window.renderText(assets.fonts.alagard_font, std::to_string(window.time().getDeltaTime()), Vec2<int>(30, window.getScale() - 10), Color(255, 255, 0, 255));
     }
+
+    return SceneID::Main;
 }

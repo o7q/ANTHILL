@@ -7,13 +7,14 @@
 class MainScene : public Scene
 {
 public:
-    MainScene(Window &window) : Scene(window), world(window.getSDLRenderer(), 256, 256)
+    MainScene(Window &window, Assets &assets) : Scene(window, assets),
+                                                world(window.getSDLRenderer(), 256, 256)
     {
         player.setPosition(20, 20);
         player.setSize(20, 30);
     }
 
-    void run() override;
+    SceneID run() override;
 
 private:
     Entity player;

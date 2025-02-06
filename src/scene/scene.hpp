@@ -1,14 +1,20 @@
 #pragma once
 
 #include "../window/window.hpp"
+#include "../assets/assets.hpp"
+
+enum class SceneID
+{
+    Main
+};
 
 class Scene
 {
 public:
-    Scene(Window &window) : window(window) {}
+    Scene(Window &window, Assets &assets) : window(window), assets(assets) {}
     virtual ~Scene() {}
-    
-    virtual void run() {};
+
+    virtual SceneID run() { return SceneID::Main; }
 
 protected:
     bool init()
@@ -24,6 +30,7 @@ protected:
 
 protected:
     Window &window;
+    Assets &assets;
 
 private:
     bool m_initialized = false;

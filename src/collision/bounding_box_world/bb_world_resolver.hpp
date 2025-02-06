@@ -19,6 +19,11 @@ public:
         return m_resolve_vector;
     }
 
+    void setXSensitivity(float x_sensitivity)
+    {
+        m_x_sensitivity = x_sensitivity;
+    }
+
     void setYSensitivity(float y_sensitivity)
     {
         m_y_sensitivity = y_sensitivity;
@@ -32,6 +37,7 @@ private:
     int i_y(int y);
 
 private:
+    float m_x_sensitivity = 1.0f;
     float m_y_sensitivity = 1.0f;
 
 private:

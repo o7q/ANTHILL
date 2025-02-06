@@ -47,16 +47,16 @@ public:
 
     const BoundingBox &getBoundingBox() const { return m_bounding_box; }
 
+protected:
+    Vec2<int> m_position;
+    Vec2<int> m_size;
+
+    BoundingBox m_bounding_box;
+
 private:
     void update_bounding_box()
     {
         m_bounding_box.setPosition(m_position.x, m_position.y);
         m_bounding_box.setSize(m_size.x, m_size.y);
     }
-
-private:
-    Vec2<int> m_position;
-    Vec2<int> m_size;
-
-    BoundingBox m_bounding_box;
 };
