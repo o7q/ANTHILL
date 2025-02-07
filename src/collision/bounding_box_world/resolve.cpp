@@ -1,9 +1,9 @@
-#include "bb_world_resolver.hpp"
+#include "bb_world_collider.hpp"
 
 #include <cmath>
 #include <limits>
 
-void BBWorldResolver::convex_optimize()
+void BBWorldCollider::convex_optimize()
 {
     for (int i = 0; i < 2; ++i)
     {
@@ -34,7 +34,7 @@ void BBWorldResolver::convex_optimize()
     }
 }
 
-void BBWorldResolver::convex_optimize_pass(Particle p, int x, int y, int x_origin, int y_origin, int corner_index)
+void BBWorldCollider::convex_optimize_pass(Particle p, int x, int y, int x_origin, int y_origin, int corner_index)
 {
     // 0   1
     //  [ ]

@@ -58,7 +58,7 @@ SceneID MainScene::run()
 
         world.update();
         player.update();
-        player.resolveWorldCollision(world);
+        // player.resolveWorldCollision(world);
 
         window.renderTexture(world.getWorldTexture(), &camera);
         // for (const Segment &seg : world.getWorldBounds())

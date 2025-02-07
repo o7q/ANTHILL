@@ -1,0 +1,26 @@
+Bugs
+- Fix player ground detection
+
+
+
+Features
+- Gameplay
+	- Add sun
+
+- Player
+	- Finish movement
+	
+- World
+	- Infinite scrolling (efficient world swapping system)
+	- Procedual generation
+	
+- Camera
+	- Shake
+	- Follow objects
+	
+- Audio
+	- Make sound manager
+	- Dynamic music switching
+
+- Sprites
+	- Design player sprite

@@ -1,23 +1,18 @@
 #include "camera.hpp"
 
-void Camera::setPosition(int x, int y)
+void Camera::setPosition(float x, float y)
 {
     m_position.x = x;
     m_position.y = y;
 }
 
-void Camera::move(int x, int y)
+void Camera::move(float x, float y)
 {
     m_position.x += x;
     m_position.y += y;
 }
 
-Vec2<int> Camera::transformPoint(Vec2<int> point) const
-{
-    return point + m_position;
-}
-
-Vec2<int> Camera::transformPoint(int x, int y) const
+Vec2<int> Camera::transformPoint(float x, float y) const
 {
     return Vec2<int>(x + m_position.x, y + m_position.y);
 }

@@ -52,6 +52,16 @@ private:
             return false;
         }
 
+        // bool wasUnpressed()
+        // {
+        //     if (!m_down && m_pressed)
+        //     {
+        //         return true;
+        //     }
+
+        //     return false;
+        // }
+
     private:
         bool m_down = false;
         bool m_pressed = false;

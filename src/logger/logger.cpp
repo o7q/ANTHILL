@@ -21,7 +21,15 @@ void Logger::log(LogLevel logLevel, const std::string &text, bool showSDLError)
         error = "FATAL";
         break;
     }
-    std::cout << '[' << error << ']' << " " << text << '\n'
-              << SDL_GetError() << '\n'
-              << std::endl;
+
+    if (showSDLError)
+    {
+        std::cout << '[' << error << ']' << " " << text << '\n'
+                  << SDL_GetError() << std::endl;
+        SDL_ClearError();
+    }
+    else
+    {
+        std::cout << '[' << error << ']' << " " << text << std::endl;
+    }
 }

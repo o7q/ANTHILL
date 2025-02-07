@@ -1,7 +1,7 @@
 #pragma once
 
 #include "scene.hpp"
-#include "../entity/entity.hpp"
+#include "../player/player.hpp"
 #include "../world/world.hpp"
 
 class MainScene : public Scene
@@ -12,14 +12,14 @@ public:
                                                 player(world)
     {
         player.setPosition(20, 20);
-        player.setSize(8, 25);
+        player.setBoundsSize(8, 25);
     }
 
     SceneID run() override;
 
 private:
     World world;
-    Entity player;
+    Player player;
     Particle::Preset preset;
     Camera camera;
 };
