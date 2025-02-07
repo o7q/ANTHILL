@@ -6,12 +6,12 @@
 #include "game.hpp"
 #include "logger/logger.hpp"
 
-int main(int argc, char **argv)
+bool sdl_init()
 {
     if (!SDL_InitSubSystem(SDL_INIT_VIDEO))
     {
         Logger::log(Logger::LogLevel::Fatal, "Failing to initialize video!", true);
-        return 1;
+        return false;
     }
 
     // SDL_InitSubSystem(SDL_INIT_AUDIO);
@@ -22,11 +22,14 @@ int main(int argc, char **argv)
     if (!TTF_Init())
     {
         Logger::log(Logger::LogLevel::Fatal, "Failing to initialize TTF!", true);
-        return 1;
+        return false;
     }
 
-    Game game;
+    return true;
+}
 
+void sdl_quit()
+{
     // why does this crash!!?!
     // TTF_Quit();
 
@@ -37,6 +40,18 @@ int main(int argc, char **argv)
     // SDL_QuitSubSystem(SDL_INIT_GAMEPAD);
 
     SDL_Quit();
+}
+
+int main(int argc, char **argv)
+{
+    if (!sdl_init())
+    {
+        return 1;
+    }
+
+    Game game;
+
+    sdl_quit();
 
     return 0;
 }

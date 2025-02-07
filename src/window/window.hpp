@@ -5,8 +5,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
-#include "input/input_manager.hpp"
-#include "time/time_manager.hpp"
+#include "../input/input_manager.hpp"
+#include "../time/time_manager.hpp"
 
 #include "../camera/camera.hpp"
 #include "../math/vector.hpp"

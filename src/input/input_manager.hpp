@@ -2,7 +2,7 @@
 
 #include <SDL3/SDL.h>
 
-#include "../../math/vector.hpp"
+#include "../math/vector.hpp"
 
 enum class Input
 {
