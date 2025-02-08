@@ -6,22 +6,32 @@
 #include "game.hpp"
 #include "logger/logger.hpp"
 
+#include <iostream>
+
 bool sdl_init()
 {
+
     if (!SDL_InitSubSystem(SDL_INIT_VIDEO))
     {
-        Logger::log(Logger::LogLevel::Fatal, "Failing to initialize video!", true);
+        Log::log(Log::Type::Fatal, "Init", "Failing to initialize video!", true);
         return false;
     }
 
-    // SDL_InitSubSystem(SDL_INIT_AUDIO);
-    // SDL_InitSubSystem(SDL_INIT_JOYSTICK);
-    // SDL_InitSubSystem(SDL_INIT_HAPTIC);
-    // SDL_InitSubSystem(SDL_INIT_GAMEPAD);
+    if (!SDL_InitSubSystem(SDL_INIT_GAMEPAD))
+    {
+        Log::log(Log::Type::Fatal, "Init", "Failing to initialize gamepad!", true);
+        return false;
+    }
+
+    if (!SDL_InitSubSystem(SDL_INIT_JOYSTICK))
+    {
+        Log::log(Log::Type::Fatal, "Init", "Failing to initialize joystick!", true);
+        return false;
+    }
 
     if (!TTF_Init())
     {
-        Logger::log(Logger::LogLevel::Fatal, "Failing to initialize TTF!", true);
+        Log::log(Log::Type::Fatal, "Init", "Failing to initialize TTF!", true);
         return false;
     }
 
@@ -35,9 +45,9 @@ void sdl_quit()
 
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
     // SDL_QuitSubSystem(SDL_INIT_AUDIO);
-    // SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
+    SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     // SDL_QuitSubSystem(SDL_INIT_HAPTIC);
-    // SDL_QuitSubSystem(SDL_INIT_GAMEPAD);
+    SDL_QuitSubSystem(SDL_INIT_GAMEPAD);
 
     SDL_Quit();
 }

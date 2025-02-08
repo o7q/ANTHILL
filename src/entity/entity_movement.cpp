@@ -14,12 +14,18 @@ void Entity::move(float x, float y)
     update_bounding_box();
 }
 
-void Entity::jump()
+void Entity::jump(bool override)
 {
-    if (!m_on_ground)
+    if (check_ground(30) && !m_jump_buffered)
+    {
+        m_jump_buffered = true;
+    }
+
+    if (!m_on_ground && !override)
     {
         return;
     }
 
     m_velocity.y = -m_jump_power;
+    m_jump_buffered = false;
 }

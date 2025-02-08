@@ -3,33 +3,33 @@
 #include <iostream>
 #include <SDL3/SDL.h>
 
-void Logger::log(LogLevel logLevel, const std::string &text, bool showSDLError)
+void Log::log(Type logLevel, const std::string &module, const std::string &text, bool showSDLError)
 {
     std::string error = "";
     switch (logLevel)
     {
-    case LogLevel::Info:
+    case Type::Info:
         error = "INFO";
         break;
-    case LogLevel::Warning:
+    case Type::Warning:
         error = "WARN";
         break;
-    case LogLevel::Error:
+    case Type::Error:
         error = "ERROR";
         break;
-    case LogLevel::Fatal:
+    case Type::Fatal:
         error = "FATAL";
         break;
     }
 
     if (showSDLError)
     {
-        std::cout << '[' << error << ']' << " " << text << '\n'
+        std::cout << '[' << error << ']' << ' ' << '(' << module << ')' << ' ' << text << '\n'
                   << SDL_GetError() << std::endl;
         SDL_ClearError();
     }
     else
     {
-        std::cout << '[' << error << ']' << " " << text << std::endl;
+        std::cout << '[' << error << ']' << ' ' << '(' << module << ')' << ' ' << text << std::endl;
     }
 }

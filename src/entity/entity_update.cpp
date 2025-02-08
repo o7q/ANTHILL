@@ -2,7 +2,12 @@
 
 void Entity::update()
 {
-    check_ground();
+    m_on_ground = false;
+    m_on_ground = check_ground(1);
+    if (m_on_ground && m_jump_buffered)
+    {
+        jump(true);
+    }
     update_y_velocity();
     move(m_velocity.x, m_velocity.y);
     resolve_world_collision();

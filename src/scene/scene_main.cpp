@@ -1,56 +1,58 @@
 #include "scene_main.hpp"
 
+#include "../logger/logger.hpp"
+
 #include <iostream>
 
 SceneID MainScene::run()
 {
     if (init())
     {
-        std::cout << "MainScene init" << std::endl;
+        Log::log(Log::Type::Info, "MainScene", "Init");
     }
 
     if (update())
     {
-        if (window.input().isDown(Input::Left))
+        if (window.input().button(IButtonID::Left).down())
         {
             player.move(-2, 0);
         }
-        if (window.input().isDown(Input::Right))
+        if (window.input().button(IButtonID::Right).down())
         {
             player.move(2, 0);
         }
-        if (window.input().isDown(Input::Action2))
+        if (window.input().button(IButtonID::Action1).pressed())
         {
             player.jump();
         }
 
-        if (window.input().wasPressed(Input::Debug1))
-        {
-            preset = Particle::Preset::Stone;
-        }
-        if (window.input().wasPressed(Input::Debug2))
-        {
-            preset = Particle::Preset::Sand;
-        }
-        if (window.input().wasPressed(Input::Debug3))
-        {
-            preset = Particle::Preset::Water;
-        }
-        if (window.input().wasPressed(Input::Debug4))
-        {
-            preset = Particle::Preset::Blood;
-        }
-        if (window.input().wasPressed(Input::Debug5))
-        {
-            preset = Particle::Preset::Steam;
-        }
-        if (window.input().wasPressed(Input::Debug6))
+        if (window.input().button(IButtonID::Debug1).pressed())
         {
             reset();
         }
+        if (window.input().button(IButtonID::Debug2).pressed())
+        {
+            preset = Particle::Preset::Stone;
+        }
+        if (window.input().button(IButtonID::Debug3).pressed())
+        {
+            preset = Particle::Preset::Sand;
+        }
+        if (window.input().button(IButtonID::Debug4).pressed())
+        {
+            preset = Particle::Preset::Water;
+        }
+        if (window.input().button(IButtonID::Debug5).pressed())
+        {
+            preset = Particle::Preset::Blood;
+        }
+        if (window.input().button(IButtonID::Debug6).pressed())
+        {
+            preset = Particle::Preset::Steam;
+        }
 
         Vec2<int> mousePos = window.input().getMousePos();
-        if (window.input().isDown(Input::Action1))
+        if (window.input().button(IButtonID::Action2).down())
         {
             Vec2<int> drawPos = camera.transformPoint(mousePos.x, mousePos.y);
             world.drawParticles(drawPos.x, drawPos.y, 5, preset);

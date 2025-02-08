@@ -44,6 +44,8 @@ void Window::update()
         }
     }
 
+    m_input_manager.update();
+
     // update internal mouse state
     m_input_manager.updateMouse(m_window_size.x, m_window_size.y, m_scale);
 }

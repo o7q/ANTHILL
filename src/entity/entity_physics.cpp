@@ -1,20 +1,24 @@
 #include "entity.hpp"
 
-void Entity::check_ground()
+bool Entity::check_ground(int y_scan)
 {
-    m_on_ground = false;
     Vec2<int> m_bb_pos = m_bounding_box.getPosition();
     Vec2<int> m_bb_size = m_bounding_box.getSize();
-    for (int i = 0; i < m_bb_size.x; ++i)
+    for (int y = 0; y < y_scan; ++y)
     {
-        int x = m_bb_pos.x - m_bb_size.x / 2 + i;
-        int y = m_bb_pos.y + m_bb_size.y / 2;
-
-        if (m_world.getParticle(x, y).p_collision_type == Particle::PCollisionType::Solid)
+        for (int x = 0; x < m_bb_size.x; ++x)
         {
-            m_on_ground = true;
+            int _x = m_bb_pos.x - m_bb_size.x / 2 + x;
+            int _y = m_bb_pos.y + m_bb_size.y / 2 + y;
+
+            if (m_world.getParticle(_x, _y).p_collision_type == Particle::PCollisionType::Solid)
+            {
+                return true;
+            }
         }
     }
+
+    return false;
 }
 
 void Entity::update_y_velocity()

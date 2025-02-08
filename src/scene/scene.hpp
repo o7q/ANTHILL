@@ -15,7 +15,6 @@ public:
     virtual ~Scene() {}
 
     virtual SceneID run() { return SceneID::Main; }
-
     bool shouldReset() { return m_should_reset; }
 
 protected:
@@ -29,11 +28,7 @@ protected:
     }
 
     bool update() { return true; }
-
-    void reset()
-    {
-        m_should_reset = true;
-    }
+    void reset() { m_should_reset = true; }
 
 protected:
     Window &window;

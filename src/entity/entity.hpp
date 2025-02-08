@@ -17,7 +17,7 @@ public:
     void setPosition(float x, float y);
     void setBoundsSize(int width, int height);
     void move(float x, float y);
-    virtual void jump();
+    virtual void jump(bool override = false);
 
     void setGravityAffected(bool value);
     void setGravityStrength(float gravity);
@@ -27,7 +27,7 @@ public:
     const BoundingBox &getBoundingBox() const { return m_bounding_box; }
 
 protected:
-    void check_ground();
+    bool check_ground(int y_scan = 1);
     void update_y_velocity();
     void resolve_world_collision();
 
@@ -48,6 +48,7 @@ protected:
 
     bool m_on_ground = false;
     bool m_is_gravity_affected = true;
+    bool m_jump_buffered = false;
 
 private:
     void update_bounding_box();

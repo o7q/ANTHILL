@@ -2,9 +2,9 @@
 
 #include <string>
 
-namespace Logger
+namespace Log
 {
-    enum class LogLevel
+    enum class Type
     {
         Info,
         Warning,
@@ -12,5 +12,5 @@ namespace Logger
         Fatal
     };
 
-    void log(LogLevel logLevel, const std::string &text, bool showSDLError = false);
+    void log(Type logLevel, const std::string &module, const std::string &text, bool showSDLError = false);
 };
