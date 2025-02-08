@@ -14,18 +14,22 @@ void Entity::move(float x, float y)
     update_bounding_box();
 }
 
+void Entity::setXVelocity(float x)
+{
+    m_velocity.x = x;
+}
+
+void Entity::setYVelocity(float y)
+{
+    m_velocity.y = y;
+}
+
 void Entity::jump(bool override)
 {
-    if (check_ground(30) && !m_jump_buffered)
-    {
-        m_jump_buffered = true;
-    }
-
     if (!m_on_ground && !override)
     {
         return;
     }
 
     m_velocity.y = -m_jump_power;
-    m_jump_buffered = false;
 }

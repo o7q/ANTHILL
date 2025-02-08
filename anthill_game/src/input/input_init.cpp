@@ -85,6 +85,18 @@ void InputManager::init_buttons()
     IButton debug6;
     debug6.assignKey(SDLK_6);
     add_button(IButtonID::Debug6, debug6);
+
+    IButton debug7;
+    debug7.assignKey(SDLK_7);
+    add_button(IButtonID::Debug7, debug7);
+
+    IButton debug8;
+    debug8.assignKey(SDLK_8);
+    add_button(IButtonID::Debug8, debug8);
+
+    IButton debug9;
+    debug9.assignKey(SDLK_9);
+    add_button(IButtonID::Debug9, debug9);
 }
 
 void InputManager::add_button(IButtonID id, IButton button)

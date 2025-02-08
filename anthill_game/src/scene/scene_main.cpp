@@ -15,11 +15,11 @@ SceneID MainScene::run()
     {
         if (window.input().button(IButtonID::Left).down())
         {
-            player.move(-2, 0);
+            player.move(-2 * window.time().getDeltaTime(), 0);
         }
         if (window.input().button(IButtonID::Right).down())
         {
-            player.move(2, 0);
+            player.move(2 * window.time().getDeltaTime(), 0);
         }
         if (window.input().button(IButtonID::Action1).pressed())
         {
@@ -49,6 +49,11 @@ SceneID MainScene::run()
         if (window.input().button(IButtonID::Debug6).pressed())
         {
             preset = Particle::Preset::Steam;
+        }
+        if (window.input().button(IButtonID::Debug7).pressed())
+        {
+            player.setXVelocity(-10.0f);
+            player.setYVelocity(-10.0f);
         }
 
         Vec2<int> mousePos = window.input().getMousePos();

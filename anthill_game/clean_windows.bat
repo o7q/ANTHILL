@@ -3,4 +3,4 @@
 set NAME=ANTHILL
 
 rmdir "build" /s /q
-del "%NAME%" /f
+del "%NAME%.exe" /f

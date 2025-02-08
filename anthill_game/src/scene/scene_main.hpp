@@ -9,7 +9,7 @@ class MainScene : public Scene
 public:
     MainScene(Window &window, Assets &assets) : Scene(window, assets),
                                                 world(window.getSDLRenderer(), 256, 256),
-                                                player(world)
+                                                player(window, world)
     {
         player.setPosition(20, 20);
         player.setBoundsSize(8, 25);

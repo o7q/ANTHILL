@@ -1,5 +1,7 @@
 #include "entity.hpp"
 
+#include <cmath>
+
 bool Entity::check_ground(int y_scan)
 {
     Vec2<int> m_bb_pos = m_bounding_box.getPosition();
@@ -21,6 +23,17 @@ bool Entity::check_ground(int y_scan)
     return false;
 }
 
+void Entity::update_x_velocity()
+{
+    float dt = m_window.time().getDeltaTime();
+    m_velocity.x /= m_air_resistance;
+
+    if (std::fabs(m_velocity.x) < 0.1f)
+    {
+        m_velocity.x = 0.0f;
+    }
+}
+
 void Entity::update_y_velocity()
 {
     if (!m_is_gravity_affected)
@@ -28,9 +41,10 @@ void Entity::update_y_velocity()
         return;
     }
 
+    float dt = m_window.time().getDeltaTime();
     if (m_velocity.y < m_terminal_velocity)
     {
-        m_velocity.y += m_gravity_strength;
+        m_velocity.y += m_gravity_strength * dt;
     }
 
     if (m_on_ground && m_velocity.y > 0)
@@ -46,6 +60,8 @@ void Entity::resolve_world_collision()
 
     if (m_bb_collider.hasCollided())
     {
+        // m_velocity.x = 0.0f;
+        // m_velocity.y = 0.0f;
         move(resolved_position.x, resolved_position.y);
     }
 }

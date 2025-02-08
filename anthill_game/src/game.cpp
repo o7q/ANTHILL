@@ -5,7 +5,7 @@
 Game::Game() : window("ANTHILL", 512, 512, 256)
 {
     Random::seed();
-    window.time().setTargetFramerate(60);
+    window.time().setTargetFramerate(144);
 
     while (window.isOpen())
     {
