@@ -45,7 +45,7 @@ private:
     Texture m_world_texture;
     WorldPhysics m_world_physics;
 
-    int update_speed = 3;
+    int update_speed = 2;
 
     Vec2<int> m_size;
 };

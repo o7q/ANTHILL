@@ -52,8 +52,10 @@ SceneID MainScene::run()
         }
         if (window.input().button(IButtonID::Debug7).pressed())
         {
-            player.setXVelocity(-10.0f);
-            player.setYVelocity(-10.0f);
+            Vec2<int> pos = player.getBoundingBox().getPosition();
+            Vec2<int> offset = window.input().getMousePos() - pos;
+            player.setXVelocity(offset.x / 10.0f);
+            player.setYVelocity(offset.y / 10.0f);
         }
 
         Vec2<int> mousePos = window.input().getMousePos();

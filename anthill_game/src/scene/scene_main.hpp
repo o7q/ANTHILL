@@ -8,7 +8,7 @@ class MainScene : public Scene
 {
 public:
     MainScene(Window &window, Assets &assets) : Scene(window, assets),
-                                                world(window.getSDLRenderer(), 256, 256),
+                                                world(window.getSDLRenderer(), 384, 384),
                                                 player(window, world)
     {
         player.setPosition(20, 20);

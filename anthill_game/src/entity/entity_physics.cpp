@@ -26,9 +26,10 @@ bool Entity::check_ground(int y_scan)
 void Entity::update_x_velocity()
 {
     float dt = m_window.time().getDeltaTime();
-    m_velocity.x /= m_air_resistance;
+    float air_resistance_factor = std::exp(-dt * m_air_resistance);
+    m_velocity.x *= air_resistance_factor;
 
-    if (std::fabs(m_velocity.x) < 0.1f)
+    if (std::fabs(m_velocity.x) < 0.25f)
     {
         m_velocity.x = 0.0f;
     }

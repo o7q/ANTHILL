@@ -50,7 +50,7 @@ protected:
 protected:
     float m_terminal_velocity = 5.0f;
     float m_gravity_strength = 0.5f;
-    float m_air_resistance = 1.1f;
+    float m_air_resistance = 0.075f;
     float m_jump_power = 8.0f;
 
     bool m_on_ground = false;

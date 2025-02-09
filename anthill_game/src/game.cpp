@@ -2,7 +2,7 @@
 
 #include "math/random.hpp"
 
-Game::Game() : window("ANTHILL", 512, 512, 256)
+Game::Game() : window("ANTHILL", 512, 512, 384)
 {
     Random::seed();
     window.time().setTargetFramerate(144);
