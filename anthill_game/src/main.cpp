@@ -6,8 +6,6 @@
 #include "game.hpp"
 #include "logger/logger.hpp"
 
-#include <iostream>
-
 bool sdl_init()
 {
 
@@ -44,9 +42,7 @@ void sdl_quit()
     // TTF_Quit();
 
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
-    // SDL_QuitSubSystem(SDL_INIT_AUDIO);
     SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
-    // SDL_QuitSubSystem(SDL_INIT_HAPTIC);
     SDL_QuitSubSystem(SDL_INIT_GAMEPAD);
 
     SDL_Quit();

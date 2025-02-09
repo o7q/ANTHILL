@@ -1,32 +1,14 @@
 #include "input_manager.hpp"
 
-#include "../logger/logger.hpp"
-
 InputManager::InputManager()
 {
-    init_gamepad();
     init_buttons();
 }
 InputManager::~InputManager()
 {
-    for (SDL_Gamepad *gamepad : m_gamepads)
+    for (auto &gamepad : m_gamepads)
     {
-        SDL_CloseGamepad(gamepad);
-    }
-}
-
-void InputManager::init_gamepad()
-{
-    int gamepad_count;
-    SDL_GetGamepads(&gamepad_count);
-
-    for (int i = 0; i < m_max_gamepads; ++i)
-    {
-        if (SDL_IsGamepad(i))
-        {
-            Log::log(Log::Type::Info, "InputManager", "Found controller: " + std::to_string(i));
-            m_gamepads.push_back(SDL_OpenGamepad(i));
-        }
+        remove_gamepad(gamepad.first);
     }
 }
 

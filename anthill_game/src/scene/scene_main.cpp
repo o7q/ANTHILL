@@ -78,7 +78,7 @@ SceneID MainScene::run()
         }
 
         Vec2<int> playerpos = player.getBoundingBox().getPosition();
-        BoundingBox bb(transformed_mousePos.x, transformed_mousePos.y, 50, 50);
+        BoundingBox bb(playerpos.x, playerpos.y, 400, 400);
 
         if (window.input().button(IButtonID::Debug7).pressed())
         {

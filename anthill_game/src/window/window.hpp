@@ -34,6 +34,7 @@ public:
     RenderManager &render() { return m_render_manager; }
     InputManager &input() { return m_input_manager; }
     TimeManager &time() { return m_time_manager; }
+	
     SDL_Renderer *getSDLRenderer() const { return m_renderer; }
 
 private:

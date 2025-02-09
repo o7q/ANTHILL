@@ -11,7 +11,7 @@ void Log::log(Type logLevel, const std::string &module, const std::string &text,
     case Type::Info:
         error = "INFO";
         break;
-    case Type::Warning:
+    case Type::Warn:
         error = "WARN";
         break;
     case Type::Error:

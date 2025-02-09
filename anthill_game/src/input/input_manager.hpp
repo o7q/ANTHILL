@@ -52,8 +52,11 @@ public:
     Vec2<int> getMousePos() const { return m_mouse_pos; }
 
 private:
-    void init_gamepad();
+    void assign_gamepad(int id);
+    void remove_gamepad(int id);
+
     void init_buttons();
+
 
     void add_button(IButtonID id, IButton button);
 
@@ -63,6 +66,6 @@ private:
     std::unordered_map<IButtonID, IButton> m_buttons;
 
     const int m_max_gamepads = 100;
-    std::vector<SDL_Gamepad *> m_gamepads;
-    bool m_controller_mode = false;
+    std::unordered_map<int, SDL_Gamepad *> m_gamepads;
+    bool m_gamepad_mode = false;
 };

@@ -7,7 +7,7 @@ namespace Log
     enum class Type
     {
         Info,
-        Warning,
+        Warn,
         Error,
         Fatal
     };
