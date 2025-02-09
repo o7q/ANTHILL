@@ -1,21 +1,57 @@
 #include "world_physics.hpp"
 
-#include "../../math/random.hpp"
+#include <algorithm>
 
-void WorldPhysics::update_particles()
+#include "../../math/random.hpp"
+#include "../../math/bounding_box.hpp"
+#include "../../math/vector.hpp"
+
+void WorldPhysics::update_particles(BoundingBox *box)
 {
-    for (int y = m_size.y - 1; y >= 0; --y)
+    int y_start = 0;
+    int y_end = 0;
+
+    int x1_start = 0;
+    int x1_end = 0;
+
+    int x2_start = 0;
+    int x2_end = 0;
+
+    if (box != nullptr)
+    {
+        y_start = std::clamp(box->getP4().y, 0, m_size.y - 1);
+        y_end = std::clamp(box->getP1().y, 0, m_size.y - 1);
+
+        x1_start = std::clamp(box->getP1().x, 0, m_size.x - 1);
+        x1_end = std::clamp(box->getP2().x, 0, m_size.x - 1);
+
+        x2_start = x1_end;
+        x2_end = x1_start;
+    }
+    else
+    {
+        y_start = m_size.y - 1;
+        y_end = 0;
+
+        x1_start = 0;
+        x1_end = m_size.x;
+
+        x2_start = x1_end;
+        x2_end = x1_start;
+    }
+
+    for (int y = y_start; y >= y_end; --y)
     {
         if (Random::genInt(0, 2) == 0)
         {
-            for (int x = 0; x < m_size.x; ++x)
+            for (int x = x1_start; x < x1_end; ++x)
             {
                 update_particle(x, y);
             }
         }
         else
         {
-            for (int x = m_size.x - 1; x >= 0; --x)
+            for (int x = x2_start; x >= x2_end; --x)
             {
                 update_particle(x, y);
             }

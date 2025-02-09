@@ -61,8 +61,6 @@ void Entity::resolve_world_collision()
 
     if (m_bb_collider.hasCollided())
     {
-        // m_velocity.x = 0.0f;
-        // m_velocity.y = 0.0f;
         move(resolved_position.x, resolved_position.y);
     }
 }

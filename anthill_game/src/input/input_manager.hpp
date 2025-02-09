@@ -29,7 +29,12 @@ enum class IButtonID
     Debug7,
     Debug8,
     Debug9,
-    Debug0
+    Debug0,
+
+    DebugUp,
+    DebugDown,
+    DebugLeft,
+    DebugRight
 };
 
 class InputManager

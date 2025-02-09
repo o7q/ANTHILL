@@ -24,7 +24,7 @@ public:
     World(SDL_Renderer *renderer, unsigned int width, unsigned int height);
     ~World();
 
-    void update();
+    void update(BoundingBox *box = nullptr);
 
     void setParticle(int x, int y, Particle particle);
 

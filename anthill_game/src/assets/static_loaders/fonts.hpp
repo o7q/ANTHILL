@@ -4,14 +4,26 @@
 
 struct Fonts
 {
+    struct Font
+    {
+        void create(const std::string &path, int size)
+        {
+            font = TTF_OpenFont(path.c_str(), size);
+        }
+        ~Font()
+        {
+            TTF_CloseFont(font);
+        }
+
+        TTF_Font *font = nullptr;
+    };
+
     Fonts()
     {
-        alagard_font = TTF_OpenFont("assets/fonts/alagard.ttf", 12);
-    }
-    ~Fonts()
-    {
-        TTF_CloseFont(alagard_font);
+        alagard.create("assets/fonts/alagard.ttf", 14);
+        silkscreen.create("assets/fonts/silkscreen.ttf", 14);
     }
 
-    TTF_Font *alagard_font = nullptr;
+    Font alagard;
+    Font silkscreen;
 };

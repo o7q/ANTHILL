@@ -14,7 +14,7 @@ void Window::renderTexture(const Texture &texture, const Camera *camera)
 
     if (camera != nullptr)
     {
-        Vec2<int> cam_pos = camera->getPosition();
+        Vec2<int> cam_pos = camera->getPosition() - Vec2<int>(m_scale, m_scale) / 2.0f;
         new_dst_rect.x -= cam_pos.x;
         new_dst_rect.y -= cam_pos.y;
     }
@@ -33,8 +33,13 @@ void Window::renderTexture(const Texture &texture, const Camera *camera)
                              texture.getSDLFlipMode());
 }
 
-void Window::renderText(TTF_Font* font, const std::string &text, Vec2<int> position, Color color, Camera *camera)
+void Window::renderText(TTF_Font *font, const std::string &text, Vec2<int> position, Color color, Camera *camera)
 {
+    if (font == nullptr)
+    {
+        return;
+    }
+
     SDL_Surface *surface = TTF_RenderText_Solid(font, text.c_str(), text.size(), SDL_Color{color.r, color.g, color.b, color.a});
 
     Texture texture(m_renderer, surface);
@@ -60,7 +65,7 @@ void Window::debug_renderBoundingBox(const BoundingBox &boundingBox, Uint8 r, Ui
 
     if (camera != nullptr)
     {
-        Vec2<int> cam_pos = camera->getPosition();
+        Vec2<int> cam_pos = camera->getPosition() - Vec2<int>(m_scale, m_scale) / 2.0f;
         rect.x -= cam_pos.x;
         rect.y -= cam_pos.y;
     }
@@ -83,7 +88,7 @@ void Window::debug_renderSegment(const Segment &segment, Uint8 r, Uint8 g, Uint8
 
     if (camera != nullptr)
     {
-        Vec2<int> cam_pos = camera->getPosition();
+        Vec2<int> cam_pos = camera->getPosition() - Vec2<int>(m_scale, m_scale) / 2.0f;
         seg.a.x -= cam_pos.x;
         seg.a.y -= cam_pos.y;
         seg.b.x -= cam_pos.x;

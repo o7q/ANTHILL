@@ -2,6 +2,7 @@
 
 #include "../particle/particle.hpp"
 #include "../../texture/texture.hpp"
+#include "../../math/bounding_box.hpp"
 
 class WorldPhysics
 {
@@ -17,7 +18,7 @@ public:
         m_size.y = height;
     }
 
-    void update_particles();
+    void update_particles(BoundingBox *box = nullptr);
 
 private:
     // shorthand operations (unsafe, no out of bounds checking)

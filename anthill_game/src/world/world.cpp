@@ -2,6 +2,8 @@
 
 #include <SDL3/SDL.h>
 
+#include "../math/bounding_box.hpp"
+
 World::World(SDL_Renderer *renderer,
              unsigned int width,
              unsigned int height) : m_world_texture(renderer, width, height)
@@ -17,7 +19,7 @@ World::World(SDL_Renderer *renderer,
 
         for (int x = 0; x < m_size.x; ++x)
         {
-            setParticle(x, y, Particle());
+            setParticle(x, y, Particle(Particle::Preset::Sand));
         }
     }
 
@@ -40,11 +42,11 @@ World::~World()
     }
 }
 
-void World::update()
+void World::update(BoundingBox* box)
 {
     for (int i = 0; i < update_speed; ++i)
     {
-        m_world_physics.update_particles();
+        m_world_physics.update_particles(box);
     }
 
     generate_world_bounds();
