@@ -13,6 +13,9 @@ Window::Window(const std::string &title, unsigned int width, unsigned int height
     m_window = SDL_CreateWindow(title.c_str(), width, height, SDL_WINDOW_RESIZABLE);
     m_renderer = SDL_CreateRenderer(m_window, NULL);
 
+    m_render_manager.setRenderer(m_renderer);
+    m_render_manager.setScale(scale);
+
     SDL_SetRenderLogicalPresentation(m_renderer, scale, scale, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 }
 

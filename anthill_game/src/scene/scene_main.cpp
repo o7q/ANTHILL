@@ -92,13 +92,13 @@ SceneID MainScene::run()
         player.update();
         camera.update(dt);
 
-        window.renderTexture(world.getWorldTexture(), &camera);
-        window.debug_renderBoundingBox(player.getBoundingBox(), 0, 255, 100, 255, &camera);
-        window.debug_renderBoundingBox(bb, 255, 0, 0, 255, &camera);
+        window.render().renderTexture(world.getWorldTexture(), &camera);
+        window.render().debug_renderBoundingBox(player.getBoundingBox(), Color(0, 255, 100, 255), &camera);
+        window.render().debug_renderBoundingBox(bb, Color(255, 0, 0, 255), &camera);
 
-        window.renderText(assets.fonts.alagard.font, std::to_string((int)window.time().getFramerate()), Vec2<int>(1, window.getScale() - 15), Color(0, 255, 0, 255));
-        window.renderText(assets.fonts.alagard.font, std::to_string(window.time().getDeltaTime()), Vec2<int>(30, window.getScale() - 15), Color(255, 255, 0, 255));
-        window.renderText(assets.fonts.alagard.font, "X: " + std::to_string(playerpos.x) + "  Y: " + std::to_string(playerpos.y), Vec2<int>(100, window.getScale() - 15), Color(255, 0, 0, 255));
+        window.render().renderText(assets.fonts.alagard.font, std::to_string((int)window.time().getFramerate()), Vec2<int>(1, window.getScale() - 15), Color(0, 255, 0, 255));
+        window.render().renderText(assets.fonts.alagard.font, std::to_string(window.time().getDeltaTime()), Vec2<int>(30, window.getScale() - 15), Color(255, 255, 0, 255));
+        window.render().renderText(assets.fonts.alagard.font, "X: " + std::to_string(playerpos.x) + "  Y: " + std::to_string(playerpos.y), Vec2<int>(100, window.getScale() - 15), Color(255, 0, 0, 255));
     }
 
     return SceneID::Main;
