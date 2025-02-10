@@ -42,13 +42,23 @@ World::~World()
     }
 }
 
-void World::update(BoundingBox* box)
+void World::update(BoundingBox *box)
 {
-    for (int i = 0; i < update_speed; ++i)
+    BoundingBox locked_bb(m_size.x / 2, m_size.y / 2, m_size.x, m_size.y);
+
+    if (box != nullptr)
     {
-        m_world_physics.update_particles(box);
+        Vec2<int> pos = box->getPosition() - m_position;
+        Vec2<int> size = box->getSize();
+        locked_bb.setPosition(pos.x, pos.y);
+        locked_bb.setSize(size.x, size.y);
     }
 
-    generate_world_bounds();
+    for (int i = 0; i < update_speed; ++i)
+    {
+        m_world_physics.update_particles(&locked_bb);
+    }
+
+    generate_world_hitbox(&locked_bb);
     m_world_texture.update();
 }

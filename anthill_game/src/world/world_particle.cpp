@@ -2,19 +2,14 @@
 
 #include <algorithm>
 
-void World::drawParticles(int x, int y, int radius, Particle particle, DrawShape drawShape)
+void World::drawParticles(int loc_x, int loc_y, int radius, const Particle particle, DrawShape drawShape, bool is_global_coordinate)
 {
-    const Particle draw_particle = particle;
-    draw_particles(x, y, radius, draw_particle, drawShape);
-}
-void World::drawParticles(int x, int y, int radius, Particle::Preset preset, DrawShape drawShape)
-{
-    const Particle draw_particle = Particle(preset);
-    draw_particles(x, y, radius, draw_particle, drawShape);
-}
+    if (is_global_coordinate)
+    {
+        loc_x -= m_position.x;
+        loc_y -= m_position.y;
+    }
 
-void World::draw_particles(int loc_x, int loc_y, int radius, const Particle particle, DrawShape drawShape)
-{
     switch (drawShape)
     {
     case DrawShape::Square:
@@ -25,7 +20,7 @@ void World::draw_particles(int loc_x, int loc_y, int radius, const Particle part
                 int x_clamped = std::clamp(loc_x + x - radius / 2, 0, m_size.x - 1);
                 int y_clamped = std::clamp(loc_y + y - radius / 2, 0, m_size.y - 1);
 
-                setParticle(x_clamped, y_clamped, particle);
+                setParticle(x_clamped, y_clamped, particle, false);
             }
         }
         break;
@@ -39,7 +34,7 @@ void World::draw_particles(int loc_x, int loc_y, int radius, const Particle part
                     int x_clamped = std::clamp(x, 0, m_size.x - 1);
                     int y_clamped = std::clamp(y, 0, m_size.y - 1);
 
-                    setParticle(x_clamped, y_clamped, particle);
+                    setParticle(x_clamped, y_clamped, particle, false);
                 }
             }
         }
@@ -47,8 +42,14 @@ void World::draw_particles(int loc_x, int loc_y, int radius, const Particle part
     }
 }
 
-void World::setParticle(int x, int y, Particle particle)
+void World::setParticle(int x, int y, Particle particle, bool is_global_coordinate)
 {
+    if (is_global_coordinate)
+    {
+        x -= m_position.x;
+        y -= m_position.y;
+    }
+
     if (x < 0 || y < 0 || x >= m_size.x || y >= m_size.y)
     {
         return;
@@ -58,8 +59,14 @@ void World::setParticle(int x, int y, Particle particle)
     m_world_texture.setPixel(x, y, particle.color.hex());
 }
 
-Particle World::getParticle(int x, int y) const
+Particle World::getParticle(int x, int y, bool is_global_coordinate) const
 {
+    if (is_global_coordinate)
+    {
+        x -= m_position.x;
+        y -= m_position.y;
+    }
+
     if (x < 0 || y < 0 || x >= m_size.x || y >= m_size.y)
     {
         return Particle();

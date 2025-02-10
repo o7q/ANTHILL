@@ -36,8 +36,8 @@ void WorldPhysics::update_particles(BoundingBox *box)
         x1_start = 0;
         x1_end = m_size.x;
 
-        x2_start = x1_end;
-        x2_end = x1_start;
+        x2_start = m_size.x - 1;
+        x2_end = 0;
     }
 
     for (int y = y_start; y >= y_end; --y)

@@ -81,9 +81,9 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
         }
     }
 
-    bool bleed_down = Random::genInt(0, 100) == 0;
-    bool bleed_side = Random::genInt(0, 200) == 0;
-    bool bleed_up = Random::genInt(0, 300) == 0;
+    bool bleed_down = Random::genInt(0, 500) == 0;
+    bool bleed_side = Random::genInt(0, 1000) == 0;
+    bool bleed_up = Random::genInt(0, 1500) == 0;
 
     if (in_bounds(x, y + 1) && bleed_down)
     {

@@ -30,19 +30,19 @@ SceneID MainScene::run()
 
         if (window.input().button(IButtonID::DebugUp).down())
         {
-            camera.move(0, -5 * dt);
+            world.move(0, -1);
         }
         if (window.input().button(IButtonID::DebugDown).down())
         {
-            camera.move(0, 5 * dt);
+            world.move(0, 1);
         }
         if (window.input().button(IButtonID::DebugLeft).down())
         {
-            camera.move(-5 * dt, 0);
+            world.move(-1, 0);
         }
         if (window.input().button(IButtonID::DebugRight).down())
         {
-            camera.move(5 * dt, 0);
+            world.move(1, 0);
         }
 
         if (window.input().button(IButtonID::Debug1).pressed())
@@ -74,11 +74,11 @@ SceneID MainScene::run()
         Vec2<int> transformed_mousePos = camera.transformPoint(mousePos.x, mousePos.y);
         if (window.input().button(IButtonID::Action2).down())
         {
-            world.drawParticles(transformed_mousePos.x, transformed_mousePos.y, 50, preset);
+            world.drawParticles(transformed_mousePos.x, transformed_mousePos.y, 15, Particle(preset), World::DrawShape::Square);
         }
 
         Vec2<int> playerpos = player.getBoundingBox().getPosition();
-        BoundingBox bb(playerpos.x, playerpos.y, 400, 400);
+        BoundingBox bb(transformed_mousePos.x, transformed_mousePos.y, 100, 100);
 
         if (window.input().button(IButtonID::Debug7).pressed())
         {
@@ -86,6 +86,8 @@ SceneID MainScene::run()
             player.setXVelocity(offset.x / 10.0f);
             player.setYVelocity(offset.y / 10.0f);
         }
+
+        BoundingBox bb2(0, 0, 100, 100);
 
         camera.setGoal(playerpos.x, playerpos.y);
         world.update(&bb);
@@ -95,6 +97,12 @@ SceneID MainScene::run()
         window.render().renderTexture(world.getWorldTexture(), &camera);
         window.render().debug_renderBoundingBox(player.getBoundingBox(), Color(0, 255, 100, 255), &camera);
         window.render().debug_renderBoundingBox(bb, Color(255, 0, 0, 255), &camera);
+        window.render().debug_renderBoundingBox(bb2, Color(0, 0, 255, 255), &camera);
+
+        for (const Segment &seg : world.getWorldHitbox())
+        {
+            window.render().debug_renderSegment(seg, Color(255, 60, 60, 255), &camera);
+        }
 
         window.render().renderText(assets.fonts.alagard.font, std::to_string((int)window.time().getFramerate()), Vec2<int>(1, window.getScale() - 15), Color(0, 255, 0, 255));
         window.render().renderText(assets.fonts.alagard.font, std::to_string(window.time().getDeltaTime()), Vec2<int>(30, window.getScale() - 15), Color(255, 255, 0, 255));

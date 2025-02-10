@@ -8,11 +8,11 @@ class MainScene : public Scene
 {
 public:
     MainScene(Window &window, Assets &assets) : Scene(window, assets),
-                                                world(window.getSDLRenderer(), 1000, 1000),
+                                                world(window.getSDLRenderer(), 512, 512),
                                                 player(window, world),
                                                 camera(window.getScale(), window.getScale())
     {
-        player.setPosition(20, 20);
+        player.setPosition(20, -50);
         player.setBoundsSize(8, 25);
     }
 

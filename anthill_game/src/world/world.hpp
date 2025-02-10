@@ -26,26 +26,40 @@ public:
 
     void update(BoundingBox *box = nullptr);
 
-    void setParticle(int x, int y, Particle particle);
+    void move(int x, int y)
+    {
+        m_position.x += x;
+        m_position.y += y;
+        m_world_texture.setPosition(m_position.x, m_position.y);
+    }
 
-    Particle getParticle(int x, int y) const;
+    void setPosition(int x, int y)
+    {
+        m_position.x = x;
+        m_position.y = y;
+        m_world_texture.setPosition(x, y);
+    }
+
+    void setParticle(int x, int y, Particle particle, bool is_global_coordinate = true);
+    void drawParticles(int loc_x, int loc_y, int radius, const Particle particle, DrawShape drawShape = DrawShape::Circle, bool is_global_coordinate = true);
+
+    Particle getParticle(int x, int y, bool is_global_coordinate = true) const;
+    Vec2<int> getPosition() const { return m_position; }
     Vec2<int> getSize() const { return m_size; }
     const Texture &getWorldTexture() const { return m_world_texture; }
-    const std::vector<Segment> &getWorldBounds() const { return m_world_bounds; }
-
-    void drawParticles(int x, int y, int radius, Particle particle, DrawShape drawShape = DrawShape::Circle);
-    void drawParticles(int x, int y, int radius, Particle::Preset preset, DrawShape drawShape = DrawShape::Circle);
+    const std::vector<Segment> &getWorldHitbox() const { return m_world_hitbox; }
 
 private:
-    void generate_world_bounds();
-    void draw_particles(int loc_x, int loc_y, int radius, const Particle particle, DrawShape drawShape = DrawShape::Circle);
+    void generate_world_hitbox(BoundingBox *box = nullptr);
+
+    Vec2<int> m_position;
 
     Particle **m_particles = nullptr;
-    std::vector<Segment> m_world_bounds;
+    std::vector<Segment> m_world_hitbox;
     Texture m_world_texture;
     WorldPhysics m_world_physics;
 
-    int update_speed = 2;
+    const int update_speed = 2;
 
     Vec2<int> m_size;
 };
