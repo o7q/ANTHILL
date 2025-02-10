@@ -6,7 +6,7 @@
 class Player : public Entity
 {
 public:
-    Player(Window &window, const World &world) : Entity(window, world)
+    Player(Window &window, const std::vector<World *> &world_partitions) : Entity(window, world_partitions)
     {
         m_bb_collider.setYSensitivity(4.0f);
     }

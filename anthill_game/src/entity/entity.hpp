@@ -10,7 +10,9 @@
 class Entity
 {
 public:
-    Entity(Window &window, const World &world) : m_window(window), m_world(world), m_bb_collider(m_bounding_box, world) {}
+    Entity(Window &window, const std::vector<World *> &world_partitons) : m_window(window),
+                                                                          m_world_partitons(world_partitons),
+                                                                          m_bb_collider(m_bounding_box) {}
     virtual ~Entity() {}
 
     virtual void update();
@@ -37,7 +39,7 @@ protected:
 
 protected:
     Window &m_window;
-    const World &m_world;
+    const std::vector<World *> &m_world_partitons;
 
     BoundingBox m_bounding_box;
     BBWorldCollider m_bb_collider;

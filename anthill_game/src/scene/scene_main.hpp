@@ -8,19 +8,34 @@ class MainScene : public Scene
 {
 public:
     MainScene(Window &window, Assets &assets) : Scene(window, assets),
-                                                world(window.getSDLRenderer(), 512, 512),
-                                                player(window, world),
-                                                camera(window.getScale(), window.getScale())
+                                                m_player(window, m_world_partitons),
+                                                m_camera(window.getScale(), window.getScale())
     {
-        player.setPosition(20, -50);
-        player.setBoundsSize(8, 25);
+
+        m_player.setPosition(0, -50);
+        m_player.setBoundsSize(8, 25);
+
+        m_world_partitons.push_back(new World(window.getSDLRenderer(), 128, 128));
+        m_world_partitons.push_back(new World(window.getSDLRenderer(), 128, 128));
+
+        m_world_partitons[1]->move(-200, -200);
+    }
+    ~MainScene() override
+    {
+        for (World *world_partition : m_world_partitons)
+        {
+            if (world_partition != nullptr)
+            {
+                delete world_partition;
+            }
+        }
     }
 
     SceneID run() override;
 
 private:
-    World world;
-    Player player;
-    Camera camera;
-    Particle::Preset preset;
+    Player m_player;
+    Camera m_camera;
+    std::vector<World *> m_world_partitons;
+    Particle::Preset m_preset;
 };

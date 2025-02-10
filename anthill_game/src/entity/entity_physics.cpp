@@ -13,9 +13,12 @@ bool Entity::check_ground(int y_scan)
             int _x = m_bb_pos.x - m_bb_size.x / 2 + x;
             int _y = m_bb_pos.y + m_bb_size.y / 2 + y;
 
-            if (m_world.getParticle(_x, _y).p_collision_type == Particle::PCollisionType::Solid)
+            for (const World *world : m_world_partitons)
             {
-                return true;
+                if (world->getParticle(_x, _y).p_collision_type == Particle::PCollisionType::Solid)
+                {
+                    return true;
+                }
             }
         }
     }
@@ -56,11 +59,9 @@ void Entity::update_y_velocity()
 
 void Entity::resolve_world_collision()
 {
-    m_bb_collider.update();
-    Vec2<int> resolved_position = m_bb_collider.getResolve();
-
-    if (m_bb_collider.hasCollided())
+    for (const World *world : m_world_partitons)
     {
-        move(resolved_position.x, resolved_position.y);
+        Vec2<int> resolve_vector = m_bb_collider.resolve(world);
+        move(resolve_vector.x, resolve_vector.y);
     }
 }

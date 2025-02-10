@@ -3,7 +3,7 @@
 #include <cmath>
 #include <limits>
 
-void BBWorldCollider::convex_optimize()
+void BBWorldCollider::convex_optimize(const World *world)
 {
     for (int i = 0; i < 2; ++i)
     {
@@ -26,10 +26,10 @@ void BBWorldCollider::convex_optimize()
             int i_wx = local_x + i_x(x);
             int i_wy = local_y + i_y(y);
 
-            convex_optimize_pass(m_world.getParticle(i_wx,   wy), i_x(x), y     , 0              , 0              , 0); // top-left
-            convex_optimize_pass(m_world.getParticle(  wx,   wy), x     , y     , m_bb_size.x - 1, 0              , 1); // top-right
-            convex_optimize_pass(m_world.getParticle(  wx, i_wy), x     , i_y(y), m_bb_size.x - 1, m_bb_size.y - 1, 2); // bottom-right
-            convex_optimize_pass(m_world.getParticle(i_wx, i_wy), i_x(x), i_y(y), 0              , m_bb_size.y - 1, 3); // bottom-left
+            convex_optimize_pass(world->getParticle(i_wx,   wy), i_x(x), y     , 0              , 0              , 0); // top-left
+            convex_optimize_pass(world->getParticle(  wx,   wy), x     , y     , m_bb_size.x - 1, 0              , 1); // top-right
+            convex_optimize_pass(world->getParticle(  wx, i_wy), x     , i_y(y), m_bb_size.x - 1, m_bb_size.y - 1, 2); // bottom-right
+            convex_optimize_pass(world->getParticle(i_wx, i_wy), i_x(x), i_y(y), 0              , m_bb_size.y - 1, 3); // bottom-left
         }
     }
 }

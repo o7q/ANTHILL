@@ -17,10 +17,15 @@ void World::drawParticles(int loc_x, int loc_y, int radius, const Particle parti
         {
             for (int x = 0; x < radius; ++x)
             {
-                int x_clamped = std::clamp(loc_x + x - radius / 2, 0, m_size.x - 1);
-                int y_clamped = std::clamp(loc_y + y - radius / 2, 0, m_size.y - 1);
+                int draw_x = loc_x + x - radius / 2;
+                int draw_y = loc_y + y - radius / 2;
 
-                setParticle(x_clamped, y_clamped, particle, false);
+                if (draw_x < 0 || draw_y < 0 || draw_x >= m_size.x || draw_y >= m_size.y)
+                {
+                    continue;
+                }
+
+                setParticle(draw_x, draw_y, particle, false);
             }
         }
         break;
@@ -31,10 +36,12 @@ void World::drawParticles(int loc_x, int loc_y, int radius, const Particle parti
             {
                 if ((x - loc_x) * (x - loc_x) + (y - loc_y) * (y - loc_y) <= radius * radius)
                 {
-                    int x_clamped = std::clamp(x, 0, m_size.x - 1);
-                    int y_clamped = std::clamp(y, 0, m_size.y - 1);
+                    if (x < 0 || y < 0 || x >= m_size.x || y >= m_size.y)
+                    {
+                        continue;
+                    }
 
-                    setParticle(x_clamped, y_clamped, particle, false);
+                    setParticle(x, y, particle, false);
                 }
             }
         }

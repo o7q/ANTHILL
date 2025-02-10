@@ -17,32 +17,32 @@ SceneID MainScene::run()
 
         if (window.input().button(IButtonID::Left).down())
         {
-            player.move(-2 * dt, 0);
+            m_player.move(-2 * dt, 0);
         }
         if (window.input().button(IButtonID::Right).down())
         {
-            player.move(2 * dt, 0);
+            m_player.move(2 * dt, 0);
         }
         if (window.input().button(IButtonID::Action1).pressed())
         {
-            player.jump();
+            m_player.jump();
         }
 
         if (window.input().button(IButtonID::DebugUp).down())
         {
-            world.move(0, -1);
+            m_world_partitons[1]->move(0, -1);
         }
         if (window.input().button(IButtonID::DebugDown).down())
         {
-            world.move(0, 1);
+            m_world_partitons[1]->move(0, 1);
         }
         if (window.input().button(IButtonID::DebugLeft).down())
         {
-            world.move(-1, 0);
+            m_world_partitons[1]->move(-1, 0);
         }
         if (window.input().button(IButtonID::DebugRight).down())
         {
-            world.move(1, 0);
+            m_world_partitons[1]->move(1, 0);
         }
 
         if (window.input().button(IButtonID::Debug1).pressed())
@@ -51,58 +51,66 @@ SceneID MainScene::run()
         }
         if (window.input().button(IButtonID::Debug2).pressed())
         {
-            preset = Particle::Preset::Stone;
+            m_preset = Particle::Preset::Stone;
         }
         if (window.input().button(IButtonID::Debug3).pressed())
         {
-            preset = Particle::Preset::Sand;
+            m_preset = Particle::Preset::Sand;
         }
         if (window.input().button(IButtonID::Debug4).pressed())
         {
-            preset = Particle::Preset::Water;
+            m_preset = Particle::Preset::Water;
         }
         if (window.input().button(IButtonID::Debug5).pressed())
         {
-            preset = Particle::Preset::Blood;
+            m_preset = Particle::Preset::Blood;
         }
         if (window.input().button(IButtonID::Debug6).pressed())
         {
-            preset = Particle::Preset::Steam;
+            m_preset = Particle::Preset::Steam;
         }
 
         Vec2<int> mousePos = window.input().getMousePos();
-        Vec2<int> transformed_mousePos = camera.transformPoint(mousePos.x, mousePos.y);
+        Vec2<int> transformed_mousePos = m_camera.transformPoint(mousePos.x, mousePos.y);
         if (window.input().button(IButtonID::Action2).down())
         {
-            world.drawParticles(transformed_mousePos.x, transformed_mousePos.y, 15, Particle(preset), World::DrawShape::Square);
+            for (World *world : m_world_partitons)
+            {
+                world->drawParticles(transformed_mousePos.x, transformed_mousePos.y, 15, Particle(m_preset), World::DrawShape::Square);
+            }
         }
 
-        Vec2<int> playerpos = player.getBoundingBox().getPosition();
-        BoundingBox bb(transformed_mousePos.x, transformed_mousePos.y, 100, 100);
-
+        Vec2<int> playerpos = m_player.getBoundingBox().getPosition();
         if (window.input().button(IButtonID::Debug7).pressed())
         {
             Vec2<int> offset = transformed_mousePos - playerpos;
-            player.setXVelocity(offset.x / 10.0f);
-            player.setYVelocity(offset.y / 10.0f);
+            m_player.setXVelocity(offset.x / 10.0f);
+            m_player.setYVelocity(offset.y / 10.0f);
         }
 
-        BoundingBox bb2(0, 0, 100, 100);
-
-        camera.setGoal(playerpos.x, playerpos.y);
-        world.update(&bb);
-        player.update();
-        camera.update(dt);
-
-        window.render().renderTexture(world.getWorldTexture(), &camera);
-        window.render().debug_renderBoundingBox(player.getBoundingBox(), Color(0, 255, 100, 255), &camera);
-        window.render().debug_renderBoundingBox(bb, Color(255, 0, 0, 255), &camera);
-        window.render().debug_renderBoundingBox(bb2, Color(0, 0, 255, 255), &camera);
-
-        for (const Segment &seg : world.getWorldHitbox())
+        BoundingBox bb(transformed_mousePos.x, transformed_mousePos.y, 100, 100);
+        for (World *world : m_world_partitons)
         {
-            window.render().debug_renderSegment(seg, Color(255, 60, 60, 255), &camera);
+            world->update();
         }
+
+        m_player.update();
+
+        m_camera.setGoal(playerpos.x, playerpos.y);
+        m_camera.update(dt);
+
+        for (World *world : m_world_partitons)
+        {
+            window.render().renderTexture(world->getWorldTexture(), &m_camera);
+
+            for (const Segment &segment : world->getWorldHitbox())
+            {
+                window.render().debug_renderSegment(segment, Color(255, 60, 60, 255), &m_camera);
+            }
+        }
+
+        window.render().debug_renderBoundingBox(m_player.getBoundingBox(), Color(0, 255, 100, 255), &m_camera);
+        window.render().debug_renderBoundingBox(bb, Color(255, 0, 0, 255), &m_camera);
 
         window.render().renderText(assets.fonts.alagard.font, std::to_string((int)window.time().getFramerate()), Vec2<int>(1, window.getScale() - 15), Color(0, 255, 0, 255));
         window.render().renderText(assets.fonts.alagard.font, std::to_string(window.time().getDeltaTime()), Vec2<int>(30, window.getScale() - 15), Color(255, 255, 0, 255));

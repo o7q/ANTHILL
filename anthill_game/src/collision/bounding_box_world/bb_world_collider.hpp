@@ -7,18 +7,15 @@
 class BBWorldCollider
 {
 public:
-    BBWorldCollider(const BoundingBox &bb, const World &world) : m_bb(bb), m_world(world) {}
+    BBWorldCollider(const BoundingBox &bb) : m_bb(bb) {}
 
-    void update();
-
-    Vec2<int> getResolve() const { return m_resolve_vector; }
-    bool hasCollided() { return m_resolve_vector.x != 0 || m_resolve_vector.y != 0; }
+    Vec2<int> resolve(const World *world);
 
     void setXSensitivity(float x_sensitivity) { m_x_sensitivity = x_sensitivity; }
     void setYSensitivity(float y_sensitivity) { m_y_sensitivity = y_sensitivity; }
 
 private:
-    void convex_optimize();
+    void convex_optimize(const World *world);
     void convex_optimize_pass(Particle p, int x, int y, int x_origin, int y_origin, int y_i);
 
     int i_x(int x);
@@ -30,7 +27,6 @@ private:
 
 private:
     const BoundingBox &m_bb;
-    const World &m_world;
     Vec2<int> m_bb_pos;
     Vec2<int> m_bb_size;
 
