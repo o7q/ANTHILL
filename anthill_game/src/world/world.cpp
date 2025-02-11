@@ -3,6 +3,7 @@
 #include <SDL3/SDL.h>
 
 #include "../math/bounding_box.hpp"
+#include "../math/random.hpp"
 
 World::World(SDL_Renderer *renderer,
              unsigned int width,
@@ -19,7 +20,30 @@ World::World(SDL_Renderer *renderer,
 
         for (int x = 0; x < m_size.x; ++x)
         {
-            setParticle(x, y, Particle(Particle::Preset::Sand));
+            setParticle(x, y, Particle(Particle::Preset::Stone));
+        }
+    }
+
+    for (int y = 0; y < m_size.y; ++y)
+    {
+        for (int x = 0; x < m_size.x; ++x)
+        {
+            if (Random::genInt(0, 10000) == 0)
+            {
+                drawParticles(x, y, Random::genInt(10, 30), Particle(Particle::Preset::Sand), DrawShape::Circle, false);
+            }
+            if (Random::genInt(0, 10000) == 0)
+            {
+                drawParticles(x, y, Random::genInt(3, 20), Particle(Particle::Preset::Water), DrawShape::Circle, false);
+            }
+            if (Random::genInt(0, 1000) == 0)
+            {
+                drawParticles(x, y, Random::genInt(6, 10), Particle(Particle::Preset::Steam), DrawShape::Circle, false);
+            }
+            if (Random::genInt(0, 100000) == 0)
+            {
+                drawParticles(x, y, Random::genInt(20, 30), Particle(Particle::Preset::Blood), DrawShape::Circle, false);
+            }
         }
     }
 

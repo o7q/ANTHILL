@@ -22,15 +22,22 @@ public:
 
     void update_particles(BoundingBox *box = nullptr);
 
-    void set_physics_portal(WorldPhysics *physics_portal, int index)
+    void set_physics_portal(WorldPhysics *physics_portal, bool top, bool bottom, bool left, bool right)
     {
         m_physics_portal = physics_portal;
-        m_portal_index = index;
+        m_portal_up = top;
+        m_portal_down = bottom;
+        m_portal_left = left;
+        m_portal_right = right;
     }
 
     void clear_physics_portal()
     {
         m_physics_portal = nullptr;
+        m_portal_up = false;
+        m_portal_down = false;
+        m_portal_left = false;
+        m_portal_right = false;
     }
 
 private:
@@ -56,5 +63,8 @@ private:
     Vec2<int> m_size;
 
     WorldPhysics *m_physics_portal = nullptr;
-    int m_portal_index = 0;
+    bool m_portal_up = false;
+    bool m_portal_down = false;
+    bool m_portal_left = false;
+    bool m_portal_right = false;
 };

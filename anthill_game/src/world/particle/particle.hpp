@@ -7,6 +7,7 @@ struct Particle
 {
     enum class Preset
     {
+        Air,
         Stone,
         Sand,
         Water,

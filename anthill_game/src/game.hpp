@@ -3,7 +3,8 @@
 #include <SDL3/SDL.h>
 
 #include "window/window.hpp"
-#include "scene/common.hpp"
+#include "scene/scene.hpp"
+#include "scenes/main/scene_main.hpp"
 #include "assets/assets.hpp"
 
 class Game

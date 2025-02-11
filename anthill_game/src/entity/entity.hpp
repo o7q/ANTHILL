@@ -29,6 +29,9 @@ public:
     void setTerminalVelocity(float terminal_velocity);
     void setJumpPower(float jump_power);
 
+    Vec2<float> getPosition() const { return m_position; }
+    Vec2<int> getBoundsSize() const { return m_bounds_size; }
+
     const BoundingBox &getBoundingBox() const { return m_bounding_box; }
 
 protected:

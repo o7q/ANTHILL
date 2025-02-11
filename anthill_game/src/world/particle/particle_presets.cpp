@@ -4,6 +4,8 @@ Particle::Particle(Preset particlePreset)
 {
     switch (particlePreset)
     {
+    case Preset::Air:
+        break;
     case Preset::Stone:
     {
         p_state = PState::Solid;

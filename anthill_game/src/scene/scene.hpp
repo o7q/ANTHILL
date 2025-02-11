@@ -27,12 +27,21 @@ protected:
         return true;
     }
 
-    bool update() { return true; }
+    bool update()
+    {
+        DT = window.time().getDeltaTime();
+        FPS = window.time().getFramerate();
+        return true;
+    }
     void reset() { m_should_reset = true; }
 
 protected:
     Window &window;
     Assets &assets;
+
+protected:
+    float DT = 0.0f;
+    float FPS = 0.0f;
 
 private:
     bool m_initialized = false;

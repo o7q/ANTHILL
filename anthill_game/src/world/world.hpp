@@ -15,6 +15,16 @@
 class World
 {
 public:
+    struct Portal
+    {
+        World *world = nullptr;
+
+        bool up = false;
+        bool down = false;
+        bool left = false;
+        bool right = false;
+    };
+
 public:
     enum class DrawShape
     {
@@ -41,18 +51,23 @@ public:
         m_world_texture.setPosition(x, y);
     }
 
-    void setPortal(World *portal, int index)
+    void setPortal(Portal portal)
     {
-        if (portal->getSize() != m_size || portal == nullptr)
+        if (portal.world == nullptr)
+        {
+            return;
+        }
+        if (portal.world->getSize() != m_size)
         {
             return;
         }
 
-        m_world_physics->set_physics_portal(portal->m_world_physics, index);
+        m_world_physics->set_physics_portal(portal.world->m_world_physics, portal.up, portal.down, portal.left, portal.right);
     }
 
     void clearPortal()
     {
+        m_world_physics->clear_physics_portal();
     }
 
     void setParticle(int x, int y, Particle particle, bool is_global_coordinate = true);

@@ -84,19 +84,36 @@ void WorldPhysics::update_particle(int x, int y)
 
 void WorldPhysics::p_set(int x, int y, Particle particle)
 {
-    if (!in_bounds(x, y))
+    bool x_too_big = x >= m_size.x;
+    bool x_too_small = x < 0;
+
+    bool y_too_big = y >= m_size.y;
+    bool y_too_small = y < 0;
+
+    if (x_too_big || x_too_small || y_too_big || y_too_small)
     {
+        int other_x = x;
+        int other_y = y;
+
+        if (x_too_big)
+        {
+            other_x = x - m_physics_portal->m_size.x;
+        }
+        if (x_too_small)
+        {
+            other_x = x + m_physics_portal->m_size.x;
+        }
+        if (y_too_big)
+        {
+            other_y = y - m_physics_portal->m_size.y;
+        }
+        if (y_too_small)
+        {
+            other_y = y + m_physics_portal->m_size.y;
+        }
+
+        m_physics_portal->p_set(other_x, other_y, particle);
         return;
-    }
-
-    if (y >= m_size.y)
-    {
-        return m_physics_portal->p_set(x, 0, particle);
-    }
-
-    if (y < 0)
-    {
-        return m_physics_portal->p_set(x, m_physics_portal->m_size.y - 1, particle);
     }
 
     m_particles[y][x] = particle;
@@ -127,19 +144,35 @@ Color WorldPhysics::p_mix(Color a, Color b, float mult_a, float mult_b, float di
 
 Particle WorldPhysics::p_get(int x, int y)
 {
-    if (!in_bounds(x, y))
-    {
-        return Particle();
-    }
+    bool x_too_big = x >= m_size.x;
+    bool x_too_small = x < 0;
 
-    if (y >= m_size.y)
-    {
-        return m_physics_portal->p_get(x, 0);
-    }
+    bool y_too_big = y >= m_size.y;
+    bool y_too_small = y < 0;
 
-    if (y < 0)
+    if (x_too_big || x_too_small || y_too_big || y_too_small)
     {
-        return m_physics_portal->p_get(x, m_physics_portal->m_size.y - 1);
+        int other_x = x;
+        int other_y = y;
+
+        if (x_too_big)
+        {
+            other_x = x - m_physics_portal->m_size.x;
+        }
+        if (x_too_small)
+        {
+            other_x = x + m_physics_portal->m_size.x;
+        }
+        if (y_too_big)
+        {
+            other_y = y - m_physics_portal->m_size.y;
+        }
+        if (y_too_small)
+        {
+            other_y = y + m_physics_portal->m_size.y;
+        }
+
+        return m_physics_portal->p_get(other_x, other_y);
     }
 
     return m_particles[y][x];
@@ -147,7 +180,12 @@ Particle WorldPhysics::p_get(int x, int y)
 
 bool WorldPhysics::in_bounds(int x, int y)
 {
-    bool x_in_bound = x >= 0 && x < m_size.x;
-    bool y_in_bound =(y >= 0 && y < m_size.y) || (m_physics_portal != nullptr);
-    return x_in_bound && y_in_bound;
+    bool portal_assigned = m_physics_portal != nullptr;
+
+    bool y_can_up = (y >= 0) || (portal_assigned && m_portal_up);
+    bool y_can_down = (y < m_size.y) || (portal_assigned && m_portal_down);
+    bool x_can_left = (x >= 0) || (portal_assigned && m_portal_left);
+    bool x_can_right = (x < m_size.x) || (portal_assigned && m_portal_right);
+
+    return y_can_up && y_can_down && x_can_left && x_can_right;
 }
