@@ -4,14 +4,6 @@
 
 #include "../logger/logger.hpp"
 
-void InputManager::update()
-{
-    for (auto &button : m_buttons)
-    {
-        button.second.update();
-    }
-}
-
 void InputManager::poll(SDL_Event event)
 {
     auto poll_buttons = [&](int generic_button, IButton::PollType poll_type, bool down)
@@ -66,6 +58,10 @@ void InputManager::poll(SDL_Event event)
         poll_buttons(event.gbutton.button, IButton::PollType::Controller, false);
         break;
         //
+
+    case SDL_EVENT_GAMEPAD_AXIS_MOTION:
+        poll_gamepad(event.jaxis.value, event.jaxis.axis);
+        break;
 
         // GAMEPAD CONNECT
     case SDL_EVENT_JOYSTICK_ADDED:

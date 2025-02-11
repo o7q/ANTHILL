@@ -15,6 +15,8 @@
 #include "../math/bounding_box.hpp"
 #include "../math/segment.hpp"
 
+#include "../logger/logger.hpp"
+
 class Window
 {
 public:
@@ -34,7 +36,16 @@ public:
     RenderManager &render() { return m_render_manager; }
     InputManager &input() { return m_input_manager; }
     TimeManager &time() { return m_time_manager; }
-	
+
+    void setFullscreen(bool value)
+    {
+        SDL_SetWindowFullscreen(m_window, value);
+        m_is_fullscreen = value;
+        Log::log(Log::Type::Info, "Window", "Fullscreen: " + std::to_string(value));
+    }
+
+    bool isFullscreen() const { return m_is_fullscreen; }
+
     SDL_Renderer *getSDLRenderer() const { return m_renderer; }
 
 private:
@@ -50,4 +61,5 @@ private:
     unsigned int m_scale = 64;
 
     bool m_closed = false;
+    bool m_is_fullscreen = false;
 };

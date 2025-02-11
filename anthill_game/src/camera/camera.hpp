@@ -30,5 +30,5 @@ private:
 
     Vec2<float> m_goal_position;
     bool m_has_goal = false;
-    const float m_goal_speed = 0.075f;
+    const float m_goal_speed = 0.125f;
 };

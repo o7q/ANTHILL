@@ -3,6 +3,7 @@
 #include "../../scene/scene.hpp"
 #include "../../player/player.hpp"
 #include "../../world/world.hpp"
+#include "../../texture/texture.hpp"
 
 class MainScene : public Scene
 {
@@ -25,6 +26,8 @@ public:
 
         m_world_partitons[0]->setPortal(portal1);
         m_world_partitons[1]->setPortal(portal2);
+
+        crosshair_texture = new Texture(window.getSDLRenderer(), assets.images.crosshair.surface);
     }
     ~MainScene() override
     {
@@ -64,4 +67,5 @@ private:
     std::vector<World *> m_world_partitons;
     Particle::Preset m_preset;
     BoundingBox m_update_bb;
+    Texture *crosshair_texture = nullptr;
 };

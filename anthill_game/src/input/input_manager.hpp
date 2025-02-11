@@ -20,6 +20,8 @@ enum class IButtonID
     Action3,
     Action4,
 
+    Fullscreen,
+
     Debug1,
     Debug2,
     Debug3,
@@ -48,24 +50,33 @@ public:
 
     IButton &button(IButtonID id) { return m_buttons[id]; }
 
+    bool isGamepadMode() const { return m_gamepad_mode; }
+
     void updateMouse(unsigned int window_width, unsigned int window_height, unsigned int window_scale);
     Vec2<int> getMousePos() const { return m_mouse_pos; }
+
+    Vec2<int> getJoystickPosRaw() const { return m_gamepad_pos; }
+    Vec2<float> getJoystickPos() const;
 
 private:
     void assign_gamepad(int id);
     void remove_gamepad(int id);
 
-    void init_buttons();
+    void update_gamepad();
+    void poll_gamepad(int value, int axis);
 
+    void init_buttons();
 
     void add_button(IButtonID id, IButton button);
 
 private:
     Vec2<int> m_mouse_pos;
+    Vec2<int> m_gamepad_pos;
 
     std::unordered_map<IButtonID, IButton> m_buttons;
 
-    const int m_max_gamepads = 100;
     std::unordered_map<int, SDL_Gamepad *> m_gamepads;
     bool m_gamepad_mode = false;
+    int current_gamepad = -1;
+    const int m_gamepad_deadzone = 12000;
 };

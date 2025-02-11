@@ -2,17 +2,25 @@
 
 void MainScene::handle_input()
 {
-    if (window.input().button(IButtonID::Left).down())
+
+    Vec2<float> co = window.input().getJoystickPos();
+
+    if (window.input().button(IButtonID::Left).down() || co.x <= -0.5f)
     {
         m_player.move(-2 * DT, 0);
     }
-    if (window.input().button(IButtonID::Right).down())
+    if (window.input().button(IButtonID::Right).down() || co.x >= 0.5f)
     {
         m_player.move(2 * DT, 0);
     }
     if (window.input().button(IButtonID::Action1).pressed())
     {
         m_player.jump();
+    }
+
+    if (window.input().button(IButtonID::Fullscreen).pressed())
+    {
+        window.setFullscreen(!window.isFullscreen());
     }
 
     if (window.input().button(IButtonID::Debug1).pressed())

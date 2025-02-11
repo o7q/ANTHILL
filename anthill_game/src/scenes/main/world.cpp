@@ -50,5 +50,5 @@ void MainScene::handle_world()
 
     max_level = level;
 
-    Log::log(Log::Type::Info, "MainScene", "User entered level: " + std::to_string(level));
+    Log::log(Log::Type::Info, "MainScene", "User level index: " + std::to_string(level));
 }

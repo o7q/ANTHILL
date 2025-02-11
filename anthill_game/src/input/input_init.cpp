@@ -44,6 +44,10 @@ void InputManager::init_buttons()
     action2.assignGamepadButton(SDL_GAMEPAD_BUTTON_WEST);
     add_button(IButtonID::Action2, action2);
 
+    IButton fullscreen;
+    fullscreen.assignKey(SDLK_F11);
+    add_button(IButtonID::Fullscreen, fullscreen);
+
     IButton debug1;
     debug1.assignKey(SDLK_1);
     add_button(IButtonID::Debug1, debug1);
