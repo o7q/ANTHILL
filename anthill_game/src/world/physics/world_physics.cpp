@@ -84,20 +84,35 @@ void WorldPhysics::update_particle(int x, int y)
 
 void WorldPhysics::p_set(int x, int y, Particle particle)
 {
+    if (!in_bounds(x, y))
+    {
+        return;
+    }
+
+    if (y >= m_size.y)
+    {
+        return m_physics_portal->p_set(x, 0, particle);
+    }
+
+    if (y < 0)
+    {
+        return m_physics_portal->p_set(x, m_physics_portal->m_size.y - 1, particle);
+    }
+
     m_particles[y][x] = particle;
     m_world_texture->setPixel(x, y, particle.color.hex());
 }
 
 void WorldPhysics::p_swap(int x1, int y1, int x2, int y2)
 {
-    Particle temp = m_particles[y2][x2];
+    Particle temp = p_get(x2, y2);
     p_set(x2, y2, m_particles[y1][x1]);
     p_set(x1, y1, temp);
 }
 
 void WorldPhysics::p_move(int x1, int y1, int x2, int y2)
 {
-    Particle temp = m_particles[y1][x1];
+    Particle temp = p_get(x1, y1);
     p_set(x2, y2, temp);
     p_set(x1, y1, Particle());
 }
@@ -112,10 +127,27 @@ Color WorldPhysics::p_mix(Color a, Color b, float mult_a, float mult_b, float di
 
 Particle WorldPhysics::p_get(int x, int y)
 {
+    if (!in_bounds(x, y))
+    {
+        return Particle();
+    }
+
+    if (y >= m_size.y)
+    {
+        return m_physics_portal->p_get(x, 0);
+    }
+
+    if (y < 0)
+    {
+        return m_physics_portal->p_get(x, m_physics_portal->m_size.y - 1);
+    }
+
     return m_particles[y][x];
 }
 
 bool WorldPhysics::in_bounds(int x, int y)
 {
-    return x >= 0 && x < m_size.x && y >= 0 && y < m_size.y;
+    bool x_in_bound = x >= 0 && x < m_size.x;
+    bool y_in_bound =(y >= 0 && y < m_size.y) || (m_physics_portal != nullptr);
+    return x_in_bound && y_in_bound;
 }

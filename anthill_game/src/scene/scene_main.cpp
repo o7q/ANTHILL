@@ -76,7 +76,7 @@ SceneID MainScene::run()
         {
             for (World *world : m_world_partitons)
             {
-                world->drawParticles(transformed_mousePos.x, transformed_mousePos.y, 15, Particle(m_preset), World::DrawShape::Square);
+                world->drawParticles(transformed_mousePos.x, transformed_mousePos.y, 15, Particle(m_preset), World::DrawShape::Circle);
             }
         }
 
@@ -94,7 +94,7 @@ SceneID MainScene::run()
             world->update();
         }
 
-        m_player.update();
+        // m_player.update();
 
         m_camera.setGoal(playerpos.x, playerpos.y);
         m_camera.update(dt);
@@ -103,10 +103,10 @@ SceneID MainScene::run()
         {
             window.render().renderTexture(world->getWorldTexture(), &m_camera);
 
-            for (const Segment &segment : world->getWorldHitbox())
-            {
-                window.render().debug_renderSegment(segment, Color(255, 60, 60, 255), &m_camera);
-            }
+            // for (const Segment &segment : world->getWorldHitbox())
+            // {
+            //     window.render().debug_renderSegment(segment, Color(255, 60, 60, 255), &m_camera);
+            // }
         }
 
         window.render().debug_renderBoundingBox(m_player.getBoundingBox(), Color(0, 255, 100, 255), &m_camera);

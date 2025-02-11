@@ -15,10 +15,13 @@ public:
         m_player.setPosition(0, -50);
         m_player.setBoundsSize(8, 25);
 
-        m_world_partitons.push_back(new World(window.getSDLRenderer(), 128, 128));
-        m_world_partitons.push_back(new World(window.getSDLRenderer(), 128, 128));
+        m_world_partitons.push_back(new World(window.getSDLRenderer(), 220, 100));
+        m_world_partitons.push_back(new World(window.getSDLRenderer(), 220, 100));
 
-        m_world_partitons[1]->move(-200, -200);
+        m_world_partitons[1]->move(-200, 0);
+
+        m_world_partitons[0]->setPortal(m_world_partitons[1], 0);
+        m_world_partitons[1]->setPortal(m_world_partitons[0], 1);
     }
     ~MainScene() override
     {

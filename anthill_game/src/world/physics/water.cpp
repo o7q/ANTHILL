@@ -12,9 +12,9 @@ void WorldPhysics::update_water(Particle particle, int x, int y)
     // function to mix liquids together
     auto mixLiquid = [&](int _x, int _y)
     {
-        if (m_particles[_y][_x].p_state == Particle::PState::Liquid)
+        if (p_get(_x, _y).p_state == Particle::PState::Liquid)
         {
-            Particle p_to_mix = m_particles[_y][_x];
+            Particle p_to_mix = p_get(_x, _y);
 
             Color mixed_color = p_mix(p_orig.color, p_to_mix.color, 1.0f, 1.0f, 2.0f, true);
             Color mixed_mix_color = p_mix(p_orig.mix_color, p_to_mix.mix_color, 1.0f, 1.0f, 2.0f, true);
@@ -60,11 +60,11 @@ void WorldPhysics::update_water(Particle particle, int x, int y)
     if (in_bounds(x, y + 1) && should_be_absorbed)
     {
         // should the liquid be absorbed by a sand particle?
-        if (m_particles[y + 1][x].p_mode == Particle::PMode::Sand && m_particles[y + 1][x].f_value1 < 1.0f)
+        if (p_get(x, y + 1).p_mode == Particle::PMode::Sand && p_get(x, y + 1).f_value1 < 1.0f)
         {
             p_set(x, y, Particle());
 
-            Particle p_below = m_particles[y + 1][x];
+            Particle p_below = p_get(x, y + 1);
 
             Color color = p_mix(p_orig.mix_color, p_below.color, 5.0f, 1.0f, 6.0f);
             p_below.color = color;
@@ -78,7 +78,7 @@ void WorldPhysics::update_water(Particle particle, int x, int y)
 
     if (in_bounds(x, y + 1) && !moved)
     {
-        if (m_particles[y + 1][x].isLiquidPassable())
+        if (p_get(x, y + 1).isLiquidPassable())
         {
             p_move(x, y, x, y + 1);
             moved = true;
@@ -87,7 +87,7 @@ void WorldPhysics::update_water(Particle particle, int x, int y)
 
     if (in_bounds(x - 1, y) && !moved)
     {
-        if (m_particles[y][x - 1].isLiquidPassable())
+        if (p_get(x - 1, y).isLiquidPassable())
         {
             p_move(x, y, x - 1, y);
             moved = true;
@@ -96,7 +96,7 @@ void WorldPhysics::update_water(Particle particle, int x, int y)
 
     if (in_bounds(x + 1, y) && !moved)
     {
-        if (m_particles[y][x + 1].isLiquidPassable())
+        if (p_get(x + 1, y).isLiquidPassable())
         {
             p_move(x, y, x + 1, y);
             moved = true;

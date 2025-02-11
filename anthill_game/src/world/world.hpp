@@ -15,6 +15,7 @@
 class World
 {
 public:
+public:
     enum class DrawShape
     {
         Circle,
@@ -40,6 +41,20 @@ public:
         m_world_texture.setPosition(x, y);
     }
 
+    void setPortal(World *portal, int index)
+    {
+        if (portal->getSize() != m_size || portal == nullptr)
+        {
+            return;
+        }
+
+        m_world_physics->set_physics_portal(portal->m_world_physics, index);
+    }
+
+    void clearPortal()
+    {
+    }
+
     void setParticle(int x, int y, Particle particle, bool is_global_coordinate = true);
     void drawParticles(int loc_x, int loc_y, int radius, const Particle particle, DrawShape drawShape = DrawShape::Circle, bool is_global_coordinate = true);
 
@@ -55,11 +70,11 @@ private:
     Vec2<int> m_position;
 
     Particle **m_particles = nullptr;
+    WorldPhysics *m_world_physics = nullptr;
     std::vector<Segment> m_world_hitbox;
     Texture m_world_texture;
-    WorldPhysics m_world_physics;
 
-    const int update_speed = 2;
+    const int update_speed = 1;
 
     Vec2<int> m_size;
 };

@@ -10,7 +10,7 @@ void WorldPhysics::update_smoke(Particle particle, int x, int y)
 
     auto move = [&](int _x, int _y)
     {
-        if (m_particles[_y][_x].isAir())
+        if (p_get(_x, _y).isAir())
         {
             p_swap(x, y, _x, _y);
             moved = true;

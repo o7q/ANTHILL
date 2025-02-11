@@ -23,12 +23,18 @@ World::World(SDL_Renderer *renderer,
         }
     }
 
-    m_world_physics.init(m_particles, &m_world_texture, m_size.x, m_size.y);
+    m_world_physics = new WorldPhysics(m_particles, &m_world_texture, m_size.x, m_size.y);
     m_world_texture.setOrigin(0, 0);
+    m_world_texture.update();
 }
 
 World::~World()
 {
+    if (m_world_physics != nullptr)
+    {
+        delete m_world_physics;
+    }
+
     for (int y = 0; y < m_size.y; ++y)
     {
         if (m_particles[y] != nullptr)
@@ -56,7 +62,7 @@ void World::update(BoundingBox *box)
 
     for (int i = 0; i < update_speed; ++i)
     {
-        m_world_physics.update_particles(&locked_bb);
+        m_world_physics->update_particles(&locked_bb);
     }
 
     generate_world_hitbox(&locked_bb);

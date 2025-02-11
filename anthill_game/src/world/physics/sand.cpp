@@ -12,7 +12,7 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
 
     auto move = [&](int _x, int _y)
     {
-        if (!m_particles[_y][_x].isSolidPassable())
+        if (!p_get(_x, _y).isSolidPassable())
         {
             return;
         }
@@ -44,7 +44,7 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
 
         if (will_collide_with_liquid)
         {
-            Color liquid_mix_color = m_particles[_y][_x].mix_color;
+            Color liquid_mix_color = p_get(_x, _y).mix_color;
             p_mod.color = p_mix(p_mod.color, liquid_mix_color, 1.0f, 3.0f, 4.0f, false);
             p_mod.f_value1 = 1.0f;
         }
@@ -58,9 +58,9 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
     // i don't fully know how this works, but it does >:3
     auto transferMoisture = [&](int _x, int _y)
     {
-        if (p_orig.f_value1 > 0.0f && m_particles[_y][_x].p_mode == Particle::PMode::Sand)
+        if (p_orig.f_value1 > 0.0f && p_get(_x, _y).p_mode == Particle::PMode::Sand)
         {
-            Particle p_mod = m_particles[_y][_x];
+            Particle p_mod = p_get(_x, _y);
             p_mod.f_value1 = std::fabs((p_orig.f_value1 - p_mod.f_value1)) / 2.0f;
             p_mod.color = p_mix(p_orig.color, p_mod.color, 1.0f, 1.0f, 2.0f, false);
             p_set(_x, _y, p_mod);
@@ -71,9 +71,9 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
     bool should_damp_particle_outgas = Random::genInt(0, 250) == 0;
     if (in_bounds(x, y - 1) && should_damp_particle_outgas)
     {
-        if (m_particles[y - 1][x].p_mode == Particle::PMode::Water && m_particles[y][x].f_value1 > 0.9f)
+        if (p_get(x, y - 1).p_mode == Particle::PMode::Water && p_get(x, y).f_value1 > 0.9f)
         {
-            Particle p_mod = m_particles[y - 1][x];
+            Particle p_mod = p_get(x, y - 1);
 
             p_mod.color = p_mix(p_orig.color, p_mod.color);
 
@@ -81,9 +81,9 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
         }
     }
 
-    bool bleed_down = Random::genInt(0, 500) == 0;
-    bool bleed_side = Random::genInt(0, 1000) == 0;
-    bool bleed_up = Random::genInt(0, 1500) == 0;
+    bool bleed_down = Random::genInt(0, 100) == 0;
+    bool bleed_side = Random::genInt(0, 250) == 0;
+    bool bleed_up = Random::genInt(0, 300) == 0;
 
     if (in_bounds(x, y + 1) && bleed_down)
     {
