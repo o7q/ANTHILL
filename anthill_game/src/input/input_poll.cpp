@@ -47,6 +47,7 @@ void InputManager::poll(SDL_Event event)
         // GAMEPAD BUTTONS
     case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
         poll_buttons(event.gbutton.button, IButton::PollType::Controller, true);
+        m_active_gamepad = event.gdevice.which;
         if (!m_gamepad_mode)
         {
             m_gamepad_mode = true;
@@ -69,7 +70,7 @@ void InputManager::poll(SDL_Event event)
         break;
 
     case SDL_EVENT_JOYSTICK_REMOVED:
-        remove_gamepad(event.gdevice.which);
+        remove_gamepad(event.gdevice.which, true);
         break;
         //
     }

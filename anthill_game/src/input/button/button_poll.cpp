@@ -1,7 +1,5 @@
 #include "button.hpp"
 
-#include <iostream>
-
 void IButton::poll(int generic_button, PollType poll_type, bool down)
 {
     switch (poll_type)

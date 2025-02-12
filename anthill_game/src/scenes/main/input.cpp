@@ -16,6 +16,7 @@ void MainScene::handle_input()
     if (window.input().button(IButtonID::Action1).pressed())
     {
         m_player.jump();
+        window.input().rumbleGamepad(30000, 30000, 100);
     }
 
     if (window.input().button(IButtonID::Fullscreen).pressed())

@@ -58,9 +58,11 @@ public:
     Vec2<int> getJoystickPosRaw() const { return m_gamepad_pos; }
     Vec2<float> getJoystickPos() const;
 
+    void rumbleGamepad(Uint16 low_frequency, Uint16 high_frequency, Uint32 duration);
+
 private:
     void assign_gamepad(int id);
-    void remove_gamepad(int id);
+    void remove_gamepad(int id, bool erase_from_map);
 
     void update_gamepad();
     void poll_gamepad(int value, int axis);
@@ -77,6 +79,6 @@ private:
 
     std::unordered_map<int, SDL_Gamepad *> m_gamepads;
     bool m_gamepad_mode = false;
-    int current_gamepad = -1;
+    int m_active_gamepad = -1;
     const int m_gamepad_deadzone = 12000;
 };

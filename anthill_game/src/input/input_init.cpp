@@ -8,8 +8,10 @@ InputManager::~InputManager()
 {
     for (auto &gamepad : m_gamepads)
     {
-        remove_gamepad(gamepad.first);
+        remove_gamepad(gamepad.first, false);
     }
+
+    m_gamepads.clear();
 }
 
 void InputManager::init_buttons()

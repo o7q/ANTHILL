@@ -2,7 +2,6 @@
 
 #include <string>
 #include <cmath>
-#include <iostream>
 
 #include "../logger/logger.hpp"
 
@@ -17,6 +16,16 @@ Vec2<float> InputManager::getJoystickPos() const
     const float y_div = get_div(m_gamepad_pos.y);
 
     return Vec2<float>(m_gamepad_pos.x / x_div, m_gamepad_pos.y / y_div);
+}
+
+void InputManager::rumbleGamepad(Uint16 low_frequency, Uint16 high_frequency, Uint32 duration)
+{
+    if (m_active_gamepad == -1)
+    {
+        return;
+    }
+
+    SDL_RumbleGamepad(m_gamepads[m_active_gamepad], low_frequency, high_frequency, duration);
 }
 
 void InputManager::update_gamepad()
@@ -62,14 +71,14 @@ void InputManager::assign_gamepad(int id)
     SDL_Gamepad *gamepad = SDL_OpenGamepad(id);
     m_gamepads[id] = gamepad;
 
-    current_gamepad = id;
+    m_active_gamepad = id;
 
     std::string gamepad_name = SDL_GetGamepadName(gamepad);
     Log::log(Log::Type::Info, "InputManager", "Assigned gamepad: [" + std::to_string(id) + "] " + gamepad_name);
     Log::log(Log::Type::Info, "InputManager", "Gamepads connected: " + std::to_string(m_gamepads.size()));
 }
 
-void InputManager::remove_gamepad(int id)
+void InputManager::remove_gamepad(int id, bool erase_from_map)
 {
     bool gamepad_assigned = m_gamepads.find(id) != m_gamepads.end();
     if (!gamepad_assigned)
@@ -83,7 +92,13 @@ void InputManager::remove_gamepad(int id)
     std::string gamepad_name = p_gamepad_name ? p_gamepad_name : "Unknown gamepad";
 
     SDL_CloseGamepad(gamepad);
-    m_gamepads.erase(id);
+
+    if (erase_from_map)
+    {
+        m_gamepads.erase(id);
+    }
+
+    m_active_gamepad = -1;
 
     Log::log(Log::Type::Info, "InputManager", "Removed gamepad: [" + std::to_string(id) + "] " + gamepad_name);
     Log::log(Log::Type::Info, "InputManager", "Gamepads left: " + std::to_string(m_gamepads.size()));
