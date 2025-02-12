@@ -7,11 +7,11 @@ void MainScene::handle_input()
 
     if (window.input().button(IButtonID::Left).down() || co.x <= -0.5f)
     {
-        m_player.move(-2 * DT, 0);
+        m_player.move(-3 * DT, 0);
     }
     if (window.input().button(IButtonID::Right).down() || co.x >= 0.5f)
     {
-        m_player.move(2 * DT, 0);
+        m_player.move(3 * DT, 0);
     }
     if (window.input().button(IButtonID::Action1).pressed())
     {

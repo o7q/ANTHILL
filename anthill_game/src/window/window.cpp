@@ -25,6 +25,8 @@ Window::~Window()
         SDL_DestroyRenderer(m_renderer);
     if (m_window != nullptr)
         SDL_DestroyWindow(m_window);
+    if (m_cursor != nullptr)
+        SDL_DestroyCursor(m_cursor);
 }
 
 void Window::update()

@@ -3,8 +3,18 @@
 #include <iostream>
 #include <SDL3/SDL.h>
 
+namespace Log
+{
+    bool enabled = true;
+};
+
 void Log::log(Type logLevel, const std::string &module, const std::string &text, bool showSDLError)
 {
+    if (!enabled)
+    {
+        return;
+    }
+
     std::string error = "";
     switch (logLevel)
     {

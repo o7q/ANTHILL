@@ -12,5 +12,6 @@ namespace Log
         Fatal
     };
 
+    extern bool enabled;
     void log(Type logLevel, const std::string &module, const std::string &text, bool showSDLError = false);
 };

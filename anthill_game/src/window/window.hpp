@@ -37,20 +37,21 @@ public:
     InputManager &input() { return m_input_manager; }
     TimeManager &time() { return m_time_manager; }
 
-    void setFullscreen(bool value)
-    {
-        SDL_SetWindowFullscreen(m_window, value);
-        m_is_fullscreen = value;
-        Log::log(Log::Type::Info, "Window", "Fullscreen: " + std::to_string(value));
-    }
-
+    void setFullscreen(bool value);
     bool isFullscreen() const { return m_is_fullscreen; }
+
+    void showCursor(bool value);
+    void setCursor(SDL_Surface* cursor_surface);
+    void clearCursorImage();
+    bool isCursorVisible() const { return m_cursor_visible; }
+    
 
     SDL_Renderer *getSDLRenderer() const { return m_renderer; }
 
 private:
     SDL_Window *m_window = nullptr;
     SDL_Renderer *m_renderer = nullptr;
+    SDL_Cursor *m_cursor = nullptr;
 
     RenderManager m_render_manager;
     InputManager m_input_manager;
@@ -62,4 +63,5 @@ private:
 
     bool m_closed = false;
     bool m_is_fullscreen = false;
+    bool m_cursor_visible = true;
 };

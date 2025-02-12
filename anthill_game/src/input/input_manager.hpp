@@ -68,7 +68,7 @@ private:
     void update_gamepad();
     void poll_gamepad(int value, int axis);
 
-    std::string get_gamepad_name(SDL_Gamepad* gamepad);
+    std::string get_gamepad_name(SDL_Gamepad *gamepad);
 
     void init_buttons();
 

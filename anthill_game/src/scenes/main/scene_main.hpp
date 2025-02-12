@@ -27,7 +27,7 @@ public:
         m_world_partitons[0]->setPortal(portal1);
         m_world_partitons[1]->setPortal(portal2);
 
-        crosshair_texture = new Texture(window.getSDLRenderer(), assets.images.crosshair.surface);
+        crosshair_texture = new Texture(window.getSDLRenderer(), assets.images.crosshair_1x.getSDLSurface());
     }
     ~MainScene() override
     {
@@ -37,6 +37,11 @@ public:
             {
                 delete world_partition;
             }
+        }
+
+        if (crosshair_texture != nullptr)
+        {
+            delete crosshair_texture;
         }
     }
     SceneID run() override;
@@ -68,4 +73,6 @@ private:
     Particle::Preset m_preset;
     BoundingBox m_update_bb;
     Texture *crosshair_texture = nullptr;
+
+    Vec2<float> aim_position;
 };

@@ -57,7 +57,11 @@ public:
         {
             return;
         }
-        if (portal.world->getSize() != m_size)
+
+        bool horizontal_invalid = portal.world->getSize().x != m_size.x && (portal.up || portal.down);
+        bool vertical_invalid = portal.world->getSize().y != m_size.y && (portal.left || portal.right);
+
+        if (horizontal_invalid || vertical_invalid)
         {
             return;
         }

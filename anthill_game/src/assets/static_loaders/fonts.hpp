@@ -8,7 +8,16 @@ struct Fonts
     {
         void create(const std::string &path, int size)
         {
+            if (font != nullptr)
+            {
+                TTF_CloseFont(font);
+            }
+
             font = TTF_OpenFont(path.c_str(), size);
+            if (font == NULL)
+            {
+                Log::log(Log::Type::Error, "AssetLoader/fonts", "Unable to load font \"" + path + '\"');
+            }
         }
         ~Font()
         {
