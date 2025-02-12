@@ -4,7 +4,7 @@ void RenderManager::debug_renderPoint(int x, int y, Color color, const Camera *c
 {
     if (camera != nullptr)
     {
-        Vec2<int> cam_pos = camera->getPosition();
+        Vec2<int> cam_pos = camera->getPosition().toInt();
         x -= cam_pos.x;
         y -= cam_pos.y;
     }

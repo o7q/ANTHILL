@@ -15,9 +15,9 @@ SceneID MainScene::run()
     {
         handle_input();
 
-        Vec2<int> playerpos = m_player.getPosition().toInt();
+        Vec2<float> playerpos = m_player.getPosition();
 
-        Vec2<int> aim_pos;
+        Vec2<float> aim_pos;
 
         if (window.input().isGamepadMode())
         {
@@ -46,7 +46,7 @@ SceneID MainScene::run()
 
         if (window.input().button(IButtonID::Debug7).pressed())
         {
-            Vec2<int> offset = aim_pos - playerpos;
+            Vec2<float> offset = aim_pos - playerpos;
             m_player.setXVelocity(offset.x / 10.0f);
             m_player.setYVelocity(offset.y / 10.0f);
         }

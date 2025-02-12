@@ -9,8 +9,8 @@ void Entity::setPosition(float x, float y)
 
 void Entity::move(float x, float y)
 {
-    m_position.x = m_position.x + x;
-    m_position.y = m_position.y + y;
+    m_position.x += x;
+    m_position.y += y;
     update_bounding_box();
 }
 

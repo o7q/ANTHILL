@@ -12,7 +12,7 @@ void RenderManager::renderTexture(const Texture &texture, const Camera *camera)
 
     if (camera != nullptr)
     {
-        Vec2<int> cam_pos = camera->getPosition() - Vec2<int>(m_scale, m_scale) / 2.0f;
+        Vec2<float> cam_pos = camera->getPosition() - Vec2<float>(m_scale, m_scale) / 2.0f;
         new_dst_rect.x -= cam_pos.x;
         new_dst_rect.y -= cam_pos.y;
     }

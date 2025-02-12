@@ -17,9 +17,9 @@ public:
     void move(float x, float y);
     void setGoal(float x, float y);
 
-    Vec2<int> transformPoint(float x, float y) const;
+    Vec2<float> transformPoint(float x, float y) const;
 
-    Vec2<int> getPosition() const { return Vec2<int>(m_position.x, m_position.y); }
+    Vec2<float> getPosition() const { return m_position; }
 
 private:
     void update_goal(float dt);

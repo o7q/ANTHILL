@@ -4,8 +4,8 @@ void RenderManager::debug_renderBoundingBox(const BoundingBox &boundingBox, Colo
 {
     SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
 
-    Vec2<int> top_left = boundingBox.getP1();
-    Vec2<int> size = boundingBox.getSize();
+    Vec2<float> top_left = boundingBox.getP1();
+    Vec2<float> size = boundingBox.getSize();
 
     SDL_FRect rect;
     rect.x = top_left.x;
@@ -15,7 +15,7 @@ void RenderManager::debug_renderBoundingBox(const BoundingBox &boundingBox, Colo
 
     if (camera != nullptr)
     {
-        Vec2<int> cam_pos = camera->getPosition() - Vec2<int>(m_scale, m_scale) / 2.0f;
+        Vec2<float> cam_pos = camera->getPosition() - Vec2<float>(m_scale, m_scale) / 2.0f;
         rect.x -= cam_pos.x;
         rect.y -= cam_pos.y;
     }

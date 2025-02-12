@@ -19,14 +19,14 @@ void WorldPhysics::update_particles(BoundingBox *box)
 
     if (box != nullptr)
     {
-        y_start = std::clamp(box->getP4().y, 0, m_size.y - 1);
-        y_end = std::clamp(box->getP1().y, 0, m_size.y - 1);
+        y_start  = std::clamp(box->getP4().toInt().y, 0, m_size.y - 1);
+        y_end    = std::clamp(box->getP1().toInt().y, 0, m_size.y - 1);
 
-        x1_start = std::clamp(box->getP1().x, 0, m_size.x - 1);
-        x1_end = std::clamp(box->getP2().x, 0, m_size.x - 1);
+        x1_start = std::clamp(box->getP1().toInt().x, 0, m_size.x - 1);
+        x1_end   = std::clamp(box->getP2().toInt().x, 0, m_size.x - 1);
 
         x2_start = x1_end;
-        x2_end = x1_start;
+        x2_end   = x1_start;
     }
     else
     {
@@ -43,19 +43,11 @@ void WorldPhysics::update_particles(BoundingBox *box)
     for (int y = y_start; y >= y_end; --y)
     {
         if (Random::genInt(0, 2) == 0)
-        {
             for (int x = x1_start; x < x1_end; ++x)
-            {
                 update_particle(x, y);
-            }
-        }
         else
-        {
             for (int x = x2_start; x >= x2_end; --x)
-            {
                 update_particle(x, y);
-            }
-        }
     }
 }
 
@@ -136,9 +128,9 @@ void WorldPhysics::p_move(int x1, int y1, int x2, int y2)
 
 Color WorldPhysics::p_mix(Color a, Color b, float mult_a, float mult_b, float div, bool mix_alpha)
 {
-    return Color((a.r * mult_a + b.r * mult_b) / div,
-                 (a.g * mult_a + b.g * mult_b) / div,
-                 (a.b * mult_a + b.b * mult_b) / div,
+    return Color(            (a.r * mult_a + b.r * mult_b) / div,
+                             (a.g * mult_a + b.g * mult_b) / div,
+                             (a.b * mult_a + b.b * mult_b) / div,
                  mix_alpha ? (a.a * mult_a + b.a * mult_b) / div : a.a);
 }
 
@@ -182,9 +174,9 @@ bool WorldPhysics::in_bounds(int x, int y)
 {
     bool portal_assigned = m_physics_portal != nullptr;
 
-    bool y_can_up = (y >= 0) || (portal_assigned && m_portal_up);
-    bool y_can_down = (y < m_size.y) || (portal_assigned && m_portal_down);
-    bool x_can_left = (x >= 0) || (portal_assigned && m_portal_left);
+    bool y_can_up    = (y >= 0)       || (portal_assigned && m_portal_up);
+    bool y_can_down  = (y < m_size.y) || (portal_assigned && m_portal_down);
+    bool x_can_left  = (x >= 0)       || (portal_assigned && m_portal_left);
     bool x_can_right = (x < m_size.x) || (portal_assigned && m_portal_right);
 
     return y_can_up && y_can_down && x_can_left && x_can_right;

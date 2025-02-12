@@ -74,12 +74,12 @@ World::~World()
 
 void World::update(BoundingBox *box)
 {
-    BoundingBox locked_bb(m_size.x / 2, m_size.y / 2, m_size.x, m_size.y);
+    BoundingBox locked_bb(m_size.x / 2.0f, m_size.y / 2.0f, m_size.x, m_size.y);
 
     if (box != nullptr)
     {
-        Vec2<int> pos = box->getPosition() - m_position;
-        Vec2<int> size = box->getSize();
+        Vec2<int> pos = box->getPosition().toInt() - m_position;
+        Vec2<int> size = box->getSize().toInt();
         locked_bb.setPosition(pos.x, pos.y);
         locked_bb.setSize(size.x, size.y);
     }

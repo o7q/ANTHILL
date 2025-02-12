@@ -4,8 +4,9 @@
 
 bool Entity::check_ground(int y_scan)
 {
-    Vec2<int> m_bb_pos = m_bounding_box.getPosition();
-    Vec2<int> m_bb_size = m_bounding_box.getSize();
+    Vec2<int> m_bb_pos = m_bounding_box.getPosition().toInt();
+    Vec2<int> m_bb_size = m_bounding_box.getSize().toInt();
+    
     for (int y = 0; y < y_scan; ++y)
     {
         for (int x = 0; x < m_bb_size.x; ++x)
