@@ -56,14 +56,18 @@ void InputManager::poll_gamepad(int value, int axis)
     }
 }
 
+std::string InputManager::get_gamepad_name(SDL_Gamepad *gamepad)
+{
+    const char *p_gamepad_name = SDL_GetGamepadName(gamepad);
+    return p_gamepad_name ? p_gamepad_name : "Unknown gamepad";
+}
+
 void InputManager::assign_gamepad(int id)
 {
     bool gamepad_assigned = m_gamepads.find(id) != m_gamepads.end();
     if (gamepad_assigned)
     {
-        const char *p_gamepad_name = SDL_GetGamepadName(m_gamepads[id]);
-        std::string gamepad_name = p_gamepad_name ? p_gamepad_name : "Unknown gamepad";
-        Log::log(Log::Type::Warn, "InputManager", "Gamepad: [" + std::to_string(id) + "] already assigned");
+        Log::log(Log::Type::Warn, "InputManager", "Gamepad: [" + std::to_string(id) + "] " + get_gamepad_name(m_gamepads[id]) + " - already assigned");
 
         return;
     }
@@ -73,8 +77,7 @@ void InputManager::assign_gamepad(int id)
 
     m_active_gamepad = id;
 
-    std::string gamepad_name = SDL_GetGamepadName(gamepad);
-    Log::log(Log::Type::Info, "InputManager", "Assigned gamepad: [" + std::to_string(id) + "] " + gamepad_name);
+    Log::log(Log::Type::Info, "InputManager", "Assigned gamepad: [" + std::to_string(id) + "] " + get_gamepad_name(gamepad));
     Log::log(Log::Type::Info, "InputManager", "Gamepads connected: " + std::to_string(m_gamepads.size()));
 }
 
@@ -88,8 +91,7 @@ void InputManager::remove_gamepad(int id, bool erase_from_map)
     }
 
     SDL_Gamepad *gamepad = m_gamepads[id];
-    const char *p_gamepad_name = SDL_GetGamepadName(gamepad);
-    std::string gamepad_name = p_gamepad_name ? p_gamepad_name : "Unknown gamepad";
+    std::string gamepad_name = get_gamepad_name(gamepad);
 
     SDL_CloseGamepad(gamepad);
 

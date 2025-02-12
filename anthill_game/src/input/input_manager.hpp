@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <vector>
 #include <unordered_map>
 
@@ -66,6 +67,8 @@ private:
 
     void update_gamepad();
     void poll_gamepad(int value, int axis);
+
+    std::string get_gamepad_name(SDL_Gamepad* gamepad);
 
     void init_buttons();
 
