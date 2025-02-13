@@ -25,8 +25,8 @@ public:
 
     void update();
 
-    void clear();
-    void display();
+    void start();
+    void end();
 
     bool isOpen() const { return !m_closed; }
 
@@ -41,10 +41,9 @@ public:
     bool isFullscreen() const { return m_is_fullscreen; }
 
     void showCursor(bool value);
-    void setCursor(SDL_Surface* cursor_surface);
+    void setCursor(SDL_Surface *cursor_surface);
     void clearCursorImage();
     bool isCursorVisible() const { return m_cursor_visible; }
-    
 
     SDL_Renderer *getSDLRenderer() const { return m_renderer; }
 

@@ -2,26 +2,17 @@
 
 #include "math/random.hpp"
 
-Game::Game() : window("ANTHILL", 512, 512, 320)
+Game::Game() : m_window("ANTHILL", 512, 512, 320), m_scene_manager(m_window, m_assets)
 {
     Random::seed();
-    window.time().setTargetFramerate(144);
+    m_window.time().setTargetFramerate(144);
 
-    while (window.isOpen())
+    while (m_window.isOpen())
     {
-        window.time().frameStart();
-        window.update();
+        m_window.start();
 
-        window.clear();
-        update_scene();
-        window.display();
+        m_scene_manager.update();
 
-        window.time().frameEnd();
-        window.time().delay();
-    }
-
-    if (scene != nullptr)
-    {
-        delete scene;
+        m_window.end();
     }
 }

@@ -10,8 +10,8 @@ class Texture
 {
 public:
     Texture(SDL_Renderer *renderer, const std::string &path);
-    Texture(SDL_Renderer *renderer, SDL_Surface* surface);
-    Texture(SDL_Renderer *renderer, unsigned int width, unsigned int height);
+    Texture(SDL_Renderer *renderer, SDL_Surface *surface);
+    Texture(SDL_Renderer *renderer, int width, int height);
 
     ~Texture();
 

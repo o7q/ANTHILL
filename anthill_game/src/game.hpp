@@ -2,9 +2,9 @@
 
 #include <SDL3/SDL.h>
 
+#include "scene_manager/scene_manager.hpp"
+
 #include "window/window.hpp"
-#include "scene/scene.hpp"
-#include "scenes/main/scene_main.hpp"
 #include "assets/assets.hpp"
 
 class Game
@@ -13,12 +13,8 @@ public:
     Game();
 
 private:
-    void update_scene();
-    void create_current_scene();
+    Window m_window;
+    Assets m_assets;
 
-    Window window;
-    Assets assets;
-
-    Scene *scene = nullptr;
-    SceneID current_scene = SceneID::Main;
+    SceneManager m_scene_manager;
 };

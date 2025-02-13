@@ -54,12 +54,12 @@ Texture::Texture(SDL_Renderer *renderer, SDL_Surface *surface)
     update_sdl_transforms();
 }
 
-Texture::Texture(SDL_Renderer *renderer, unsigned int width, unsigned int height)
+Texture::Texture(SDL_Renderer *renderer, int width, int height)
 {
     m_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, width, height);
 
     m_pixels = new Uint32[width * height];
-    for (unsigned int i = 0; i < width * height; ++i)
+    for (int i = 0; i < width * height; ++i)
         m_pixels[i] = 0xFFFFFFFF;
 
     SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
@@ -77,9 +77,15 @@ Texture::Texture(SDL_Renderer *renderer, unsigned int width, unsigned int height
 Texture::~Texture()
 {
     if (m_texture != nullptr)
+    {
         SDL_DestroyTexture(m_texture);
+        m_texture = nullptr;
+    }
     if (m_pixels != nullptr)
+    {
         delete[] m_pixels;
+        m_pixels = nullptr;
+    }
 }
 
 void Texture::setPosition(int x, int y)

@@ -29,6 +29,22 @@ Window::~Window()
         SDL_DestroyCursor(m_cursor);
 }
 
+void Window::start()
+{
+    m_time_manager.frameStart();
+
+    update();
+    SDL_RenderClear(m_renderer);
+}
+
+void Window::end()
+{
+    SDL_RenderPresent(m_renderer);
+
+    m_time_manager.frameEnd();
+    m_time_manager.delay();
+}
+
 void Window::update()
 {
     SDL_GetWindowSize(m_window, &m_window_size.x, &m_window_size.y);
@@ -53,14 +69,4 @@ void Window::update()
 
     // update internal mouse state
     m_input_manager.updateMouse(m_window_size.x, m_window_size.y, m_scale);
-}
-
-void Window::clear()
-{
-    SDL_RenderClear(m_renderer);
-}
-
-void Window::display()
-{
-    SDL_RenderPresent(m_renderer);
 }

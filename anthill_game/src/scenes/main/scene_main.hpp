@@ -12,7 +12,6 @@ public:
                                                 m_player(window, m_world_partitons),
                                                 m_camera(window.getScale(), window.getScale())
     {
-
         m_player.setPosition(0, -50);
         m_player.setBoundsSize(8, 25);
 
