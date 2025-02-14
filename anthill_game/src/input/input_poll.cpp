@@ -1,6 +1,7 @@
 #include "input_manager.hpp"
 
 #include <SDL3/SDL.h>
+#include <iostream>
 
 #include "../logger/logger.hpp"
 

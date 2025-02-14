@@ -19,7 +19,7 @@ SceneID MainScene::run()
         Vec2<float> playerpos = m_player.getPosition();
         if (window.input().isGamepadMode())
         {
-            Vec2<float> joystick_pos = window.input().getJoystickPos();
+            Vec2<float> joystick_pos = window.input().getJoystickPos(1);
             aim_position.x = playerpos.x + joystick_pos.x * 20;
             aim_position.y = playerpos.y + joystick_pos.y * 20;
         }

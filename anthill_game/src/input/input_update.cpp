@@ -7,5 +7,6 @@ void InputManager::update()
         button.second.update();
     }
 
-    update_gamepad();
+    update_joystick(0);
+    update_joystick(1);
 }

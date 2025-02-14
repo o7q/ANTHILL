@@ -56,8 +56,7 @@ public:
     void updateMouse(unsigned int window_width, unsigned int window_height, unsigned int window_scale);
     Vec2<int> getMousePos() const { return m_mouse_pos; }
 
-    Vec2<int> getJoystickPosRaw() const { return m_gamepad_pos; }
-    Vec2<float> getJoystickPos() const;
+    Vec2<float> getJoystickPos(int index) const;
 
     void rumbleGamepad(Uint16 low_frequency, Uint16 high_frequency, Uint32 duration);
 
@@ -65,7 +64,7 @@ private:
     void assign_gamepad(int id);
     void remove_gamepad(int id, bool erase_from_map);
 
-    void update_gamepad();
+    void update_joystick(int index);
     void poll_gamepad(int value, int axis);
 
     std::string get_gamepad_name(SDL_Gamepad *gamepad);
@@ -76,7 +75,8 @@ private:
 
 private:
     Vec2<int> m_mouse_pos;
-    Vec2<int> m_gamepad_pos;
+    Vec2<int> m_left_joystick_pos;
+    Vec2<int> m_right_joystick_pos;
 
     std::unordered_map<IButtonID, IButton> m_buttons;
 

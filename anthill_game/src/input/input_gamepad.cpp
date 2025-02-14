@@ -5,17 +5,19 @@
 
 #include "../logger/logger.hpp"
 
-Vec2<float> InputManager::getJoystickPos() const
+Vec2<float> InputManager::getJoystickPos(int index) const
 {
+    Vec2<int> joystick_pos = index == 0 ? m_left_joystick_pos : m_right_joystick_pos;
+
     auto get_div = [&](int value)
     {
         return value < 0 ? 32768 : 32767;
     };
 
-    const float x_div = get_div(m_gamepad_pos.x);
-    const float y_div = get_div(m_gamepad_pos.y);
+    const float x_div = get_div(joystick_pos.x);
+    const float y_div = get_div(joystick_pos.y);
 
-    return Vec2<float>(m_gamepad_pos.x / x_div, m_gamepad_pos.y / y_div);
+    return Vec2<float>(joystick_pos.x / x_div, joystick_pos.y / y_div);
 }
 
 void InputManager::rumbleGamepad(Uint16 low_frequency, Uint16 high_frequency, Uint32 duration)
@@ -28,13 +30,15 @@ void InputManager::rumbleGamepad(Uint16 low_frequency, Uint16 high_frequency, Ui
     SDL_RumbleGamepad(m_gamepads[m_active_gamepad], low_frequency, high_frequency, duration);
 }
 
-void InputManager::update_gamepad()
+void InputManager::update_joystick(int index)
 {
-    if (std::abs(m_gamepad_pos.x) <= m_gamepad_deadzone &&
-        std::abs(m_gamepad_pos.y) <= m_gamepad_deadzone)
+    Vec2<int> joystick_pos = index == 0 ? m_left_joystick_pos : m_right_joystick_pos;
+
+    if (std::abs(joystick_pos.x) <= m_gamepad_deadzone &&
+        std::abs(joystick_pos.y) <= m_gamepad_deadzone)
     {
-        m_gamepad_pos.x = 0;
-        m_gamepad_pos.y = 0;
+        joystick_pos.x = 0;
+        joystick_pos.y = 0;
     }
     else if (!m_gamepad_mode)
     {
@@ -47,11 +51,17 @@ void InputManager::poll_gamepad(int value, int axis)
 {
     switch (axis)
     {
-    case 0:
-        m_gamepad_pos.x = value;
+    case SDL_GAMEPAD_AXIS_LEFTX:
+        m_left_joystick_pos.x = value;
         break;
-    case 1:
-        m_gamepad_pos.y = value;
+    case SDL_GAMEPAD_AXIS_LEFTY:
+        m_left_joystick_pos.y = value;
+        break;
+    case SDL_GAMEPAD_AXIS_RIGHTX:
+        m_right_joystick_pos.x = value;
+        break;
+    case SDL_GAMEPAD_AXIS_RIGHTY:
+        m_right_joystick_pos.y = value;
         break;
     }
 }

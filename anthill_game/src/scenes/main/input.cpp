@@ -3,7 +3,7 @@
 void MainScene::handle_input()
 {
 
-    Vec2<float> co = window.input().getJoystickPos();
+    Vec2<float> co = window.input().getJoystickPos(0);
 
     if (window.input().button(IButtonID::Left).down() || co.x <= -0.5f)
     {
