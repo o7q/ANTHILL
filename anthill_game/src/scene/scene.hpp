@@ -2,7 +2,7 @@
 
 #include "scene_id.hpp"
 
-#include "../window/window.hpp"
+#include "../engine/window/window.hpp"
 #include "../assets/assets.hpp"
 
 class Scene

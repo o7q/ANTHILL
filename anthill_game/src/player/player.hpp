@@ -1,7 +1,8 @@
 #pragma once
 
 #include "../entity/entity.hpp"
-#include "../window/window.hpp"
+
+#include "../engine/window/window.hpp"
 
 class Player : public Entity
 {

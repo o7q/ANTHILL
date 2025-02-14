@@ -1,10 +1,9 @@
 #pragma once
 
-#include "../particle/particle.hpp"
-#include "../../texture/texture.hpp"
-#include "../../math/bounding_box.hpp"
+#include "../../engine/math/bounding_box.hpp"
+#include "../../engine/texture/texture.hpp"
 
-#include <iostream>
+#include "../particle/particle.hpp"
 
 class WorldPhysics
 {

@@ -4,7 +4,7 @@
 
 #include "scene/scene_manager.hpp"
 
-#include "window/window.hpp"
+#include "engine/window/window.hpp"
 #include "assets/assets.hpp"
 
 class Game

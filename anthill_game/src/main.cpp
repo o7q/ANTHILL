@@ -4,7 +4,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 
 #include "game.hpp"
-#include "logger/logger.hpp"
+#include "engine/logger/logger.hpp"
 
 bool sdl_init()
 {

@@ -2,8 +2,8 @@
 
 #include <algorithm>
 
-#include "../math/vector.hpp"
-#include "../math/segment.hpp"
+#include "../engine/math/vector.hpp"
+#include "../engine/math/segment.hpp"
 
 void World::generate_world_hitbox(BoundingBox *box)
 {

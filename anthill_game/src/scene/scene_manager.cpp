@@ -1,6 +1,7 @@
 #include "scene_manager.hpp"
 
-#include "../window/window.hpp"
+#include "../engine/window/window.hpp"
+
 #include "../assets/assets.hpp"
 #include "../scene_main/scene_main.hpp"
 

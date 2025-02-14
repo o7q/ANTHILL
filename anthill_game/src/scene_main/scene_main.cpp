@@ -1,6 +1,6 @@
 #include "scene_main.hpp"
 
-#include "../logger/logger.hpp"
+#include "../engine/logger/logger.hpp"
 
 #include <iostream>
 

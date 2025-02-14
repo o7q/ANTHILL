@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../../math/vector.hpp"
+#include "../../engine/math/vector.hpp"
+#include "../../engine/math/bounding_box.hpp"
+
 #include "../../world/world.hpp"
-#include "../../math/bounding_box.hpp"
 
 class BBWorldCollider
 {

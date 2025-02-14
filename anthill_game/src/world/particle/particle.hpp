@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../math/color.hpp"
-#include "../../math/random.hpp"
+#include "../../engine/math/color.hpp"
+#include "../../engine/math/random.hpp"
 
 struct Particle
 {

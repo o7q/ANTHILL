@@ -1,9 +1,11 @@
 #pragma once
 
 #include "../scene/scene.hpp"
+
 #include "../player/player.hpp"
 #include "../world/world.hpp"
-#include "../texture/texture.hpp"
+
+#include "../engine/texture/texture.hpp"
 
 class MainScene : public Scene
 {

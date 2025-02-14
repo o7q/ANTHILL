@@ -2,8 +2,8 @@
 
 #include <SDL3/SDL.h>
 
-#include "../math/bounding_box.hpp"
-#include "../math/random.hpp"
+#include "../engine/math/random.hpp"
+#include "../engine/math/bounding_box.hpp"
 
 World::World(SDL_Renderer *renderer,
              unsigned int width,

@@ -1,9 +1,11 @@
 #pragma once
 
-#include "../math/bounding_box.hpp"
-#include "../math/vector.hpp"
+#include "../engine/window/window.hpp"
+
+#include "../engine/math/vector.hpp"
+#include "../engine/math/bounding_box.hpp"
+
 #include "../world/world.hpp"
-#include "../window/window.hpp"
 
 #include "../collision/bounding_box_world/bb_world_collider.hpp"
 
