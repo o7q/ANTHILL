@@ -2,7 +2,7 @@
 
 #include "../window/window.hpp"
 #include "../assets/assets.hpp"
-#include "../scenes/common.hpp"
+#include "../scene_main/scene_main.hpp"
 
 void SceneManager::update()
 {

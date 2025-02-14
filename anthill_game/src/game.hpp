@@ -2,7 +2,7 @@
 
 #include <SDL3/SDL.h>
 
-#include "scene_manager/scene_manager.hpp"
+#include "scene/scene_manager.hpp"
 
 #include "window/window.hpp"
 #include "assets/assets.hpp"

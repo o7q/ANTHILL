@@ -1,12 +1,9 @@
 #pragma once
 
+#include "scene_id.hpp"
+
 #include "../window/window.hpp"
 #include "../assets/assets.hpp"
-
-enum class SceneID
-{
-    Main
-};
 
 class Scene
 {

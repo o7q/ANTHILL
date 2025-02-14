@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../scene/scene.hpp"
+#include "scene_id.hpp"
+#include "scene.hpp"
 
 class SceneManager
 {
