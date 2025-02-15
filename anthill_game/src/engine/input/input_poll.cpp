@@ -62,7 +62,7 @@ void InputManager::poll(SDL_Event event)
         //
 
     case SDL_EVENT_GAMEPAD_AXIS_MOTION:
-        poll_gamepad(event.jaxis.value, event.jaxis.axis);
+        poll_gamepad_axis(event.jaxis.value, event.jaxis.axis);
         break;
 
         // GAMEPAD CONNECT

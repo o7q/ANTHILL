@@ -8,14 +8,9 @@
 #include "../input/input_manager.hpp"
 #include "../time/time_manager.hpp"
 
-#include "../camera/camera.hpp"
 #include "../math/vector.hpp"
-
-#include "../texture/texture.hpp"
-#include "../math/bounding_box.hpp"
 #include "../math/segment.hpp"
-
-#include "../logger/logger.hpp"
+#include "../math/bounding_box.hpp"
 
 class Window
 {

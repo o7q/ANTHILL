@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../math/vector.hpp"
+#include "vector.hpp"
 
 struct BoundingBox
 {

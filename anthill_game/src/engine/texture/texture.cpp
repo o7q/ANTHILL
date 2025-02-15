@@ -29,6 +29,7 @@ Texture::Texture(SDL_Renderer *renderer, const std::string &path)
     SDL_DestroySurface(formatted);
 
     update_sdl_transforms();
+    reset_update_points();
 }
 
 Texture::Texture(SDL_Renderer *renderer, SDL_Surface *surface)
@@ -52,6 +53,7 @@ Texture::Texture(SDL_Renderer *renderer, SDL_Surface *surface)
     SDL_DestroySurface(formatted);
 
     update_sdl_transforms();
+    reset_update_points();
 }
 
 Texture::Texture(SDL_Renderer *renderer, int width, int height)
@@ -72,6 +74,7 @@ Texture::Texture(SDL_Renderer *renderer, int width, int height)
     m_origin.y = height / 2;
 
     update_sdl_transforms();
+    reset_update_points();
 }
 
 Texture::~Texture()

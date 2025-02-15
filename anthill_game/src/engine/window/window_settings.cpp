@@ -1,5 +1,7 @@
 #include "window.hpp"
 
+#include "../logger/logger.hpp"
+
 void Window::showCursor(bool value)
 {
     m_cursor_visible = value;

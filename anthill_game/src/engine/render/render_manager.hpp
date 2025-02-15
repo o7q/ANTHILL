@@ -7,10 +7,11 @@
 
 #include "../texture/texture.hpp"
 
-#include "../math/bounding_box.hpp"
-#include "../math/segment.hpp"
-#include "../camera/camera.hpp"
 #include "../math/color.hpp"
+#include "../math/segment.hpp"
+#include "../math/bounding_box.hpp"
+
+#include "../camera/camera.hpp"
 
 class RenderManager
 {

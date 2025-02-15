@@ -2,7 +2,7 @@
 
 #include <SDL3_ttf/SDL_ttf.h>
 
-#include "../../engine/assets/font.hpp"
+#include "../../engine/asset/font.hpp"
 
 struct Fonts
 {

@@ -2,7 +2,7 @@
 
 #include <SDL3_image/SDL_image.h>
 
-#include "../../engine/assets/image.hpp"
+#include "../../engine/asset/image.hpp"
 
 struct Images
 {

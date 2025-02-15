@@ -69,11 +69,14 @@ private:
 
 private:
     Player m_player;
+    BoundingBox m_world_update_bb;
     Camera m_camera;
+
     std::vector<World *> m_world_partitons;
     Particle::Preset m_preset;
-    BoundingBox m_update_bb;
+    
     Texture *crosshair_texture = nullptr;
 
-    Vec2<float> aim_position;
+    Vec2<float> m_aim_position;
+    Vec2<float> m_aim_position_gamepad;
 };

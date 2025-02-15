@@ -14,10 +14,13 @@ public:
 
     void update() override;
     void jump(bool override = false) override;
+    void unjump();
 
 private:
-    bool m_jump_buffered = false;
     const int m_jump_buffer_height = 40;
     const int m_coyote_time = 10;
+    const float m_unjump_amount = 1.5f;
+
+    bool m_jump_buffered = false;
     float m_coyote_time_timer = 0.0f;
 };

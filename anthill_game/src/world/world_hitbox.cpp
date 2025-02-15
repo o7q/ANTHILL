@@ -16,10 +16,10 @@ void World::generate_world_hitbox(BoundingBox *box)
     if (box != nullptr)
     {
         y_start = std::clamp(box->getP1().toInt().y, 0, m_size.y - 1);
-        y_end   = std::clamp(box->getP4().toInt().y, 0, m_size.y - 1);
+        y_end   = std::clamp(box->getP4().toInt().y, 0, m_size.y - 1) - 1;
 
         x_start = std::clamp(box->getP1().toInt().x, 0, m_size.x - 1);
-        x_end   = std::clamp(box->getP2().toInt().x, 0, m_size.x - 1);
+        x_end   = std::clamp(box->getP2().toInt().x, 0, m_size.x - 1) - 1;
     }
     else
     {

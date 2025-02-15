@@ -93,7 +93,5 @@ private:
     std::vector<Segment> m_world_hitbox;
     Texture m_world_texture;
 
-    const int update_speed = 1;
-
     Vec2<int> m_size;
 };

@@ -4,6 +4,8 @@
 
 #include <SDL3/SDL.h>
 
+#include "../logger/logger.hpp"
+
 Window::Window(const std::string &title, unsigned int width, unsigned int height, unsigned int scale)
 {
     m_window_size.x = width;

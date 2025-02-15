@@ -3,11 +3,11 @@
 void MainScene::handle_update()
 {
     Vec2<float> player_pos = m_player.getPosition();
-    m_update_bb = BoundingBox(player_pos.x, player_pos.y, 500, 600);
+    m_world_update_bb = BoundingBox(player_pos.x, player_pos.y, 400, 500);
 
     for (World *world : m_world_partitons)
     {
-        world->update(&m_update_bb);
+        world->update(&m_world_update_bb);
     }
 
     m_player.update();

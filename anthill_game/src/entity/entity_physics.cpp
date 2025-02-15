@@ -6,7 +6,7 @@ bool Entity::check_ground(int y_scan)
 {
     Vec2<int> m_bb_pos = m_bounding_box.getPosition().toInt();
     Vec2<int> m_bb_size = m_bounding_box.getSize().toInt();
-    
+
     for (int y = 0; y < y_scan; ++y)
     {
         for (int x = 0; x < m_bb_size.x; ++x)
@@ -49,7 +49,11 @@ void Entity::update_y_velocity()
     float dt = m_window.time().getDeltaTime();
     if (m_velocity.y < m_terminal_velocity)
     {
-        m_velocity.y += m_gravity_strength * dt;
+        float fast_fall = 1.0f;
+        if (m_velocity.y > 0.0f)
+            fast_fall = 1.5f;
+
+        m_velocity.y += m_gravity_strength * fast_fall * dt;
     }
 
     if (m_on_ground && m_velocity.y > 0)

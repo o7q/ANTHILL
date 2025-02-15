@@ -30,9 +30,11 @@ public:
     const SDL_FRect *getSDLDstRect() const { return &m_dst_rect; }
     const SDL_FlipMode getSDLFlipMode() const { return m_flip_mode; }
 
+    const SDL_Rect getSDLUpdateRect() const {return m_update_rect;}
+
 private:
     void update_sdl_transforms();
-    void reset_update_rect();
+    void reset_update_points();
 
 private:
     Vec2<int> m_position;
@@ -50,4 +52,6 @@ private:
     SDL_Rect m_update_rect;
     Uint32 *m_pixels = nullptr;
     SDL_Texture *m_texture = nullptr;
+
+    bool m_pixel_changed = false;
 };

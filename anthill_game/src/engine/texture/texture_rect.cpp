@@ -1,5 +1,7 @@
 #include "texture.hpp"
 
+#include <limits>
+
 void Texture::update_sdl_transforms()
 {
     m_src_rect.x = 0;
@@ -13,10 +15,10 @@ void Texture::update_sdl_transforms()
     m_dst_rect.h = m_size.y;
 }
 
-void Texture::reset_update_rect()
+void Texture::reset_update_points()
 {
-    m_update_rect.x = 0;
-    m_update_rect.y = 0;
-    m_update_rect.w = m_size.x;
-    m_update_rect.h = m_size.y;
+    m_update_pos1.x = std::numeric_limits<int>::max();
+    m_update_pos1.y = std::numeric_limits<int>::max();
+    m_update_pos2.x = std::numeric_limits<int>::min();
+    m_update_pos2.y = std::numeric_limits<int>::min();
 }

@@ -38,7 +38,7 @@ World::World(SDL_Renderer *renderer,
             }
             if (Random::genInt(0, 1000) == 0)
             {
-                drawParticles(x, y, Random::genInt(6, 10), Particle(Particle::Preset::Steam), DrawShape::Circle, false);
+                drawParticles(x, y, Random::genInt(6, 30), Particle(Particle::Preset::Steam), DrawShape::Circle, false);
             }
             if (Random::genInt(0, 100000) == 0)
             {
@@ -84,10 +84,7 @@ void World::update(BoundingBox *box)
         locked_bb.setSize(size.x, size.y);
     }
 
-    for (int i = 0; i < update_speed; ++i)
-    {
-        m_world_physics->update_particles(&locked_bb);
-    }
+    m_world_physics->update_particles(&locked_bb);
 
     generate_world_hitbox(&locked_bb);
     m_world_texture.update();

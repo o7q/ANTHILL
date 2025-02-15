@@ -9,8 +9,8 @@ void MainScene::handle_world()
 
     Vec2<float> player_position = m_player.getPosition();
 
-    int player_mod = ((int)player_position.y + height / 2) % (height);
-    bool player_in_change_zone = (player_mod < 10) && (player_position.y > height / 2);
+    int player_mod = ((int)player_position.y + height / 2) % height;
+    bool player_in_change_zone = (player_mod < 20) && (player_position.y > height / 2);
 
     if (!player_in_change_zone)
     {
@@ -23,7 +23,9 @@ void MainScene::handle_world()
         return;
     }
 
-    if (level % 2 == 1)
+    bool next_level = level % 2 == 1;
+
+    if (next_level)
     {
         delete_world(m_world_partitons[0]);
         m_world_partitons[0] = new World(window.getSDLRenderer(), width, height);
