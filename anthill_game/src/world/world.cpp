@@ -85,7 +85,12 @@ void World::update(BoundingBox *box)
     }
 
     m_world_physics->update_particles(&locked_bb);
-
     generate_world_hitbox(&locked_bb);
+
+    if (m_debug_render_solid_collision)
+        for (int y = 0; y < m_size.y; ++y)
+            for (int x = 0; x < m_size.x; ++x)
+                m_world_texture.setPixel(x, y, m_particles[y][x].solid_enable_collision ? m_particles[y][x].color.hex() : 0xFF0000FF);
+
     m_world_texture.update();
 }

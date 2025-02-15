@@ -93,5 +93,7 @@ private:
     std::vector<Segment> m_world_hitbox;
     Texture m_world_texture;
 
+    const bool m_debug_render_solid_collision = false;
+
     Vec2<int> m_size;
 };

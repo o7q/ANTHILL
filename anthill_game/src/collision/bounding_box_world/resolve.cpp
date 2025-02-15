@@ -43,7 +43,7 @@ void BBWorldCollider::convex_optimize_pass(Particle p, int x, int y, int x_origi
     bool is_top = corner_index <= 1;
     bool is_bottom = corner_index >= 2;
 
-    if (p.p_collision_type != Particle::PCollisionType::Solid)
+    if (p.p_collision_type != Particle::PCollisionType::Solid || !p.solid_enable_collision)
     {
         if ((m_ys[corner_index] != y && is_top) ||
             (m_ys[corner_index] != y && is_bottom))

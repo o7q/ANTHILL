@@ -9,8 +9,6 @@
 #include "../time/time_manager.hpp"
 
 #include "../math/vector.hpp"
-#include "../math/segment.hpp"
-#include "../math/bounding_box.hpp"
 
 class Window
 {

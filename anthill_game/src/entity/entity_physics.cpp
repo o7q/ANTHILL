@@ -16,7 +16,8 @@ bool Entity::check_ground(int y_scan)
 
             for (const World *world : m_world_partitons)
             {
-                if (world->getParticle(_x, _y).p_collision_type == Particle::PCollisionType::Solid)
+                Particle p = world->getParticle(_x, _y);
+                if (p.p_collision_type == Particle::PCollisionType::Solid && p.solid_enable_collision)
                 {
                     return true;
                 }

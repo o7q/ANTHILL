@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../engine/math/color.hpp"
+#include "../../engine/math/vector.hpp"
 #include "../../engine/math/random.hpp"
 
 struct Particle
@@ -59,6 +60,7 @@ struct Particle
     PState p_state = PState::Gas;
     PMode p_mode = PMode::None;
     PCollisionType p_collision_type = PCollisionType::None;
+    bool solid_enable_collision = true;
 
     float f_value1 = 0.0f;
     float f_value2 = 0.0f;

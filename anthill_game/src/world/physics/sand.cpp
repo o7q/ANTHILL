@@ -18,7 +18,6 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
             return;
         }
 
-        // random chance to make particle below float above (1 oh in 4 chance)
         Particle p_mod = p_orig;
 
         bool will_collide_with_liquid = false;
@@ -35,9 +34,11 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
             return;
         }
 
+        // random chance to make particle below float above (1 in 4 chance)
         bool liquid_floats_above = Random::genInt(0, 5) == 0;
         if ((will_collide_with_liquid && liquid_floats_above) || p_orig.f_value1 > 0.9f)
         {
+            p_mod.solid_enable_collision = false;
             p_swap(x, y, _x, _y);
             moved = true;
             return;
@@ -50,6 +51,7 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
             p_mod.f_value1 = 1.0f;
         }
 
+        p_mod.solid_enable_collision = false;
         p_set(_x, _y, p_mod);
         p_set(x, y, Particle());
 
@@ -64,6 +66,8 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
             Particle p_mod = p_get(_x, _y);
             p_mod.f_value1 = std::fabs((p_orig.f_value1 - p_mod.f_value1)) / 2.0f;
             p_mod.color = p_mix(p_orig.color, p_mod.color, 1.0f, 1.0f, 2.0f, false);
+
+            p_mod.solid_enable_collision = false;
             p_set(_x, _y, p_mod);
         }
     };
@@ -75,9 +79,9 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
         if (p_get(x, y - 1).p_mode == Particle::PMode::Water && p_get(x, y).f_value1 > 0.9f)
         {
             Particle p_mod = p_get(x, y - 1);
-
             p_mod.color = p_mix(p_orig.color, p_mod.color);
 
+            p_mod.solid_enable_collision = false;
             p_set(x, y - 1, p_mod);
         }
     }
@@ -119,5 +123,10 @@ void WorldPhysics::update_sand(Particle particle, int x, int y)
     if (in_bounds(x + 1, y + 1) && !moved)
     {
         move(x + 1, y + 1);
+    }
+
+    if (!moved)
+    {
+        m_particles[y][x].solid_enable_collision = true;
     }
 }
