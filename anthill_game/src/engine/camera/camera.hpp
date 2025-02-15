@@ -17,7 +17,7 @@ public:
     void move(float x, float y);
     void setGoal(float x, float y);
 
-    Vec2<float> transformPoint(float x, float y) const;
+    Vec2<float> windowToGame(float x, float y) const;
 
     Vec2<float> getPosition() const { return m_position; }
 
@@ -25,8 +25,9 @@ private:
     void update_goal(float dt);
 
 private:
-    Vec2<float> m_position;
     Vec2<int> m_window_size;
+
+    Vec2<float> m_position;
 
     Vec2<float> m_goal_position;
     bool m_has_goal = false;

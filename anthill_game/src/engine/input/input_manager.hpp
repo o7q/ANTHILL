@@ -54,7 +54,7 @@ public:
     bool isGamepadMode() const { return m_gamepad_mode; }
 
     void updateMouse(unsigned int window_width, unsigned int window_height, unsigned int window_scale);
-    Vec2<int> getMousePos() const { return m_mouse_pos; }
+    Vec2<float> getMousePos() const { return m_mouse_pos; }
 
     Vec2<float> getJoystickPos(int index) const;
     Vec2<float> getJoystickDirection(int index) const;
@@ -77,7 +77,7 @@ private:
     void add_button(IButtonID id, IButton button);
 
 private:
-    Vec2<int> m_mouse_pos;
+    Vec2<float> m_mouse_pos;
     
     // gamepad
     Vec2<int> m_joystick_pos[2];

@@ -9,6 +9,8 @@
 
 #include "world_partitons/wp_manager.hpp"
 
+#include "../bullet/bullet.hpp"
+
 class MainScene : public Scene
 {
 public:
@@ -20,7 +22,7 @@ public:
         m_player.setPosition(0, -50);
         m_player.setBoundsSize(8, 25);
 
-        crosshair_texture = new Texture(window.getSDLRenderer(), assets.images.crosshair_1x.getSDLSurface());
+        crosshair_texture = new Texture(m_window.getSDLRenderer(), m_assets.images.crosshair_1x.getSDLSurface());
     }
     ~MainScene() override
     {
@@ -50,4 +52,6 @@ private:
 
     Vec2<float> m_aim_position;
     Vec2<float> m_aim_position_gamepad;
+
+    std::vector<Bullet> m_bullets;
 };

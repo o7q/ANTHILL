@@ -8,7 +8,7 @@
 class Scene
 {
 public:
-    Scene(Window &window, Assets &assets) : window(window), assets(assets) {}
+    Scene(Window &window, Assets &assets) : m_window(window), m_assets(assets) {}
     virtual ~Scene() {}
 
     virtual SceneID run() { return SceneID::Main; }
@@ -26,15 +26,15 @@ protected:
 
     bool update()
     {
-        DT = window.time().getDeltaTime();
-        FPS = window.time().getFramerate();
+        DT = m_window.time().getDeltaTime();
+        FPS = m_window.time().getFramerate();
         return true;
     }
     void reset() { m_should_reset = true; }
 
 protected:
-    Window &window;
-    Assets &assets;
+    Window &m_window;
+    Assets &m_assets;
 
 protected:
     float DT = 0.0f;
