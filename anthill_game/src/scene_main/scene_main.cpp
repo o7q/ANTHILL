@@ -18,7 +18,7 @@ SceneID MainScene::run()
 
         if (window.input().button(IButtonID::Action2).down())
         {
-            for (World *world : m_world_partitons)
+            for (World *world : m_wp_manager.getWorldPartitions())
             {
                 world->drawParticles(m_aim_position.x, m_aim_position.y, 30, Particle(m_preset), World::DrawShape::Circle);
             }
@@ -29,7 +29,7 @@ SceneID MainScene::run()
             reset();
         }
 
-        handle_world();
+        m_wp_manager.update(m_player.getPosition());
 
         handle_update();
         handle_render();

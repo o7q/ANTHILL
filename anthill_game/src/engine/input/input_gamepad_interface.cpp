@@ -28,8 +28,18 @@ Vec2<float> InputManager::getJoystickDirection(int index) const
         return Vec2<float>(0.0f, 0.0f);
     }
 
-    float angle = std::atan2(m_joystick_pos[index].y, m_joystick_pos[index].x);
-    return Vec2<float>(std::cos(angle), std::sin(angle));
+    float x = m_joystick_pos[index].x;
+    float y = m_joystick_pos[index].y;
+
+    float m = std::sqrt(x * x + y * y);
+    
+    float epsilon = 0.00001f;
+    if (m <= epsilon)
+    {
+        return Vec2<float>(0.0f, 0.0f);
+    }
+
+    return Vec2<float>(x / m, y / m);
 }
 
 float InputManager::getTriggerValue(int index)
