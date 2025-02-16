@@ -16,7 +16,7 @@ class MainScene : public Scene
 public:
     MainScene(Window &window, Assets &assets) : Scene(window, assets),
                                                 m_world_manager(window, 1000, 1000),
-                                                m_player(window, m_world_manager.getWorldPartitions()),
+                                                m_player(window, m_world_manager.getWorlds()),
                                                 m_camera(window.getScale(), window.getScale())
     {
         m_player.setPosition(0, -50);

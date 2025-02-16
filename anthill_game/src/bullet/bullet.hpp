@@ -8,14 +8,21 @@
 class Bullet
 {
 public:
+    enum class HitObjectType
+    {
+        World,
+        Entity,
+        Player
+    };
+
+public:
     Bullet(float start_x, float start_y, float target_x, float target_y);
 
     void update(float dt);
     bool hit() const;
 
-    World *getHitWorld() const { return m_hit_world; }
-    Entity *getHitEntity() const { return m_hit_entity; }
-    Player *getHitPlayer() const { return m_hit_player; }
+    void *getHitObject() const { return m_hit_object; }
+    HitObjectType getHitObjectType() const { return m_hit_object_type; }
 
     void checkWorld(World *world, float dt);
 
@@ -34,7 +41,6 @@ private:
     float m_speed = 1.0f;
     float m_power = 1.0f;
 
-    World *m_hit_world = nullptr;
-    Entity *m_hit_entity = nullptr;
-    Player *m_hit_player = nullptr;
+    void *m_hit_object = nullptr;
+    HitObjectType m_hit_object_type;
 };

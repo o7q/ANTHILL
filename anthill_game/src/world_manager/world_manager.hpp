@@ -8,12 +8,12 @@
 class WorldManager
 {
 public:
-    WorldManager(Window &window, int partiton_width, int partiton_height);
+    WorldManager(Window &window, int width, int height);
     ~WorldManager();
 
     void update(Vec2<float> player_position);
 
-    const std::vector<World *> &getWorldPartitions() const { return m_world_partitons; }
+    const std::vector<World *> &getWorlds() const { return m_worlds; }
 
 private:
     void delete_world(World *world);
@@ -22,9 +22,9 @@ private:
     int max_level = 0;
     bool played_past_start = false;
 
-    Vec2<int> m_partition_size;
+    Vec2<int> m_world_size;
 
     Window &m_window;
 
-    std::vector<World *> m_world_partitons;
+    std::vector<World *> m_worlds;
 };

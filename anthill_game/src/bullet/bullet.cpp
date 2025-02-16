@@ -29,7 +29,5 @@ void Bullet::update(float dt)
 
 bool Bullet::hit() const
 {
-    return m_hit_world  != nullptr ||
-           m_hit_player != nullptr ||
-           m_hit_entity != nullptr;
+    return m_hit_object != nullptr;
 }

@@ -6,7 +6,7 @@ void MainScene::update_world()
     m_world_update_bb = BoundingBox(player_pos.x, player_pos.y, 400, 500);
     m_world_manager.update(player_pos);
 
-    for (World *world : m_world_manager.getWorldPartitions())
+    for (World *world : m_world_manager.getWorlds())
     {
         world->update(&m_world_update_bb);
     }

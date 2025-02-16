@@ -20,32 +20,32 @@ World::World(SDL_Renderer *renderer,
 
         for (int x = 0; x < m_size.x; ++x)
         {
-            setParticle(x, y, Particle(Particle::Preset::Stone));
+            setParticle(x, y, Particle(Particle::Preset::Air));
         }
     }
 
-    for (int y = 0; y < m_size.y; ++y)
-    {
-        for (int x = 0; x < m_size.x; ++x)
-        {
-            if (Random::genInt(0, 10000) == 0)
-            {
-                drawParticles(x, y, Random::genInt(10, 30), Particle(Particle::Preset::Sand), DrawShape::Circle, false);
-            }
-            if (Random::genInt(0, 10000) == 0)
-            {
-                drawParticles(x, y, Random::genInt(3, 20), Particle(Particle::Preset::Water), DrawShape::Circle, false);
-            }
-            if (Random::genInt(0, 1000) == 0)
-            {
-                drawParticles(x, y, Random::genInt(6, 30), Particle(Particle::Preset::Steam), DrawShape::Circle, false);
-            }
-            if (Random::genInt(0, 100000) == 0)
-            {
-                drawParticles(x, y, Random::genInt(20, 30), Particle(Particle::Preset::Blood), DrawShape::Circle, false);
-            }
-        }
-    }
+    // for (int y = 0; y < m_size.y; ++y)
+    // {
+    //     for (int x = 0; x < m_size.x; ++x)
+    //     {
+    //         if (Random::genInt(0, 10000) == 0)
+    //         {
+    //             drawParticles(x, y, Random::genInt(10, 30), Particle(Particle::Preset::Sand), DrawShape::Circle, false);
+    //         }
+    //         if (Random::genInt(0, 10000) == 0)
+    //         {
+    //             drawParticles(x, y, Random::genInt(3, 20), Particle(Particle::Preset::Water), DrawShape::Circle, false);
+    //         }
+    //         if (Random::genInt(0, 1000) == 0)
+    //         {
+    //             drawParticles(x, y, Random::genInt(6, 30), Particle(Particle::Preset::Steam), DrawShape::Circle, false);
+    //         }
+    //         if (Random::genInt(0, 100000) == 0)
+    //         {
+    //             drawParticles(x, y, Random::genInt(20, 30), Particle(Particle::Preset::Blood), DrawShape::Circle, false);
+    //         }
+    //     }
+    // }
 
     m_world_physics = new WorldPhysics(m_particles, &m_world_texture, m_size.x, m_size.y);
     m_world_texture.setOrigin(0, 0);

@@ -18,13 +18,18 @@ void Bullet::checkWorld(World *world, float dt)
         if (i_data.intersecting)
         {
             m_position = i_data.position;
-            m_hit_world = world;
+
+            m_hit_object = world;
+            m_hit_object_type = HitObjectType::World;
+            
+            return;
         }
     }
 
     Particle p = world->getParticle(m_position.x, m_position.y);
     if (p.p_collision_type == Particle::PCollisionType::Solid && p.solid_enable_collision)
     {
-        m_hit_world = world;
+        m_hit_object = world;
+        m_hit_object_type = HitObjectType::World;
     }
 }

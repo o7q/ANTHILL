@@ -1,29 +1,31 @@
 #include "world_manager.hpp"
 
-WorldManager::WorldManager(Window &window, int partiton_width, int partiton_height) : m_window(window)
+#include "../world_generator/debug/wg_debug.hpp"
+
+WorldManager::WorldManager(Window &window, int width, int height) : m_window(window)
 {
-    m_partition_size.x = partiton_width;
-    m_partition_size.x = partiton_height;
+    m_world_size.x = width;
+    m_world_size.x = height;
 
-    m_world_partitons.push_back(new World(window.getSDLRenderer(), partiton_width, partiton_height));
-    m_world_partitons.push_back(new World(window.getSDLRenderer(), partiton_width, partiton_height));
+    m_worlds.push_back(DebugWorldGenerator(window.getSDLRenderer(), WorldGenerator::Settings{width, height, -1}).world());
+    m_worlds.push_back(DebugWorldGenerator(window.getSDLRenderer(), WorldGenerator::Settings{width, height, -1}).world());
 
-    m_world_partitons[1]->move(0, partiton_height);
+    m_worlds[1]->move(0, height);
 
-    World::Portal portal1{m_world_partitons[1], false, true, false, false};
-    World::Portal portal2{m_world_partitons[0], true, false, false, false};
+    World::Portal portal1{m_worlds[1], false, true, false, false};
+    World::Portal portal2{m_worlds[0], true, false, false, false};
 
-    m_world_partitons[0]->setPortal(portal1);
-    m_world_partitons[1]->setPortal(portal2);
+    m_worlds[0]->setPortal(portal1);
+    m_worlds[1]->setPortal(portal2);
 }
 
 WorldManager::~WorldManager()
 {
-    for (World *world_partition : m_world_partitons)
+    for (World *world : m_worlds)
     {
-        if (world_partition != nullptr)
+        if (world != nullptr)
         {
-            delete world_partition;
+            delete world;
         }
     }
 }
