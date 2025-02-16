@@ -1,6 +1,5 @@
 #include "input_manager.hpp"
 
-#include <iostream>
 #include <cmath>
 
 Vec2<float> InputManager::getJoystickPos(int index) const
@@ -32,7 +31,7 @@ Vec2<float> InputManager::getJoystickDirection(int index) const
     float y = m_joystick_pos[index].y;
 
     float m = std::sqrt(x * x + y * y);
-    
+
     float epsilon = 0.00001f;
     if (m <= epsilon)
     {
@@ -59,10 +58,20 @@ bool InputManager::joystickMoved(int index) const
 
 void InputManager::rumbleGamepad(Uint16 low_frequency, Uint16 high_frequency, Uint32 duration)
 {
-    if (m_active_gamepad == -1)
+    if (m_gamepads.find(m_active_gamepad) == m_gamepads.end())
     {
         return;
     }
 
     SDL_RumbleGamepad(m_gamepads[m_active_gamepad], low_frequency, high_frequency, duration);
+}
+
+void InputManager::rumbleGamepadTriggers(Uint16 left_rumble, Uint16 right_rumble, Uint32 duration)
+{
+    if (m_gamepads.find(m_active_gamepad) == m_gamepads.end())
+    {
+        return;
+    }
+
+    SDL_RumbleGamepadTriggers(m_gamepads[m_active_gamepad], left_rumble, right_rumble, duration);
 }

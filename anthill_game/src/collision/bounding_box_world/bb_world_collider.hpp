@@ -2,7 +2,6 @@
 
 #include "../../engine/math/vector.hpp"
 #include "../../engine/math/bounding_box.hpp"
-
 #include "../../world/world.hpp"
 
 class BBWorldCollider

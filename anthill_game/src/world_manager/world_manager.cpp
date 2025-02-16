@@ -1,6 +1,6 @@
-#include "wp_manager.hpp"
+#include "world_manager.hpp"
 
-WPManager::WPManager(Window &window, int partiton_width, int partiton_height) : m_window(window)
+WorldManager::WorldManager(Window &window, int partiton_width, int partiton_height) : m_window(window)
 {
     m_partition_size.x = partiton_width;
     m_partition_size.x = partiton_height;
@@ -17,7 +17,7 @@ WPManager::WPManager(Window &window, int partiton_width, int partiton_height) : 
     m_world_partitons[1]->setPortal(portal2);
 }
 
-WPManager::~WPManager()
+WorldManager::~WorldManager()
 {
     for (World *world_partition : m_world_partitons)
     {

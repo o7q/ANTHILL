@@ -4,11 +4,10 @@
 
 #include <SDL3/SDL.h>
 
+#include "../math/vector.hpp"
 #include "../render/render_manager.hpp"
 #include "../input/input_manager.hpp"
 #include "../time/time_manager.hpp"
-
-#include "../math/vector.hpp"
 
 class Window
 {

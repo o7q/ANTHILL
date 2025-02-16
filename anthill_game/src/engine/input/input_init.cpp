@@ -36,15 +36,15 @@ void InputManager::init_buttons()
     right.assignGamepadButton(SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
     add_button(IButtonID::Right, right);
 
-    IButton action1;
-    action1.assignKey(SDLK_SPACE);
-    action1.assignGamepadButton(SDL_GAMEPAD_BUTTON_SOUTH);
-    add_button(IButtonID::Action1, action1);
+    IButton jump;
+    jump.assignKey(SDLK_SPACE);
+    jump.assignGamepadButton(SDL_GAMEPAD_BUTTON_SOUTH);
+    add_button(IButtonID::Jump, jump);
 
-    IButton action2;
-    action2.assignMouseButton(SDL_BUTTON_LEFT);
-    action2.assignGamepadButton(SDL_GAMEPAD_BUTTON_WEST);
-    add_button(IButtonID::Action2, action2);
+    IButton shoot;
+    shoot.assignMouseButton(SDL_BUTTON_LEFT);
+    shoot.assignGamepadTrigger(SDL_GAMEPAD_AXIS_RIGHT_TRIGGER);
+    add_button(IButtonID::Shoot, shoot);
 
     IButton fullscreen;
     fullscreen.assignKey(SDLK_F11);

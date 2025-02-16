@@ -7,7 +7,8 @@ struct IButton
     enum class PollType
     {
         Keyboard,
-        Controller,
+        GamepadButton,
+        GamepadTrigger,
         Mouse
     };
 
@@ -18,6 +19,9 @@ struct IButton
 
     void assignGamepadButton(int gamepad_button);
     void unassignGamepadButton();
+
+    void assignGamepadTrigger(int index);
+    void unassignTriggerButton();
 
     void assignMouseButton(int mouse_button);
     void unassignMouseButton();
@@ -39,9 +43,11 @@ private:
 
     int m_keycode = SDLK_UNKNOWN;
     int m_gamepad_button = SDL_GAMEPAD_BUTTON_INVALID;
+    int m_gamepad_trigger = -1;
     int m_mouse_button = -1;
 
     bool m_key_assigned = false;
     bool m_gamepad_button_assigned = false;
+    bool m_gamepad_trigger_assigned = false;
     bool m_mouse_button_assigned = false;
 };

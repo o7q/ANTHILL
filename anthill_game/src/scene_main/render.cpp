@@ -2,7 +2,7 @@
 
 void MainScene::update_render()
 {
-    for (World *world : m_wp_manager.getWorldPartitions())
+    for (World *world : m_world_manager.getWorldPartitions())
     {
         m_window.render().renderTexture(world->getWorldTexture(), &m_camera);
     }

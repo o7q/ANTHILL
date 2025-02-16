@@ -39,10 +39,15 @@ void World::generate_world_hitbox(BoundingBox *box)
             // [d][c]
             // [a][b]
 
-            int a = m_particles[y + 1][x    ].p_collision_type == Particle::PCollisionType::Solid ? 1 : 0;
-            int b = m_particles[y + 1][x + 1].p_collision_type == Particle::PCollisionType::Solid ? 1 : 0;
-            int c = m_particles[y    ][x + 1].p_collision_type == Particle::PCollisionType::Solid ? 1 : 0;
-            int d = m_particles[y    ][x    ].p_collision_type == Particle::PCollisionType::Solid ? 1 : 0;
+            Particle p_a = m_particles[y + 1][x    ];
+            Particle p_b = m_particles[y + 1][x + 1];
+            Particle p_c = m_particles[y    ][x + 1];
+            Particle p_d = m_particles[y    ][x    ];
+            int a = p_a.p_collision_type == Particle::PCollisionType::Solid && p_a.solid_enable_collision ? 1 : 0;
+            int b = p_b.p_collision_type == Particle::PCollisionType::Solid && p_b.solid_enable_collision ? 1 : 0;
+            int c = p_c.p_collision_type == Particle::PCollisionType::Solid && p_c.solid_enable_collision ? 1 : 0;
+            int d = p_d.p_collision_type == Particle::PCollisionType::Solid && p_d.solid_enable_collision ? 1 : 0;
+            
             int index = a * 1 + b * 2 + c * 4 + d * 8;
 
             Vec2<float> left   = Vec2<float>(x       , y + 0.5f) + m_position.toFloat();

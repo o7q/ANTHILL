@@ -1,7 +1,6 @@
 #include "input_manager.hpp"
 
 #include <SDL3/SDL.h>
-#include <iostream>
 
 #include "../logger/logger.hpp"
 
@@ -47,7 +46,7 @@ void InputManager::poll(SDL_Event event)
 
         // GAMEPAD BUTTONS
     case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
-        poll_buttons(event.gbutton.button, IButton::PollType::Controller, true);
+        poll_buttons(event.gbutton.button, IButton::PollType::GamepadButton, true);
         m_active_gamepad = event.gdevice.which;
         if (!m_gamepad_mode)
         {
@@ -57,12 +56,22 @@ void InputManager::poll(SDL_Event event)
         break;
 
     case SDL_EVENT_GAMEPAD_BUTTON_UP:
-        poll_buttons(event.gbutton.button, IButton::PollType::Controller, false);
+        poll_buttons(event.gbutton.button, IButton::PollType::GamepadButton, false);
         break;
         //
 
     case SDL_EVENT_GAMEPAD_AXIS_MOTION:
         poll_gamepad_axis(event.jaxis.value, event.jaxis.axis);
+
+        if (event.jaxis.value >= m_gamepad_deadzone)
+        {
+            poll_buttons(event.jaxis.axis, IButton::PollType::GamepadTrigger, true);
+        }
+        else
+        {
+            poll_buttons(event.jaxis.axis, IButton::PollType::GamepadTrigger, false);
+        }
+
         break;
 
         // GAMEPAD CONNECT

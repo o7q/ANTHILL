@@ -8,8 +8,12 @@ void IButton::poll(int generic_button, PollType poll_type, bool down)
         if (generic_button == m_keycode && m_key_assigned)
             m_down = down;
         break;
-    case PollType::Controller:
+    case PollType::GamepadButton:
         if (generic_button == m_gamepad_button && m_gamepad_button_assigned)
+            m_down = down;
+        break;
+    case PollType::GamepadTrigger:
+        if (generic_button == m_gamepad_trigger && m_gamepad_trigger_assigned)
             m_down = down;
         break;
     case PollType::Mouse:

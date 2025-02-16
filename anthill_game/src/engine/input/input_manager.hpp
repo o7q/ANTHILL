@@ -16,10 +16,8 @@ enum class IButtonID
     Left,
     Right,
 
-    Action1,
-    Action2,
-    Action3,
-    Action4,
+    Shoot,
+    Jump,
 
     Fullscreen,
 
@@ -62,6 +60,7 @@ public:
     float getTriggerValue(int index);
 
     void rumbleGamepad(Uint16 low_frequency, Uint16 high_frequency, Uint32 duration);
+    void rumbleGamepadTriggers(Uint16 left_rumble, Uint16 right_rumble, Uint32 duration);
 
 private:
     void assign_gamepad(int id);
@@ -82,10 +81,11 @@ private:
     // gamepad
     Vec2<int> m_joystick_pos[2];
     int m_trigger_value[2];
+    bool m_trigger_was_down[2];
     
     bool m_gamepad_mode = false;
     int m_active_gamepad = -1;
-    const int m_gamepad_deadzone = 12000;
+    const int m_gamepad_deadzone = 8000;
     std::unordered_map<int, SDL_Gamepad *> m_gamepads;
     //
 

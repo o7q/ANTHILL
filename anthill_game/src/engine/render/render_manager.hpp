@@ -5,12 +5,10 @@
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
-#include "../texture/texture.hpp"
-
 #include "../math/color.hpp"
 #include "../math/segment.hpp"
 #include "../math/bounding_box.hpp"
-
+#include "../texture/texture.hpp"
 #include "../camera/camera.hpp"
 
 class RenderManager

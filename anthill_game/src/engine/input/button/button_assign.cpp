@@ -22,6 +22,17 @@ void IButton::unassignGamepadButton()
     m_gamepad_button_assigned = false;
 }
 
+void IButton::assignGamepadTrigger(int index)
+{
+    m_gamepad_trigger = index;
+    m_gamepad_trigger_assigned = true;
+}
+
+void IButton::unassignTriggerButton()
+{
+    m_gamepad_trigger_assigned = false;
+}
+
 void IButton::assignMouseButton(int mouse_button)
 {
     m_mouse_button = mouse_button;

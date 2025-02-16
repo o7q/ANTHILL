@@ -1,7 +1,6 @@
 #pragma once
 
 #include "scene_id.hpp"
-
 #include "../engine/window/window.hpp"
 #include "../assets/assets.hpp"
 

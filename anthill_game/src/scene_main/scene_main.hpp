@@ -1,28 +1,28 @@
 #pragma once
 
-#include "../scene/scene.hpp"
-
-#include "../player/player.hpp"
-#include "../world/world.hpp"
-
 #include "../engine/texture/texture.hpp"
+#include "../scene/scene.hpp"
+#include "../player/player.hpp"
 
-#include "world_partitons/wp_manager.hpp"
-#include "bullets/bullet_manager.hpp"
+#include "../world/world.hpp"
+#include "../world_manager/world_manager.hpp"
 
 #include "../bullet/bullet.hpp"
+#include "../bullet_manager/bullet_manager.hpp"
+
 
 class MainScene : public Scene
 {
 public:
     MainScene(Window &window, Assets &assets) : Scene(window, assets),
-                                                m_wp_manager(window, 1000, 1000),
-                                                m_bullet_manager(m_wp_manager, m_world_update_bb),
-                                                m_player(window, m_wp_manager.getWorldPartitions()),
+                                                m_world_manager(window, 1000, 1000),
+                                                m_player(window, m_world_manager.getWorldPartitions()),
                                                 m_camera(window.getScale(), window.getScale())
     {
         m_player.setPosition(0, -50);
         m_player.setBoundsSize(8, 25);
+
+        m_bullet_manager.setWorldManager(&m_world_manager);
 
         crosshair_texture = new Texture(m_window.getSDLRenderer(), m_assets.images.crosshair_1x.getSDLSurface());
     }
@@ -45,7 +45,7 @@ private:
     void update_hud();
 
 private:
-    WPManager m_wp_manager;
+    WorldManager m_world_manager;
     BulletManager m_bullet_manager;
     Player m_player;
     Camera m_camera;

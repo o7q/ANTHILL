@@ -14,7 +14,7 @@ bool Entity::check_ground(int y_scan)
             int _x = m_bb_pos.x - m_bb_size.x / 2 + x;
             int _y = m_bb_pos.y + m_bb_size.y / 2 + y;
 
-            for (const World *world : m_world_partitons)
+            for (const World *world : m_worlds)
             {
                 Particle p = world->getParticle(_x, _y);
                 if (p.p_collision_type == Particle::PCollisionType::Solid && p.solid_enable_collision)
@@ -65,7 +65,7 @@ void Entity::update_y_velocity()
 
 void Entity::resolve_world_collision()
 {
-    for (const World *world : m_world_partitons)
+    for (const World *world : m_worlds)
     {
         Vec2<int> resolve_vector = m_bb_collider.resolve(world);
         move(resolve_vector.x, resolve_vector.y);

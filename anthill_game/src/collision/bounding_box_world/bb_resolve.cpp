@@ -7,7 +7,7 @@ void BBWorldCollider::convex_optimize(const World *world)
 {
     for (int i = 0; i < 2; ++i)
     {
-        m_ys[i] = 0;
+        m_ys[i    ] = 0;
         m_ys[i + 2] = m_bb_size.y - 1;
     }
 

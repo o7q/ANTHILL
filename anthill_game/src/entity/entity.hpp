@@ -1,20 +1,19 @@
 #pragma once
 
-#include "../engine/window/window.hpp"
+#include <vector>
 
 #include "../engine/math/vector.hpp"
 #include "../engine/math/bounding_box.hpp"
-
+#include "../engine/window/window.hpp"
 #include "../world/world.hpp"
-
 #include "../collision/bounding_box_world/bb_world_collider.hpp"
 
 class Entity
 {
 public:
-    Entity(Window &window, const std::vector<World *> &world_partitons) : m_window(window),
-                                                                          m_world_partitons(world_partitons),
-                                                                          m_bb_collider(m_bounding_box) {}
+    Entity(Window &window, const std::vector<World *> &worlds) : m_window(window),
+                                                                 m_worlds(worlds),
+                                                                 m_bb_collider(m_bounding_box) {}
     virtual ~Entity() {}
 
     virtual void update();
@@ -44,7 +43,7 @@ protected:
 
 protected:
     Window &m_window;
-    const std::vector<World *> &m_world_partitons;
+    const std::vector<World *> &m_worlds;
 
     BoundingBox m_bounding_box;
     BBWorldCollider m_bb_collider;

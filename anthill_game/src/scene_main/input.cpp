@@ -1,7 +1,5 @@
 #include "scene_main.hpp"
 
-#include <iostream>
-
 void MainScene::update_input()
 {
     if (m_window.input().isGamepadMode())
@@ -32,20 +30,26 @@ void MainScene::update_input()
     {
         m_player.move(3 * DT, 0);
     }
-    if (m_window.input().button(IButtonID::Action1).pressed())
+    if (m_window.input().button(IButtonID::Jump).pressed())
     {
         m_player.jump();
     }
-    if (m_window.input().button(IButtonID::Action1).unpressed())
+    if (m_window.input().button(IButtonID::Jump).unpressed())
     {
         m_player.unjump();
     }
 
-    if (m_window.input().button(IButtonID::Action2).pressed())
+    if (m_window.input().button(IButtonID::Shoot).pressed())
     {
         Bullet bullet(m_player.getPosition().x, m_player.getPosition().y, m_aim_position.x, m_aim_position.y);
         bullet.setSpeed(20.0f);
+        bullet.setPower(5.0f);
         m_bullet_manager.add(bullet);
+
+        if (m_window.input().isGamepadMode())
+        {
+            m_window.input().rumbleGamepad(20000, 40000, 200);
+        }
     }
 
     if (m_window.input().button(IButtonID::Fullscreen).pressed())

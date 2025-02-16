@@ -23,7 +23,7 @@ void Player::jump(bool override)
 
     if (m_window.input().isGamepadMode())
     {
-        m_window.input().rumbleGamepad(30000, 30000, 100);
+        m_window.input().rumbleGamepad(25000, 30000, 125);
     }
 }
 

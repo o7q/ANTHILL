@@ -1,8 +1,5 @@
 #include "scene_manager.hpp"
 
-#include "../engine/window/window.hpp"
-
-#include "../assets/assets.hpp"
 #include "../scene_main/scene_main.hpp"
 
 void SceneManager::update()

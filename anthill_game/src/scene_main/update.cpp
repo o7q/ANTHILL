@@ -4,9 +4,9 @@ void MainScene::update_world()
 {
     Vec2<float> player_pos = m_player.getPosition();
     m_world_update_bb = BoundingBox(player_pos.x, player_pos.y, 400, 500);
-    m_wp_manager.update(player_pos);
+    m_world_manager.update(player_pos);
 
-    for (World *world : m_wp_manager.getWorldPartitions())
+    for (World *world : m_world_manager.getWorldPartitions())
     {
         world->update(&m_world_update_bb);
     }

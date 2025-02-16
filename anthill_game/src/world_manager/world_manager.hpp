@@ -1,15 +1,15 @@
 #pragma once
 
 #include <vector>
-#include "../../world/world.hpp"
-#include "../../engine/window/window.hpp"
-#include "../../engine/logger/logger.hpp"
 
-class WPManager
+#include "../world/world.hpp"
+#include "../engine/window/window.hpp"
+
+class WorldManager
 {
 public:
-    WPManager(Window &window, int partiton_width, int partiton_height);
-    ~WPManager();
+    WorldManager(Window &window, int partiton_width, int partiton_height);
+    ~WorldManager();
 
     void update(Vec2<float> player_position);
 

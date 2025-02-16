@@ -1,13 +1,12 @@
 #pragma once
 
-#include "../entity/entity.hpp"
-
 #include "../engine/window/window.hpp"
+#include "../entity/entity.hpp"
 
 class Player : public Entity
 {
 public:
-    Player(Window &window, const std::vector<World *> &world_partitions) : Entity(window, world_partitions)
+    Player(Window &window, const std::vector<World *> &worlds) : Entity(window, worlds)
     {
         m_bb_collider.setYSensitivity(4.0f);
     }

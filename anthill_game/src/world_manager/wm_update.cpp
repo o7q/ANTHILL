@@ -1,6 +1,8 @@
-#include "wp_manager.hpp"
+#include "world_manager.hpp"
 
-void WPManager::update(Vec2<float> player_position)
+#include "../engine/logger/logger.hpp"
+
+void WorldManager::update(Vec2<float> player_position)
 {
     int width = m_world_partitons[0]->getSize().x;
     int height = m_world_partitons[0]->getSize().y;

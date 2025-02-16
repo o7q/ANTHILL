@@ -1,6 +1,7 @@
 #include "logger.hpp"
 
 #include <iostream>
+
 #include <SDL3/SDL.h>
 
 namespace Log

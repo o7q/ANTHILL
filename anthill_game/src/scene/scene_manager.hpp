@@ -3,6 +3,9 @@
 #include "scene_id.hpp"
 #include "scene.hpp"
 
+#include "../engine/window/window.hpp"
+#include "../assets/assets.hpp"
+
 class SceneManager
 {
 public:

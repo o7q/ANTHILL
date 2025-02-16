@@ -1,6 +1,6 @@
-#include "wp_manager.hpp"
+#include "world_manager.hpp"
 
-void WPManager::delete_world(World *world)
+void WorldManager::delete_world(World *world)
 {
     if (world != nullptr)
     {
