@@ -1,7 +1,7 @@
 #include "world_manager.hpp"
 
 #include "../engine/logger/logger.hpp"
-#include "../world_generator/debug/wg_debug.hpp"
+#include "../world_generator/world_generator.hpp"
 
 void WorldManager::update(Vec2<float> player_position)
 {
@@ -24,10 +24,16 @@ void WorldManager::update(Vec2<float> player_position)
 
     bool next_level = level % 2 == 1;
 
+    WorldGenerator::Settings settings;
+    settings.width = width;
+    settings.height = height;
+    settings.seed = 0;
+    settings.preset = WorldGenerator::Settings::Preset::Test;
+
     if (next_level)
     {
         delete_world(m_worlds[0]);
-        m_worlds[0] = DebugWorldGenerator(m_window.getSDLRenderer(), WorldGenerator::Settings{width, height, 0}).world();
+        m_worlds[0] = WorldGenerator::generate(m_window.getSDLRenderer(), settings);
         m_worlds[0]->setPosition(0, m_worlds[0]->getSize().y * (level + 1));
 
         World::Portal portal1{m_worlds[1], true, false, false, false};
@@ -39,7 +45,7 @@ void WorldManager::update(Vec2<float> player_position)
     else
     {
         delete_world(m_worlds[1]);
-        m_worlds[1] = DebugWorldGenerator(m_window.getSDLRenderer(), WorldGenerator::Settings{width, height, 0}).world();
+        m_worlds[1] = WorldGenerator::generate(m_window.getSDLRenderer(), settings);
         m_worlds[1]->setPosition(0, m_worlds[1]->getSize().y * (level + 1));
 
         World::Portal portal1{m_worlds[1], false, true, false, false};

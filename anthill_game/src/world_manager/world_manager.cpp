@@ -1,14 +1,20 @@
 #include "world_manager.hpp"
 
-#include "../world_generator/debug/wg_debug.hpp"
+#include "../world_generator/world_generator.hpp"
 
 WorldManager::WorldManager(Window &window, int width, int height) : m_window(window)
 {
     m_world_size.x = width;
     m_world_size.x = height;
 
-    m_worlds.push_back(DebugWorldGenerator(window.getSDLRenderer(), WorldGenerator::Settings{width, height, -1}).world());
-    m_worlds.push_back(DebugWorldGenerator(window.getSDLRenderer(), WorldGenerator::Settings{width, height, -1}).world());
+    WorldGenerator::Settings settings;
+    settings.width = width;
+    settings.height = height;
+    settings.seed = 0;
+    settings.preset = WorldGenerator::Settings::Preset::Test;
+
+    m_worlds.push_back(WorldGenerator::generate(window.getSDLRenderer(), settings));
+    m_worlds.push_back(WorldGenerator::generate(window.getSDLRenderer(), settings));
 
     m_worlds[1]->move(0, height);
 
