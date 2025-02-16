@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void MainScene::handle_input()
+void MainScene::update_input()
 {
     if (m_window.input().isGamepadMode())
     {
@@ -41,33 +41,15 @@ void MainScene::handle_input()
         m_player.unjump();
     }
 
+    if (m_window.input().button(IButtonID::Action2).pressed())
+    {
+        Bullet bullet(m_player.getPosition().x, m_player.getPosition().y, m_aim_position.x, m_aim_position.y);
+        bullet.setSpeed(20.0f);
+        m_bullet_manager.add(bullet);
+    }
+
     if (m_window.input().button(IButtonID::Fullscreen).pressed())
     {
         m_window.setFullscreen(!m_window.isFullscreen());
-    }
-
-    if (m_window.input().button(IButtonID::Debug1).pressed())
-    {
-        m_preset = Particle::Preset::Air;
-    }
-    if (m_window.input().button(IButtonID::Debug2).pressed())
-    {
-        m_preset = Particle::Preset::Stone;
-    }
-    if (m_window.input().button(IButtonID::Debug3).pressed())
-    {
-        m_preset = Particle::Preset::Sand;
-    }
-    if (m_window.input().button(IButtonID::Debug4).pressed())
-    {
-        m_preset = Particle::Preset::Water;
-    }
-    if (m_window.input().button(IButtonID::Debug5).pressed())
-    {
-        m_preset = Particle::Preset::Blood;
-    }
-    if (m_window.input().button(IButtonID::Debug6).pressed())
-    {
-        m_preset = Particle::Preset::Steam;
     }
 }

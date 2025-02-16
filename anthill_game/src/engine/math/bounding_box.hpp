@@ -13,6 +13,8 @@ struct BoundingBox
     Vec2<float> getPosition() const { return m_pos; }
     Vec2<float> getSize() const { return m_size; }
 
+    bool pointInside(float x, float y) const;
+
     Vec2<float> getP1() const { return m_points[0]; }
     Vec2<float> getP2() const { return m_points[1]; }
     Vec2<float> getP3() const { return m_points[2]; }

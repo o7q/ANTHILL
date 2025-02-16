@@ -4,12 +4,11 @@
 
 struct Segment
 {
-    struct SCollision
+    struct IData
     {
-        bool is_colliding = false;
+        bool intersecting = false;
 
-        float intersection_x = 0.0f;
-        float intersection_y = 0.0f;
+        Vec2<float> position;
 
         float range_a = 0.0f;
         float range_b = 0.0f;
@@ -19,7 +18,7 @@ struct Segment
     Segment(Vec2<float> a, Vec2<float> b) : a(a), b(b) {}
     Segment(float x1, float y1, float x2, float y2) : a(x1, y1), b(x2, y2) {}
 
-    const SCollision colliding(const Segment &other) const
+    const IData checkSegmentIntersection(const Segment &other) const
     {
         float x1 = a.x;
         float x2 = b.x;
@@ -35,22 +34,22 @@ struct Segment
         float uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / d;
         float uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / d;
 
-        SCollision s_collision;
+        IData i_data;
         if (uA >= 0.0f && uA <= 1.0f && uB >= 0 && uB <= 1.0f)
         {
-            s_collision.is_colliding = true;
+            i_data.intersecting = true;
 
-            float intersection_x = x1 + uA * (x2 - x1);
-            float intersection_y = y1 + uA * (y2 - y1);
+            float i_x = x1 + uA * (x2 - x1);
+            float i_y = y1 + uA * (y2 - y1);
 
-            s_collision.intersection_x = intersection_x;
-            s_collision.intersection_y = intersection_y;
+            i_data.position.x = i_x;
+            i_data.position.y = i_y;
 
-            s_collision.range_a = uA;
-            s_collision.range_b = uB;
+            i_data.range_a = uA;
+            i_data.range_b = uB;
         }
 
-        return s_collision;
+        return i_data;
     }
 
     Vec2<float> a, b;

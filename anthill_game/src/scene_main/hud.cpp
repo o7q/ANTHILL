@@ -1,6 +1,6 @@
 #include "scene_main.hpp"
 
-void MainScene::handle_hud()
+void MainScene::update_hud()
 {
     Vec2<float> player_pos = m_player.getPosition();
 

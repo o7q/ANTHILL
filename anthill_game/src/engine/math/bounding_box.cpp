@@ -27,6 +27,14 @@ void BoundingBox::setSize(float width, float height)
     update_points();
 }
 
+bool BoundingBox::pointInside(float x, float y) const
+{
+    return x >= m_points[0].x &&
+           y >= m_points[0].y &&
+           x <= m_points[2].x &&
+           y <= m_points[2].y;
+}
+
 void BoundingBox::update_points()
 {
     m_points[0].x = m_pos.x - m_size.x / 2.0f;

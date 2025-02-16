@@ -7,21 +7,21 @@
 void WorldPhysics::update_smoke(Particle particle, int x, int y)
 {
     // const Particle p_orig = particle;
-    bool g_moved = false;
+    bool moved = false;
 
     auto move = [&](int _x, int _y)
     {
         if (p_get(_x, _y).isAir())
         {
             p_swap(x, y, _x, _y);
-            g_moved = true;
+            moved = true;
         }
     };
 
     bool move_up = Random::genInt(0, 4) == 0;
     bool move_side = Random::genInt(0, 3) == 0;
 
-    if (in_bounds(x, y - 1) && !g_moved && move_up)
+    if (in_bounds(x, y - 1) && !moved && move_up)
     {
         move(x, y - 1);
     }
@@ -32,14 +32,14 @@ void WorldPhysics::update_smoke(Particle particle, int x, int y)
 
         if (left_right == 0)
         {
-            if (in_bounds(x - 1, y) && !g_moved && move_side)
+            if (in_bounds(x - 1, y) && !moved && move_side)
             {
                 move(x - 1, y);
             }
         }
         else
         {
-            if (in_bounds(x + 1, y) && !g_moved && move_side)
+            if (in_bounds(x + 1, y) && !moved && move_side)
             {
                 move(x + 1, y);
             }

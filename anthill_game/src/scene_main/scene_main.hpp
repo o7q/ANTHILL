@@ -8,6 +8,7 @@
 #include "../engine/texture/texture.hpp"
 
 #include "world_partitons/wp_manager.hpp"
+#include "bullets/bullet_manager.hpp"
 
 #include "../bullet/bullet.hpp"
 
@@ -16,6 +17,7 @@ class MainScene : public Scene
 public:
     MainScene(Window &window, Assets &assets) : Scene(window, assets),
                                                 m_wp_manager(window, 1000, 1000),
+                                                m_bullet_manager(m_wp_manager, m_world_update_bb),
                                                 m_player(window, m_wp_manager.getWorldPartitions()),
                                                 m_camera(window.getScale(), window.getScale())
     {
@@ -34,24 +36,24 @@ public:
     SceneID run() override;
 
 private:
-    void handle_update();
-    void handle_render();
-    void handle_input();
-    void handle_hud();
+    void update_player();
+    void update_world();
+    void update_entities();
+
+    void update_render();
+    void update_input();
+    void update_hud();
 
 private:
     WPManager m_wp_manager;
+    BulletManager m_bullet_manager;
     Player m_player;
     Camera m_camera;
 
     BoundingBox m_world_update_bb;
 
-    Particle::Preset m_preset;
-
-    Texture *crosshair_texture = nullptr;
-
     Vec2<float> m_aim_position;
     Vec2<float> m_aim_position_gamepad;
 
-    std::vector<Bullet> m_bullets;
+    Texture *crosshair_texture = nullptr;
 };
