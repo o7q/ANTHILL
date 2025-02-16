@@ -10,12 +10,11 @@
 #include "../bullet/bullet.hpp"
 #include "../bullet_manager/bullet_manager.hpp"
 
-
 class MainScene : public Scene
 {
 public:
     MainScene(Window &window, Assets &assets) : Scene(window, assets),
-                                                m_world_manager(window, 100, 100),
+                                                m_world_manager(window),
                                                 m_player(window, m_world_manager.getWorlds()),
                                                 m_camera(window.getScale(), window.getScale())
     {
@@ -23,6 +22,9 @@ public:
         m_player.setBoundsSize(8, 25);
 
         m_bullet_manager.setWorldManager(&m_world_manager);
+
+        m_world_manager.queueNextGenerator(WorldGenerator::Settings{100, 100, 0});
+        m_world_manager.next();
 
         crosshair_texture = new Texture(m_window.getSDLRenderer(), m_assets.images.crosshair_1x.getSDLSurface());
     }

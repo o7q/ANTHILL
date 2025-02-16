@@ -39,6 +39,11 @@ void MainScene::update_input()
         m_player.unjump();
     }
 
+    if (m_window.input().button(IButtonID::Debug1).pressed())
+    {
+        m_world_manager.next();
+    }
+
     if (m_window.input().button(IButtonID::Shoot).pressed())
     {
         Bullet bullet(m_player.getPosition().x, m_player.getPosition().y, m_aim_position.x, m_aim_position.y);
