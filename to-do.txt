@@ -1,2 +1,1 @@
-- Add queue system to world manager
 - Implement rolling average for deltatime to prevent lagspikes breaking physics
