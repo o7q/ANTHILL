@@ -12,7 +12,7 @@ void MainScene::update_hud()
     {
         if (m_window.isCursorVisible())
         {
-            Log::log(Log::Type::Info, "MainScene/hud", "Hiding cursor (gamepad mode enabled)");
+            Log::log(Log::Level::Info, "MainScene/hud", "Hiding cursor (gamepad mode enabled)");
             m_window.showCursor(false);
         }
 
@@ -21,7 +21,7 @@ void MainScene::update_hud()
     }
     else if (!m_window.isCursorVisible())
     {
-        Log::log(Log::Type::Info, "MainScene/hud", "Showing cursor (gamepad mode disabled)");
+        Log::log(Log::Level::Info, "MainScene/hud", "Showing cursor (gamepad mode disabled)");
         m_window.showCursor(true);
     }
 }

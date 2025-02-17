@@ -23,9 +23,6 @@ public:
 
         m_bullet_manager.setWorldManager(&m_world_manager);
 
-        m_world_manager.queueNextGenerator(WorldGenerator::Settings{100, 100, 0});
-        m_world_manager.next();
-
         crosshair_texture = new Texture(m_window.getSDLRenderer(), m_assets.images.crosshair_1x.getSDLSurface());
     }
     ~MainScene() override

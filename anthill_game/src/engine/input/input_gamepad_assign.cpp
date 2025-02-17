@@ -15,7 +15,7 @@ void InputManager::assign_gamepad(int id)
     bool gamepad_assigned = m_gamepads.find(id) != m_gamepads.end();
     if (gamepad_assigned)
     {
-        Log::log(Log::Type::Warn, "InputManager", "Gamepad: [" + std::to_string(id) + "] " + get_gamepad_name(m_gamepads[id]) + " - already assigned");
+        Log::log(Log::Level::Warn, "InputManager", "Gamepad: [" + std::to_string(id) + "] " + get_gamepad_name(m_gamepads[id]) + " - already assigned");
 
         return;
     }
@@ -25,8 +25,8 @@ void InputManager::assign_gamepad(int id)
 
     m_active_gamepad = id;
 
-    Log::log(Log::Type::Info, "InputManager", "Assigned gamepad: [" + std::to_string(id) + "] " + get_gamepad_name(gamepad));
-    Log::log(Log::Type::Info, "InputManager", "Gamepads connected: " + std::to_string(m_gamepads.size()));
+    Log::log(Log::Level::Info, "InputManager", "Assigned gamepad: [" + std::to_string(id) + "] " + get_gamepad_name(gamepad));
+    Log::log(Log::Level::Info, "InputManager", "Gamepads connected: " + std::to_string(m_gamepads.size()));
 }
 
 void InputManager::remove_gamepad(int id, bool erase_from_map)
@@ -34,7 +34,7 @@ void InputManager::remove_gamepad(int id, bool erase_from_map)
     bool gamepad_assigned = m_gamepads.find(id) != m_gamepads.end();
     if (!gamepad_assigned)
     {
-        Log::log(Log::Type::Warn, "InputManager", "No gamepad assigned at: " + std::to_string(id));
+        Log::log(Log::Level::Warn, "InputManager", "No gamepad assigned at: " + std::to_string(id));
         return;
     }
 
@@ -50,6 +50,6 @@ void InputManager::remove_gamepad(int id, bool erase_from_map)
 
     m_active_gamepad = -1;
 
-    Log::log(Log::Type::Info, "InputManager", "Removed gamepad: [" + std::to_string(id) + "] " + gamepad_name);
-    Log::log(Log::Type::Info, "InputManager", "Gamepads left: " + std::to_string(m_gamepads.size()));
+    Log::log(Log::Level::Info, "InputManager", "Removed gamepad: [" + std::to_string(id) + "] " + gamepad_name);
+    Log::log(Log::Level::Info, "InputManager", "Gamepads left: " + std::to_string(m_gamepads.size()));
 }

@@ -9,7 +9,7 @@ namespace Log
     bool enabled = true;
 };
 
-void Log::log(Type logLevel, const std::string &module, const std::string &text, bool showSDLError)
+void Log::log(Level logLevel, const std::string &module, const std::string &text, bool showSDLError)
 {
     if (!enabled)
     {
@@ -19,16 +19,16 @@ void Log::log(Type logLevel, const std::string &module, const std::string &text,
     std::string error = "";
     switch (logLevel)
     {
-    case Type::Info:
+    case Level::Info:
         error = "INFO";
         break;
-    case Type::Warn:
+    case Level::Warn:
         error = "WARN";
         break;
-    case Type::Error:
+    case Level::Error:
         error = "ERROR";
         break;
-    case Type::Fatal:
+    case Level::Fatal:
         error = "FATAL";
         break;
     }

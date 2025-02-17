@@ -39,9 +39,14 @@ void MainScene::update_input()
         m_player.unjump();
     }
 
-    if (m_window.input().button(IButtonID::Debug1).pressed())
+    if (m_window.input().button(IButtonID::Debug1).down())
     {
-        m_world_manager.next();
+        m_world_manager.queue(WorldGenerator::Settings{100, 100, -1});
+        m_world_manager.generateLatest();
+    }
+    if (m_window.input().button(IButtonID::Debug2).down())
+    {
+        m_world_manager.purge();
     }
 
     if (m_window.input().button(IButtonID::Shoot).pressed())

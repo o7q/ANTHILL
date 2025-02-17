@@ -20,7 +20,7 @@ void InputManager::poll(SDL_Event event)
         if (m_gamepad_mode)
         {
             m_gamepad_mode = false;
-            Log::log(Log::Type::Info, "InputManager", "Gamepad mode disabled");
+            Log::log(Log::Level::Info, "InputManager", "Gamepad mode disabled");
         }
         break;
 
@@ -35,7 +35,7 @@ void InputManager::poll(SDL_Event event)
         if (m_gamepad_mode)
         {
             m_gamepad_mode = false;
-            Log::log(Log::Type::Info, "InputManager", "Gamepad mode disabled");
+            Log::log(Log::Level::Info, "InputManager", "Gamepad mode disabled");
         }
         break;
 
@@ -51,7 +51,7 @@ void InputManager::poll(SDL_Event event)
         if (!m_gamepad_mode)
         {
             m_gamepad_mode = true;
-            Log::log(Log::Type::Info, "InputManager", "Gamepad mode enabled");
+            Log::log(Log::Level::Info, "InputManager", "Gamepad mode enabled");
         }
         break;
 

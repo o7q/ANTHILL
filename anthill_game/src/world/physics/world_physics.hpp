@@ -8,6 +8,15 @@
 class WorldPhysics
 {
 public:
+    struct Portal
+    {
+        WorldPhysics *up = nullptr;
+        WorldPhysics *down = nullptr;
+        WorldPhysics *left = nullptr;
+        WorldPhysics *right = nullptr;
+    };
+
+public:
     WorldPhysics(Particle **particles,
                  Texture *world_texture,
                  unsigned int width,
@@ -21,23 +30,12 @@ public:
 
     void update_particles(BoundingBox *box = nullptr);
 
-    void set_physics_portal(WorldPhysics *physics_portal, bool top, bool bottom, bool left, bool right)
+    void setPortal(Portal portal)
     {
-        m_physics_portal = physics_portal;
-        m_portal_up = top;
-        m_portal_down = bottom;
-        m_portal_left = left;
-        m_portal_right = right;
+        m_portal = portal;
     }
 
-    void clear_physics_portal()
-    {
-        m_physics_portal = nullptr;
-        m_portal_up = false;
-        m_portal_down = false;
-        m_portal_left = false;
-        m_portal_right = false;
-    }
+    Portal getPortal() const { return m_portal; }
 
 private:
     void p_set(int x, int y, Particle particle);
@@ -61,9 +59,5 @@ private:
     Texture *m_world_texture = nullptr;
     Vec2<int> m_size;
 
-    WorldPhysics *m_physics_portal = nullptr;
-    bool m_portal_up = false;
-    bool m_portal_down = false;
-    bool m_portal_left = false;
-    bool m_portal_right = false;
+    Portal m_portal;
 };

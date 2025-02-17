@@ -4,7 +4,7 @@
 
 namespace Log
 {
-    enum class Type
+    enum class Level
     {
         Info,
         Warn,
@@ -13,5 +13,5 @@ namespace Log
     };
 
     extern bool enabled;
-    void log(Type logLevel, const std::string &module, const std::string &text, bool showSDLError = false);
+    void log(Level logLevel, const std::string &module, const std::string &text, bool showSDLError = false);
 };

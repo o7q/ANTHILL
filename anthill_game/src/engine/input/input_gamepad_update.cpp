@@ -15,7 +15,7 @@ void InputManager::update_joystick(int index)
     else if (!m_gamepad_mode)
     {
         m_gamepad_mode = true;
-        Log::log(Log::Type::Info, "InputManager", "Gamepad mode enabled");
+        Log::log(Log::Level::Info, "InputManager", "Gamepad mode enabled");
     }
 }
 

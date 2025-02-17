@@ -5,26 +5,15 @@
 #include <SDL3/SDL.h>
 
 #include "particle/particle.hpp"
+
 #include "physics/world_physics.hpp"
 
 #include "../engine/math/vector.hpp"
 #include "../engine/math/segment.hpp"
 #include "../engine/texture/texture.hpp"
 
-
 class World
 {
-public:
-    struct Portal
-    {
-        World *world = nullptr;
-
-        bool up = false;
-        bool down = false;
-        bool left = false;
-        bool right = false;
-    };
-
 public:
     enum class DrawShape
     {
@@ -51,28 +40,7 @@ public:
         m_world_texture.setPosition(x, y);
     }
 
-    void setPortal(Portal portal)
-    {
-        if (portal.world == nullptr)
-        {
-            return;
-        }
-
-        bool horizontal_invalid = portal.world->getSize().x != m_size.x && (portal.up || portal.down);
-        bool vertical_invalid = portal.world->getSize().y != m_size.y && (portal.left || portal.right);
-
-        if (horizontal_invalid || vertical_invalid)
-        {
-            return;
-        }
-
-        m_world_physics->set_physics_portal(portal.world->m_world_physics, portal.up, portal.down, portal.left, portal.right);
-    }
-
-    void clearPortal()
-    {
-        m_world_physics->clear_physics_portal();
-    }
+    WorldPhysics *getWorldPhysics() const { return m_world_physics; }
 
     void setParticle(int x, int y, Particle particle, bool is_global_coordinate = true);
     void drawParticles(int loc_x, int loc_y, int radius, const Particle particle, DrawShape drawShape = DrawShape::Circle, bool is_global_coordinate = true);

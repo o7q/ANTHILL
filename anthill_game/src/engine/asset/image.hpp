@@ -18,7 +18,7 @@ struct Image
         m_surface = IMG_Load(path.c_str());
         if (m_surface == NULL)
         {
-            Log::log(Log::Type::Error, "AssetLoader/images", "Unable to load image \"" + path + '\"');
+            Log::log(Log::Level::Error, "AssetLoader/images", "Unable to load image \"" + path + '\"');
         }
     }
     ~Image()

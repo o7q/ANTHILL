@@ -11,25 +11,25 @@ bool sdl_init()
 
     if (!SDL_InitSubSystem(SDL_INIT_VIDEO))
     {
-        Log::log(Log::Type::Fatal, "Init", "Failing to initialize video!", true);
+        Log::log(Log::Level::Fatal, "Init", "Failing to initialize video!", true);
         return false;
     }
 
     if (!SDL_InitSubSystem(SDL_INIT_GAMEPAD))
     {
-        Log::log(Log::Type::Fatal, "Init", "Failing to initialize gamepad!", true);
+        Log::log(Log::Level::Fatal, "Init", "Failing to initialize gamepad!", true);
         return false;
     }
 
     if (!SDL_InitSubSystem(SDL_INIT_JOYSTICK))
     {
-        Log::log(Log::Type::Fatal, "Init", "Failing to initialize joystick!", true);
+        Log::log(Log::Level::Fatal, "Init", "Failing to initialize joystick!", true);
         return false;
     }
 
     if (!TTF_Init())
     {
-        Log::log(Log::Type::Fatal, "Init", "Failing to initialize TTF!", true);
+        Log::log(Log::Level::Fatal, "Init", "Failing to initialize TTF!", true);
         return false;
     }
 

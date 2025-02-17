@@ -33,5 +33,5 @@ void Window::setFullscreen(bool value)
     SDL_SetWindowFullscreen(m_window, value);
     m_is_fullscreen = value;
     
-    Log::log(Log::Type::Info, "Window", "Fullscreen: " + std::to_string(value));
+    Log::log(Log::Level::Info, "Window", "Fullscreen: " + std::to_string(value));
 }

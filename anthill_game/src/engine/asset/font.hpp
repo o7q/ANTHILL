@@ -18,7 +18,7 @@ struct Font
         font = TTF_OpenFont(path.c_str(), size);
         if (font == NULL)
         {
-            Log::log(Log::Type::Error, "AssetLoader/fonts", "Unable to load font \"" + path + '\"');
+            Log::log(Log::Level::Error, "AssetLoader/fonts", "Unable to load font \"" + path + '\"');
         }
     }
     ~Font()

@@ -2,7 +2,6 @@
 
 WorldGenerator::Generator::Generator(SDL_Renderer *renderer, Settings settings)
 {
-    m_gen = std::mt19937(settings.seed);
     m_world = new World(renderer, settings.width, settings.height);
 
     if (settings.seed < 0)
@@ -10,6 +9,7 @@ WorldGenerator::Generator::Generator(SDL_Renderer *renderer, Settings settings)
         settings.seed = Random::genInt(0, std::numeric_limits<int>::max());
     }
 
+    m_gen = std::mt19937(settings.seed);
     m_settings = settings;
 }
 
