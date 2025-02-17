@@ -7,13 +7,13 @@
 
 struct Fonts
 {
-    void load()
+    Fonts()
     {
         load_font(alagard, "assets/fonts/alagard.ttf", 14);
         load_font(silkscreen, "assets/fonts/silkscreen.ttf", 14);
     }
 
-    void destroy()
+    ~Fonts()
     {
         destroy_font(alagard);
         destroy_font(silkscreen);
@@ -33,7 +33,7 @@ private:
         font = TTF_OpenFont(path.c_str(), size);
         if (font == NULL)
         {
-            Log::log(Log::Level::Error, "AssetLoader/fonts", "Unable to load font \"" + path + '\"');
+            Log::log(Log::Level::Error, "Assets/fonts", "Unable to load font \"" + path + '\"');
         }
     }
 

@@ -7,13 +7,13 @@
 
 struct Surfaces
 {
-    void load()
+    Surfaces()
     {
         load_font(crosshair_1x, "assets/images/crosshair/crosshair_1x.png");
         load_font(crosshair_2x, "assets/images/crosshair/crosshair_2x.png");
     }
 
-    void destroy()
+    ~Surfaces()
     {
         destroy_font(crosshair_1x);
         destroy_font(crosshair_2x);
@@ -34,7 +34,7 @@ private:
         surface = IMG_Load(path.c_str());
         if (surface == NULL)
         {
-            Log::log(Log::Level::Error, "AssetLoader/images", "Unable to load image \"" + path + '\"');
+            Log::log(Log::Level::Error, "Assets/surfaces", "Unable to load image \"" + path + '\"');
             surface = SDL_CreateSurface(1, 1, SDL_PIXELFORMAT_RGBA8888);
         }
     }

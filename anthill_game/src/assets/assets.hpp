@@ -5,18 +5,6 @@
 
 struct Assets
 {
-    void load()
-    {
-        surfaces.load();
-        fonts.load();
-    }
-
-    void destroy()
-    {
-        surfaces.destroy();
-        fonts.destroy();
-    }
-
     Surfaces surfaces;
     Fonts fonts;
 };

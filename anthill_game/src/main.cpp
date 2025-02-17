@@ -53,7 +53,10 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    Game game;
+    // we must de-allocate game before sdl_quit() is called
+    {
+        Game game;
+    }
 
     sdl_quit();
 
