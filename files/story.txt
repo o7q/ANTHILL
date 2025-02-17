@@ -1,4 +1,4 @@
-ANTILL - A power-packed retro-roguelike about getting to the center of the Earth.
+ANTILL - A power-packed retro-roguelike about digging to the center of the Earth.
 
 You play as INA (SÆRLIG-UDGRAVNING MK-IV): A highly specialized military digging robot that was born at the brink of human extinction.
 
