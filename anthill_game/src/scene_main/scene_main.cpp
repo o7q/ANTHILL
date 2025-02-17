@@ -7,7 +7,7 @@ SceneID MainScene::run()
     if (init())
     {
         Log::log(Log::Level::Info, "MainScene", "Init");
-        m_window.setCursor(m_assets.images.crosshair_2x.getSDLSurface());
+        m_window.setCursor(m_assets.surfaces.crosshair_2x);
     }
 
     if (update())

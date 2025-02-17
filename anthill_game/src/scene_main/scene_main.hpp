@@ -23,7 +23,7 @@ public:
 
         m_bullet_manager.setWorldManager(&m_world_manager);
 
-        crosshair_texture = new Texture(m_window.getSDLRenderer(), m_assets.images.crosshair_1x.getSDLSurface());
+        crosshair_texture = new Texture(m_window.getSDLRenderer(), m_assets.surfaces.crosshair_1x);
     }
     ~MainScene() override
     {

@@ -19,25 +19,25 @@ void WorldPhysics::update_particles(BoundingBox *box)
 
     if (box != nullptr)
     {
-        y_start = std::clamp(box->getP4().toInt().y, 0, m_size.y - 1);
-        y_end = std::clamp(box->getP1().toInt().y, 0, m_size.y - 1);
+        y_start  = std::clamp(box->getP4().toInt().y, 0, m_size.y - 1);
+        y_end    = std::clamp(box->getP1().toInt().y, 0, m_size.y - 1);
 
         x1_start = std::clamp(box->getP1().toInt().x, 0, m_size.x - 1);
-        x1_end = std::clamp(box->getP2().toInt().x, 0, m_size.x - 1);
+        x1_end   = std::clamp(box->getP2().toInt().x, 0, m_size.x - 1);
 
         x2_start = x1_end;
-        x2_end = x1_start;
+        x2_end   = x1_start;
     }
     else
     {
         y_start = m_size.y - 1;
-        y_end = 0;
+        y_end   = 0;
 
         x1_start = 0;
-        x1_end = m_size.x;
+        x1_end   = m_size.x;
 
         x2_start = m_size.x - 1;
-        x2_end = 0;
+        x2_end   = 0;
     }
 
     for (int y = y_start; y >= y_end; --y)
@@ -76,10 +76,10 @@ void WorldPhysics::update_particle(int x, int y)
 
 void WorldPhysics::p_set(int x, int y, Particle particle)
 {
-    bool x_too_big = x >= m_size.x;
+    bool x_too_big   = x >= m_size.x;
     bool x_too_small = x < 0;
 
-    bool y_too_big = y >= m_size.y;
+    bool y_too_big   = y >= m_size.y;
     bool y_too_small = y < 0;
 
     if (x_too_big || x_too_small || y_too_big || y_too_small)
@@ -131,18 +131,20 @@ void WorldPhysics::p_move(int x1, int y1, int x2, int y2)
 
 Color WorldPhysics::p_mix(Color a, Color b, float mult_a, float mult_b, float div, bool mix_alpha)
 {
-    return Color((a.r * mult_a + b.r * mult_b) / div,
-                 (a.g * mult_a + b.g * mult_b) / div,
-                 (a.b * mult_a + b.b * mult_b) / div,
-                 mix_alpha ? (a.a * mult_a + b.a * mult_b) / div : a.a);
+    Uint8 c_r =             (a.r * mult_a + b.r * mult_b) / div;
+    Uint8 c_g =             (a.g * mult_a + b.g * mult_b) / div;
+    Uint8 c_b =             (a.b * mult_a + b.b * mult_b) / div;
+    Uint8 c_a = mix_alpha ? (a.a * mult_a + b.a * mult_b) / div : a.a;
+    
+    return Color(c_r, c_g, c_b, c_a);
 }
 
 Particle WorldPhysics::p_get(int x, int y)
 {
-    bool x_too_big = x >= m_size.x;
+    bool x_too_big   = x >= m_size.x;
     bool x_too_small = x < 0;
 
-    bool y_too_big = y >= m_size.y;
+    bool y_too_big   = y >= m_size.y;
     bool y_too_small = y < 0;
 
     if (x_too_big || x_too_small || y_too_big || y_too_small)

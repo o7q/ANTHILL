@@ -8,7 +8,6 @@
 
 bool sdl_init()
 {
-
     if (!SDL_InitSubSystem(SDL_INIT_VIDEO))
     {
         Log::log(Log::Level::Fatal, "Init", "Failing to initialize video!", true);
@@ -38,12 +37,11 @@ bool sdl_init()
 
 void sdl_quit()
 {
-    // why does this crash!!?!
-    // TTF_Quit();
+    TTF_Quit();
 
-    SDL_QuitSubSystem(SDL_INIT_VIDEO);
     SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     SDL_QuitSubSystem(SDL_INIT_GAMEPAD);
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
     SDL_Quit();
 }
