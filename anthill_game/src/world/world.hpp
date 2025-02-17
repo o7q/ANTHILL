@@ -4,13 +4,13 @@
 
 #include <SDL3/SDL.h>
 
-#include "particle/particle.hpp"
-
-#include "../world_physics/world_physics.hpp"
-
 #include "../engine/math/vector.hpp"
 #include "../engine/math/segment.hpp"
 #include "../engine/texture/texture.hpp"
+
+#include "particle/particle.hpp"
+
+#include "../world_physics/world_physics.hpp"
 
 class World
 {
