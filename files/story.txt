@@ -9,4 +9,4 @@ PLOT LAYER 1
 The game takes place inside a simulation. Ina, the robot, is undergoing reinforcement AI training to perfect their military capabilities by putting the robot into an extremely, over the top stress test to accelerate learning. You were designed and assembled by MODERKORP, also known as THE COMPANY.
 
 PLOT LAYER 2
-Ina was a robotics engineer who fell into a coma after a violent car crash. The "simulation" is Ina being in a coma. MODERKORP, a Danish phrase that translated to MOTHER CORP. Is a metaphor for your mother. Who is by your side in the hospital room.
+Ina was a robotics engineer who fell into a coma after a workplace accident. The "simulation" is Ina being in a coma. MODERKORP, a Danish phrase that translated to MOTHER CORP. Is a metaphor for your mother. Who is by your side in the hospital room.
