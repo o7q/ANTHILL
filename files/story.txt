@@ -1,3 +1,12 @@
 ANTILL - A power-packed retro-roguelike about getting to the center of the Earth.
 
-You play as Ina: A highly specialized digging robot that was born at the brink of human extinction.
+KNOWN
+You play as INA: A highly specialized digging robot that was born at the brink of human extinction.
+
+All of the remaining humans have been evacuated into a nearby space station. Your goal is to stop the sun from fully engulfing the earth. A new theory has emerged that states the Earth's core could be used to blast the sun away from Earth, which would give humans more than enough time to advance their interplanetary travel.
+
+PLOT LAYER 1
+The game takes place inside a simulation. Ina, the robot, is undergoing reinforcement AI training to perfect their military capabilities by putting the robot into an extremely, over the top stress test to accelerate learning. You were designed and assembled by MODERKORP, also known as THE COMPANY.
+
+PLOT LAYER 2
+Ina was a robotics engineer who fell into a coma after a violent car crash. The "simulation" is Ina being in a coma. MODERKORP, a Danish phrase that translated to MOTHER CORP. Is a metaphor for your mother. Who is by your side in the hospital room.

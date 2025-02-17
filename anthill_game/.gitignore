@@ -3,6 +3,5 @@ build
 
 *.exe
 *.dll
-*.zip
 
 ANTHILL_windows
