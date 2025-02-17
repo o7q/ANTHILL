@@ -2,9 +2,9 @@
 
 #include <algorithm>
 
-#include "../../engine/math/vector.hpp"
-#include "../../engine/math/random.hpp"
-#include "../../engine/math/bounding_box.hpp"
+#include "../engine/math/vector.hpp"
+#include "../engine/math/random.hpp"
+#include "../engine/math/bounding_box.hpp"
 
 void WorldPhysics::update_particles(BoundingBox *box)
 {

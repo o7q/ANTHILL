@@ -6,7 +6,7 @@
 
 #include "particle/particle.hpp"
 
-#include "physics/world_physics.hpp"
+#include "../world_physics/world_physics.hpp"
 
 #include "../engine/math/vector.hpp"
 #include "../engine/math/segment.hpp"
