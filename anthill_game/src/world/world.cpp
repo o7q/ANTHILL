@@ -5,9 +5,8 @@
 #include "../engine/math/random.hpp"
 #include "../engine/math/bounding_box.hpp"
 
-World::World(SDL_Renderer *renderer,
-             unsigned int width,
-             unsigned int height) : m_world_texture(renderer, width, height)
+World::World(unsigned int width,
+             unsigned int height)
 {
     m_size.x = width;
     m_size.y = height;
@@ -24,9 +23,7 @@ World::World(SDL_Renderer *renderer,
         }
     }
 
-    m_world_physics = new WorldPhysics(m_particles, &m_world_texture, m_size.x, m_size.y);
-    m_world_texture.setOrigin(0, 0);
-    m_world_texture.update();
+    m_world_physics = new WorldPhysics(m_particles, m_size.x, m_size.y);
 }
 
 World::~World()
@@ -34,6 +31,11 @@ World::~World()
     if (m_world_physics != nullptr)
     {
         delete m_world_physics;
+    }
+
+    if (m_world_texture != nullptr)
+    {
+        delete m_world_texture;
     }
 
     for (int y = 0; y < m_size.y; ++y)
@@ -61,13 +63,56 @@ void World::update(BoundingBox *box)
         locked_bb.setSize(size.x, size.y);
     }
 
-    m_world_physics->update_particles(&locked_bb);
+    m_world_physics->updateParticles(&locked_bb);
     generate_world_hitbox(&locked_bb);
 
-    if (m_debug_render_solid_collision)
-        for (int y = 0; y < m_size.y; ++y)
-            for (int x = 0; x < m_size.x; ++x)
-                m_world_texture.setPixel(x, y, m_particles[y][x].solid_enable_collision ? m_particles[y][x].color.hex() : 0xFF0000FF);
+    if (m_world_texture != nullptr)
+    {
+        if (m_debug_render_solid_collision)
+            for (int y = 0; y < m_size.y; ++y)
+                for (int x = 0; x < m_size.x; ++x)
+                    m_world_texture->setPixel(x, y, m_particles[y][x].solid_enable_collision ? m_particles[y][x].color.hex() : 0xFF0000FF);
 
-    m_world_texture.update();
+        m_world_texture->update();
+    }
+}
+
+void World::move(int x, int y)
+{
+    m_position.x += x;
+    m_position.y += y;
+
+    if (m_world_texture != nullptr)
+    {
+        m_world_texture->setPosition(m_position.x, m_position.y);
+    }
+}
+
+void World::setPosition(int x, int y)
+{
+    m_position.x = x;
+    m_position.y = y;
+    
+    if (m_world_texture != nullptr)
+    {
+        m_world_texture->setPosition(x, y);
+    }
+}
+
+void World::primeWorldTexture(SDL_Renderer *renderer)
+{
+    m_world_texture = new Texture(renderer, m_size.x, m_size.y);
+    m_world_texture->setPosition(m_position.x, m_position.y);
+    m_world_texture->setOrigin(0, 0);
+
+    for (int y = 0; y < m_size.y; ++y)
+    {
+        for (int x = 0; x < m_size.x; ++x)
+        {
+            m_world_texture->setPixel(x, y, m_particles[y][x].color.hex());
+        }
+    }
+
+    m_world_texture->update();
+    m_world_physics->setWorldTexture(m_world_texture);
 }

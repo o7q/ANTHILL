@@ -18,23 +18,19 @@ public:
 
 public:
     WorldPhysics(Particle **particles,
-                 Texture *world_texture,
                  unsigned int width,
                  unsigned int height)
     {
         m_particles = particles;
-        m_world_texture = world_texture;
         m_size.x = width;
         m_size.y = height;
     }
 
-    void update_particles(BoundingBox *box = nullptr);
+    void updateParticles(BoundingBox *box = nullptr);
 
-    void setPortal(Portal portal)
-    {
-        m_portal = portal;
-    }
+    void setWorldTexture(Texture *world_texture);
 
+    void setPortal(Portal portal);
     Portal getPortal() const { return m_portal; }
 
 private:

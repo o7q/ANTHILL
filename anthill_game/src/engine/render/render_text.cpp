@@ -14,5 +14,5 @@ void RenderManager::renderText(TTF_Font *font, const std::string &text, Vec2<int
     texture.setOrigin(0, 0);
     SDL_DestroySurface(surface);
 
-    renderTexture(texture, camera);
+    renderTexture(&texture, camera);
 }

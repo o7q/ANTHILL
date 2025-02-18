@@ -6,7 +6,7 @@
 #include "../engine/math/random.hpp"
 #include "../engine/math/bounding_box.hpp"
 
-void WorldPhysics::update_particles(BoundingBox *box)
+void WorldPhysics::updateParticles(BoundingBox *box)
 {
     int y_start = 0;
     int y_end = 0;
@@ -112,7 +112,11 @@ void WorldPhysics::p_set(int x, int y, Particle particle)
     }
 
     m_particles[y][x] = particle;
-    m_world_texture->setPixel(x, y, particle.color.hex());
+    
+    if (m_world_texture != nullptr)
+    {
+        m_world_texture->setPixel(x, y, particle.color.hex());
+    }
 }
 
 void WorldPhysics::p_swap(int x1, int y1, int x2, int y2)
@@ -187,4 +191,14 @@ bool WorldPhysics::in_bounds(int x, int y)
     bool x_can_right = (x < m_size.x) || (m_portal.right != nullptr);
 
     return y_can_up && y_can_down && x_can_left && x_can_right;
+}
+
+void WorldPhysics::setPortal(Portal portal)
+{
+    m_portal = portal;
+}
+
+void WorldPhysics::setWorldTexture(Texture *world_texture)
+{
+    m_world_texture = world_texture;
 }

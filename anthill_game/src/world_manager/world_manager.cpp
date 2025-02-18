@@ -1,18 +1,40 @@
 #include "world_manager.hpp"
 
-#include "../engine/math/vector.hpp"
-#include "../engine/logger/logger.hpp"
-
-void WorldManager::generateLatest()
+void WorldManager::queue(WorldGenerator::Settings settings)
 {
-    if (m_world_queue.empty())
+    WorldGenerator::ThreadSafeGenerator *tsg = new WorldGenerator::ThreadSafeGenerator(settings);
+    m_generator_queue.push_back(tsg);
+
+    std::thread tsg_thread([tsg]()
+                           { tsg->generate(); });
+    tsg_thread.detach();
+}
+
+void WorldManager::updateQueue()
+{
+    if (m_generator_queue.size() == 0)
     {
         return;
     }
 
-    World *world_new = WorldGenerator::generate(m_window.getSDLRenderer(), m_world_queue[0]);
-    m_world_queue.erase(m_world_queue.begin());
+    WorldGenerator::ThreadSafeGenerator *tsg = m_generator_queue[0];
 
+    if (tsg == nullptr)
+    {
+        return;
+    }
+
+    if (!tsg->finished())
+    {
+        return;
+    }
+
+    World *world_new = tsg->getWorld();
+    delete tsg;
+    tsg = nullptr;
+    m_generator_queue.erase(m_generator_queue.begin());
+
+    world_new->primeWorldTexture(m_window.getSDLRenderer());
     world_new->setPosition(0, vertical_pos_index);
     vertical_pos_index += world_new->getSize().y;
 
@@ -41,9 +63,4 @@ void WorldManager::generateLatest()
     {
         ++index;
     }
-}
-
-void WorldManager::queue(WorldGenerator::Settings settings)
-{
-    m_world_queue.push_back(settings);
 }

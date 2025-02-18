@@ -1,16 +1,10 @@
 #include "generator.hpp"
 
-WorldGenerator::Generator::Generator(SDL_Renderer *renderer, Settings settings)
+WorldGenerator::Generator::Generator(Settings settings)
 {
-    m_world = new World(renderer, settings.width, settings.height);
-
-    if (settings.seed < 0)
-    {
-        settings.seed = Random::genInt(0, std::numeric_limits<int>::max());
-    }
-
-    m_gen = std::mt19937(settings.seed);
+    m_world = new World(settings.width, settings.height);
     m_settings = settings;
+    m_gen = std::mt19937(settings.seed);
 }
 
 World *WorldGenerator::Generator::world()

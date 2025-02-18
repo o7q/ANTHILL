@@ -63,7 +63,11 @@ void World::setParticle(int x, int y, Particle particle, bool is_global_coordina
     }
 
     m_particles[y][x] = particle;
-    m_world_texture.setPixel(x, y, particle.color.hex());
+    
+    if (m_world_texture != nullptr)
+    {
+        m_world_texture->setPixel(x, y, particle.color.hex());
+    }
 }
 
 Particle World::getParticle(int x, int y, bool is_global_coordinate) const

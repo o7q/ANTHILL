@@ -30,6 +30,11 @@ void WorldManager::purge_first_world()
 
     m_worlds.erase(m_worlds.begin());
 
+    if (m_worlds.empty())
+    {
+        return;
+    }
+
     WorldPhysics::Portal portal = m_worlds[0]->getWorldPhysics()->getPortal();
     portal.up = nullptr;
     m_worlds[0]->getWorldPhysics()->setPortal(portal);

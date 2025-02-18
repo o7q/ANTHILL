@@ -17,7 +17,7 @@ void MainScene::update_hud()
         }
 
         crosshair_texture->setPosition(m_aim_position.x, m_aim_position.y);
-        m_window.render().renderTexture(*crosshair_texture, &m_camera);
+        m_window.render().renderTexture(crosshair_texture, &m_camera);
     }
     else if (!m_window.isCursorVisible())
     {

@@ -7,7 +7,7 @@ namespace WorldGenerator
     class TestGenerator : public Generator
     {
     public:
-        TestGenerator(SDL_Renderer *renderer, Settings settings) : Generator(renderer, settings)
+        TestGenerator(Settings settings) : Generator(settings)
         {
             generate();
         }

@@ -1,9 +1,5 @@
 #pragma once
 
-#include <limits>
-
-#include <SDL3/SDL.h>
-
 #include "../wg_settings.hpp"
 #include "../../world/world.hpp"
 #include "../../engine/math/random.hpp"
@@ -13,7 +9,7 @@ namespace WorldGenerator
     class Generator
     {
     public:
-        Generator(SDL_Renderer *renderer, Settings settings);
+        Generator(Settings settings);
         World *world();
 
     protected:

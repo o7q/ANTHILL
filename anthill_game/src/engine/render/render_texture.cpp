@@ -1,8 +1,13 @@
 #include "render_manager.hpp"
 
-void RenderManager::renderTexture(const Texture &texture, const Camera *camera)
+void RenderManager::renderTexture(const Texture *texture, const Camera *camera)
 {
-    const SDL_FRect *texture_dst_rect = texture.getSDLDstRect();
+    if (texture == nullptr)
+    {
+        return;
+    }
+
+    const SDL_FRect *texture_dst_rect = texture->getSDLDstRect();
 
     SDL_FRect new_dst_rect;
     new_dst_rect.x = texture_dst_rect->x;
@@ -23,10 +28,10 @@ void RenderManager::renderTexture(const Texture &texture, const Camera *camera)
     new_dst_rect.h = static_cast<int>(new_dst_rect.h);
 
     SDL_RenderTextureRotated(m_renderer,
-                             texture.getSDLTexture(),
-                             texture.getSDLSrcRect(),
+                             texture->getSDLTexture(),
+                             texture->getSDLSrcRect(),
                              &new_dst_rect,
                              0,
                              NULL,
-                             texture.getSDLFlipMode());
+                             texture->getSDLFlipMode());
 }

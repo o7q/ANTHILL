@@ -1,14 +1,18 @@
 #pragma once
 
 #include <vector>
+#include <thread>
+#include <iostream>
 
 #include "../engine/window/window.hpp"
 
 #include "../world/world.hpp"
 #include "../world_generator/world_generator.hpp"
+#include "../engine/logger/logger.hpp"
 
 class WorldManager
 {
+
 public:
     WorldManager(Window &window) : m_window(window) {}
 
@@ -16,10 +20,10 @@ public:
     {
         purge();
     }
-    
-    void generateLatest();
+
     void queue(WorldGenerator::Settings settings);
-    
+    void updateQueue();
+
     void purge();
 
     const std::vector<World *> &getWorlds() const { return m_worlds; }
@@ -38,5 +42,5 @@ private:
     const int m_max_memory_mb = 1000.0f;
 
     std::vector<World *> m_worlds;
-    std::vector<WorldGenerator::Settings> m_world_queue;
+    std::vector<WorldGenerator::ThreadSafeGenerator *> m_generator_queue;
 };

@@ -39,15 +39,16 @@ void MainScene::update_input()
         m_player.unjump();
     }
 
-    if (m_window.input().button(IButtonID::Debug1).down())
+    if (m_window.input().button(IButtonID::Debug1).pressed())
     {
-        m_world_manager.queue(WorldGenerator::Settings{100, 100, -1});
-        m_world_manager.generateLatest();
+        m_world_manager.queue(WorldGenerator::Settings(3000, 2000, -1, WorldGenerator::Settings::Preset::Test));
     }
     if (m_window.input().button(IButtonID::Debug2).down())
     {
         m_world_manager.purge();
     }
+
+    m_world_manager.updateQueue();
 
     if (m_window.input().button(IButtonID::Shoot).pressed())
     {

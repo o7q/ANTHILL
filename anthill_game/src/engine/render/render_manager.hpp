@@ -19,7 +19,7 @@ public:
     void setRenderer(SDL_Renderer *renderer) { m_renderer = renderer; }
     void setScale(int scale) { m_scale = scale; }
 
-    void renderTexture(const Texture &texture, const Camera *camera = nullptr);
+    void renderTexture(const Texture *texture, const Camera *camera = nullptr);
     void renderText(TTF_Font *font, const std::string &text, Vec2<int> position, Color color, Camera *camera = nullptr);
 
     void debug_renderSegment(const Segment &segment, Color color, const Camera *camera = nullptr);
