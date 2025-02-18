@@ -6,6 +6,7 @@
 #include "../world/world.hpp"
 
 #include "generators/test/test.hpp"
+#include "generators/jungle/jungle.hpp"
 
 namespace WorldGenerator
 {

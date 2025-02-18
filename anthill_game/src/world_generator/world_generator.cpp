@@ -14,6 +14,9 @@ void WorldGenerator::ThreadSafeGenerator::generate()
     case Settings::Preset::Test:
         generator = new TestGenerator(m_settings);
         break;
+    case Settings::Preset::Jungle:
+        generator = new JungleGenerator(m_settings);
+        break;
     }
 
     if (generator == nullptr)

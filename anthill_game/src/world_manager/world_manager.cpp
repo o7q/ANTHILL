@@ -1,5 +1,14 @@
 #include "world_manager.hpp"
 
+#include <thread>
+
+#include "../engine/logger/logger.hpp"
+
+WorldManager::~WorldManager()
+{
+    purge();
+}
+
 void WorldManager::queue(WorldGenerator::Settings settings)
 {
     WorldGenerator::ThreadSafeGenerator *tsg = new WorldGenerator::ThreadSafeGenerator(settings);

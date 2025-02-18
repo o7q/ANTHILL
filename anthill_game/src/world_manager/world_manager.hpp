@@ -1,25 +1,18 @@
 #pragma once
 
 #include <vector>
-#include <thread>
-#include <iostream>
 
 #include "../engine/window/window.hpp"
 
 #include "../world/world.hpp"
 #include "../world_generator/world_generator.hpp"
-#include "../engine/logger/logger.hpp"
 
 class WorldManager
 {
-
 public:
     WorldManager(Window &window) : m_window(window) {}
 
-    ~WorldManager()
-    {
-        purge();
-    }
+    ~WorldManager();
 
     void queue(WorldGenerator::Settings settings);
     void updateQueue();

@@ -30,8 +30,8 @@ void WorldPhysics::updateParticles(BoundingBox *box)
     }
     else
     {
-        y_start = m_size.y - 1;
-        y_end   = 0;
+        y_start  = m_size.y - 1;
+        y_end    = 0;
 
         x1_start = 0;
         x1_end   = m_size.x;
@@ -43,11 +43,19 @@ void WorldPhysics::updateParticles(BoundingBox *box)
     for (int y = y_start; y >= y_end; --y)
     {
         if (Random::genInt(0, 2) == 0)
+        {
             for (int x = x1_start; x < x1_end; ++x)
+            {
                 update_particle(x, y);
+            }
+        }
         else
+        {
             for (int x = x2_start; x >= x2_end; --x)
+            {
                 update_particle(x, y);
+            }
+        }
     }
 }
 
@@ -112,7 +120,7 @@ void WorldPhysics::p_set(int x, int y, Particle particle)
     }
 
     m_particles[y][x] = particle;
-    
+
     if (m_world_texture != nullptr)
     {
         m_world_texture->setPixel(x, y, particle.color.hex());
