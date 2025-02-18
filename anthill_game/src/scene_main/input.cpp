@@ -53,7 +53,7 @@ void MainScene::update_input()
     if (m_window.input().button(IButtonID::Shoot).down())
     {
         Bullet bullet(m_player.getPosition().x, m_player.getPosition().y, m_aim_position.x, m_aim_position.y);
-        bullet.setSpeed(2.0f);
+        bullet.setSpeed(20.0f);
         bullet.setPower(10.0f);
         m_bullet_manager.add(bullet);
 

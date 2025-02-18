@@ -19,39 +19,28 @@ SceneID MainScene::run()
         update_player();
         m_bullet_manager.update(m_world_update_bb, DT);
 
-        for (const Bullet &bullet : m_bullet_manager.getBullets())
+        for (const Bullet &bullet : m_bullet_manager.getHitBullets())
         {
-            Vec2<float> bullet_pos = bullet.getPosition();
-            Particle piss(Particle::Preset::Water);
-            piss.color = Color(255, 179, 0, 230);
+            void *hit_object = bullet.getHitObject();
 
-            for (World *world : m_world_manager.getWorlds())
+            if (hit_object == nullptr)
             {
-                world->drawParticles(bullet_pos.x, bullet_pos.y, 1, piss);
+                continue;
             }
 
-            // void *hit_object = bullet.getHitObject();
+            switch (bullet.getHitObjectType())
+            {
+            case Bullet::HitObjectType::World:
+            {
+                World *hit_world = static_cast<World *>(hit_object);
 
-            // if (hit_object == nullptr)
-            // {
-            //     continue;
-            // }
-
-            // switch (bullet.getHitObjectType())
-            // {
-            // case Bullet::HitObjectType::World:
-            // {
-            //     World *hit_world = static_cast<World *>(hit_object);
-
-            //     // Vec2<float> bullet_pos = bullet.getPosition();
-            //     // Particle piss(Particle::Preset::Water);
-            //     // piss.color = Color(255, 179, 0, 230);
-            //     // hit_world->drawParticles(bullet_pos.x, bullet_pos.y, bullet.getPower(), piss);
-            //     break;
-            // }
-            // default:
-            //     break;
-            // }
+                Vec2<float> bullet_pos = bullet.getPosition();
+                hit_world->drawParticles(bullet_pos.x, bullet_pos.y, bullet.getPower(), Particle());
+                break;
+            }
+            default:
+                break;
+            }
         }
 
         update_render();
