@@ -9,21 +9,21 @@ struct Surfaces
 {
     Surfaces()
     {
-        load_font(crosshair_1x, "assets/images/crosshair/crosshair_1x.png");
-        load_font(crosshair_2x, "assets/images/crosshair/crosshair_2x.png");
+        load_surface(crosshair_1x, "assets/images/crosshair/crosshair_1x.png");
+        load_surface(crosshair_2x, "assets/images/crosshair/crosshair_2x.png");
     }
 
     ~Surfaces()
     {
-        destroy_font(crosshair_1x);
-        destroy_font(crosshair_2x);
+        destroy_surface(crosshair_1x);
+        destroy_surface(crosshair_2x);
     }
 
     SDL_Surface *crosshair_1x = nullptr;
     SDL_Surface *crosshair_2x = nullptr;
 
 private:
-    void load_font(SDL_Surface *&surface, const std::string &path)
+    void load_surface(SDL_Surface *&surface, const std::string &path)
     {
         if (surface != nullptr)
         {
@@ -39,7 +39,7 @@ private:
         }
     }
 
-    void destroy_font(SDL_Surface *surface)
+    void destroy_surface(SDL_Surface *surface)
     {
         if (surface != nullptr)
         {
