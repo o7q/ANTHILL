@@ -23,6 +23,8 @@ public:
 
         m_bullet_manager.setWorldManager(&m_world_manager);
 
+        m_world_manager.queue(WorldGenerator::Settings(2000, 2000, -1, WorldGenerator::Settings::Preset::Jungle));
+
         crosshair_texture = new Texture(m_window.getSDLRenderer(), m_assets.surfaces.crosshair_1x);
     }
     ~MainScene() override
