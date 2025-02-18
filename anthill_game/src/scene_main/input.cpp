@@ -41,7 +41,7 @@ void MainScene::update_input()
 
     if (m_window.input().button(IButtonID::Debug1).pressed())
     {
-        m_world_manager.queue(WorldGenerator::Settings(2000, 10, -1, WorldGenerator::Settings::Preset::Jungle));
+        m_world_manager.queue(WorldGenerator::Settings(2000, 2000, -1, WorldGenerator::Settings::Preset::Jungle));
     }
     if (m_window.input().button(IButtonID::Debug2).down())
     {
@@ -53,7 +53,7 @@ void MainScene::update_input()
     if (m_window.input().button(IButtonID::Shoot).down())
     {
         Bullet bullet(m_player.getPosition().x, m_player.getPosition().y, m_aim_position.x, m_aim_position.y);
-        bullet.setSpeed(20.0f);
+        bullet.setSpeed(2.0f);
         bullet.setPower(10.0f);
         m_bullet_manager.add(bullet);
 
