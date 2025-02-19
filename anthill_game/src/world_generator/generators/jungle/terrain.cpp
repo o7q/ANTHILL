@@ -1,12 +1,10 @@
 #include "jungle.hpp"
 
-#include <iostream>
+#include <algorithm>
 
 void WorldGenerator::JungleGenerator::generate_terrain()
 {
-    Noise::Perlin perlin(m_settings.seed);
-
-    float scale = 250.0f;
+    PerlinNoise perlin(m_settings.seed);
 
     Particle solid;
     solid.p_mode = Particle::PMode::None;
@@ -17,51 +15,40 @@ void WorldGenerator::JungleGenerator::generate_terrain()
     {
         for (int x = 0; x < m_settings.width; ++x)
         {
-            float p0 = 0.0f;
-            float p0_f = 3.5f;
-            float p0_a = 1.0f;
-            int p0_i = 1;
+            PerlinSampler terrain(perlin);
+            terrain.setXScale(180.0f);
+            terrain.setYScale(160.0f);
+            terrain.setIterations(4);
 
-            for (int i = 0; i < p0_i; ++i)
+            if (terrain.sample(x, y) >= 0.44f)
             {
-                p0 += perlin.sample(x * p0_f / scale, y * p0_f / scale, false) * p0_a;
-                p0_f *= 2.0f;
-                p0_a /= 1.05f;
-            }
-            p0 /= p0_i;
+                Particle p = solid;
+                float r = f_rand(0.85f, 1.0f);
+                p.color = Color(24 * r, 38 * r, 21 * r, 255);
+                m_world->setParticle(x, y, p, false);
 
-            float p1 = 0.0f;
-            float p1_f = 2.5f;
-            float p1_a = 0.05f;
-            int p1_i = 4;
+                terrain.setXScale(180.0f);
+                terrain.setYScale(160.0f);
+                terrain.setIterations(8);
 
-            for (int i = 0; i < p1_i; ++i)
-            {
-                p1 += perlin.sample(x * p1_f / scale, y * p1_f / scale, true) * p1_a;
-                p1_f *= 2.0f;
-                p1_a /= 2.f;
-            }
-            p1 /= p1_i;
-
-            if (p0 > 0.001f)
-            {
-                Particle dirt = solid;
-                float dirt_v = f_rand(0.5f, 1.0f);
-                dirt.color = Color(64 * dirt_v, 41 * dirt_v, 5 * dirt_v, 255);
-
-                m_world->setParticle(x, y, dirt, false);
-
-                if (p1 > 0.9f)
+                if (terrain.sample(x, y) >= 0.50f)
                 {
-                    Particle stone = solid;
-                    float stone_v = f_rand(0.7f, 1.0f);
-                    stone.color = Color(94 * stone_v, 97 * stone_v, 102 * stone_v, 255);
+                    p.color = Color(40 * r, 30 * r, 11 * r, 255);
+                    m_world->setParticle(x, y, p, false);
 
-                    m_world->setParticle(x, y, stone, false);
+                    if (terrain.sample(x, y) >= 0.6f)
+                    {
+                        p.color = Color(55 * r, 55 * r, 55 * r, 255);
+                        m_world->setParticle(x, y, p, false);
+
+                        if (terrain.sample(x, y) >= 0.63f)
+                        {
+                            p.color = Color(80 * r, 80 * r, 80 * r, 255);
+                            m_world->setParticle(x, y, p, false);
+                        }
+                    }
                 }
             }
         }
     }
-
-    std::cout << "done!";
 }

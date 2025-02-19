@@ -14,7 +14,7 @@ void Bullet::checkWorld(World *world, float dt)
 
     for (const Segment &segment : world->getWorldHitbox())
     {
-        Segment::IData i_data = bullet_trajectory.checkSegmentIntersection(segment);
+        Segment::IData i_data = bullet_trajectory.segmentIntersect(segment);
         if (i_data.intersecting)
         {
             m_position = i_data.position;

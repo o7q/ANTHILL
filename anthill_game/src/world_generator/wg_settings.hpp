@@ -10,7 +10,6 @@ namespace WorldGenerator
     {
         enum class Preset
         {
-            Test,
             Jungle
         };
 
