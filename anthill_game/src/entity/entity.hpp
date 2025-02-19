@@ -8,6 +8,8 @@
 #include "../world/world.hpp"
 #include "../collision/bounding_box_world/bb_world_collider.hpp"
 
+#include "../weapon/weapon.hpp"
+
 class Entity
 {
 public:
@@ -19,6 +21,7 @@ public:
     virtual void update();
 
     void setPosition(float x, float y);
+    void setAimPosition(float x, float y);
     void move(float x, float y);
     void setXVelocity(float x);
     void setYVelocity(float y);
@@ -31,7 +34,10 @@ public:
     void setJumpPower(float jump_power);
 
     Vec2<float> getPosition() const { return m_position; }
+    Vec2<float> getAimPosition() const { return m_aim_position; }
     Vec2<int> getBoundsSize() const { return m_bounds_size; }
+
+    const Weapon *getWeapon() const { return m_weapon; }
 
     const BoundingBox &getBoundingBox() const { return m_bounding_box; }
 
@@ -49,6 +55,7 @@ protected:
     BBWorldCollider m_bb_collider;
 
     Vec2<float> m_position;
+    Vec2<float> m_aim_position;
     Vec2<float> m_velocity;
     Vec2<int> m_bounds_size;
 
@@ -61,6 +68,8 @@ protected:
 
     bool m_on_ground = false;
     bool m_is_gravity_affected = true;
+
+    Weapon *m_weapon = nullptr;
 
 private:
     void update_bounding_box();

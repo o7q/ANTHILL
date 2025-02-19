@@ -3,12 +3,18 @@
 #include "../engine/window/window.hpp"
 #include "../entity/entity.hpp"
 
+#include "../weapon/shotgun/shotgun.hpp"
+
 class Player : public Entity
 {
 public:
     Player(Window &window, const std::vector<World *> &worlds) : Entity(window, worlds)
     {
         m_bb_collider.setYSensitivity(4.0f);
+
+        m_weapon = new Shotgun();
+        m_weapon->setSpeed(1.0f);
+        m_weapon->setPower(5.0f);
     }
 
     void update() override;

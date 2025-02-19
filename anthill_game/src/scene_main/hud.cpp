@@ -16,7 +16,8 @@ void MainScene::update_hud()
             m_window.showCursor(false);
         }
 
-        crosshair_texture->setPosition(m_aim_position.x, m_aim_position.y);
+        Vec2<float> aim_position = m_player.getAimPosition();
+        crosshair_texture->setPosition(aim_position.x, aim_position.y);
         m_window.render().renderTexture(crosshair_texture, &m_camera);
     }
     else if (!m_window.isCursorVisible())

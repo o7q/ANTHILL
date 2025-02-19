@@ -52,6 +52,16 @@ struct Particle
         return p_state == PState::Gas;
     }
 
+    bool isSolid()
+    {
+        return p_state == PState::Solid;
+    }
+
+    bool isLiquid()
+    {
+        return p_state == PState::Liquid;
+    }
+
     bool isAir()
     {
         return p_state == PState::Gas && p_mode == PMode::None;

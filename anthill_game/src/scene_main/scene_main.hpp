@@ -53,7 +53,6 @@ private:
 
     BoundingBox m_world_update_bb;
 
-    Vec2<float> m_aim_position;
     Vec2<float> m_aim_position_gamepad;
 
     Texture *crosshair_texture = nullptr;
