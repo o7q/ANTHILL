@@ -19,6 +19,7 @@ void Player::jump(bool override)
     // if we are not on the ground, and the coyote time exists, allow the jump
     if (!m_on_ground && m_coyote_time_timer >= 0.0f && !m_jumped)
     {
+        // increment jump, because the coyote jump shouldn't use an extra jump
         ++m_jumps_left;
         can_jump = true;
     }
@@ -33,9 +34,11 @@ void Player::jump(bool override)
         return;
     }
 
+    // do the jump
     m_velocity.y = -m_jump_power;
-    m_jump_buffered = false;
+
     m_jumped = true;
+    m_jump_buffered = false;
 
     --m_jumps_left;
 

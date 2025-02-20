@@ -26,8 +26,8 @@ public:
 
     void update(BoundingBox *box = nullptr);
 
-    void setParticle(int x, int y, Particle particle, bool is_global_coordinate = true);
-    void drawParticles(int loc_x, int loc_y, int radius, const Particle particle, DrawShape drawShape = DrawShape::Circle, bool is_global_coordinate = true);
+    void setParticle(int x, int y, Particle particle, bool is_global_coordinate = false);
+    void drawParticles(int loc_x, int loc_y, int radius, const Particle particle, DrawShape drawShape = DrawShape::Circle, bool is_global_coordinate = false);
 
     void move(int x, int y);
     void setPosition(int x, int y);

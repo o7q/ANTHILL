@@ -21,7 +21,6 @@ public:
     virtual void update();
 
     void setPosition(float x, float y);
-    void setAimPosition(float x, float y);
     void move(float x, float y);
     void setXVelocity(float x);
     void setYVelocity(float y);
@@ -36,17 +35,16 @@ public:
     bool onGround() const { return m_on_ground; }
 
     Vec2<float> getPosition() const { return m_position; }
-    Vec2<float> getAimPosition() const { return m_aim_position; }
     Vec2<int> getBoundsSize() const { return m_bounds_size; }
 
-    const Weapon *getWeapon() const { return m_weapon; }
+    Weapon *getWeapon() const { return m_weapon; }
 
     const BoundingBox &getBoundingBox() const { return m_bounding_box; }
 
 protected:
     bool check_ground(int y_scan = 1);
-    void update_x_velocity();
-    void update_y_velocity();
+    virtual void update_x_velocity();
+    virtual void update_y_velocity();
     void resolve_world_collision();
 
 protected:
@@ -57,7 +55,6 @@ protected:
     BBWorldCollider m_bb_collider;
 
     Vec2<float> m_position;
-    Vec2<float> m_aim_position;
     Vec2<float> m_velocity;
     Vec2<int> m_bounds_size;
 

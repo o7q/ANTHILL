@@ -50,11 +50,7 @@ void Entity::update_y_velocity()
     float dt = m_window.time().getDeltaTime();
     if (m_velocity.y < m_terminal_velocity)
     {
-        float fast_fall = 1.0f;
-        if (m_velocity.y > 0.0f)
-            fast_fall = 1.5f;
-
-        m_velocity.y += m_gravity_strength * fast_fall * dt;
+        m_velocity.y += m_gravity_strength * dt;
     }
 
     if (m_on_ground && m_velocity.y > 0)

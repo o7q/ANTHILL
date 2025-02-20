@@ -1,1 +1,2 @@
 - Implement rolling average for deltatime to prevent lagspikes breaking physics
+- Use lidar for visual effects

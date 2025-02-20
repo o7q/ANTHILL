@@ -1,6 +1,5 @@
 #include "scene_main.hpp"
 
-#include <iostream>
 #include "../weapon/weapon.hpp"
 
 void MainScene::update_input()
@@ -16,17 +15,16 @@ void MainScene::update_input()
         }
 
         Vec2<float> aim_position = player_pos + m_aim_position_gamepad;
-        m_player.setAimPosition(aim_position.x, aim_position.y);
+        m_player.getWeapon()->setAimPosition(aim_position.x, aim_position.y);
     }
     else
     {
         Vec2<float> mouse_pos = m_window.input().getMousePos();
         Vec2<float> aim_position = m_camera.windowToGame(mouse_pos.x, mouse_pos.y);
-        m_player.setAimPosition(aim_position.x, aim_position.y);
+        m_player.getWeapon()->setAimPosition(aim_position.x, aim_position.y);
     }
 
     Vec2<float> joystick_pos = m_window.input().getJoystickPos(0);
-
     if (m_window.input().button(IButtonID::Left).down() || joystick_pos.x <= -0.5f)
     {
         m_player.move(-3 * DT, 0);
@@ -52,8 +50,6 @@ void MainScene::update_input()
     {
         m_world_manager.purge();
     }
-
-    m_world_manager.updateQueue();
 
     if (m_window.input().button(IButtonID::Shoot).pressed())
     {

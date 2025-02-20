@@ -23,6 +23,10 @@ public:
     void unjump();
 
 private:
+    void update_x_velocity() override;
+    void update_y_velocity() override;
+
+private:
     const int m_jump_buffer_height = 40;
     const float m_coyote_time = 10.0f;
     const float m_unjump_amount = 1.5f;

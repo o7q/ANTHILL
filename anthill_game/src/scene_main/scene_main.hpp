@@ -37,12 +37,12 @@ public:
     SceneID run() override;
 
 private:
-    void update_player();
-    void update_world();
-    void update_entities();
-
-    void update_render();
     void update_input();
+
+    void update_world();
+    void update_player();
+    void update_bullets();
+    void update_render();
     void update_hud();
 
 private:
