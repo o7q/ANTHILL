@@ -17,7 +17,7 @@ public:
     RenderManager() = default;
 
     void setRenderer(SDL_Renderer *renderer) { m_renderer = renderer; }
-    void setScale(int scale) { m_scale = scale; }
+    void setScale(Vec2<unsigned int> scaled_size) { m_scaled_size = scaled_size; }
 
     void renderTexture(const Texture *texture, const Camera *camera = nullptr);
     void renderText(TTF_Font *font, const std::string &text, Vec2<int> position, Color color, Camera *camera = nullptr);
@@ -28,5 +28,5 @@ public:
 
 private:
     SDL_Renderer *m_renderer = nullptr;
-    int m_scale = 0;
+    Vec2<unsigned int> m_scaled_size;
 };

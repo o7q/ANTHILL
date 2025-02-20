@@ -51,7 +51,7 @@ public:
 
     bool isGamepadMode() const { return m_gamepad_mode; }
 
-    void updateMouse(unsigned int window_width, unsigned int window_height, unsigned int window_scale);
+    void updateMouse(unsigned int window_width, unsigned int window_height, unsigned int scaled_width, unsigned int scaled_height);
     Vec2<float> getMousePos() const { return m_mouse_pos; }
 
     Vec2<float> getJoystickPos(int index) const;

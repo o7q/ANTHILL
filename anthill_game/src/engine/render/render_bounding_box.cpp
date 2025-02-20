@@ -15,7 +15,7 @@ void RenderManager::debug_renderBoundingBox(const BoundingBox &boundingBox, Colo
 
     if (camera != nullptr)
     {
-        Vec2<float> cam_pos = camera->getPosition() - Vec2<float>(m_scale, m_scale) / 2.0f;
+        Vec2<float> cam_pos = camera->getPosition() - Vec2<float>(m_scaled_size.x, m_scaled_size.y) / 2.0f;
         rect.x -= cam_pos.x;
         rect.y -= cam_pos.y;
     }

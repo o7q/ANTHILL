@@ -8,7 +8,7 @@ void Window::showCursor(bool value)
     value ? SDL_ShowCursor() : SDL_HideCursor();
 }
 
-void Window::setCursor(SDL_Surface* cursor_surface)
+void Window::setCursor(SDL_Surface *cursor_surface)
 {
     if (m_cursor != nullptr)
     {
@@ -32,6 +32,6 @@ void Window::setFullscreen(bool value)
 {
     SDL_SetWindowFullscreen(m_window, value);
     m_is_fullscreen = value;
-    
+
     Log::log(Log::Level::Info, "Window", "Fullscreen: " + std::to_string(value));
 }

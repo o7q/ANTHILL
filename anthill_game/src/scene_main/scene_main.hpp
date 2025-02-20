@@ -16,7 +16,7 @@ public:
     MainScene(Window &window, Assets &assets) : Scene(window, assets),
                                                 m_world_manager(window),
                                                 m_player(window, m_world_manager.getWorlds()),
-                                                m_camera(window.getScale(), window.getScale())
+                                                m_camera(window.getScaledSize().x, window.getScaledSize().y)
     {
         m_player.setPosition(0, -50);
         m_player.setBoundsSize(8, 25);

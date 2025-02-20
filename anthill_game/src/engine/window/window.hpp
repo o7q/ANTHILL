@@ -12,7 +12,7 @@
 class Window
 {
 public:
-    Window(const std::string &title, unsigned int width, unsigned int height, unsigned int scaled_size = 64);
+    Window(const std::string &title, unsigned int width, unsigned int height, unsigned int scaled_width, unsigned int scaled_height);
     ~Window();
 
     void update();
@@ -23,7 +23,7 @@ public:
     bool isOpen() const { return !m_closed; }
 
     Vec2<int> getSize() const { return m_window_size; }
-    unsigned int getScale() const { return m_scale; }
+    Vec2<unsigned> getScaledSize() const { return m_scaled_size; }
 
     RenderManager &render() { return m_render_manager; }
     InputManager &input() { return m_input_manager; }
@@ -50,7 +50,7 @@ private:
 
 private:
     Vec2<int> m_window_size;
-    unsigned int m_scale = 64;
+    Vec2<unsigned int> m_scaled_size;
 
     bool m_closed = false;
     bool m_is_fullscreen = false;

@@ -8,7 +8,7 @@ void RenderManager::debug_renderSegment(const Segment &segment, Color color, con
 
     if (camera != nullptr)
     {
-        Vec2<float> cam_pos = camera->getPosition() - Vec2<float>(m_scale, m_scale) / 2.0f;
+        Vec2<float> cam_pos = camera->getPosition() - Vec2<float>(m_scaled_size.x, m_scaled_size.y) / 2.0f;
         seg.a.x -= cam_pos.x;
         seg.a.y -= cam_pos.y;
         seg.b.x -= cam_pos.x;

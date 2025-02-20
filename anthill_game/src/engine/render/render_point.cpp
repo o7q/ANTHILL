@@ -4,7 +4,7 @@ void RenderManager::debug_renderPoint(int x, int y, Color color, const Camera *c
 {
     if (camera != nullptr)
     {
-        Vec2<float> cam_pos = camera->getPosition() - Vec2<float>(m_scale, m_scale) / 2.0f;;
+        Vec2<float> cam_pos = camera->getPosition() - Vec2<float>(m_scaled_size.x, m_scaled_size.y) / 2.0f;;
         x -= cam_pos.x;
         y -= cam_pos.y;
     }

@@ -6,19 +6,20 @@
 
 #include "../logger/logger.hpp"
 
-Window::Window(const std::string &title, unsigned int width, unsigned int height, unsigned int scale)
+Window::Window(const std::string &title, unsigned int width, unsigned int height, unsigned int scaled_width, unsigned int scaled_height)
 {
     m_window_size.x = width;
     m_window_size.y = height;
-    m_scale = scale;
+    m_scaled_size.x = scaled_width;
+    m_scaled_size.y = scaled_height;
 
     m_window = SDL_CreateWindow(title.c_str(), width, height, SDL_WINDOW_RESIZABLE);
     m_renderer = SDL_CreateRenderer(m_window, NULL);
 
     m_render_manager.setRenderer(m_renderer);
-    m_render_manager.setScale(scale);
+    m_render_manager.setScale(m_scaled_size);
 
-    SDL_SetRenderLogicalPresentation(m_renderer, scale, scale, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+    SDL_SetRenderLogicalPresentation(m_renderer, scaled_width, scaled_height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 }
 
 Window::~Window()
@@ -70,5 +71,5 @@ void Window::update()
     m_input_manager.update();
 
     // update internal mouse state
-    m_input_manager.updateMouse(m_window_size.x, m_window_size.y, m_scale);
+    m_input_manager.updateMouse(m_window_size.x, m_window_size.y, m_scaled_size.x, m_scaled_size.y);
 }
