@@ -64,7 +64,7 @@ void BBWorldCollider::convex_optimize_pass(Particle p, int x, int y, int x_origi
         if (m_min_distance >= d)
         {
             m_min_distance = d;
-            m_resolve_vector = Vec2<int>(x - x_origin, y - y_origin);
+            m_resolve = Vec2<int>(x - x_origin, y - y_origin);
         }
     }
 }

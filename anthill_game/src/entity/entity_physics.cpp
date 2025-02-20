@@ -67,7 +67,12 @@ void Entity::resolve_world_collision()
 {
     for (const World *world : m_worlds)
     {
-        Vec2<int> resolve_vector = m_bb_collider.resolve(world);
-        move(resolve_vector.x, resolve_vector.y);
+        m_bb_collider.resolve(world);
+
+        if (m_bb_collider.collided())
+        {
+            Vec2<int> resolve_vector = m_bb_collider.getResult();
+            move(resolve_vector.x, resolve_vector.y);
+        }
     }
 }

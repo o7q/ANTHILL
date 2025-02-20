@@ -1,30 +1,34 @@
 #pragma once
 
+#include <iostream>
+
 #include <cmath>
+#include "../../engine/math/angle.hpp"
 #include "../weapon.hpp"
 
 class Shotgun : public Weapon
 {
-    virtual std::vector<Vec2<float>> shoot() const override
+    virtual ShootData shoot() const override
     {
         float dx = m_aim_position.x - m_muzzle_position.x;
         float dy = m_aim_position.y - m_muzzle_position.y;
 
-        float angle = std::atan2(dy, dx);
+        float aim_angle = std::atan2(dy, dx);
+        float spread_angle = degreesToRadians(m_spread);
 
-        float spread_angle = 15.0f;
-        int samples = 10;
+        ShootData shoot_data;
+        shoot_data.aim_angle = aim_angle;
 
-        std::vector<Vec2<float>> aim_positions;
-
-        for (int i = -samples / 2; i < samples / 2; ++i)
+        for (int i = -m_bullet_count / 2; i <= m_bullet_count / 2; ++i)
         {
-            float a = angle + i * spread_angle / samples;
-
-            Vec2<float> aim(m_aim_position.x + std::cos(a), m_aim_position.y + std::sin(a));
-            aim_positions.push_back(aim);
+            float a = aim_angle + i * spread_angle / m_bullet_count;
+            shoot_data.bullet_directions.push_back(Vec2<float>(m_muzzle_position.x + std::cos(a), m_muzzle_position.y + std::sin(a)));
         }
 
-        return aim_positions;
+        return shoot_data;
     }
+
+protected:
+    float m_spread = 15.0f;
+    int m_bullet_count = 10;
 };

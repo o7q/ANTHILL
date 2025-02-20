@@ -1,6 +1,7 @@
 #include "scene_main.hpp"
 
 #include <iostream>
+#include "../weapon/weapon.hpp"
 
 void MainScene::update_input()
 {
@@ -59,17 +60,25 @@ void MainScene::update_input()
         const Weapon *weapon = m_player.getWeapon();
         if (weapon != nullptr)
         {
-            const std::vector<Vec2<float>> positions = weapon->shoot();
+            const Weapon::ShootData shoot_data = weapon->shoot();
 
-            for (Vec2<float> pos : positions)
+            for (Vec2<float> dir : shoot_data.bullet_directions)
             {
-                Bullet bullet(weapon->getMuzzlePosition().x, weapon->getMuzzlePosition().y, pos.x, pos.y);
+                Bullet bullet(weapon->getMuzzlePosition().x, weapon->getMuzzlePosition().y, dir.x, dir.y);
                 bullet.setSpeed(weapon->getSpeed());
                 bullet.setPower(weapon->getPower());
                 m_bullet_manager.add(bullet);
-                std::cout << weapon->getMuzzlePosition().x << " " <<  weapon->getMuzzlePosition().y << " " << pos.x << " " << pos.y << std::endl;
             }
 
+            Vec2<float> knockback(-std::cos(shoot_data.aim_angle) * weapon->getKnockbackPower(), -std::sin(shoot_data.aim_angle) * weapon->getKnockbackPower());
+
+            if (!m_player.onGround())
+            {
+                knockback = knockback * 1.5f;
+            }
+
+            m_player.setXVelocity(knockback.x);
+            m_player.setYVelocity(knockback.y);
 
             if (m_window.input().isGamepadMode())
             {

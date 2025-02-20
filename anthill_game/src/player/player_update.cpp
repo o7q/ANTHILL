@@ -17,11 +17,17 @@ void Player::update()
     // we we're not, dimish the timer
     if (m_on_ground)
     {
+        m_jumps_left = m_extra_jumps;
         m_coyote_time_timer = m_coyote_time;
     }
     else
     {
         m_coyote_time_timer -= 1.0f * dt;
+    }
+
+    if (m_coyote_time_timer <= 0.0f)
+    {
+        m_jumped = false;
     }
 
     update_x_velocity();

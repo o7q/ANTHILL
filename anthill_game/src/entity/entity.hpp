@@ -33,6 +33,8 @@ public:
     void setTerminalVelocity(float terminal_velocity);
     void setJumpPower(float jump_power);
 
+    bool onGround() const { return m_on_ground; }
+
     Vec2<float> getPosition() const { return m_position; }
     Vec2<float> getAimPosition() const { return m_aim_position; }
     Vec2<int> getBoundsSize() const { return m_bounds_size; }

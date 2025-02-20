@@ -9,17 +9,35 @@ void Player::jump(bool override)
         m_jump_buffered = true;
     }
 
-    if (!override)
+    bool can_jump = false;
+
+    if (m_on_ground)
     {
-        // if we are not on the ground, and the coyote time has dimished, disallow the jump
-        if (!m_on_ground && m_coyote_time_timer <= 0.0f)
-        {
-            return;
-        }
+        can_jump = true;
+    }
+
+    // if we are not on the ground, and the coyote time exists, allow the jump
+    if (!m_on_ground && m_coyote_time_timer >= 0.0f && !m_jumped)
+    {
+        ++m_jumps_left;
+        can_jump = true;
+    }
+
+    if (m_jumps_left > 0)
+    {
+        can_jump = true;
+    }
+
+    if (!can_jump && !override)
+    {
+        return;
     }
 
     m_velocity.y = -m_jump_power;
     m_jump_buffered = false;
+    m_jumped = true;
+
+    --m_jumps_left;
 
     if (m_window.input().isGamepadMode())
     {

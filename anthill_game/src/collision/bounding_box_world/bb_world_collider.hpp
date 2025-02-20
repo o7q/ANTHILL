@@ -9,7 +9,10 @@ class BBWorldCollider
 public:
     BBWorldCollider(const BoundingBox &bb) : m_bb(bb) {}
 
-    Vec2<int> resolve(const World *world);
+    void resolve(const World *world);
+
+    bool collided() const { return m_resolve.x != 0 || m_resolve.y != 0; }
+    Vec2<int> getResult() const { return m_resolve; }
 
     void setXSensitivity(float x_sensitivity) { m_x_sensitivity = x_sensitivity; }
     void setYSensitivity(float y_sensitivity) { m_y_sensitivity = y_sensitivity; }
@@ -33,5 +36,5 @@ private:
 private:
     int m_ys[4];
     float m_min_distance = 0.0f;
-    Vec2<int> m_resolve_vector;
+    Vec2<int> m_resolve;
 };
