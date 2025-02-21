@@ -72,4 +72,9 @@ void Window::update()
 
     // update internal mouse state
     m_input_manager.updateMouse(m_window_size.x, m_window_size.y, m_scaled_size.x, m_scaled_size.y);
+
+    if (input().button(IButtonID::Fullscreen).pressed())
+    {
+        setFullscreen(!isFullscreen());
+    }
 }

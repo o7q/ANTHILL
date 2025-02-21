@@ -22,13 +22,19 @@ public:
 
     virtual void setPosition(float x, float y);
     virtual void move(float x, float y);
+
     void setXVelocity(float x);
     void setYVelocity(float y);
+
     void setBoundsSize(int width, int height);
 
     void setGravityAffected(bool value);
     void setGravityStrength(float gravity);
     void setTerminalVelocity(float terminal_velocity);
+
+    void kill() { m_alive = false; }
+    void revive() { m_alive = true; }
+    bool isAlive() const { return m_alive; }
 
     bool onGround() const { return m_on_ground; }
 
@@ -42,6 +48,7 @@ protected:
     virtual void update_y_velocity();
     bool check_ground(int y_scan = 1);
     void resolve_world_collision();
+    bool in_liquid();
 
     void update_bounding_box();
 
@@ -64,4 +71,6 @@ protected:
 
     bool m_on_ground = false;
     bool m_is_gravity_affected = true;
+
+    bool m_alive = true;
 };

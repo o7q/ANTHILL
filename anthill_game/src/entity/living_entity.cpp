@@ -14,7 +14,9 @@ void LivingEntity::setPosition(float x, float y)
 
 void LivingEntity::move(float x, float y)
 {
-    m_position.x += x;
+    float liquid_damp = in_liquid() ? 3.0f : 1.0f;
+
+    m_position.x += x / liquid_damp;
     m_position.y += y;
     update_bounding_box();
 

@@ -28,6 +28,18 @@ bool Entity::check_ground(int y_scan)
     return false;
 }
 
+bool Entity::in_liquid()
+{
+    for (World *world : m_worlds)
+    {
+        if (world->getParticle(m_position.x, m_position.y).isLiquid())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Entity::update_x_velocity()
 {
     float dt = m_window.time().getDeltaTime();
@@ -50,7 +62,8 @@ void Entity::update_y_velocity()
     float dt = m_window.time().getDeltaTime();
     if (m_velocity.y < m_terminal_velocity)
     {
-        m_velocity.y += m_gravity_strength * dt;
+        float liquid_damp = in_liquid() ? 3.0f : 1.0f;
+        m_velocity.y += m_gravity_strength / liquid_damp * dt;
     }
 
     if (m_on_ground && m_velocity.y > 0)
