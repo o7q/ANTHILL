@@ -1,14 +1,14 @@
 #pragma once
 
 #include "../engine/window/window.hpp"
-#include "../entity/entity.hpp"
+#include "../entity/living_entity.hpp"
 
 #include "../weapon/shotgun/shotgun.hpp"
 
-class Player : public Entity
+class Player : public LivingEntity
 {
 public:
-    Player(Window &window, const std::vector<World *> &worlds) : Entity(window, worlds)
+    Player(Window &window, const std::vector<World *> &worlds) : LivingEntity(window, worlds)
     {
         m_bb_collider.setYSensitivity(4.0f);
 

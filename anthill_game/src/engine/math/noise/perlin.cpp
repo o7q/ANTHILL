@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "../vector.hpp"
+#include "../constants.hpp"
 
 PerlinNoise::PerlinNoise(unsigned int seed)
 {
@@ -35,7 +36,7 @@ Vec2<float> PerlinNoise::gradient(int grid_x, int grid_y)
     unsigned int hash = grid_x * 15514927 ^ grid_y * 57780929 ^ m_seed;
     int angle = hash % 360;
 
-    return Vec2<float>(M_PRECOMPUTED_COS[angle], M_PRECOMPUTED_SIN[angle]);
+    return Vec2<float>(fastCos(angle), fastSin(angle));
 }
 
 float PerlinNoise::dot_grid_gradient(int grid_x, int grid_y, float sample_x, float sample_y)

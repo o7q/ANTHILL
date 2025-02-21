@@ -15,11 +15,6 @@ void Entity::setTerminalVelocity(float terminal_velocity)
     m_terminal_velocity = terminal_velocity;
 }
 
-void Entity::setJumpPower(float jump_power)
-{
-    m_jump_power = jump_power;
-}
-
 void Entity::setBoundsSize(int width, int height)
 {
     m_bounds_size.x = width;
