@@ -8,15 +8,8 @@
 class Player : public LivingEntity
 {
 public:
-    Player(Window &window, const std::vector<World *> &worlds) : LivingEntity(window, worlds)
-    {
-        m_bb_collider.setYSensitivity(4.0f);
-
-        m_weapon = new Shotgun();
-        m_weapon->setSpeed(30.0f);
-        m_weapon->setPower(5.0f);
-        m_weapon->setKnockbackPower(5.0f);
-    }
+    Player(Window &window, const std::vector<World *> &worlds);
+    ~Player();
 
     void update() override;
     void jump(bool override = false) override;

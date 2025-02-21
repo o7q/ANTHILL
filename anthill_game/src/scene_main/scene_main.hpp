@@ -8,7 +8,6 @@
 #include "../world_manager/world_manager.hpp"
 
 #include "../bullet/bullet.hpp"
-#include "../bullet_manager/bullet_manager.hpp"
 
 class MainScene : public Scene
 {
@@ -20,8 +19,6 @@ public:
     {
         m_player.setPosition(0, -50);
         m_player.setBoundsSize(8, 25);
-
-        m_bullet_manager.setWorldManager(&m_world_manager);
 
         m_world_manager.queue(WorldGenerator::Settings(2000, 2000, -1, WorldGenerator::Settings::Preset::Jungle));
 
@@ -47,7 +44,7 @@ private:
 
 private:
     WorldManager m_world_manager;
-    BulletManager m_bullet_manager;
+    std::vector<Bullet> m_bullets;
     Player m_player;
     Camera m_camera;
 

@@ -2,20 +2,20 @@
 
 #include <vector>
 #include "../engine/math/vector.hpp"
+#include "../bullet/bullet.hpp"
 
 class Weapon
 {
 public:
     struct ShootData
     {
-        std::vector<Vec2<float>> bullet_directions;
-        float aim_angle = 0.0f;
+        std::vector<Bullet> bullets;
+        Vec2<float> knockback_vector;
     };
 
 public:
-    Weapon()
-    {
-    }
+    Weapon() {}
+    virtual ~Weapon() {}
 
     virtual ShootData shoot() const
     {
@@ -49,35 +49,12 @@ public:
         m_knockback_power = knockback_power;
     }
 
-    Vec2<float> getMuzzlePosition() const
-    {
-        return m_muzzle_position;
-    }
-
-    Vec2<float> getAimPosition() const
-    {
-        return m_aim_position;
-    }
-
-    float getSpeed() const
-    {
-        return m_speed;
-    }
-
-    float getPower() const
-    {
-        return m_power;
-    }
-
-    float getKnockbackPower() const
-    {
-        return m_knockback_power;
-    }
+    Vec2<float> getAimPosition() const { return m_aim_position; }
 
 protected:
-    float m_power = 1.0f;
-    float m_speed = 1.0f;
-    float m_knockback_power = 1.0f;
+    float m_speed = 30.0f;
+    float m_power = 5.0f;
+    float m_knockback_power = 5.0f;
 
     Vec2<float> m_muzzle_position;
     Vec2<float> m_aim_position;

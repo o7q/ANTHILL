@@ -2,11 +2,11 @@
 
 #include "../engine/math/segment.hpp"
 
-void Bullet::checkWorld(World *world, float dt)
+bool Bullet::hitWorld(World *world, float dt)
 {
-    if (hit())
+    if (m_hit)
     {
-        return;
+        return false;
     }
 
     Vec2<float> future_position = m_position + Vec2<float>(m_dx, m_dy) * m_speed * dt;
@@ -19,17 +19,17 @@ void Bullet::checkWorld(World *world, float dt)
         {
             m_position = i_data.position;
 
-            m_hit_object = world;
-            m_hit_object_type = HitObjectType::World;
-            
-            return;
+            m_hit = true;
+            return true;
         }
     }
 
     Particle p = world->getParticle(m_position.x, m_position.y);
     if (p.p_collision_type == Particle::PCollisionType::Solid && p.solid_enable_collision)
     {
-        m_hit_object = world;
-        m_hit_object_type = HitObjectType::World;
+        m_hit = true;
+        return true;
     }
+
+    return false;
 }

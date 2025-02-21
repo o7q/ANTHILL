@@ -2,29 +2,28 @@
 
 void MainScene::update_bullets()
 {
-    m_bullet_manager.update(m_world_update_bb, DT);
-
-    for (const Bullet &bullet : m_bullet_manager.getHitBullets())
+    for (std::vector<Bullet>::iterator it = m_bullets.begin(); it != m_bullets.end();)
     {
-        void *hit_object = bullet.getHitObject();
+        it->update(DT);
 
-        if (hit_object == nullptr)
+        for (World *world : m_world_manager.getWorlds())
         {
-            continue;
+            if (it->hitWorld(world, DT))
+            {
+                world->drawParticles(it->getPosition().x, it->getPosition().y, it->getPower(), Particle(), World::DrawShape::Circle, true);
+            }
         }
 
-        switch (bullet.getHitObjectType())
-        {
-        case Bullet::HitObjectType::World:
-        {
-            World *hit_world = static_cast<World *>(hit_object);
+        bool hit = it->hit();
+        bool out_of_bounds = !m_world_update_bb.pointInside(it->getPosition().x, it->getPosition().y);
 
-            Vec2<float> bullet_pos = bullet.getPosition();
-            hit_world->drawParticles(bullet_pos.x, bullet_pos.y, bullet.getPower(), Particle(), World::DrawShape::Circle, true);
-            break;
+        if (hit || out_of_bounds)
+        {
+            m_bullets.erase(it);
         }
-        default:
-            break;
+        else
+        {
+            ++it;
         }
     }
 }

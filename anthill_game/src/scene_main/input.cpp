@@ -53,28 +53,20 @@ void MainScene::update_input()
 
     if (m_window.input().button(IButtonID::Shoot).pressed())
     {
-        const Weapon *weapon = m_player.getWeapon();
+        Weapon *weapon = m_player.getWeapon();
         if (weapon != nullptr)
         {
-            const Weapon::ShootData shoot_data = weapon->shoot();
+            Weapon::ShootData shoot_data = weapon->shoot();
 
-            for (Vec2<float> dir : shoot_data.bullet_directions)
+            m_bullets.insert(m_bullets.end(), shoot_data.bullets.begin(), shoot_data.bullets.end());
+
+            if (m_player.onGround())
             {
-                Bullet bullet(weapon->getMuzzlePosition().x, weapon->getMuzzlePosition().y, dir.x, dir.y);
-                bullet.setSpeed(weapon->getSpeed());
-                bullet.setPower(weapon->getPower());
-                m_bullet_manager.add(bullet);
+                shoot_data.knockback_vector = shoot_data.knockback_vector * 0.5f;
             }
 
-            Vec2<float> knockback(-std::cos(shoot_data.aim_angle) * weapon->getKnockbackPower(), -std::sin(shoot_data.aim_angle) * weapon->getKnockbackPower());
-
-            if (!m_player.onGround())
-            {
-                knockback = knockback * 1.5f;
-            }
-
-            m_player.setXVelocity(knockback.x);
-            m_player.setYVelocity(knockback.y);
+            m_player.setXVelocity(shoot_data.knockback_vector.x);
+            m_player.setYVelocity(shoot_data.knockback_vector.y);
 
             if (m_window.input().isGamepadMode())
             {

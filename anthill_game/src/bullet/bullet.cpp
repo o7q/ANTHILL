@@ -18,16 +18,11 @@ Bullet::Bullet(float start_x, float start_y, float target_x, float target_y)
 
 void Bullet::update(float dt)
 {
-    if (hit())
+    if (m_hit)
     {
         return;
     }
 
     m_position.x += m_dx * m_speed * dt;
     m_position.y += m_dy * m_speed * dt;
-}
-
-bool Bullet::hit() const
-{
-    return m_hit_object != nullptr;
 }
