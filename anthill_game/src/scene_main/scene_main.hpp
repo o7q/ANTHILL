@@ -8,12 +8,14 @@
 #include "../world_manager/world_manager.hpp"
 
 #include "../bullet/bullet.hpp"
+#include "../bullet_manager/bullet_manager.hpp"
 
 class MainScene : public Scene
 {
 public:
     MainScene(Window &window, Assets &assets) : Scene(window, assets),
                                                 m_world_manager(window),
+                                                m_bullet_manager(m_update_bb),
                                                 m_player(window, m_world_manager.getWorlds()),
                                                 m_camera(window.getScaledSize().x, window.getScaledSize().y)
     {
@@ -44,11 +46,11 @@ private:
 
 private:
     WorldManager m_world_manager;
-    std::vector<Bullet> m_bullets;
+    BulletManager m_bullet_manager;
     Player m_player;
     Camera m_camera;
 
-    BoundingBox m_world_update_bb;
+    BoundingBox m_update_bb;
 
     Vec2<float> m_aim_position_gamepad;
 

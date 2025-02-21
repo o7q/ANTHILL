@@ -58,7 +58,7 @@ void MainScene::update_input()
         {
             Weapon::ShootData shoot_data = weapon->shoot();
 
-            m_bullets.insert(m_bullets.end(), shoot_data.bullets.begin(), shoot_data.bullets.end());
+            m_bullet_manager.addBulletRange(shoot_data.bullets);
 
             if (m_player.onGround())
             {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+
 #include "../engine/math/vector.hpp"
 #include "../bullet/bullet.hpp"
 
@@ -17,37 +18,13 @@ public:
     Weapon() {}
     virtual ~Weapon() {}
 
-    virtual ShootData shoot() const
-    {
-        return ShootData();
-    }
+    virtual ShootData shoot() const;
 
-    void setMuzzlePosition(float x, float y)
-    {
-        m_muzzle_position.x = x;
-        m_muzzle_position.y = y;
-    }
-
-    void setAimPosition(float x, float y)
-    {
-        m_aim_position.x = x;
-        m_aim_position.y = y;
-    }
-
-    void setSpeed(float speed)
-    {
-        m_speed = speed;
-    }
-
-    void setPower(float power)
-    {
-        m_power = power;
-    }
-
-    void setKnockbackPower(float knockback_power)
-    {
-        m_knockback_power = knockback_power;
-    }
+    void setMuzzlePosition(float x, float y);
+    void setAimPosition(float x, float y);
+    void setSpeed(float speed);
+    void setPower(float power);
+    void setKnockbackPower(float knockback_power);
 
     Vec2<float> getAimPosition() const { return m_aim_position; }
 
