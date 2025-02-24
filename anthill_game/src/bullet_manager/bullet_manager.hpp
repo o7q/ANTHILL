@@ -19,6 +19,14 @@ public:
 
     const std::vector<Bullet> &getBullets() const { return m_bullets; }
 
+    void updateBullets(float dt)
+    {
+        for (Bullet &bullet : m_bullets)
+        {
+            bullet.update(dt);
+        }
+    }
+
 private:
     template <typename T>
     std::vector<Bullet> check_object(float dt, T check)
@@ -27,8 +35,6 @@ private:
 
         for (std::vector<Bullet>::iterator it = m_bullets.begin(); it != m_bullets.end();)
         {
-            it->update(dt);
-
             if (check(*it))
             {
                 hit_bullets.push_back(*it);

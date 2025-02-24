@@ -23,7 +23,12 @@ void WorldManager::updateQueue()
 {
     if (m_generator_queue.size() == 0)
     {
+        m_queue_finished = true;
         return;
+    }
+    else
+    {
+        m_queue_finished = false;
     }
 
     WorldGenerator::ThreadSafeGenerator *tsg = m_generator_queue[0];
