@@ -9,4 +9,9 @@ void MainScene::update_player()
 
     m_camera.setGoal(player_pos.x, player_pos.y);
     m_camera.update(DT);
+
+    if (player_pos.y > m_world_manager.getVerticalPos() - 500 && m_can_gen_next)
+    {
+        m_can_gen_next = false;
+    }
 }

@@ -11,10 +11,10 @@ void MainScene::update_input()
         {
             Vec2<float> joystick_pos = m_window.input().joystickMoved(1) ? m_window.input().getJoystickDirection(1) : m_window.input().getJoystickDirection(0);
 
-            m_aim_position_gamepad = joystick_pos * 40;
+            m_last_aim_position_gamepad = joystick_pos * 40;
         }
 
-        Vec2<float> aim_position = player_pos + m_aim_position_gamepad;
+        Vec2<float> aim_position = player_pos + m_last_aim_position_gamepad;
         m_player.getWeapon()->setAimPosition(aim_position.x, aim_position.y);
     }
     else

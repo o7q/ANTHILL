@@ -44,12 +44,12 @@ void WorldManager::updateQueue()
     m_generator_queue.erase(m_generator_queue.begin());
 
     world_new->primeWorldTexture(m_window.getSDLRenderer());
-    world_new->setPosition(0, vertical_pos_index);
-    vertical_pos_index += world_new->getSize().y;
+    world_new->setPosition(0, m_vertical_pos);
+    m_vertical_pos += world_new->getSize().y;
 
-    if (index > 0)
+    if (m_index > 0)
     {
-        World *world_above = m_worlds[index - 1];
+        World *world_above = m_worlds[m_index - 1];
 
         WorldPhysics::Portal portal_above = world_above->getWorldPhysics()->getPortal();
         portal_above.down = world_new->getWorldPhysics();
@@ -70,6 +70,6 @@ void WorldManager::updateQueue()
     }
     else
     {
-        ++index;
+        ++m_index;
     }
 }

@@ -52,7 +52,9 @@ private:
 
     BoundingBox m_update_bb;
 
-    Vec2<float> m_aim_position_gamepad;
+    Vec2<float> m_last_aim_position_gamepad;
+
+    bool m_can_gen_next = false;
 
     Texture *crosshair_texture = nullptr;
 };

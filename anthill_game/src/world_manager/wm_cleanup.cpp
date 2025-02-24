@@ -12,8 +12,8 @@ void WorldManager::purge()
 
     m_worlds.clear();
 
-    index = 0;
-    vertical_pos_index = 0;
+    m_index = 0;
+    m_vertical_pos = 0;
 }
 
 void WorldManager::purge_first_world()

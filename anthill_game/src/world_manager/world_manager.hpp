@@ -20,6 +20,7 @@ public:
     void purge();
 
     const std::vector<World *> &getWorlds() const { return m_worlds; }
+    int getVerticalPos() const {return m_vertical_pos;}
 
 private:
     void purge_first_world();
@@ -29,8 +30,8 @@ private:
 private:
     Window &m_window;
 
-    int index = 0;
-    int vertical_pos_index = 0;
+    int m_index = 0;
+    int m_vertical_pos = 0;
 
     const int m_max_memory_mb = 1000.0f;
 
