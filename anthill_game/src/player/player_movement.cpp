@@ -48,10 +48,23 @@ void Player::jump(bool override)
     }
 }
 
+void Player::dash(float time)
+{
+    Vec2<float> dv = m_aim_position - m_position;
+
+    float d = std::sqrt(dv.x * dv.x + dv.y * dv.y);
+
+    m_dash_vector.x = dv.x / d * 15;
+    m_dash_vector.y = dv.y / d * 15;
+
+    m_dash_timer = time;
+    m_dashing = true;
+}
+
 void Player::unjump()
 {
     if (m_velocity.y <= 0.0f)
     {
-        m_velocity.y /= m_unjump_amount;
+        m_velocity.y /= m_unjump_damping;
     }
 }

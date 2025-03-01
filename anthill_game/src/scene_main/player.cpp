@@ -14,9 +14,6 @@ void MainScene::update_player()
     {
         WorldGenerator::Settings wgs{2000, 2000, -1, WorldGenerator::Settings::Preset::Jungle};
         m_world_manager.queue(wgs);
-        m_world_manager.queue(wgs);
-        m_world_manager.queue(wgs);
-        m_world_manager.queue(wgs);
         m_can_gen_next = false;
     }
     else if (m_world_manager.queueFinished())

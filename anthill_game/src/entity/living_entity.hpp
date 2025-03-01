@@ -9,6 +9,8 @@ class LivingEntity : public Entity
 public:
     LivingEntity(Window &window, const std::vector<World *> &worlds) : Entity(window, worlds) {}
 
+void update() override;
+
     virtual void setPosition(float x, float y) override;
     virtual void move(float x, float y) override;
 

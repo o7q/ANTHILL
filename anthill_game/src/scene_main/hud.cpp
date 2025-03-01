@@ -16,7 +16,7 @@ void MainScene::update_hud()
             m_window.showCursor(false);
         }
 
-        Vec2<float> aim_position = m_player.getWeapon()->getAimPosition();
+        Vec2<float> aim_position = m_player.getAimPosition();
         crosshair_texture->setPosition(aim_position.x, aim_position.y);
         m_window.render().renderTexture(crosshair_texture, &m_camera);
     }

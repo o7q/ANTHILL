@@ -45,7 +45,7 @@ void Window::end()
     SDL_RenderPresent(m_renderer);
 
     m_time_manager.frameEnd();
-    m_time_manager.delay();
+    m_time_manager.completeFrame();
 }
 
 void Window::update()

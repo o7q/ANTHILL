@@ -46,6 +46,11 @@ void InputManager::init_buttons()
     shoot.assignGamepadTrigger(SDL_GAMEPAD_AXIS_RIGHT_TRIGGER);
     add_button(IButtonID::Shoot, shoot);
 
+    IButton dash;
+    dash.assignKey(SDLK_LSHIFT);
+    dash.assignGamepadButton(SDL_GAMEPAD_BUTTON_WEST);
+    add_button(IButtonID::Dash, dash);
+
     IButton fullscreen;
     fullscreen.assignKey(SDLK_F11);
     add_button(IButtonID::Fullscreen, fullscreen);

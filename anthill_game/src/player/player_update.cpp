@@ -2,10 +2,15 @@
 
 void Player::update()
 {
-    m_on_ground = false;
-    m_on_ground = check_ground(1);
-
     float dt = m_window.time().getDeltaTime();
+    
+    m_on_ground = check_ground(1);
+    m_speed = std::sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
+
+    if (m_weapon != nullptr)
+    {
+        m_weapon->setAimPosition(m_aim_position.x, m_aim_position.y);
+    }
 
     // if we are on the ground, and our jump was buffered, jump
     if (m_on_ground && m_jump_buffered)
@@ -33,7 +38,21 @@ void Player::update()
     update_x_velocity();
     update_y_velocity();
 
+    if (m_dash_timer > 0.0f)
+    {
+        m_dash_timer -= 1.0f * dt;
+        m_velocity.x = m_dash_vector.x;
+        m_velocity.y = m_dash_vector.y;
+    }
+    else if (m_speed < 8.0f)
+    {
+        m_dashing = false;
+    }
+
     move(m_velocity.x * dt, m_velocity.y * dt);
 
-    resolve_world_collision();
+    if (!m_dashing)
+    {
+        resolve_world_collision();
+    }
 }

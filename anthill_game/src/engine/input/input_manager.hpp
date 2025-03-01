@@ -18,6 +18,7 @@ enum class IButtonID
 
     Shoot,
     Jump,
+    Dash,
 
     Fullscreen,
 

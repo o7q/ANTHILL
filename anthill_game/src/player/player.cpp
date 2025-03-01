@@ -5,6 +5,7 @@ Player::Player(Window &window, const std::vector<World *> &worlds) : LivingEntit
     m_bb_collider.setYSensitivity(4.0f);
 
     m_weapon = new Shotgun();
+    m_weapon->setPower(10);
 }
 
 Player::~Player()

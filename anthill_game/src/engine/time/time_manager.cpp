@@ -1,5 +1,13 @@
 #include "time_manager.hpp"
 
+TimeManager::TimeManager()
+{
+    for (int i = 0; i < m_dt_iterations; ++i)
+    {
+        m_dt_history[i] = 1.0f;
+    }
+}
+
 void TimeManager::frameStart()
 {
     m_frame_start = std::chrono::steady_clock::now();
@@ -10,7 +18,7 @@ void TimeManager::frameEnd()
     m_frame_end = std::chrono::steady_clock::now();
 }
 
-void TimeManager::delay()
+void TimeManager::completeFrame()
 {
     const float frame_seconds = std::chrono::duration_cast<std::chrono::duration<float>>(m_frame_end - m_frame_start).count();
 
@@ -26,6 +34,25 @@ void TimeManager::delay()
 
     m_fps = 1.0f / (total_frame_seconds + frame_seconds);
     m_dt = 60.0f / m_fps;
+
+    m_dt_history[m_dt_history_index] = m_dt;
+
+    float sum = 0.0f;
+    for (int i = 0; i < m_dt_iterations; ++i)
+    {
+        sum += m_dt_history[i];
+    }
+
+    if (m_dt_history_index >= m_dt_iterations)
+    {
+        m_dt_history_index = 0;
+    }
+    else
+    {
+        ++m_dt_history_index;
+    }
+
+    m_dt_smoothed = sum / m_dt_iterations;
 }
 
 void TimeManager::setTargetFramerate(float target_framerate)

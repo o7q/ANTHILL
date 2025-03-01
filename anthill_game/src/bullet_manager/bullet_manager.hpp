@@ -9,6 +9,8 @@ class BulletManager
 public:
     BulletManager(BoundingBox &kill_bb) : m_kill_bb(kill_bb) {}
 
+    void updateBullets(float dt);
+
     std::vector<Bullet> checkWorld(World *world, float dt);
     std::vector<Bullet> checkBoundingBox(BoundingBox *boundingBox, float dt);
 
@@ -18,14 +20,6 @@ public:
     void addBulletRange(std::vector<Bullet> bullets);
 
     const std::vector<Bullet> &getBullets() const { return m_bullets; }
-
-    void updateBullets(float dt)
-    {
-        for (Bullet &bullet : m_bullets)
-        {
-            bullet.update(dt);
-        }
-    }
 
 private:
     template <typename T>

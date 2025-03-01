@@ -29,6 +29,14 @@ void Player::update_y_velocity()
         m_velocity.y += m_gravity_strength * fast_fall * dt;
     }
 
+    if (m_velocity.y > m_terminal_velocity)
+    {
+        float dt = m_window.time().getDeltaTime();
+        float air_resistance_factor = std::exp(-dt * m_air_resistance);
+        m_velocity.y *= air_resistance_factor;
+    }
+    // std::cout << m_velocity.y << std::endl;
+
     if (m_on_ground && m_velocity.y > 0)
     {
         m_velocity.y = 0;

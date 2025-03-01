@@ -1,5 +1,23 @@
 #include "living_entity.hpp"
 
+void LivingEntity::update()
+{
+    m_on_ground = check_ground(1);
+    m_speed = std::sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
+
+    if (m_weapon != nullptr)
+    {
+        m_weapon->setAimPosition(m_aim_position.x, m_aim_position.y);
+    }
+
+    update_x_velocity();
+    update_y_velocity();
+
+    move(m_velocity.x, m_velocity.y);
+
+    resolve_world_collision();
+}
+
 void LivingEntity::setPosition(float x, float y)
 {
     m_position.x = x;

@@ -56,6 +56,7 @@ bool InputManager::joystickMoved(int index) const
     return m_joystick_pos[index].x != 0 || m_joystick_pos[index].y != 0;
 }
 
+// max 65535
 void InputManager::rumbleGamepad(Uint16 low_frequency, Uint16 high_frequency, Uint32 duration)
 {
     if (m_gamepads.find(m_active_gamepad) == m_gamepads.end())

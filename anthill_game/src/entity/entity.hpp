@@ -26,6 +26,14 @@ public:
     void setXVelocity(float x);
     void setYVelocity(float y);
 
+    void setAimPosition(float x, float y)
+    {
+        m_aim_position.x = x;
+        m_aim_position.y = y;
+    }
+
+    Vec2<float> getAimPosition() const { return m_aim_position; }
+
     void setBoundsSize(int width, int height);
 
     void setGravityAffected(bool value);
@@ -60,8 +68,11 @@ protected:
     BBWorldCollider m_bb_collider;
 
     Vec2<float> m_position;
+    Vec2<float> m_aim_position;
     Vec2<float> m_velocity;
     Vec2<int> m_bounds_size;
+
+    float m_speed = 0.0f;
 
     // settings
 protected:

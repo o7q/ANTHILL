@@ -1,5 +1,13 @@
 #include "bullet_manager.hpp"
 
+void BulletManager::updateBullets(float dt)
+{
+    for (Bullet &bullet : m_bullets)
+    {
+        bullet.update(dt);
+    }
+}
+
 std::vector<Bullet> BulletManager::checkWorld(World *world, float dt)
 {
     return check_object(dt, [&](Bullet &bullet)
