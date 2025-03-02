@@ -51,20 +51,30 @@ World::~World()
     }
 }
 
-void World::update(BoundingBox *box)
+void World::update(float dt, BoundingBox *box)
 {
-    BoundingBox locked_bb(m_size.x / 2.0f, m_size.y / 2.0f, m_size.x, m_size.y);
+    BoundingBox update_bb(m_size.x / 2.0f, m_size.y / 2.0f, m_size.x, m_size.y);
 
     if (box != nullptr)
     {
         Vec2<int> pos = box->getPosition().toInt() - m_position;
         Vec2<int> size = box->getSize().toInt();
-        locked_bb.setPosition(pos.x, pos.y);
-        locked_bb.setSize(size.x, size.y);
+        update_bb.setPosition(pos.x, pos.y);
+        update_bb.setSize(size.x, size.y);
     }
 
-    m_world_physics->updateParticles(&locked_bb);
-    generate_world_hitbox(&locked_bb);
+    const float speed = 2.0f;
+    const float time_step = 1.0f / speed;
+
+    m_remaining_time += dt;
+
+    while (m_remaining_time >= time_step)
+    {
+        m_world_physics->updateParticles(&update_bb);
+        m_remaining_time -= time_step;
+    }
+
+    generate_world_hitbox(&update_bb);
 
     if (m_world_texture != nullptr)
     {
@@ -92,7 +102,7 @@ void World::setPosition(int x, int y)
 {
     m_position.x = x;
     m_position.y = y;
-    
+
     if (m_world_texture != nullptr)
     {
         m_world_texture->setPosition(x, y);

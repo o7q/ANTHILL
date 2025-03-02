@@ -24,7 +24,7 @@ public:
     World(unsigned int width, unsigned int height);
     ~World();
 
-    void update(BoundingBox *box = nullptr);
+    void update(float dt, BoundingBox *box = nullptr);
 
     void setParticle(int x, int y, Particle particle, bool is_global_coordinate = false);
     void drawParticles(int loc_x, int loc_y, int radius, const Particle particle, DrawShape drawShape = DrawShape::Circle, bool is_global_coordinate = false);
@@ -54,6 +54,8 @@ private:
     std::vector<Segment> m_world_hitbox;
 
     const bool m_debug_render_solid_collision = false;
+
+    float m_remaining_time = 0.0f;
 
     Vec2<int> m_size;
 };

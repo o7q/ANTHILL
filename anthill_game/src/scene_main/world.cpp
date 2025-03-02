@@ -10,6 +10,6 @@ void MainScene::update_world()
         {
             world->drawParticles(m_player.getPosition().x, m_player.getPosition().y, 15, Particle(), World::DrawShape::Circle, true);
         }
-        world->update(&m_update_bb);
+        world->update(DT, &m_update_bb);
     }
 }
