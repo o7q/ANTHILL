@@ -17,6 +17,8 @@ public:
 
     void setTargetFramerate(float target_framerate);
 
+    void setSpeed(float speed);
+
     float getFramerate() const { return m_fps; }
     float getDeltaTime() const { return m_dt_smoothed; }
 
@@ -32,4 +34,6 @@ private:
     float m_target_fps = 60.0f;
     float m_fps = 0.0f;
     float m_dt = 0.0f;
+
+    float m_speed_modifier = 1.0f;
 };

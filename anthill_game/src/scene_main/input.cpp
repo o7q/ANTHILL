@@ -63,6 +63,31 @@ void MainScene::update_input()
         }
     }
 
+    if (m_window.input().button(IButtonID::Debug1).pressed())
+    {
+        m_window.time().setSpeed(1.0f);
+    }
+    if (m_window.input().button(IButtonID::Debug2).pressed())
+    {
+        m_window.time().setSpeed(0.5f);
+    }
+    if (m_window.input().button(IButtonID::Debug3).pressed())
+    {
+        m_window.time().setSpeed(0.25f);
+    }
+    if (m_window.input().button(IButtonID::Debug4).pressed())
+    {
+        m_window.time().setSpeed(0.1f);
+    }
+    if (m_window.input().button(IButtonID::Debug5).pressed())
+    {
+        m_window.time().setSpeed(0.05f);
+    }
+    if (m_window.input().button(IButtonID::Debug6).pressed())
+    {
+        m_window.time().setSpeed(2.0f);
+    }
+
     if (m_window.input().button(IButtonID::Shoot).pressed())
     {
         Weapon *weapon = m_player.getWeapon();

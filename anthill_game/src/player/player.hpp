@@ -1,7 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <cmatH>
+#include <cmath>
 
 #include "../engine/window/window.hpp"
 #include "../entity/living_entity.hpp"

@@ -18,6 +18,11 @@ void TimeManager::frameEnd()
     m_frame_end = std::chrono::steady_clock::now();
 }
 
+void TimeManager::setSpeed(float speed)
+{
+    m_speed_modifier = speed;
+}
+
 void TimeManager::completeFrame()
 {
     const float frame_seconds = std::chrono::duration_cast<std::chrono::duration<float>>(m_frame_end - m_frame_start).count();
@@ -33,7 +38,7 @@ void TimeManager::completeFrame()
     const float total_frame_seconds = std::chrono::duration<float>(delayed_frame_end - m_frame_end).count();
 
     m_fps = 1.0f / (total_frame_seconds + frame_seconds);
-    m_dt = 60.0f / m_fps;
+    m_dt = 60.0f / m_fps * m_speed_modifier;
 
     m_dt_history[m_dt_history_index] = m_dt;
 
