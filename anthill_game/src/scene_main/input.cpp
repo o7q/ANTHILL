@@ -87,6 +87,13 @@ void MainScene::update_input()
     {
         m_window.time().setSpeed(2.0f);
     }
+    if (m_window.input().button(IButtonID::Debug7).down())
+    {
+        for (World* world : m_world_manager.getWorlds())
+        {
+            world->drawParticles(m_player.getAimPosition().x, m_player.getAimPosition().y, 20, Particle(Particle::Preset::Water), World::DrawShape::Circle, true);
+        }
+    }
 
     if (m_window.input().button(IButtonID::Shoot).pressed())
     {

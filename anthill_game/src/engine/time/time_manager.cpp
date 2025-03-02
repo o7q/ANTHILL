@@ -1,5 +1,7 @@
 #include "time_manager.hpp"
 
+#include <algorithm>
+
 TimeManager::TimeManager()
 {
     for (int i = 0; i < m_dt_iterations; ++i)
@@ -39,6 +41,8 @@ void TimeManager::completeFrame()
 
     m_fps = 1.0f / (total_frame_seconds + frame_seconds);
     m_dt = 60.0f / m_fps * m_speed_modifier;
+
+    m_dt = std::clamp(m_dt, 0.0f, 5.0f);
 
     m_dt_history[m_dt_history_index] = m_dt;
 
