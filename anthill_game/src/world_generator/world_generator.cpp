@@ -7,6 +7,8 @@ WorldGenerator::ThreadSafeGenerator::ThreadSafeGenerator(Settings settings)
 
 void WorldGenerator::ThreadSafeGenerator::generate()
 {
+    m_finished.store(false);
+
     Generator *generator = nullptr;
 
     switch (m_settings.preset)
@@ -24,12 +26,12 @@ void WorldGenerator::ThreadSafeGenerator::generate()
     m_world = generator->world();
     delete generator;
 
-    m_finished = true;
+    m_finished.store(true);
 }
 
 bool WorldGenerator::ThreadSafeGenerator::finished()
 {
-    return m_finished;
+    return m_finished.load();
 }
 
 World *WorldGenerator::ThreadSafeGenerator::getWorld()
