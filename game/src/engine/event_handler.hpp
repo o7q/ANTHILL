@@ -1,20 +1,38 @@
 #pragma once
 
+#include "utils.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_stdinc.h>
-#include <unordered_map>
+#include <vector>
 class EventHandler
 {
   public:
-    EventHandler() {}
-
-    void clear() { m_triggeredEvents.clear(); }
-    void update(SDL_Event &event) { m_triggeredEvents[event.type] = true; }
-    std::unordered_map<Uint32, bool> &getTriggeredEvents()
+    enum class EventType
     {
-        return m_triggeredEvents;
+        WINDOW_QUIT
+    };
+
+  public:
+    EventHandler() = default;
+    EventHandler(const EventHandler &other) = delete;
+    EventHandler &operator=(const EventHandler &other) = delete;
+
+    void begin() { m_triggeredEvents.clear(); }
+    void update(SDL_Event &event)
+    {
+        switch (event.type)
+        {
+        case SDL_EVENT_QUIT:
+            m_triggeredEvents.push_back(EventType::WINDOW_QUIT);
+            break;
+        }
+    }
+
+    bool checkEvent(EventType eventType) const
+    {
+        return Utils::doesVectorContain(m_triggeredEvents, eventType);
     }
 
   private:
-    std::unordered_map<Uint32, bool> m_triggeredEvents;
+    std::vector<EventType> m_triggeredEvents;
 };

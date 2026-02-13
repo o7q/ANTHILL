@@ -1,5 +1,6 @@
 #pragma once
 
+#include "event_handler.hpp"
 #include "vec.hpp"
 #include "viewport.hpp"
 #include <SDL3/SDL_events.h>
@@ -30,17 +31,29 @@ class Window
 
     void update()
     {
+        m_eventHandler.begin();
+
+        SDL_Event event;
+        while (SDL_PollEvent(&event))
+        {
+            m_eventHandler.update(event);
+        }
+
         SDL_RenderClear(m_renderer);
 
-        m_viewport.updateSDLTexture();
-        SDL_RenderTexture(m_renderer, m_viewport.getSDLTexture(), NULL, NULL);
+        // m_viewport.updateSDLTexture();
+        // SDL_RenderTexture(m_renderer, m_viewport.getSDLTexture(), NULL, NULL);
 
         SDL_RenderPresent(m_renderer);
     }
+
+    const EventHandler &getEventHandler() { return m_eventHandler; }
 
   private:
     SDL_Window *m_window = nullptr;
     SDL_Renderer *m_renderer = nullptr;
 
     Viewport m_viewport;
+
+    EventHandler m_eventHandler;
 };
