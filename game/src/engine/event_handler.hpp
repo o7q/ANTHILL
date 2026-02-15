@@ -18,7 +18,7 @@ class EventHandler
     EventHandler &operator=(const EventHandler &other) = delete;
 
     void begin() { m_triggeredEvents.clear(); }
-    void update(SDL_Event &event)
+    void poll(SDL_Event &event)
     {
         switch (event.type)
         {
@@ -28,7 +28,7 @@ class EventHandler
         }
     }
 
-    bool checkEvent(EventType eventType) const
+    bool didEventOccur(EventType eventType) const
     {
         return Utils::doesVectorContain(m_triggeredEvents, eventType);
     }

@@ -1,21 +1,43 @@
 #pragma once
 
+#include "utils.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keycode.h>
+#include <optional>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 class Input
 {
   public:
     enum class ButtonType
     {
-        Keyboard,
+        Key,
         Mouse
+    };
+
+    struct Bind
+    {
+        ButtonType type;
+        unsigned int id;
+
+        bool operator==(const Bind &other) const
+        {
+            return type == other.type && id == other.id;
+        }
     };
 
   public:
     Input() {}
+
+    void poll(Bind bind, bool isDown)
+    {
+        if (Utils::doesVectorContain(m_binds, bind))
+        {
+            m_down = isDown;
+        }
+    }
 
     void update()
     {
@@ -25,25 +47,19 @@ class Input
         m_wasDown = m_down;
     }
 
-    void assignKey(int keyCode)
+    void assignBind(const Bind &bind) { m_binds.push_back(bind); }
+    void removeBind(const Bind &bind)
     {
-        m_assignedButtons[ButtonType::Keyboard] = keyCode;
-    }
-    void assignMouseButton(int mouseButton)
-    {
-        m_assignedButtons[ButtonType::Mouse] = mouseButton;
+        Utils::removeItemFromVector(m_binds, bind);
     }
 
     bool isDown() const { return m_down; }
+    bool wasDown() const { return m_wasDown; }
     bool wasPressed() const { return m_pressed; }
     bool wasUnpressed() const { return m_unpressed; }
 
-    bool isButtonTypeAssigned(ButtonType buttonType) const {
-        
-    }
-
   private:
-    std::unordered_map<ButtonType, int> m_assignedButtons;
+    std::vector<Bind> m_binds;
 
     bool m_down = false;
     bool m_wasDown = false;
@@ -58,13 +74,56 @@ class InputHandler
     InputHandler(const InputHandler &other) = delete;
     InputHandler &operator=(const InputHandler &other) = delete;
 
-    void update(SDL_Event &event)
+    void poll(SDL_Event &event)
     {
-        for (auto &input : m_inputs)
+        const auto poll_inputs = [&](Input::Bind bind, bool isDown)
         {
-            input.second.update();
+            for (auto &inputPair : m_inputs)
+            {
+                inputPair.second.poll(bind, isDown);
+            }
+        };
+
+        switch (event.type)
+        {
+        case SDL_EVENT_KEY_DOWN:
+            poll_inputs({Input::ButtonType::Key, event.key.key}, true);
+            break;
+        case SDL_EVENT_KEY_UP:
+            poll_inputs({Input::ButtonType::Key, event.key.key}, false);
+            break;
         }
     }
 
+    void update()
+    {
+        for (auto &inputPair : m_inputs)
+        {
+            inputPair.second.update();
+        }
+    }
+
+    void addInput(const std::string &id, const std::vector<Input::Bind> &binds)
+    {
+        Input input;
+        for (const Input::Bind &bind : binds)
+        {
+            input.assignBind(bind);
+        }
+
+        m_inputs[id] = input;
+    }
+
+    const std::optional<Input> getInput(const std::string &id)
+    {
+        if (m_inputs.contains(id))
+        {
+            return m_inputs.at(id);
+        }
+
+        return std::nullopt;
+    }
+
+  private:
     std::unordered_map<std::string, Input> m_inputs;
 };

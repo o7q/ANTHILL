@@ -6,8 +6,15 @@
 namespace Utils
 {
 template <typename T>
-inline bool doesVectorContain(std::vector<T> vector, T value)
+inline bool doesVectorContain(const std::vector<T> &vector, const T &value)
 {
     return std::find(vector.begin(), vector.end(), value) != vector.end();
+}
+
+template <typename T>
+inline void removeItemFromVector(std::vector<T> &vector, const T &value)
+{
+    auto new_end = std::remove(vector.begin(), vector.end(), value);
+    vector.erase(new_end, vector.end());
 }
 } // namespace Utils
