@@ -4,6 +4,7 @@
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_stdinc.h>
 #include <vector>
+
 class EventHandler
 {
   public:
@@ -17,7 +18,7 @@ class EventHandler
     EventHandler(const EventHandler &other) = delete;
     EventHandler &operator=(const EventHandler &other) = delete;
 
-    void begin() { m_triggeredEvents.clear(); }
+    void resetEvents() { m_triggeredEvents.clear(); }
     void poll(SDL_Event &event)
     {
         switch (event.type)

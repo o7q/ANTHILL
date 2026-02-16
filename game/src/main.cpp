@@ -1,35 +1,34 @@
 #include "engine/window.hpp"
+#include <cstdint>
 #include <iostream>
 int main()
 {
     Window window(Vec2<uint16_t>(640, 480));
 
-    std::vector<Input::Bind> binds;
-    window.getInputHandler().addInput("test",
-                                      {{Input::ButtonType::Key, SDLK_W}});
-
     while (!window.getEventHandler().didEventOccur(
         EventHandler::EventType::WINDOW_QUIT))
     {
-        window.update();
+        window.frameStart();
 
-        auto input = window.getInputHandler().getInput("test");
-        if (input.has_value())
+        for (int y = 0; y < window.getViewport().getSize().y; ++y)
         {
-            // if (input->isDown())
-            // {
-            //     std::cout << "down!" << std::endl;
-            // }
-
-            if (input->wasPressed())
+            for (int x = 0; x < window.getViewport().getSize().x; ++x)
             {
-                std::cout << "pressed!" << std::endl;
-            }
-            if (input->wasUnpressed())
-            {
-                std::cout << "unpressed!" << std::endl;
+                Color col =
+                    window.getViewport().getPixel(Vec2<unsigned int>(x, y));
+                col.r /= 1.01f;
+                col.g /= 1.1f;
+                col.b /= 1.1f;
+                window.getViewport().setPixel(Vec2<unsigned int>(x, y), col);
             }
         }
+
+        Vec2<unsigned int> viewport_pos = window.windowToViewportPosition(
+            window.getInputHandler().getMousePosition());
+
+            window.getViewport().setPixel(Vec2<unsigned int>(viewport_pos.x, viewport_pos.y), Color(255, 255, 255));
+
+        window.render();
     }
 
     return 0;

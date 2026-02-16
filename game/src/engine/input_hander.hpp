@@ -1,8 +1,10 @@
 #pragma once
 
 #include "utils.hpp"
+#include "vec.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keycode.h>
+#include <SDL3/SDL_mouse.h>
 #include <optional>
 #include <string>
 #include <unordered_map>
@@ -52,6 +54,20 @@ class Input
     {
         Utils::removeItemFromVector(m_binds, bind);
     }
+    void removeBindsOfType(ButtonType type)
+    {
+        for (auto it = m_binds.begin(); it != m_binds.end(); ++it)
+        {
+            if (it->type == type)
+            {
+                it = m_binds.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+        }
+    }
 
     bool isDown() const { return m_down; }
     bool wasDown() const { return m_wasDown; }
@@ -97,6 +113,8 @@ class InputHandler
 
     void update()
     {
+        SDL_GetMouseState(&m_mousePosition.x, &m_mousePosition.y);
+
         for (auto &inputPair : m_inputs)
         {
             inputPair.second.update();
@@ -124,6 +142,10 @@ class InputHandler
         return std::nullopt;
     }
 
+    Vec2<float> getMousePosition() const { return m_mousePosition; }
+
   private:
     std::unordered_map<std::string, Input> m_inputs;
+
+    Vec2<float> m_mousePosition;
 };

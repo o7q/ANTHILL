@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+
 struct Color
 {
     Color() = default;

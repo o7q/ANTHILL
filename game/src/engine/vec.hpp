@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 template <typename T> struct Vec2
 {
     Vec2() = default;
