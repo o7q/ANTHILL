@@ -2,6 +2,7 @@
 
 #include "color.hpp"
 #include "vec.hpp"
+#include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <limits>
 
@@ -28,17 +29,19 @@ class Viewport
     void init(SDL_Renderer *renderer, Vec2<unsigned int> size)
     {
         m_texture =
-            SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
+            SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB24,
                               SDL_TEXTUREACCESS_STREAMING, size.x, size.y);
 
-        m_pixels = new Uint32[size.x * size.y];
-        for (unsigned int i = 0; i < size.x * size.y; ++i)
+        m_pixels = new Uint8[size.x * size.y * 3];
+        for (unsigned int i = 0; i < size.x * size.y * 3; i += 3)
         {
-            m_pixels[i] = 0x00000000;
+            m_pixels[i] = 0u;
+            m_pixels[i + 1] = 0u;
+            m_pixels[i + 2] = 0u;
         }
 
         SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
-        SDL_UpdateTexture(m_texture, NULL, m_pixels, size.x * sizeof(Uint32));
+        SDL_UpdateTexture(m_texture, NULL, m_pixels, size.x * 3);
 
         reset_update_points();
 
@@ -48,23 +51,16 @@ class Viewport
 
     void setPixel(Vec2<unsigned int> pos, Color color)
     {
-        Uint32 color32 = (static_cast<uint32_t>(color.r) << 24) |
-                         (static_cast<uint32_t>(color.g) << 16) |
-                         (static_cast<uint32_t>(color.b) << 8) | 0xFF;
-
         if (pos.x >= m_size.x || pos.y >= m_size.y)
         {
             return;
         }
 
-        const uint32_t index = pos.y * m_size.x + pos.x;
+        const unsigned int index = get_pixel_index(pos.x, pos.y);
 
-        if (m_pixels[index] == color32)
-        {
-            return;
-        }
-
-        m_pixels[index] = color32;
+        m_pixels[index] = color.r;
+        m_pixels[index + 1] = color.g;
+        m_pixels[index + 2] = color.b;
 
         if (pos.x < m_update_pos1.x)
         {
@@ -88,7 +84,7 @@ class Viewport
         m_update_rect.w = m_update_pos2.x - m_update_pos1.x + 1;
         m_update_rect.h = m_update_pos2.y - m_update_pos1.y + 1;
 
-        m_pixel_changed = true;
+        m_pixelChanged = true;
     }
 
     Color getPixel(Vec2<unsigned int> pos)
@@ -98,13 +94,8 @@ class Viewport
             return Color();
         }
 
-        const unsigned int index = pos.y * m_size.x + pos.x;
-
-        Uint32 color32 = m_pixels[index];
-
-        return Color(static_cast<uint8_t>((color32 >> 24)),
-                     static_cast<uint8_t>((color32 >> 16)),
-                     static_cast<uint8_t>((color32 >> 8)));
+        const unsigned int index = get_pixel_index(pos.x, pos.y);
+        return Color(m_pixels[index], m_pixels[index + 1], m_pixels[index + 2]);
     }
 
     Vec2<unsigned int> getSize() const { return m_size; }
@@ -112,18 +103,19 @@ class Viewport
 
     void updateSDLTexture()
     {
-        if (!m_pixel_changed)
+        if (!m_pixelChanged)
         {
             return;
         }
 
-        void *update_pixels =
-            &m_pixels[m_update_rect.y * m_size.x + m_update_rect.x];
-        SDL_UpdateTexture(m_texture, &m_update_rect, update_pixels,
-                          m_size.x * sizeof(Uint32));
+        const unsigned int index =
+            get_pixel_index(m_update_rect.x, m_update_rect.y);
+
+        SDL_UpdateTexture(m_texture, &m_update_rect, &m_pixels[index],
+                          m_size.x * 3);
         reset_update_points();
 
-        m_pixel_changed = false;
+        m_pixelChanged = false;
     }
 
     SDL_Texture *getSDLTexture() { return m_texture; }
@@ -133,8 +125,13 @@ class Viewport
     {
         m_update_pos1.x = std::numeric_limits<unsigned int>::max();
         m_update_pos1.y = std::numeric_limits<unsigned int>::max();
-        m_update_pos2.x = 0;
-        m_update_pos2.y = 0;
+        m_update_pos2.x = 0u;
+        m_update_pos2.y = 0u;
+    }
+
+    unsigned int get_pixel_index(unsigned int x, unsigned int y)
+    {
+        return (y * m_size.x + x) * 3u;
     }
 
   private:
@@ -143,10 +140,10 @@ class Viewport
     float m_aspectRatio = 1.0f;
 
     SDL_Texture *m_texture = nullptr;
-    Uint32 *m_pixels = nullptr;
+    Uint8 *m_pixels = nullptr;
 
     Vec2<unsigned int> m_update_pos1;
     Vec2<unsigned int> m_update_pos2;
     SDL_Rect m_update_rect;
-    bool m_pixel_changed = false;
+    bool m_pixelChanged = false;
 };

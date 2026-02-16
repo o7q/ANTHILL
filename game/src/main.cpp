@@ -1,41 +1,34 @@
-#include "engine/verlet.hpp"
 #include "engine/window.hpp"
-#include <SDL3/SDL_mouse.h>
+#include <cstdint>
 #include <iostream>
 int main()
 {
-    Window window(Vec2<unsigned int>(640, 480), Vec2<unsigned int>(80, 40));
-
-    window.getInputHandler().addInput(
-        "draw", {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});
-
-    VerletController verlet;
+    Window window(Vec2<unsigned int>(640, 480), Vec2<unsigned int>(30, 20));
 
     while (!window.getEventHandler().didEventOccur(
         EventHandler::EventType::WINDOW_QUIT))
     {
-
         window.frameStart();
 
-        if (window.getInputHandler().getInput("draw")->isDown())
+        for (int y = 0; y < window.getViewport().getSize().y; ++y)
         {
-            Vec2<unsigned int> viewport_pos = window.windowToViewportPosition(
-                window.getInputHandler().getMousePosition());
-            Vec2<unsigned int> pos = Vec2<unsigned int>(verlet.getPosition().x,
-                                                        verlet.getPosition().y);
-
-            Vec2<unsigned int> diff = viewport_pos - pos;
-
-            std::cout << diff.x << " " << diff.y << std::endl;
-
-            verlet.setAcceleration(Vec2<float>(diff.x, diff.y));
+            for (int x = 0; x < window.getViewport().getSize().x; ++x)
+            {
+                Color col =
+                    window.getViewport().getPixel(Vec2<unsigned int>(x, y));
+                col.r /= 1.01f;
+                col.g /= 1.1f;
+                col.b /= 1.1f;
+                window.getViewport().setPixel(Vec2<unsigned int>(x, y), col);
+            }
         }
 
-        verlet.update();
+        Vec2<unsigned int> viewport_pos = window.windowToViewportPosition(
+            window.getInputHandler().getMousePosition());
 
         window.getViewport().setPixel(
-            Vec2<unsigned int>(verlet.getPosition().x, verlet.getPosition().y),
-            Color(255, 0, 0));
+            Vec2<unsigned int>(viewport_pos.x, viewport_pos.y),
+            Color(255, 255, 255));
 
         window.render();
     }
