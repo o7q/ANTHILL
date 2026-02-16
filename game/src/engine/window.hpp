@@ -1,7 +1,7 @@
 #pragma once
 
 #include "event_handler.hpp"
-#include "input_hander.hpp"
+#include "input_handler.hpp"
 #include "vec.hpp"
 #include "viewport.hpp"
 #include <SDL3/SDL_events.h>
@@ -17,14 +17,15 @@
 class Window
 {
   public:
-    Window(Vec2<uint16_t> size)
+    Window(Vec2<unsigned int> windowSize, Vec2<unsigned int> viewportSize)
     {
         SDL_InitSubSystem(SDL_INIT_VIDEO);
-        m_window =
-            SDL_CreateWindow("ANTHILL", size.x, size.y, SDL_WINDOW_RESIZABLE);
+        m_window = SDL_CreateWindow("ANTHILL", windowSize.x, windowSize.y,
+                                    SDL_WINDOW_RESIZABLE);
         m_renderer = SDL_CreateRenderer(m_window, NULL);
 
-        m_viewport.init(m_renderer, Vec2<unsigned int>(20, 20));
+        m_viewport.init(m_renderer,
+                        Vec2<unsigned int>(viewportSize.x, viewportSize.y));
     }
     ~Window()
     {
@@ -48,11 +49,10 @@ class Window
 
         int winX, winY;
         SDL_GetWindowSizeInPixels(m_window, &winX, &winY);
-
         m_size.x = winX;
         m_size.y = winY;
 
-        m_aspect = (float)winX / winY;
+        m_aspectRatio = static_cast<float>(winX) / winY;
 
         recalculate_viewport_rect();
     }
@@ -81,15 +81,14 @@ class Window
         windowPosition.x -= m_viewportRect.x;
         windowPosition.y -= m_viewportRect.y;
 
-        float pixelWidthX = m_viewportRect.w / viewportSize.x;
-        float pixelWidthY = m_viewportRect.h / viewportSize.y;
-        windowPosition.x /= pixelWidthX;
-        windowPosition.y /= pixelWidthY;
+        float pixelSize = m_viewportRect.w / viewportSize.x;
+        windowPosition.x /= pixelSize;
+        windowPosition.y /= pixelSize;
 
-        windowPosition.x =
-            std::clamp(windowPosition.x, 0.0f, (float)viewportSize.x - 1);
-        windowPosition.y =
-            std::clamp(windowPosition.y, 0.0f, (float)viewportSize.y - 1);
+        windowPosition.x = std::clamp(windowPosition.x, 0.0f,
+                                      static_cast<float>(viewportSize.x) - 1);
+        windowPosition.y = std::clamp(windowPosition.y, 0.0f,
+                                      static_cast<float>(viewportSize.y) - 1);
 
         return Vec2<unsigned int>(windowPosition.x, windowPosition.y);
     }
@@ -97,15 +96,16 @@ class Window
   private:
     void recalculate_viewport_rect()
     {
-        if (m_aspect > 1.0f)
+        float viewport_aspect = m_viewport.getAspectRatio();
+        if (m_aspectRatio > viewport_aspect)
         {
-            m_viewportRect.w = m_size.x / m_aspect;
+            m_viewportRect.w = m_size.x / m_aspectRatio * viewport_aspect;
             m_viewportRect.h = m_size.y;
         }
         else
         {
             m_viewportRect.w = m_size.x;
-            m_viewportRect.h = m_size.y * m_aspect;
+            m_viewportRect.h = m_size.y * m_aspectRatio / viewport_aspect;
         }
         m_viewportRect.x = m_size.x / 2.0f - m_viewportRect.w / 2.0f;
         m_viewportRect.y = m_size.y / 2.0f - m_viewportRect.h / 2.0f;
@@ -121,6 +121,6 @@ class Window
     EventHandler m_eventHandler;
     InputHandler m_inputHandler;
 
-    float m_aspect = 1.0f;
     Vec2<unsigned int> m_size;
+    float m_aspectRatio = 1.0f;
 };

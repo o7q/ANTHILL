@@ -1,32 +1,41 @@
+#include "engine/verlet.hpp"
 #include "engine/window.hpp"
-#include <cstdint>
+#include <SDL3/SDL_mouse.h>
 #include <iostream>
 int main()
 {
-    Window window(Vec2<uint16_t>(640, 480));
+    Window window(Vec2<unsigned int>(640, 480), Vec2<unsigned int>(80, 40));
+
+    window.getInputHandler().addInput(
+        "draw", {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});
+
+    VerletController verlet;
 
     while (!window.getEventHandler().didEventOccur(
         EventHandler::EventType::WINDOW_QUIT))
     {
+
         window.frameStart();
 
-        for (int y = 0; y < window.getViewport().getSize().y; ++y)
+        if (window.getInputHandler().getInput("draw")->isDown())
         {
-            for (int x = 0; x < window.getViewport().getSize().x; ++x)
-            {
-                Color col =
-                    window.getViewport().getPixel(Vec2<unsigned int>(x, y));
-                col.r /= 1.01f;
-                col.g /= 1.1f;
-                col.b /= 1.1f;
-                window.getViewport().setPixel(Vec2<unsigned int>(x, y), col);
-            }
+            Vec2<unsigned int> viewport_pos = window.windowToViewportPosition(
+                window.getInputHandler().getMousePosition());
+            Vec2<unsigned int> pos = Vec2<unsigned int>(verlet.getPosition().x,
+                                                        verlet.getPosition().y);
+
+            Vec2<unsigned int> diff = viewport_pos - pos;
+
+            std::cout << diff.x << " " << diff.y << std::endl;
+
+            verlet.setAcceleration(Vec2<float>(diff.x, diff.y));
         }
 
-        Vec2<unsigned int> viewport_pos = window.windowToViewportPosition(
-            window.getInputHandler().getMousePosition());
+        verlet.update();
 
-            window.getViewport().setPixel(Vec2<unsigned int>(viewport_pos.x, viewport_pos.y), Color(255, 255, 255));
+        window.getViewport().setPixel(
+            Vec2<unsigned int>(verlet.getPosition().x, verlet.getPosition().y),
+            Color(255, 0, 0));
 
         window.render();
     }

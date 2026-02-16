@@ -29,7 +29,6 @@ class Input
             return type == other.type && id == other.id;
         }
     };
-
   public:
     Input() {}
 
@@ -107,6 +106,12 @@ class InputHandler
             break;
         case SDL_EVENT_KEY_UP:
             poll_inputs({Input::ButtonType::Key, event.key.key}, false);
+            break;
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
+            poll_inputs({Input::ButtonType::Mouse, event.button.button}, true);
+            break;
+        case SDL_EVENT_MOUSE_BUTTON_UP:
+            poll_inputs({Input::ButtonType::Mouse, event.button.button}, false);
             break;
         }
     }

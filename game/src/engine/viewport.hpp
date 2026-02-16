@@ -43,6 +43,7 @@ class Viewport
         reset_update_points();
 
         m_size = size;
+        m_aspectRatio = static_cast<float>(size.x) / size.y;
     }
 
     void setPixel(Vec2<unsigned int> pos, Color color)
@@ -107,6 +108,7 @@ class Viewport
     }
 
     Vec2<unsigned int> getSize() const { return m_size; }
+    float getAspectRatio() const { return m_aspectRatio; }
 
     void updateSDLTexture()
     {
@@ -137,6 +139,8 @@ class Viewport
 
   private:
     Vec2<unsigned int> m_size;
+
+    float m_aspectRatio = 1.0f;
 
     SDL_Texture *m_texture = nullptr;
     Uint32 *m_pixels = nullptr;
