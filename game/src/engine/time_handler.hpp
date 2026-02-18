@@ -6,13 +6,9 @@
 class TimeHandler
 {
   public:
-    TimeHandler()
-    {
-        for (int i = 0; i < m_dt_smoothing_iterations; ++i)
-        {
-            m_dt_history[i] = 1.0f;
-        }
-    }
+    TimeHandler() = default;
+    TimeHandler(const TimeHandler &other) = delete;
+    TimeHandler &operator=(const TimeHandler &other) = delete;
 
     void frameStart() { m_frame_start = std::chrono::steady_clock::now(); }
 
@@ -43,18 +39,6 @@ class TimeHandler
         m_fps = 1.0f / total_frame_seconds;
         m_dt = 60.0f / m_fps * m_speed_multiplier;
         m_dt = std::clamp(m_dt, 0.0f, m_max_dt);
-
-        m_dt_history[m_dt_history_index] = m_dt;
-        m_dt_history_index =
-            (m_dt_history_index + 1) % m_dt_smoothing_iterations;
-
-        float sum = 0.0f;
-        for (int i = 0; i < m_dt_smoothing_iterations; ++i)
-        {
-            sum += m_dt_history[i];
-        }
-
-        m_dt_smoothed = sum / m_dt_smoothing_iterations;
     }
 
     void setSpeedMultiplier(float speed_multiplier)
@@ -64,20 +48,14 @@ class TimeHandler
 
     float getFramerate() const { return m_fps; }
     float getDeltaTime() const { return m_dt; }
-    float getSmoothedDeltaTime() const { return m_dt_smoothed; }
 
   private:
     std::chrono::steady_clock::time_point m_frame_start;
 
-    const float m_max_dt = 5.0f;
-    static constexpr int m_dt_smoothing_iterations = 60;
-    float m_dt_history[m_dt_smoothing_iterations];
-    int m_dt_history_index = 0;
-
+    const float m_max_dt = 3.0f;
     float m_target_fps = 60.0f;
     float m_fps = 60.0f;
     float m_dt = 1.0f;
-    float m_dt_smoothed = 1.0f;
 
     float m_speed_multiplier = 1.0f;
 };

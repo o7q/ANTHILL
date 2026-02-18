@@ -5,7 +5,7 @@
 #include <iostream>
 int main()
 {
-    Window window(Vec2<unsigned int>(640, 480), Vec2<unsigned int>(30, 20));
+    Window window(Vec2<unsigned int>(640, 480), Vec2<unsigned int>(300, 200));
 
     window.getInputHandler().addInput(
         "click", {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});
@@ -17,27 +17,26 @@ int main()
     {
         window.frameStart();
 
-        // verlet.setAcceleration(Vec2<float>(0, 0.00001));
+        window.getViewport().clear();
 
-        // window.getViewport().clear();
+        Vec2<float> mousepos = window.getInputHandler().getMousePosition();
+        Vec2<unsigned int> mouseViewport =
+        window.windowToViewportPosition(mousepos);
 
-        // // Vec2<float> mousepos = window.getInputHandler().getMousePosition();
-        // // Vec2<unsigned int> viewportPos =
-        // // window.windowToViewportPosition(mousepos);
+        Vec2<float> verletPos = verlet.getPosition();
+        Vec2<unsigned int> viewportPos =
+            Vec2<unsigned int>(verletPos.x, verletPos.y);
 
-        // Vec2<float> verletPos = verlet.getPosition();
-        // Vec2<unsigned int> viewportPos =
-        //     Vec2<unsigned int>(verletPos.x, verletPos.y);
+        verlet.setAcceleration(Vec2<float>((mouseViewport.x - verlet.getPosition().x) / 100, (mouseViewport.y - verlet.getPosition().y) / 100));
 
-        // window.getViewport().setPixel(viewportPos, Color(255, 0, 0));
+        std::cout << mouseViewport.x << " " << mouseViewport.y << std::endl;
 
-        // std::cout << verletPos.x << " " << verletPos.y << std::endl;
+        window.getViewport().setPixel(viewportPos, Color(255, 0, 0));
 
-        // verlet.update();
+
+        verlet.update();
 
         window.render();
-
-        std::cout << window.getTimeHandler().getFramerate() << std::endl;
 
         window.frameEnd();
 
