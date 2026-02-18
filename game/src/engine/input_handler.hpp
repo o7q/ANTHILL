@@ -29,6 +29,7 @@ class Input
             return type == other.type && id == other.id;
         }
     };
+
   public:
     Input() {}
 

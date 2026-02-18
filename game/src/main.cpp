@@ -1,36 +1,46 @@
+#include "engine/verlet.hpp"
 #include "engine/window.hpp"
+#include <SDL3/SDL_mouse.h>
 #include <cstdint>
 #include <iostream>
 int main()
 {
     Window window(Vec2<unsigned int>(640, 480), Vec2<unsigned int>(30, 20));
 
+    window.getInputHandler().addInput(
+        "click", {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});
+
+    VerletController verlet;
+
     while (!window.getEventHandler().didEventOccur(
         EventHandler::EventType::WINDOW_QUIT))
     {
         window.frameStart();
 
-        for (int y = 0; y < window.getViewport().getSize().y; ++y)
-        {
-            for (int x = 0; x < window.getViewport().getSize().x; ++x)
-            {
-                Color col =
-                    window.getViewport().getPixel(Vec2<unsigned int>(x, y));
-                col.r /= 1.01f;
-                col.g /= 1.1f;
-                col.b /= 1.1f;
-                window.getViewport().setPixel(Vec2<unsigned int>(x, y), col);
-            }
-        }
+        // verlet.setAcceleration(Vec2<float>(0, 0.00001));
 
-        Vec2<unsigned int> viewport_pos = window.windowToViewportPosition(
-            window.getInputHandler().getMousePosition());
+        // window.getViewport().clear();
 
-        window.getViewport().setPixel(
-            Vec2<unsigned int>(viewport_pos.x, viewport_pos.y),
-            Color(255, 255, 255));
+        // // Vec2<float> mousepos = window.getInputHandler().getMousePosition();
+        // // Vec2<unsigned int> viewportPos =
+        // // window.windowToViewportPosition(mousepos);
+
+        // Vec2<float> verletPos = verlet.getPosition();
+        // Vec2<unsigned int> viewportPos =
+        //     Vec2<unsigned int>(verletPos.x, verletPos.y);
+
+        // window.getViewport().setPixel(viewportPos, Color(255, 0, 0));
+
+        // std::cout << verletPos.x << " " << verletPos.y << std::endl;
+
+        // verlet.update();
 
         window.render();
+
+        std::cout << window.getTimeHandler().getFramerate() << std::endl;
+
+        window.frameEnd();
+
     }
 
     return 0;

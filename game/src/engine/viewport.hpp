@@ -4,6 +4,7 @@
 #include "vec.hpp"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
+#include <cstddef>
 #include <limits>
 
 class Viewport
@@ -33,12 +34,7 @@ class Viewport
                               SDL_TEXTUREACCESS_STREAMING, size.x, size.y);
 
         m_pixels = new Uint8[size.x * size.y * 3];
-        for (unsigned int i = 0; i < size.x * size.y * 3; i += 3)
-        {
-            m_pixels[i] = 0u;
-            m_pixels[i + 1] = 0u;
-            m_pixels[i + 2] = 0u;
-        }
+        memset(m_pixels, 0, size.x * size.y * 3 * sizeof(Uint8));
 
         SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
         SDL_UpdateTexture(m_texture, NULL, m_pixels, size.x * 3);
@@ -87,6 +83,12 @@ class Viewport
         m_pixelChanged = true;
     }
 
+    void clear()
+    {
+        memset(m_pixels, 0, m_size.x * m_size.y * 3 * sizeof(Uint8));
+        SDL_UpdateTexture(m_texture, NULL, m_pixels, m_size.x * 3);
+    }
+
     Color getPixel(Vec2<unsigned int> pos)
     {
         if (pos.x >= m_size.x || pos.y >= m_size.y)
@@ -101,7 +103,7 @@ class Viewport
     Vec2<unsigned int> getSize() const { return m_size; }
     float getAspectRatio() const { return m_aspectRatio; }
 
-    void updateSDLTexture()
+    void updatePixelChanges()
     {
         if (!m_pixelChanged)
         {

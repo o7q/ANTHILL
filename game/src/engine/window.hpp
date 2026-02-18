@@ -2,6 +2,7 @@
 
 #include "event_handler.hpp"
 #include "input_handler.hpp"
+#include "time_handler.hpp"
 #include "vec.hpp"
 #include "viewport.hpp"
 #include <SDL3/SDL_events.h>
@@ -36,6 +37,7 @@ class Window
 
     void frameStart()
     {
+        m_timeHandler.frameStart();
         m_eventHandler.resetEvents();
 
         SDL_Event event;
@@ -61,7 +63,7 @@ class Window
     {
         SDL_RenderClear(m_renderer);
 
-        m_viewport.updateSDLTexture();
+        m_viewport.updatePixelChanges();
         SDL_RenderTexture(m_renderer, m_viewport.getSDLTexture(), NULL,
                           &m_viewportRect);
 
@@ -70,9 +72,12 @@ class Window
         SDL_Delay(1);
     }
 
+    void frameEnd() { m_timeHandler.frameEnd(); }
+
     Viewport &getViewport() { return m_viewport; }
     EventHandler &getEventHandler() { return m_eventHandler; }
     InputHandler &getInputHandler() { return m_inputHandler; }
+    TimeHandler &getTimeHandler() { return m_timeHandler; }
 
     Vec2<unsigned int> windowToViewportPosition(Vec2<float> windowPosition)
     {
@@ -120,6 +125,7 @@ class Window
 
     EventHandler m_eventHandler;
     InputHandler m_inputHandler;
+    TimeHandler m_timeHandler;
 
     Vec2<unsigned int> m_size;
     float m_aspectRatio = 1.0f;
