@@ -28,6 +28,8 @@ class Window
         m_viewport.init(m_renderer,
                         Vec2<unsigned int>(viewportSize.x, viewportSize.y));
     }
+    Window(const Window &other) = delete;
+    Window &operator=(const Window &other) = delete;
     ~Window()
     {
         SDL_DestroyRenderer(m_renderer);

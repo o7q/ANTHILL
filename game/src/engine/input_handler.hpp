@@ -31,7 +31,7 @@ class Input
     };
 
   public:
-    Input() {}
+    Input() = default;
 
     void poll(Bind bind, bool isDown)
     {
