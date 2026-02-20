@@ -85,7 +85,7 @@ class Viewport
 
     void clear()
     {
-        memset(m_pixels, 0, m_size.x * m_size.y * 3 * sizeof(Uint8));
+        memset(m_pixels, 255, m_size.x * m_size.y * 3 * sizeof(Uint8));
         SDL_UpdateTexture(m_texture, NULL, m_pixels, m_size.x * 3);
     }
 
