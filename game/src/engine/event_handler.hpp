@@ -1,6 +1,5 @@
 #pragma once
 
-#include "utils.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_stdinc.h>
 #include <vector>
@@ -18,21 +17,9 @@ class EventHandler
     EventHandler(const EventHandler &other) = delete;
     EventHandler &operator=(const EventHandler &other) = delete;
 
-    void resetEvents() { m_triggeredEvents.clear(); }
-    void poll(SDL_Event &event)
-    {
-        switch (event.type)
-        {
-        case SDL_EVENT_QUIT:
-            m_triggeredEvents.push_back(EventType::WINDOW_QUIT);
-            break;
-        }
-    }
-
-    bool didEventOccur(EventType eventType) const
-    {
-        return Utils::doesVectorContain(m_triggeredEvents, eventType);
-    }
+    void resetEvents();
+    void poll(SDL_Event &event);
+    bool didEventOccur(EventType eventType) const;
 
   private:
     std::vector<EventType> m_triggeredEvents;
