@@ -34,7 +34,8 @@ int main()
                 {
                     unsigned int sx = chunkPair.first.first * 32 + x;
                     unsigned int sy = chunkPair.first.second * 32 + y;
-                    window.getViewport().setPixel(Vec2<unsigned int>(sx, sy), map.get(sx, sy));
+                    window.getViewport().setPixel(Vec2<unsigned int>(sx, sy),
+                                                  map.get(sx, sy));
                 }
             }
         }

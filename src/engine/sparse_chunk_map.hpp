@@ -3,7 +3,6 @@
 #include "logger.hpp"
 #include "utils.hpp"
 #include <array>
-#include <cstddef>
 #include <unordered_map>
 #include <utility>
 
