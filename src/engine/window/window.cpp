@@ -22,8 +22,7 @@ Window::Window(Vec2<unsigned int> windowSize, Vec2<unsigned int> viewportSize)
                                 SDL_WINDOW_RESIZABLE);
     m_renderer = SDL_CreateRenderer(m_window, NULL);
 
-    m_viewport.init(m_renderer,
-                    Vec2<unsigned int>(viewportSize.x, viewportSize.y));
+    m_viewport.init(m_renderer, viewportSize.x, viewportSize.y);
 }
 Window::~Window()
 {

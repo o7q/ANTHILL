@@ -23,7 +23,7 @@ template <typename T> class SparseChunkMap
             m_values[Utils::index_2dto1d(x, y, width)] = v;
         }
 
-        T get(unsigned int x, unsigned int y, unsigned int width)
+        T get(unsigned int x, unsigned int y, unsigned int width) const
         {
             return m_values[Utils::index_2dto1d(x, y, width)];
         }
@@ -53,7 +53,7 @@ template <typename T> class SparseChunkMap
         it->second.set(inner_index.x, inner_index.y, v, m_chunkSize.x);
     }
 
-    T get(int x, int y)
+    T get(int x, int y) const
     {
         Vec2<int> chunk_index = get_chunk_index(x, y);
         std::pair<int, int> chunk_key(chunk_index.x, chunk_index.y);
@@ -70,17 +70,17 @@ template <typename T> class SparseChunkMap
 
     void swap(Vec2<int> i1, Vec2<int> i2)
     {
-        T a = get(i1);
-        T b = get(i2);
-        set(i1, b);
-        set(i2, a);
+        T a = get(i1.x, i1.y);
+        T b = get(i2.x, i2.y);
+        set(i1.x, i1.y, b);
+        set(i2.x, i2.y, a);
     }
 
     void move(Vec2<int> i1, Vec2<int> i2)
     {
-        T a = get(i1);
-        set(i1, a);
-        set(i2, T());
+        T a = get(i1.x, i1.y);
+        set(i1.x, i1.y, T());
+        set(i2.x, i2.y, a);
     }
 
     const std::unordered_map<std::pair<int, int>, Chunk, Utils::PairHash> &
@@ -92,7 +92,7 @@ template <typename T> class SparseChunkMap
     Vec2<unsigned int> getChunkSize() const { return m_chunkSize; }
 
   private:
-    Vec2<int> get_chunk_index(int x, int y)
+    Vec2<int> get_chunk_index(int x, int y) const
     {
         int cw = static_cast<int>(m_chunkSize.x);
         int ch = static_cast<int>(m_chunkSize.y);
@@ -102,7 +102,8 @@ template <typename T> class SparseChunkMap
         return Vec2<int>(chunk_x, chunk_y);
     }
 
-    Vec2<unsigned int> get_inner_index(int x, int y, Vec2<int> chunk_index)
+    Vec2<unsigned int> get_inner_index(int x, int y,
+                                       Vec2<int> chunk_index) const
     {
         int cw = static_cast<int>(m_chunkSize.x);
         int ch = static_cast<int>(m_chunkSize.y);

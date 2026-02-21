@@ -1,16 +1,23 @@
+#include "engine/camera.hpp"
 #include "engine/color.hpp"
 #include "engine/sparse_chunk_map.hpp"
 #include "engine/window/window.hpp"
+#include "world/particle.hpp"
+#include "world/world.hpp"
 #include <SDL3/SDL_mouse.h>
 
 int main()
 {
     Window window(Vec2<unsigned int>(640, 480), Vec2<unsigned int>(300, 200));
 
+    window.getInputHandler().addInput("1", {{Input::ButtonType::Key, SDLK_1}});
+    window.getInputHandler().addInput("2", {{Input::ButtonType::Key, SDLK_2}});
     window.getInputHandler().addInput(
-        "click", {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});
+        "m1", {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});
 
-    SparseChunkMap<Color> map(50, 50);
+    Camera camera;
+
+    World world;
 
     while (!window.getEventHandler().didEventOccur(
         EventHandler::EventType::WINDOW_QUIT))
@@ -22,21 +29,32 @@ int main()
         Vec2<unsigned int> viewportMousePos =
             window.windowToViewportPosition(mousePos);
 
-        map.set(viewportMousePos.x, viewportMousePos.y, Color(255, 255, 255));
-
-        for (auto &[pos, chunk] : map.getChunks())
+        if (window.getInputHandler().getInput("1")->isDown())
         {
-            for (int y = 0; y < map.getChunkSize().y; ++y)
-            {
-                for (int x = 0; x < map.getChunkSize().x; ++x)
-                {
-                    unsigned int sx = pos.first * map.getChunkSize().x + x;
-                    unsigned int sy = pos.second * map.getChunkSize().y + y;
-                    window.getViewport().setPixel(Vec2<unsigned int>(sx, sy),
-                                                  map.get(sx, sy));
-                }
-            }
+            Particle p;
+            p.setMatterType(Particle::MatterType::Solid);
+            p.setPhysicsType(Particle::PhysicsType::None);
+            p.setColor(Color(150, 150, 150));
+            world.getParticleHandler().getParticles().set(
+                viewportMousePos.x, viewportMousePos.y, p);
         }
+        if (window.getInputHandler().getInput("2")->isDown())
+        {
+            Particle p;
+            p.setMatterType(Particle::MatterType::Solid);
+            p.setPhysicsType(Particle::PhysicsType::Sand);
+            p.setColor(Color(150, 150, 80));
+            world.getParticleHandler().getParticles().set(
+                viewportMousePos.x, viewportMousePos.y, p);
+        }
+        if (window.getInputHandler().getInput("m1")->wasPressed())
+        {
+            world.getParticleHandler().applyForce(viewportMousePos.x, viewportMousePos.y, 1.0f);
+        }
+
+        world.getParticleHandler().update(
+            window.getTimeHandler().getDeltaTime());
+        world.render(camera, window.getViewport());
 
         window.render();
         window.frameEnd();

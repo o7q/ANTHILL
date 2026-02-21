@@ -1,6 +1,7 @@
 #pragma once
 
 #include "engine/color.hpp"
+#include "engine/texture.hpp"
 #include "engine/vec.hpp"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
@@ -13,11 +14,14 @@ class Viewport
     Viewport &operator=(const Viewport &other) = delete;
     ~Viewport();
 
-    void init(SDL_Renderer *renderer, Vec2<unsigned int> size);
+    void init(SDL_Renderer *renderer, unsigned int width, unsigned int height);
 
-    void setPixel(Vec2<unsigned int> pos, Color color);
-    Color getPixel(Vec2<unsigned int> pos);
-    
+    void setPixel(unsigned int x, unsigned int y, Color color);
+    Color getPixel(unsigned int x, unsigned int y);
+
+    void renderTexture(const Texture &texture, unsigned int x = 0,
+                       unsigned int y = 0);
+
     void clear();
     void updatePixelChanges();
 

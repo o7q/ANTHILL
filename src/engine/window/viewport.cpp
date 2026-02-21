@@ -21,51 +21,52 @@ Viewport::~Viewport()
     }
 }
 
-void Viewport::init(SDL_Renderer *renderer, Vec2<unsigned int> size)
+void Viewport::init(SDL_Renderer *renderer, unsigned int width,
+                    unsigned int height)
 {
     m_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB24,
-                                  SDL_TEXTUREACCESS_STREAMING, size.x, size.y);
+                                  SDL_TEXTUREACCESS_STREAMING, width, height);
 
-    m_pixels = new Uint8[size.x * size.y * 3];
-    memset(m_pixels, 0, size.x * size.y * 3 * sizeof(Uint8));
+    m_pixels = new Uint8[width * height * 3];
+    memset(m_pixels, 0, width * height * 3 * sizeof(Uint8));
 
     SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
-    SDL_UpdateTexture(m_texture, NULL, m_pixels, size.x * 3);
+    SDL_UpdateTexture(m_texture, NULL, m_pixels, width * 3);
 
     reset_update_points();
 
-    m_size = size;
-    m_aspectRatio = static_cast<float>(size.x) / size.y;
+    m_size = Vec2<unsigned int>(width, height);
+    m_aspectRatio = static_cast<float>(width) / height;
 }
 
-void Viewport::setPixel(Vec2<unsigned int> pos, Color color)
+void Viewport::setPixel(unsigned int x, unsigned int y, Color color)
 {
-    if (pos.x >= m_size.x || pos.y >= m_size.y)
+    if (x >= m_size.x || y >= m_size.y)
     {
         return;
     }
 
-    const unsigned int index = get_pixel_index(pos.x, pos.y);
+    const unsigned int index = get_pixel_index(x, y);
 
     m_pixels[index] = color.r;
     m_pixels[index + 1] = color.g;
     m_pixels[index + 2] = color.b;
 
-    if (pos.x < m_update_pos1.x)
+    if (x < m_update_pos1.x)
     {
-        m_update_pos1.x = pos.x;
+        m_update_pos1.x = x;
     }
-    if (pos.y < m_update_pos1.y)
+    if (y < m_update_pos1.y)
     {
-        m_update_pos1.y = pos.y;
+        m_update_pos1.y = y;
     }
-    if (pos.x > m_update_pos2.x)
+    if (x > m_update_pos2.x)
     {
-        m_update_pos2.x = pos.x;
+        m_update_pos2.x = x;
     }
-    if (pos.y > m_update_pos2.y)
+    if (y > m_update_pos2.y)
     {
-        m_update_pos2.y = pos.y;
+        m_update_pos2.y = y;
     }
 
     m_update_rect.x = m_update_pos1.x;
@@ -76,20 +77,36 @@ void Viewport::setPixel(Vec2<unsigned int> pos, Color color)
     m_pixelChanged = true;
 }
 
-Color Viewport::getPixel(Vec2<unsigned int> pos)
+Color Viewport::getPixel(unsigned int x, unsigned int y)
 {
-    if (pos.x >= m_size.x || pos.y >= m_size.y)
+    if (x >= m_size.x || y >= m_size.y)
     {
         return Color();
     }
 
-    const unsigned int index = get_pixel_index(pos.x, pos.y);
+    const unsigned int index = get_pixel_index(x, y);
     return Color(m_pixels[index], m_pixels[index + 1], m_pixels[index + 2]);
+}
+
+void Viewport::renderTexture(const Texture &texture, unsigned int x,
+                             unsigned int y)
+{
+    Vec2<unsigned int> textureSize = texture.getSize();
+    Vec2<unsigned int> textureSizeHalf = texture.getSize() / 2;
+    for (unsigned int ty = 0; ty < textureSize.y; ++ty)
+    {
+        for (unsigned int tx = 0; tx < textureSize.x; ++tx)
+        {
+            Color color = texture.getPixel(tx, ty);
+            setPixel(tx + x - textureSizeHalf.x, ty + y - textureSizeHalf.y,
+                     color);
+        }
+    }
 }
 
 void Viewport::clear()
 {
-    memset(m_pixels, 255, m_size.x * m_size.y * 3 * sizeof(Uint8));
+    memset(m_pixels, 0, m_size.x * m_size.y * 3 * sizeof(Uint8));
     SDL_UpdateTexture(m_texture, NULL, m_pixels, m_size.x * 3);
 }
 

@@ -12,14 +12,12 @@ class VerletBody
 {
   public:
     VerletBody() = default;
-    VerletBody(const VerletBody &other) = delete;
-    VerletBody &operator=(const VerletBody &other) = delete;
 
     void update(float dt);
 
-    void setForce(Vec2<float> force)
+    void setForce(float x, float y)
     {
-        m_force = force;
+        m_force = Vec2<float>(x, y);
         m_forcesApplied = true;
     }
     void clearForces()
@@ -31,6 +29,12 @@ class VerletBody
     void setWorldProperties(VerletWorldProperties *world_properties)
     {
         p_world_properties = world_properties;
+    }
+
+    void setPosition(float x, float y)
+    {
+        m_position = Vec2<float>(x, y);
+        m_positionPrev = Vec2<float>(x, y);
     }
 
     Vec2<float> getPosition() const { return m_position; }
