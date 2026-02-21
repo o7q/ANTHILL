@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vec.hpp"
+#include "engine/vec.hpp"
 
 struct VerletWorldProperties
 {
@@ -17,7 +17,16 @@ class VerletBody
 
     void update(float dt);
 
-    void setForce(Vec2<float> force) { m_force = force; }
+    void setForce(Vec2<float> force)
+    {
+        m_force = force;
+        m_forcesApplied = true;
+    }
+    void clearForces()
+    {
+        m_force = Vec2<float>(0.0f, 0.0f);
+        m_forcesApplied = false;
+    }
     void setMass(float mass) { m_mass = mass; }
     void setWorldProperties(VerletWorldProperties *world_properties)
     {
@@ -25,12 +34,14 @@ class VerletBody
     }
 
     Vec2<float> getPosition() const { return m_position; }
+    bool areForcesApplied() const { return m_forcesApplied; }
 
   private:
     float m_mass = 1.0f;
     Vec2<float> m_position = Vec2<float>(0.0f, 0.0f);
     Vec2<float> m_positionPrev = Vec2<float>(0.0f, 0.0f);
     Vec2<float> m_force = Vec2<float>(0.0f, 0.0f);
+    bool m_forcesApplied = false;
 
     VerletWorldProperties *p_world_properties = nullptr;
 };

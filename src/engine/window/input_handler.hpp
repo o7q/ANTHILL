@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vec.hpp"
+#include "engine/vec.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keycode.h>
 #include <SDL3/SDL_mouse.h>

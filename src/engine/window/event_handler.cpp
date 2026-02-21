@@ -1,6 +1,6 @@
 #include "event_handler.hpp"
 
-#include "utils.hpp"
+#include "engine/utils.hpp"
 
 void EventHandler::resetEvents() { m_triggeredEvents.clear(); }
 

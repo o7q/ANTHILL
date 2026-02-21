@@ -1,9 +1,9 @@
 #pragma once
 
+#include "engine/vec.hpp"
 #include "event_handler.hpp"
 #include "input_handler.hpp"
 #include "time_handler.hpp"
-#include "vec.hpp"
 #include "viewport.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_gpu.h>

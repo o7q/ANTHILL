@@ -1,30 +1,43 @@
 #pragma once
 
-#include "logger.hpp"
-#include "utils.hpp"
-#include <array>
+#include "engine/logger.hpp"
+#include "engine/utils.hpp"
 #include <unordered_map>
 #include <utility>
 
-template <typename T, std::size_t W, std::size_t H> class SparseChunkMap
+template <typename T> class SparseChunkMap
 {
   public:
     class Chunk
     {
       public:
-        void set(unsigned int x, unsigned int y, T v)
+        Chunk(unsigned int width, unsigned int height)
         {
-            m_values[Utils::index_2dto1d(x, y, W)] = v;
+            m_values.resize(width * height);
+        }
+        Chunk(const Chunk &other) = delete;
+        Chunk &operator=(const Chunk &other) = delete;
+
+        void set(unsigned int x, unsigned int y, T v, unsigned int width)
+        {
+            m_values[Utils::index_2dto1d(x, y, width)] = v;
         }
 
-        T get(int x, int y) { return m_values[Utils::index_2dto1d(x, y, W)]; }
+        T get(unsigned int x, unsigned int y, unsigned int width)
+        {
+            return m_values[Utils::index_2dto1d(x, y, width)];
+        }
 
       private:
-        std::array<T, W * H> m_values{};
+        std::vector<T> m_values;
     };
 
   public:
-    SparseChunkMap() : m_logger("SparseChunkMap") {}
+    SparseChunkMap(unsigned int chunkWidth, unsigned int chunkHeight)
+        : m_logger("SparseChunkMap")
+    {
+        m_chunkSize = Vec2<unsigned int>(chunkWidth, chunkHeight);
+    }
     SparseChunkMap(const SparseChunkMap &other) = delete;
     SparseChunkMap &operator=(const SparseChunkMap &other) = delete;
 
@@ -33,17 +46,11 @@ template <typename T, std::size_t W, std::size_t H> class SparseChunkMap
         Vec2<int> chunk_index = get_chunk_index(x, y);
         std::pair<int, int> chunk_key(chunk_index.x, chunk_index.y);
 
-        auto [it, inserted] = m_chunks.try_emplace(chunk_key);
-        if (inserted)
-        {
-            m_logger.log(Logger::Severity::Info, "set",
-                         "Chunk at: (" + std::to_string(chunk_index.x) + " " +
-                             std::to_string(chunk_index.y) +
-                             ") didn't exist, created an empty chunk");
-        }
+        auto [it, _] =
+            m_chunks.try_emplace(chunk_key, m_chunkSize.x, m_chunkSize.y);
 
         Vec2<unsigned int> inner_index = get_inner_index(x, y, chunk_index);
-        m_chunks[chunk_key].set(inner_index.x, inner_index.y, v);
+        it->second.set(inner_index.x, inner_index.y, v, m_chunkSize.x);
     }
 
     T get(int x, int y)
@@ -51,13 +58,29 @@ template <typename T, std::size_t W, std::size_t H> class SparseChunkMap
         Vec2<int> chunk_index = get_chunk_index(x, y);
         std::pair<int, int> chunk_key(chunk_index.x, chunk_index.y);
 
-        if (!m_chunks.contains(chunk_key))
+        auto it = m_chunks.find(chunk_key);
+        if (it == m_chunks.end())
         {
             return T();
         }
 
         Vec2<unsigned int> inner_index = get_inner_index(x, y, chunk_index);
-        return m_chunks[chunk_key].get(inner_index.x, inner_index.y);
+        return it->second.get(inner_index.x, inner_index.y, m_chunkSize.x);
+    }
+
+    void swap(Vec2<int> i1, Vec2<int> i2)
+    {
+        T a = get(i1);
+        T b = get(i2);
+        set(i1, b);
+        set(i2, a);
+    }
+
+    void move(Vec2<int> i1, Vec2<int> i2)
+    {
+        T a = get(i1);
+        set(i1, a);
+        set(i2, T());
     }
 
     const std::unordered_map<std::pair<int, int>, Chunk, Utils::PairHash> &
@@ -66,29 +89,31 @@ template <typename T, std::size_t W, std::size_t H> class SparseChunkMap
         return m_chunks;
     }
 
-    Vec2<unsigned int> getSize() const
-    {
-        return Vec2<unsigned int>(m_iW, m_iH);
-    }
+    Vec2<unsigned int> getChunkSize() const { return m_chunkSize; }
 
   private:
     Vec2<int> get_chunk_index(int x, int y)
     {
-        int chunk_x = x / m_iW - (x % m_iW < 0);
-        int chunk_y = y / m_iH - (y % m_iH < 0);
+        int cw = static_cast<int>(m_chunkSize.x);
+        int ch = static_cast<int>(m_chunkSize.y);
+
+        int chunk_x = x / cw - (x % cw < 0);
+        int chunk_y = y / ch - (y % ch < 0);
         return Vec2<int>(chunk_x, chunk_y);
     }
 
     Vec2<unsigned int> get_inner_index(int x, int y, Vec2<int> chunk_index)
     {
-        unsigned int inner_x = x - chunk_index.x * m_iW;
-        unsigned int inner_y = y - chunk_index.y * m_iH;
+        int cw = static_cast<int>(m_chunkSize.x);
+        int ch = static_cast<int>(m_chunkSize.y);
+
+        unsigned int inner_x = x - chunk_index.x * cw;
+        unsigned int inner_y = y - chunk_index.y * ch;
         return Vec2<unsigned int>(inner_x, inner_y);
     }
 
   private:
-    const int m_iW = static_cast<int>(W);
-    const int m_iH = static_cast<int>(H);
+    Vec2<unsigned int> m_chunkSize;
 
     std::unordered_map<std::pair<int, int>, Chunk, Utils::PairHash> m_chunks;
     Logger m_logger;

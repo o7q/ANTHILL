@@ -1,6 +1,6 @@
 #include "verlet.hpp"
 
-#include "vec.hpp"
+#include "engine/vec.hpp"
 
 void VerletBody::update(float dt)
 {

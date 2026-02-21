@@ -1,7 +1,7 @@
 #include "viewport.hpp"
 
-#include "color.hpp"
-#include "vec.hpp"
+#include "engine/color.hpp"
+#include "engine/vec.hpp"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <cstddef>
