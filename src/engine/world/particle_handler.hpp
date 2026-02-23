@@ -56,7 +56,7 @@ class ParticleHandler
                     Vec2<float> dir =
                         Vec2<float>(x, y) - p->getVerlet().getPosition();
 
-                    dir = dir.negate();
+                    dir = -dir;
 
                     float distance = dir.length();
 
