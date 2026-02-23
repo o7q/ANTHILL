@@ -58,6 +58,8 @@ class ParticleHandler
                     Vec2<float> dir =
                         Vec2<float>(x, y) - p->getVerlet().getPosition();
 
+                    dir = dir.negate();
+
                     float distance = dir.length();
 
                     if (distance > 0.001f)

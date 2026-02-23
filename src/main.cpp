@@ -10,7 +10,7 @@
 
 int main()
 {
-    Window window(Vec2<unsigned int>(640, 480), Vec2<unsigned int>(300, 200));
+    Window window(Vec2<unsigned int>(640, 480), Vec2<unsigned int>(600, 600));
 
     window.getInputHandler().addInput("1", {{Input::ButtonType::Key, SDLK_1}});
     window.getInputHandler().addInput("2", {{Input::ButtonType::Key, SDLK_2}});
@@ -52,7 +52,7 @@ int main()
                 stone.setPhysicsType(Particle::PhysicsType::None);
                 stone.setMatterType(Particle::MatterType::Solid);
 
-                world.getParticleHandler().draw(pos.x, pos.y, stone, 5);
+                world.getParticleHandler().draw(pos.x, pos.y, stone, 20);
             }
         }
         if (window.getInputHandler().getInput("2")->isDown())
@@ -63,7 +63,7 @@ int main()
 
                 Particle air;
 
-                world.getParticleHandler().draw(pos.x, pos.y, air, 5);
+                world.getParticleHandler().draw(pos.x, pos.y, air, 10);
             }
         }
         if (window.getInputHandler().getInput("3")->isDown())
@@ -76,6 +76,7 @@ int main()
                 sand.setColor(Color(200, 200, 0));
                 sand.setPhysicsType(Particle::PhysicsType::Sand);
                 sand.setMatterType(Particle::MatterType::Solid);
+                sand.getVerlet().setRestitution(0.01f);
 
                 world.getParticleHandler().draw(pos.x, pos.y, sand, 10);
             }
@@ -90,6 +91,7 @@ int main()
                 water.setColor(Color(50, 50, 200));
                 water.setPhysicsType(Particle::PhysicsType::Water);
                 water.setMatterType(Particle::MatterType::Liquid);
+                water.getVerlet().setRestitution(0.05f);
 
                 world.getParticleHandler().draw(pos.x, pos.y, water, 10);
             }
@@ -100,7 +102,7 @@ int main()
             if (viewportMousePos.has_value())
             {
                 Vec2<unsigned int> pos = viewportMousePos.value();
-                world.getParticleHandler().applyForce(pos.x, pos.y, 0.5f);
+                world.getParticleHandler().applyForce(pos.x, pos.y, 3.0f);
             }
         }
 
@@ -116,12 +118,14 @@ int main()
             window.getTimeHandler().setSpeedMultiplier(time_multiplier);
         }
 
-        world.getParticleHandler().update(
-            window.getTimeHandler().getDeltaTime());
+        for (int i = 0; i < 2; ++i)
+        {
+            world.getParticleHandler().update(
+                window.getTimeHandler().getDeltaTime());
+        }
 
         world.render(camera, window.getViewport());
 
-        std::cout << window.getTimeHandler().getFramerate() << std::endl;
 
         window.render();
         window.frameEnd();

@@ -1,6 +1,7 @@
 #include "p_dynamics_handler.hpp"
 #include "engine/verlet.hpp"
-#include <iostream>
+#include "world/particle.hpp"
+#include <algorithm>
 
 void PDynamicsHandler::update(float dt)
 {
@@ -17,16 +18,16 @@ void PDynamicsHandler::update(float dt)
 
                 if (Particle *p = r_particles.get(px, py))
                 {
-                    if (p->getUpdateSwapID() == m_updateSwapID || p->isAir())
+                    if (p->isAir())
                     {
                         continue;
                     }
 
-                    ParticleSubject ps;
-                    ps.particle = p;
-                    ps.x = px;
-                    ps.y = py;
-                    update_particle(ps, dt);
+                    ParticleObject po;
+                    po.particle = p;
+                    po.x = px;
+                    po.y = py;
+                    update_particle(po, dt);
                 }
             }
         }
@@ -35,37 +36,39 @@ void PDynamicsHandler::update(float dt)
     m_updateSwapID = !m_updateSwapID;
 }
 
-void PDynamicsHandler::update_particle(ParticleSubject ps, float dt)
+void PDynamicsHandler::update_particle(ParticleObject po, float dt)
 {
-    switch (ps.particle->getPhysicsType())
+    switch (po.particle->getPhysicsType())
     {
     case Particle::PhysicsType::Sand:
-        update_sand_particle(ps, dt);
+        update_sand_particle(po, dt);
         break;
     case Particle::PhysicsType::Water:
-        update_water_particle(ps, dt);
+        update_water_particle(po, dt);
         break;
     default:
         break;
     }
 }
 
-void PDynamicsHandler::resolve_particle_collision(ParticleSubject ps,
+void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
                                                   Vec2<float> start,
                                                   Vec2<float> end, float dt)
 {
     Vec2<int> previousCheck{};
     Vec2<int> hitCell{};
+    Particle *hitParticle = nullptr;
     bool hit = false;
 
     auto function = [&](int x, int y)
     {
         if (Particle *next = r_particles.get(x, y))
         {
-            if (!next->isAir() && next != ps.particle)
+            if (!next->isAir() && next != po.particle)
             {
                 hit = true;
                 hitCell = Vec2<int>(x, y);
+                hitParticle = next;
                 return false;
             }
         }
@@ -81,7 +84,7 @@ void PDynamicsHandler::resolve_particle_collision(ParticleSubject ps,
         return;
     }
 
-    VerletBody &verlet = ps.particle->getVerlet();
+    VerletBody &verlet = po.particle->getVerlet();
 
     Vec2<int> hitDirection = hitCell - previousCheck;
 
@@ -98,8 +101,15 @@ void PDynamicsHandler::resolve_particle_collision(ParticleSubject ps,
         newVel.y = -vel.y;
     }
 
-    newVel.x *= 0.1f;
-    newVel.y *= 0.1f;
+    float restitution = verlet.getRestitution();
+    if (hitParticle)
+    {
+        restitution =
+            std::min(restitution, hitParticle->getVerlet().getRestitution());
+    }
+
+    newVel.x *= restitution;
+    newVel.y *= restitution;
 
     if (std::abs(newVel.x) < 0.1f)
     {
@@ -114,13 +124,13 @@ void PDynamicsHandler::resolve_particle_collision(ParticleSubject ps,
     verlet.setVelocity(newVel.x, newVel.y, dt);
 }
 
-void PDynamicsHandler::move_particle(ParticleSubject ps)
+void PDynamicsHandler::move_particle(ParticleObject po)
 {
-    Vec2<float> finalPos = ps.particle->getVerlet().getPosition();
+    Vec2<float> finalPos = po.particle->getVerlet().getPosition();
 
     int newX = static_cast<int>(std::trunc(finalPos.x));
     int newY = static_cast<int>(std::trunc(finalPos.y));
 
-    ps.particle->setUpdateSwapID(m_updateSwapID);
-    r_particles.move(ps.x, ps.y, newX, newY);
+    po.particle->setUpdateSwapID(m_updateSwapID);
+    r_particles.move(po.x, po.y, newX, newY);
 }
