@@ -1,9 +1,9 @@
 #include "window.hpp"
 
-#include "engine/vec.hpp"
 #include "event_handler.hpp"
 #include "input_handler.hpp"
 #include "time_handler.hpp"
+#include "types/vec.hpp"
 #include "viewport.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_gpu.h>
@@ -35,6 +35,8 @@ Window::~Window()
 void Window::frameStart()
 {
     m_timeHandler.frameStart();
+
+    m_viewport.clear();
     m_eventHandler.resetEvents();
 
     SDL_Event event;

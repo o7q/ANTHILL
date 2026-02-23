@@ -1,7 +1,7 @@
 #pragma once
 
-#include "engine/color.hpp"
-#include "engine/verlet.hpp"
+#include "engine/backend/types/color.hpp"
+#include "engine/math/verlet.hpp"
 
 class Particle
 {
@@ -45,6 +45,9 @@ class Particle
     bool isLiquid() { return m_matterType == MatterType::Liquid; }
     bool isGas() { return m_matterType == MatterType::Gas; }
 
+    void setRestitution(float restitution) { m_restitution = restitution; }
+    float getRestitution() const { return m_restitution; }
+
     VerletBody &getVerlet() { return m_verletBody; }
 
     void setUpdateSwapID(bool updateSwapID) { m_updateSwapID = updateSwapID; }
@@ -56,6 +59,7 @@ class Particle
     MatterType m_matterType = MatterType::Gas;
 
     VerletBody m_verletBody;
+    float m_restitution = 1.0f;
 
     int m_updateSwapID = 0;
 };

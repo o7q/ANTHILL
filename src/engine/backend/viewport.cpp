@@ -1,8 +1,8 @@
 #include "viewport.hpp"
 
-#include "engine/color.hpp"
-#include "engine/utils/math.hpp"
-#include "engine/vec.hpp"
+#include "types/color.hpp"
+#include "types/vec.hpp"
+#include "utils/math.hpp"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <cstddef>
@@ -112,7 +112,7 @@ void Viewport::drawSegment(Vec2<int> p1, Vec2<int> p2, Color color)
         setPixel(x, y, color);
         return true;
     };
-    MathUtils::bresenhamLine(p1, p2, draw);
+    BackendUtils::Math::bresenhamLine(p1, p2, draw);
 }
 
 void Viewport::clear()
@@ -148,5 +148,5 @@ void Viewport::reset_update_points()
 
 unsigned int Viewport::get_pixel_index(unsigned int x, unsigned int y)
 {
-    return (y * m_size.x + x) * 3u;
+    return BackendUtils::Math::index_2dto1d(x, y, m_size.x) * 3u;
 }

@@ -1,6 +1,6 @@
 #include "event_handler.hpp"
 
-#include "engine/utils/data.hpp"
+#include "utils/data.hpp"
 
 void EventHandler::resetEvents() { m_triggeredEvents.clear(); }
 
@@ -16,5 +16,5 @@ void EventHandler::poll(SDL_Event &event)
 
 bool EventHandler::didEventOccur(EventType eventType) const
 {
-    return DataUtils::doesVectorContain(m_triggeredEvents, eventType);
+    return BackendUtils::Data::doesVectorContain(m_triggeredEvents, eventType);
 }

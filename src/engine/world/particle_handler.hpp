@@ -1,8 +1,8 @@
 #pragma once
 
 #include "engine/sparse_chunk_map.hpp"
-#include "particle.hpp"
-#include "world/particle_dynamics/p_dynamics_handler.hpp"
+#include "engine/world/particle.hpp"
+#include "engine/world/particle_dynamics/p_dynamics_handler.hpp"
 
 class ParticleHandler
 {
@@ -16,17 +16,15 @@ class ParticleHandler
         m_particles.set(x, y, p);
     }
 
-    void draw(int x, int y, Particle p, int radius)
+    void draw(int x, int y, Particle p, int radius = 5)
     {
-        int half_radius = radius / 2;
-        for (int y_ = -half_radius; y_ <= half_radius; ++y_)
+        for (int ry = -radius; ry <= radius; ++ry)
         {
-            for (int x_ = -half_radius; x_ <= half_radius; ++x_)
+            for (int rx = -radius; rx <= radius; ++rx)
             {
-
-                if (y_ * y_ + x_ * x_ <= radius * radius)
+                if (rx * rx + ry * ry <= radius * radius)
                 {
-                    set(x + x_, y + y_, p);
+                    set(x + rx, y + ry, p);
                 }
             }
         }
@@ -77,6 +75,7 @@ class ParticleHandler
     }
 
     SparseChunkMap<Particle> &getParticles() { return m_particles; }
+    PDynamicsHandler &getDynamics() { return m_pDynamicsHandler; }
 
   private:
     SparseChunkMap<Particle> m_particles;

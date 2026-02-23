@@ -16,4 +16,3 @@ target_compile_options(${PROJECT_NAME} PRIVATE -O3 -Wall)
 find_package(SDL3 REQUIRED)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
-# target_link_options(${PROJECT_NAME} PRIVATE -static)

@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <vector>
 
-namespace DataUtils
+namespace BackendUtils
+{
+namespace Data
 {
 template <typename T>
 inline bool doesVectorContain(const std::vector<T> &vector, const T &value)
@@ -34,4 +36,5 @@ struct PairHash
         return hashCombine(std::hash<T>()(p.first), std::hash<U>()(p.second));
     }
 };
-} // namespace DataUtils
+} // namespace Data
+} // namespace BackendUtils

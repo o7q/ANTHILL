@@ -1,9 +1,9 @@
 #pragma once
 
-#include "engine/logger.hpp"
-#include "engine/utils/data.hpp"
-#include "engine/utils/math.hpp"
-#include "engine/vec.hpp"
+#include "engine/backend/logger.hpp"
+#include "engine/backend/types/vec.hpp"
+#include "engine/backend/utils/data.hpp"
+#include "engine/backend/utils/math.hpp"
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -23,12 +23,12 @@ template <typename T> class SparseChunkMap
 
         void set(unsigned int x, unsigned int y, T v, unsigned int width)
         {
-            m_values[MathUtils::index_2dto1d(x, y, width)] = v;
+            m_values[BackendUtils::Math::index_2dto1d(x, y, width)] = v;
         }
 
         T *get(unsigned int x, unsigned int y, unsigned int width)
         {
-            return &m_values[MathUtils::index_2dto1d(x, y, width)];
+            return &m_values[BackendUtils::Math::index_2dto1d(x, y, width)];
         }
 
       private:
@@ -80,7 +80,7 @@ template <typename T> class SparseChunkMap
         {
             return;
         }
-        
+
         std::swap(*a, *b);
     }
 
@@ -96,7 +96,8 @@ template <typename T> class SparseChunkMap
         set(x2, y2, v);
     }
 
-    const std::unordered_map<std::pair<int, int>, Chunk, DataUtils::PairHash> &
+    const std::unordered_map<std::pair<int, int>, Chunk,
+                             BackendUtils::Data::PairHash> &
     getChunks() const
     {
         return m_chunks;
@@ -129,7 +130,7 @@ template <typename T> class SparseChunkMap
   private:
     Vec2<unsigned int> m_chunkSize;
 
-    std::unordered_map<std::pair<int, int>, Chunk, DataUtils::PairHash>
+    std::unordered_map<std::pair<int, int>, Chunk, BackendUtils::Data::PairHash>
         m_chunks;
     Logger m_logger;
 };

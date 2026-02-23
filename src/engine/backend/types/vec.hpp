@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+
 template <typename T> struct Vec2
 {
     Vec2() = default;
@@ -16,6 +17,7 @@ template <typename T> struct Vec2
         return *this;
     }
     Vec2 operator+(T s) const { return Vec2<T>(x + s, y + s); }
+    Vec2 operator+=(T s) const { return Vec2<T>(x + s, y + s); }
 
     Vec2 operator-(const Vec2 &v) const { return Vec2<T>(x - v.x, y - v.y); }
     Vec2 &operator-=(const Vec2 &v)

@@ -1,8 +1,9 @@
-#include "engine/utils/math.hpp"
-#include "engine/verlet.hpp"
 #include "p_dynamics_handler.hpp"
 
-void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
+#include "engine/math/random.hpp"
+#include "engine/math/verlet.hpp"
+
+void PDynamicsHandler::update_sand_particle(ParticleObject po, float dt)
 {
     VerletBody &verlet = po.particle->getVerlet();
 
@@ -12,26 +13,26 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
     {
         if (below->isGas())
         {
-            verlet.addForce(0, 0.1);
+            verlet.addForce(0.0f, m_gravity);
         }
     }
 
-    Particle *left = r_particles.get(po.x - 1, po.y);
-    Particle *right = r_particles.get(po.x + 1, po.y);
+    Particle *leftDown = r_particles.get(po.x - 1, po.y + 1);
+    Particle *rightDown = r_particles.get(po.x + 1, po.y + 1);
     Particle *down = r_particles.get(po.x, po.y + 1);
 
     bool canLeft = false, canRight = false;
 
-    if (left && down)
+    if (leftDown && down)
     {
-        if (left->isGas() && !down->isGas())
+        if (leftDown->isGas() && !down->isGas())
         {
             canLeft = true;
         }
     }
-    if (right && down)
+    if (rightDown && down)
     {
-        if (right->isGas() && !down->isGas())
+        if (rightDown->isGas() && !down->isGas())
         {
             canRight = true;
         }
@@ -39,13 +40,13 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
 
     if (canLeft && canRight)
     {
-        switch (MathUtils::weakRandInt(0, 2))
+        switch (Math::weakRandInt(0, 2))
         {
         case 0:
-            verlet.addForce(-0.3, 0);
+            verlet.addForce(-0.1, 0);
             break;
         case 1:
-            verlet.addForce(0.3, 0);
+            verlet.addForce(0.1, 0);
             break;
         default:
             break;

@@ -1,6 +1,8 @@
 #include "p_dynamics_handler.hpp"
-#include "engine/verlet.hpp"
-#include "world/particle.hpp"
+
+#include "engine/backend/utils/math.hpp"
+#include "engine/math/verlet.hpp"
+#include "engine/world/particle.hpp"
 #include <algorithm>
 
 void PDynamicsHandler::update(float dt)
@@ -9,12 +11,23 @@ void PDynamicsHandler::update(float dt)
 
     for (auto &[chunkPos, chunk] : r_particles.getChunks())
     {
+        int chunkXDist = chunkPos.first - m_updateChunksOrigin.x;
+        int chunkYDist = chunkPos.second - m_updateChunksOrigin.y;
+
+        if (chunkXDist * chunkXDist + chunkYDist * chunkYDist >=
+            m_updateChunksRadius * m_updateChunksRadius)
+        {
+            continue;
+        }
+
+        int innerBaseX = chunkPos.first * chunkSize.x;
+        int innerBaseY = chunkPos.second * chunkSize.y;
         for (int y = chunkSize.y - 1; y >= 0; --y)
         {
             for (int x = chunkSize.x - 1; x >= 0; --x)
             {
-                int px = chunkPos.first * chunkSize.x + x;
-                int py = chunkPos.second * chunkSize.y + y;
+                int px = innerBaseX + x;
+                int py = innerBaseY + y;
 
                 if (Particle *p = r_particles.get(px, py))
                 {
@@ -23,10 +36,7 @@ void PDynamicsHandler::update(float dt)
                         continue;
                     }
 
-                    ParticleObject po;
-                    po.particle = p;
-                    po.x = px;
-                    po.y = py;
+                    ParticleObject po{p, px, py};
                     update_particle(po, dt);
                 }
             }
@@ -92,8 +102,8 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
         previousCheck = Vec2<int>(x, y);
         return true;
     };
-    MathUtils::bresenhamLine(Vec2<int>(start.x, start.y),
-                             Vec2<int>(end.x, end.y), function);
+    BackendUtils::Math::bresenhamLine(Vec2<int>(start.x, start.y),
+                                      Vec2<int>(end.x, end.y), function);
 
     if (!hit)
     {
@@ -117,11 +127,10 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
         newVel.y = -vel.y;
     }
 
-    float restitution = verlet.getRestitution();
+    float restitution = po.particle->getRestitution();
     if (hitParticle)
     {
-        restitution =
-            std::min(restitution, hitParticle->getVerlet().getRestitution());
+        restitution = std::min(restitution, hitParticle->getRestitution());
     }
 
     newVel.x *= restitution;

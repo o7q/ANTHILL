@@ -1,8 +1,8 @@
 #pragma once
 
-#include "engine/color.hpp"
-#include "engine/texture.hpp"
-#include "engine/vec.hpp"
+#include "texture.hpp"
+#include "types/color.hpp"
+#include "types/vec.hpp"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 
@@ -41,6 +41,7 @@ class Viewport
     float m_aspectRatio = 1.0f;
 
     SDL_Texture *m_texture = nullptr;
+    SDL_Renderer *m_renderer = nullptr;
     Uint8 *m_pixels = nullptr;
 
     Vec2<unsigned int> m_update_pos1;

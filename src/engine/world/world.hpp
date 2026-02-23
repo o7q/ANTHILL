@@ -1,13 +1,13 @@
 #pragma once
 
+#include "engine/backend/viewport.hpp"
 #include "engine/camera.hpp"
-#include "engine/window/viewport.hpp"
-#include "world/particle_handler.hpp"
+#include "engine/world/particle_handler.hpp"
 
 class World
 {
   public:
-    void render(const Camera &camera, Viewport &viewport)
+    void render(Viewport &viewport, const Camera &camera)
     {
         Vec2<float> camera_pos = camera.getPosition();
         Vec2<unsigned int> viewport_size = viewport.getSize();
@@ -20,7 +20,7 @@ class World
                         x + camera_pos.x, y + camera_pos.y))
                 {
                     Color pixel = p->getColor();
-                    
+
                     if (p->isAir())
                     {
                         pixel = Color(50, 0, 0);
