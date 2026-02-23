@@ -1,10 +1,12 @@
 #include "engine/camera.hpp"
 #include "engine/color.hpp"
 #include "engine/sparse_chunk_map.hpp"
+#include "engine/utils/math.hpp"
 #include "engine/window/window.hpp"
 #include "world/particle.hpp"
 #include "world/world.hpp"
 #include <SDL3/SDL_mouse.h>
+#include <iostream>
 
 int main()
 {
@@ -12,12 +14,23 @@ int main()
 
     window.getInputHandler().addInput("1", {{Input::ButtonType::Key, SDLK_1}});
     window.getInputHandler().addInput("2", {{Input::ButtonType::Key, SDLK_2}});
+    window.getInputHandler().addInput("3", {{Input::ButtonType::Key, SDLK_3}});
+    window.getInputHandler().addInput("4", {{Input::ButtonType::Key, SDLK_4}});
+    window.getInputHandler().addInput("slowmoDown",
+                                      {{Input::ButtonType::Key, SDLK_Z}});
+    window.getInputHandler().addInput("slowmoUp",
+                                      {{Input::ButtonType::Key, SDLK_X}});
     window.getInputHandler().addInput(
         "m1", {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});
 
+    World world;
     Camera camera;
 
-    World world;
+    std::vector<Vec2<int>> points;
+
+    float time_multiplier = 1.0f;
+
+    window.getTimeHandler().setTargetFramerate(144);
 
     while (!window.getEventHandler().didEventOccur(
         EventHandler::EventType::WINDOW_QUIT))
@@ -26,35 +39,89 @@ int main()
         window.getViewport().clear();
 
         Vec2<float> mousePos = window.getInputHandler().getMousePosition();
-        Vec2<unsigned int> viewportMousePos =
-            window.windowToViewportPosition(mousePos);
+        auto viewportMousePos = window.windowToViewportPosition(mousePos);
 
         if (window.getInputHandler().getInput("1")->isDown())
         {
-            Particle p;
-            p.setMatterType(Particle::MatterType::Solid);
-            p.setPhysicsType(Particle::PhysicsType::None);
-            p.setColor(Color(150, 150, 150));
-            world.getParticleHandler().getParticles().set(
-                viewportMousePos.x, viewportMousePos.y, p);
+            if (viewportMousePos.has_value())
+            {
+                Vec2<unsigned int> pos = viewportMousePos.value();
+
+                Particle stone;
+                stone.setColor(Color(200, 200, 200));
+                stone.setPhysicsType(Particle::PhysicsType::None);
+                stone.setMatterType(Particle::MatterType::Solid);
+
+                world.getParticleHandler().draw(pos.x, pos.y, stone, 5);
+            }
         }
         if (window.getInputHandler().getInput("2")->isDown())
         {
-            Particle p;
-            p.setMatterType(Particle::MatterType::Solid);
-            p.setPhysicsType(Particle::PhysicsType::Sand);
-            p.setColor(Color(150, 150, 80));
-            world.getParticleHandler().getParticles().set(
-                viewportMousePos.x, viewportMousePos.y, p);
+            if (viewportMousePos.has_value())
+            {
+                Vec2<unsigned int> pos = viewportMousePos.value();
+
+                Particle air;
+
+                world.getParticleHandler().draw(pos.x, pos.y, air, 5);
+            }
         }
-        if (window.getInputHandler().getInput("m1")->wasPressed())
+        if (window.getInputHandler().getInput("3")->isDown())
         {
-            world.getParticleHandler().applyForce(viewportMousePos.x, viewportMousePos.y, 1.0f);
+            if (viewportMousePos.has_value())
+            {
+                Vec2<unsigned int> pos = viewportMousePos.value();
+
+                Particle sand;
+                sand.setColor(Color(200, 200, 0));
+                sand.setPhysicsType(Particle::PhysicsType::Sand);
+                sand.setMatterType(Particle::MatterType::Solid);
+
+                world.getParticleHandler().draw(pos.x, pos.y, sand, 10);
+            }
+        }
+        if (window.getInputHandler().getInput("4")->isDown())
+        {
+            if (viewportMousePos.has_value())
+            {
+                Vec2<unsigned int> pos = viewportMousePos.value();
+
+                Particle water;
+                water.setColor(Color(50, 50, 200));
+                water.setPhysicsType(Particle::PhysicsType::Water);
+                water.setMatterType(Particle::MatterType::Liquid);
+
+                world.getParticleHandler().draw(pos.x, pos.y, water, 10);
+            }
+        }
+
+        if (window.getInputHandler().getInput("m1")->isDown())
+        {
+            if (viewportMousePos.has_value())
+            {
+                Vec2<unsigned int> pos = viewportMousePos.value();
+                world.getParticleHandler().applyForce(pos.x, pos.y, 0.5f);
+            }
+        }
+
+        if (window.getInputHandler().getInput("slowmoDown")->wasPressed())
+        {
+            time_multiplier -= 0.1f;
+            window.getTimeHandler().setSpeedMultiplier(time_multiplier);
+        }
+
+        if (window.getInputHandler().getInput("slowmoUp")->wasPressed())
+        {
+            time_multiplier += 0.1f;
+            window.getTimeHandler().setSpeedMultiplier(time_multiplier);
         }
 
         world.getParticleHandler().update(
             window.getTimeHandler().getDeltaTime());
+
         world.render(camera, window.getViewport());
+
+        std::cout << window.getTimeHandler().getFramerate() << std::endl;
 
         window.render();
         window.frameEnd();

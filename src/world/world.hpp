@@ -16,10 +16,18 @@ class World
         {
             for (unsigned int x = 0; x < viewport_size.x; ++x)
             {
-                Color pixel = m_particleHandler.getParticles()
-                                  .get(x + camera_pos.x, y + camera_pos.y)
-                                  .getColor();
-                viewport.setPixel(x, y, pixel);
+                if (Particle *p = m_particleHandler.getParticles().get(
+                        x + camera_pos.x, y + camera_pos.y))
+                {
+                    Color pixel = p->getColor();
+                    
+                    if (p->isAir())
+                    {
+                        pixel = Color(50, 0, 0);
+                    }
+
+                    viewport.setPixel(x, y, pixel);
+                }
             }
         }
     }

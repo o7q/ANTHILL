@@ -1,11 +1,9 @@
 #pragma once
 
-#include "vec.hpp"
 #include <algorithm>
-#include <functional>
 #include <vector>
 
-namespace Utils
+namespace DataUtils
 {
 template <typename T>
 inline bool doesVectorContain(const std::vector<T> &vector, const T &value)
@@ -18,20 +16,6 @@ inline void removeItemFromVector(std::vector<T> &vector, const T &value)
 {
     auto new_end = std::remove(vector.begin(), vector.end(), value);
     vector.erase(new_end, vector.end());
-}
-
-inline unsigned int index_2dto1d(unsigned int x, unsigned int y,
-                                 unsigned int width)
-{
-    return y * width + x;
-}
-
-inline Vec2<unsigned int> index_1dTo2d(unsigned int index, unsigned int width)
-{
-    unsigned int x = index % width;
-    unsigned int y = index / width;
-
-    return Vec2<unsigned int>(x, y);
 }
 
 // https://stackoverflow.com/a/27952689
@@ -50,5 +34,4 @@ struct PairHash
         return hashCombine(std::hash<T>()(p.first), std::hash<U>()(p.second));
     }
 };
-
-} // namespace Utils
+} // namespace DataUtils

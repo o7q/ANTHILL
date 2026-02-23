@@ -19,8 +19,10 @@ class Viewport
     void setPixel(unsigned int x, unsigned int y, Color color);
     Color getPixel(unsigned int x, unsigned int y);
 
-    void renderTexture(const Texture &texture, unsigned int x = 0,
-                       unsigned int y = 0);
+    void drawTexture(const Texture &texture, unsigned int x = 0,
+                     unsigned int y = 0);
+
+    void drawSegment(Vec2<int> p1, Vec2<int> p2, Color color);
 
     void clear();
     void updatePixelChanges();

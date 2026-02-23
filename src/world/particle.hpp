@@ -9,6 +9,7 @@ class Particle
     enum class PhysicsType
     {
         Sand,
+        Water,
         None
     };
 
@@ -34,7 +35,16 @@ class Particle
     void setMatterType(MatterType matterType) { m_matterType = matterType; }
     MatterType getMatterType() const { return m_matterType; }
 
+    bool isAir()
+    {
+        return m_physicsType == PhysicsType::None &&
+               m_matterType == MatterType::Gas;
+    }
+
     VerletBody &getVerlet() { return m_verletBody; }
+
+    void setUpdateSwapID(bool updateSwapID) { m_updateSwapID = updateSwapID; }
+    bool getUpdateSwapID() const { return m_updateSwapID; }
 
   private:
     Color m_color;
@@ -42,4 +52,6 @@ class Particle
     MatterType m_matterType = MatterType::Gas;
 
     VerletBody m_verletBody;
+
+    int m_updateSwapID = 0;
 };

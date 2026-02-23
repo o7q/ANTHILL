@@ -12,6 +12,7 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_timer.h>
 #include <SDL3/SDL_video.h>
+#include <optional>
 
 class Window
 {
@@ -31,7 +32,8 @@ class Window
     InputHandler &getInputHandler() { return m_inputHandler; }
     TimeHandler &getTimeHandler() { return m_timeHandler; }
 
-    Vec2<unsigned int> windowToViewportPosition(Vec2<float> windowPosition);
+    std::optional<Vec2<unsigned int>>
+    windowToViewportPosition(Vec2<float> windowPosition);
 
   private:
     void recalculate_viewport_rect();

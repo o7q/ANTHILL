@@ -1,6 +1,6 @@
 #include "input_handler.hpp"
 
-#include "engine/utils.hpp"
+#include "engine/utils/data.hpp"
 #include "engine/vec.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keycode.h>
@@ -12,7 +12,7 @@
 
 void Input::poll(Bind bind, bool isDown)
 {
-    if (Utils::doesVectorContain(m_binds, bind))
+    if (DataUtils::doesVectorContain(m_binds, bind))
     {
         m_down = isDown;
     }
@@ -29,7 +29,7 @@ void Input::update()
 void Input::assignBind(const Bind &bind) { m_binds.push_back(bind); }
 void Input::removeBind(const Bind &bind)
 {
-    Utils::removeItemFromVector(m_binds, bind);
+    DataUtils::removeItemFromVector(m_binds, bind);
 }
 void Input::removeBindsOfType(ButtonType type)
 {

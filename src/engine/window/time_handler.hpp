@@ -18,6 +18,8 @@ class TimeHandler
         m_speed_multiplier = speed_multiplier;
     }
 
+    void setTargetFramerate(float target_fps) { m_target_fps = target_fps; }
+
     float getFramerate() const { return m_fps; }
     float getDeltaTime() const { return m_dt; }
 

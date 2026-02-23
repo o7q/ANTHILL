@@ -1,6 +1,7 @@
 #include "viewport.hpp"
 
 #include "engine/color.hpp"
+#include "engine/utils/math.hpp"
 #include "engine/vec.hpp"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
@@ -88,8 +89,8 @@ Color Viewport::getPixel(unsigned int x, unsigned int y)
     return Color(m_pixels[index], m_pixels[index + 1], m_pixels[index + 2]);
 }
 
-void Viewport::renderTexture(const Texture &texture, unsigned int x,
-                             unsigned int y)
+void Viewport::drawTexture(const Texture &texture, unsigned int x,
+                           unsigned int y)
 {
     Vec2<unsigned int> textureSize = texture.getSize();
     Vec2<unsigned int> textureSizeHalf = texture.getSize() / 2;
@@ -102,6 +103,16 @@ void Viewport::renderTexture(const Texture &texture, unsigned int x,
                      color);
         }
     }
+}
+
+void Viewport::drawSegment(Vec2<int> p1, Vec2<int> p2, Color color)
+{
+    auto draw = [&](int x, int y)
+    {
+        setPixel(x, y, color);
+        return true;
+    };
+    MathUtils::bresenhamLine(p1, p2, draw);
 }
 
 void Viewport::clear()

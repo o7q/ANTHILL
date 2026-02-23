@@ -1,9 +1,12 @@
 #pragma once
 
 #include "engine/logger.hpp"
-#include "engine/utils.hpp"
+#include "engine/utils/data.hpp"
+#include "engine/utils/math.hpp"
+#include "engine/vec.hpp"
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 template <typename T> class SparseChunkMap
 {
@@ -20,12 +23,12 @@ template <typename T> class SparseChunkMap
 
         void set(unsigned int x, unsigned int y, T v, unsigned int width)
         {
-            m_values[Utils::index_2dto1d(x, y, width)] = v;
+            m_values[MathUtils::index_2dto1d(x, y, width)] = v;
         }
 
-        T get(unsigned int x, unsigned int y, unsigned int width) const
+        T *get(unsigned int x, unsigned int y, unsigned int width)
         {
-            return m_values[Utils::index_2dto1d(x, y, width)];
+            return &m_values[MathUtils::index_2dto1d(x, y, width)];
         }
 
       private:
@@ -53,7 +56,7 @@ template <typename T> class SparseChunkMap
         it->second.set(inner_index.x, inner_index.y, v, m_chunkSize.x);
     }
 
-    T get(int x, int y) const
+    T *get(int x, int y)
     {
         Vec2<int> chunk_index = get_chunk_index(x, y);
         std::pair<int, int> chunk_key(chunk_index.x, chunk_index.y);
@@ -61,29 +64,39 @@ template <typename T> class SparseChunkMap
         auto it = m_chunks.find(chunk_key);
         if (it == m_chunks.end())
         {
-            return T();
+            return nullptr;
         }
 
         Vec2<unsigned int> inner_index = get_inner_index(x, y, chunk_index);
         return it->second.get(inner_index.x, inner_index.y, m_chunkSize.x);
     }
 
-    void swap(Vec2<int> i1, Vec2<int> i2)
+    void swap(int x1, int y1, int x2, int y2)
     {
-        T a = get(i1.x, i1.y);
-        T b = get(i2.x, i2.y);
-        set(i1.x, i1.y, b);
-        set(i2.x, i2.y, a);
+        T *a = get(x1, y1);
+        T *b = get(x2, y2);
+
+        if (!a || !b)
+        {
+            return;
+        }
+        
+        std::swap(*a, *b);
     }
 
-    void move(Vec2<int> i1, Vec2<int> i2)
+    void move(int x1, int y1, int x2, int y2)
     {
-        T a = get(i1.x, i1.y);
-        set(i1.x, i1.y, T());
-        set(i2.x, i2.y, a);
+        T *a = get(x1, y1);
+        if (!a)
+        {
+            return;
+        }
+        T v = *a;
+        set(x1, y1, T());
+        set(x2, y2, v);
     }
 
-    const std::unordered_map<std::pair<int, int>, Chunk, Utils::PairHash> &
+    const std::unordered_map<std::pair<int, int>, Chunk, DataUtils::PairHash> &
     getChunks() const
     {
         return m_chunks;
@@ -116,6 +129,7 @@ template <typename T> class SparseChunkMap
   private:
     Vec2<unsigned int> m_chunkSize;
 
-    std::unordered_map<std::pair<int, int>, Chunk, Utils::PairHash> m_chunks;
+    std::unordered_map<std::pair<int, int>, Chunk, DataUtils::PairHash>
+        m_chunks;
     Logger m_logger;
 };

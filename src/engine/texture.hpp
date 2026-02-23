@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/color.hpp"
-#include "engine/utils.hpp"
+#include "engine/utils/math.hpp"
 #include <vector>
 class Texture
 {
@@ -16,12 +16,12 @@ class Texture
 
     void setPixel(unsigned int x, unsigned int y, Color color)
     {
-        m_pixels[Utils::index_2dto1d(x, y, m_size.x)] = color;
+        m_pixels[MathUtils::index_2dto1d(x, y, m_size.x)] = color;
     }
 
     Color getPixel(unsigned int x, unsigned int y) const
     {
-        return m_pixels[Utils::index_2dto1d(x, y, m_size.x)];
+        return m_pixels[MathUtils::index_2dto1d(x, y, m_size.x)];
     }
 
     Vec2<unsigned int> getSize() const { return m_size; }

@@ -14,6 +14,7 @@
 #include <SDL3/SDL_video.h>
 #include <algorithm>
 #include <cstddef>
+#include <optional>
 
 Window::Window(Vec2<unsigned int> windowSize, Vec2<unsigned int> viewportSize)
 {
@@ -66,11 +67,10 @@ void Window::render()
                       &m_viewportRect);
 
     SDL_RenderPresent(m_renderer);
-
-    SDL_Delay(1);
 }
 
-Vec2<unsigned int> Window::windowToViewportPosition(Vec2<float> windowPosition)
+std::optional<Vec2<unsigned int>>
+Window::windowToViewportPosition(Vec2<float> windowPosition)
 {
     Vec2<unsigned int> viewportSize = m_viewport.getSize();
 
@@ -80,6 +80,11 @@ Vec2<unsigned int> Window::windowToViewportPosition(Vec2<float> windowPosition)
     float pixelSize = m_viewportRect.w / viewportSize.x;
     windowPosition.x /= pixelSize;
     windowPosition.y /= pixelSize;
+
+    if (windowPosition.x < 0 || windowPosition.y < 0)
+    {
+        return std::nullopt;
+    }
 
     windowPosition.x = std::clamp(windowPosition.x, 0.0f,
                                   static_cast<float>(viewportSize.x) - 1);
