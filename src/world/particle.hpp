@@ -10,6 +10,7 @@ class Particle
     {
         Sand,
         Water,
+        Smoke,
         None
     };
 
@@ -40,6 +41,9 @@ class Particle
         return m_physicsType == PhysicsType::None &&
                m_matterType == MatterType::Gas;
     }
+    bool isSolid() { return m_matterType == MatterType::Solid; }
+    bool isLiquid() { return m_matterType == MatterType::Liquid; }
+    bool isGas() { return m_matterType == MatterType::Gas; }
 
     VerletBody &getVerlet() { return m_verletBody; }
 

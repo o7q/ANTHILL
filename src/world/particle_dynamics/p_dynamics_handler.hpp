@@ -24,10 +24,11 @@ class PDynamicsHandler
     void update_particle(ParticleObject po, float dt);
     void resolve_particle_collision(ParticleObject po, Vec2<float> start,
                                     Vec2<float> end, float dt);
-    void move_particle(ParticleObject po);
+    void finalize_particle(ParticleObject po);
 
     void update_sand_particle(ParticleObject po, float dt);
     void update_water_particle(ParticleObject po, float dt);
+    void update_smoke_particle(ParticleObject po, float dt);
 
   private:
     SparseChunkMap<Particle> &r_particles;

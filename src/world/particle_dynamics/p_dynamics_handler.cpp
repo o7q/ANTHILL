@@ -18,7 +18,7 @@ void PDynamicsHandler::update(float dt)
 
                 if (Particle *p = r_particles.get(px, py))
                 {
-                    if (p->isAir())
+                    if (p->getUpdateSwapID() == m_updateSwapID || p->isAir())
                     {
                         continue;
                     }
@@ -46,6 +46,9 @@ void PDynamicsHandler::update_particle(ParticleObject po, float dt)
     case Particle::PhysicsType::Water:
         update_water_particle(po, dt);
         break;
+    case Particle::PhysicsType::Smoke:
+        update_smoke_particle(po, dt);
+        break;
     default:
         break;
     }
@@ -64,7 +67,20 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
     {
         if (Particle *next = r_particles.get(x, y))
         {
-            if (!next->isAir() && next != po.particle)
+            bool canPass = false;
+
+            if ((po.particle->isSolid() || po.particle->isLiquid()) &&
+                next->isGas())
+            {
+                canPass = true;
+            }
+
+            if ((po.particle->isGas()) && next->isAir())
+            {
+                canPass = true;
+            }
+
+            if (!canPass && next != po.particle)
             {
                 hit = true;
                 hitCell = Vec2<int>(x, y);
@@ -124,7 +140,7 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
     verlet.setVelocity(newVel.x, newVel.y, dt);
 }
 
-void PDynamicsHandler::move_particle(ParticleObject po)
+void PDynamicsHandler::finalize_particle(ParticleObject po)
 {
     Vec2<float> finalPos = po.particle->getVerlet().getPosition();
 

@@ -10,12 +10,13 @@
 
 int main()
 {
-    Window window(Vec2<unsigned int>(640, 480), Vec2<unsigned int>(600, 600));
+    Window window(Vec2<unsigned int>(640, 480), Vec2<unsigned int>(300, 300));
 
     window.getInputHandler().addInput("1", {{Input::ButtonType::Key, SDLK_1}});
     window.getInputHandler().addInput("2", {{Input::ButtonType::Key, SDLK_2}});
     window.getInputHandler().addInput("3", {{Input::ButtonType::Key, SDLK_3}});
     window.getInputHandler().addInput("4", {{Input::ButtonType::Key, SDLK_4}});
+    window.getInputHandler().addInput("5", {{Input::ButtonType::Key, SDLK_5}});
     window.getInputHandler().addInput("slowmoDown",
                                       {{Input::ButtonType::Key, SDLK_Z}});
     window.getInputHandler().addInput("slowmoUp",
@@ -76,9 +77,9 @@ int main()
                 sand.setColor(Color(200, 200, 0));
                 sand.setPhysicsType(Particle::PhysicsType::Sand);
                 sand.setMatterType(Particle::MatterType::Solid);
-                sand.getVerlet().setRestitution(0.01f);
+                sand.getVerlet().setRestitution(0.5f);
 
-                world.getParticleHandler().draw(pos.x, pos.y, sand, 10);
+                world.getParticleHandler().draw(pos.x, pos.y, sand, 1);
             }
         }
         if (window.getInputHandler().getInput("4")->isDown())
@@ -94,6 +95,22 @@ int main()
                 water.getVerlet().setRestitution(0.05f);
 
                 world.getParticleHandler().draw(pos.x, pos.y, water, 10);
+            }
+        }
+        if (window.getInputHandler().getInput("5")->isDown())
+        {
+            if (viewportMousePos.has_value())
+            {
+                Vec2<unsigned int> pos = viewportMousePos.value();
+
+                Particle smoke;
+                smoke.setColor(Color(200, 220, 200));
+                smoke.setPhysicsType(Particle::PhysicsType::Smoke);
+                smoke.setMatterType(Particle::MatterType::Gas);
+                smoke.getVerlet().setRestitution(0.0f);
+                smoke.getVerlet().setVelocity(-1, 0, window.getTimeHandler().getDeltaTime());
+
+                world.getParticleHandler().draw(pos.x, pos.y, smoke, 10);
             }
         }
 
@@ -118,14 +135,10 @@ int main()
             window.getTimeHandler().setSpeedMultiplier(time_multiplier);
         }
 
-        for (int i = 0; i < 2; ++i)
-        {
-            world.getParticleHandler().update(
-                window.getTimeHandler().getDeltaTime());
-        }
+        world.getParticleHandler().update(
+            window.getTimeHandler().getDeltaTime());
 
         world.render(camera, window.getViewport());
-
 
         window.render();
         window.frameEnd();

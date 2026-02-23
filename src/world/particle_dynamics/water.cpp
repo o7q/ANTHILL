@@ -10,7 +10,7 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
 
     if (Particle *below = r_particles.get(po.x, po.y + 1))
     {
-        if (below->isAir())
+        if (below->isGas())
         {
             verlet.addForce(0, 0.1);
         }
@@ -24,14 +24,14 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
 
     if (left && down)
     {
-        if (left->isAir() && !down->isAir())
+        if (left->isGas() && !down->isGas())
         {
             canLeft = true;
         }
     }
     if (right && down)
     {
-        if (right->isAir() && !down->isAir())
+        if (right->isGas() && !down->isGas())
         {
             canRight = true;
         }
@@ -65,5 +65,5 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
     Vec2<float> end = verlet.getPosition();
 
     resolve_particle_collision(po, start, end, dt);
-    move_particle(po);
+    finalize_particle(po);
 }
