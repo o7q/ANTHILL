@@ -74,8 +74,8 @@ template <typename T> struct Vec2
     T length() const { return std::sqrt(x * x + y * y); }
     Vec2 normalize() const
     {
-        float l = length();
+        T l = length();
         return {x / l, y / l};
     }
-    float dot(const Vec2 &other) const { return x * other.x + y * other.y; }
+    T dot(const Vec2 &other) const { return x * other.x + y * other.y; }
 };
