@@ -5,6 +5,7 @@
 #include "engine/scene.hpp"
 #include "engine/world/world.hpp"
 #include <optional>
+
 class TestScene : public Scene
 {
   public:
@@ -22,7 +23,8 @@ class TestScene : public Scene
         {
             Vec2<float> mousePos =
                 r_window.getInputHandler().getMousePosition();
-            auto viewportMousePos = r_window.windowToViewportPosition(mousePos);
+            auto viewportMousePos =
+                r_window.getViewport().windowToViewportPosition(mousePos);
 
             if (r_window.getInputHandler().getInput("debugUp")->isDown())
             {

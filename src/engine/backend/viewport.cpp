@@ -1,31 +1,14 @@
 #include "viewport.hpp"
 
-#include "types/color.hpp"
 #include "types/vec.hpp"
-#include "utils/math.hpp"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <cstddef>
-#include <limits>
 
-Viewport::~Viewport()
+Viewport::Viewport(SDL_Window *window, unsigned int width, unsigned int height)
 {
-    if (m_texture != nullptr)
-    {
-        SDL_DestroyTexture(m_texture);
-        m_texture = nullptr;
-    }
-    if (m_pixels != nullptr)
-    {
-        delete[] m_pixels;
-        m_pixels = nullptr;
-    }
-}
-
-void Viewport::init(SDL_Renderer *renderer, unsigned int width,
-                    unsigned int height)
-{
-    m_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB24,
+    m_renderer = SDL_CreateRenderer(window, NULL);
+    m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGB24,
                                   SDL_TEXTUREACCESS_STREAMING, width, height);
 
     m_pixels = new Uint8[width * height * 3];
@@ -40,113 +23,39 @@ void Viewport::init(SDL_Renderer *renderer, unsigned int width,
     m_aspectRatio = static_cast<float>(width) / height;
 }
 
-void Viewport::setPixel(unsigned int x, unsigned int y, Color color)
+Viewport::~Viewport()
 {
-    if (x >= m_size.x || y >= m_size.y)
+    if (m_texture)
     {
-        return;
+        SDL_DestroyTexture(m_texture);
+        m_texture = nullptr;
     }
 
-    const unsigned int index = get_pixel_index(x, y);
-
-    m_pixels[index] = color.r;
-    m_pixels[index + 1] = color.g;
-    m_pixels[index + 2] = color.b;
-
-    if (x < m_update_pos1.x)
+    if (m_pixels)
     {
-        m_update_pos1.x = x;
-    }
-    if (y < m_update_pos1.y)
-    {
-        m_update_pos1.y = y;
-    }
-    if (x > m_update_pos2.x)
-    {
-        m_update_pos2.x = x;
-    }
-    if (y > m_update_pos2.y)
-    {
-        m_update_pos2.y = y;
+        delete[] m_pixels;
+        m_pixels = nullptr;
     }
 
-    m_update_rect.x = m_update_pos1.x;
-    m_update_rect.y = m_update_pos1.y;
-    m_update_rect.w = m_update_pos2.x - m_update_pos1.x + 1;
-    m_update_rect.h = m_update_pos2.y - m_update_pos1.y + 1;
-
-    m_pixelChanged = true;
-}
-
-Color Viewport::getPixel(unsigned int x, unsigned int y)
-{
-    if (x >= m_size.x || y >= m_size.y)
+    if (m_renderer)
     {
-        return Color();
-    }
-
-    const unsigned int index = get_pixel_index(x, y);
-    return Color(m_pixels[index], m_pixels[index + 1], m_pixels[index + 2]);
-}
-
-void Viewport::drawTexture(const Texture &texture, unsigned int x,
-                           unsigned int y)
-{
-    Vec2<unsigned int> textureSize = texture.getSize();
-    Vec2<unsigned int> textureSizeHalf = texture.getSize() / 2;
-    for (unsigned int ty = 0; ty < textureSize.y; ++ty)
-    {
-        for (unsigned int tx = 0; tx < textureSize.x; ++tx)
-        {
-            Color color = texture.getPixel(tx, ty);
-            setPixel(tx + x - textureSizeHalf.x, ty + y - textureSizeHalf.y,
-                     color);
-        }
+        SDL_DestroyRenderer(m_renderer);
+        m_renderer = nullptr;
     }
 }
 
-void Viewport::drawSegment(Vec2<int> p1, Vec2<int> p2, Color color)
+void Viewport::render()
 {
-    auto draw = [&](int x, int y)
-    {
-        setPixel(x, y, color);
-        return true;
-    };
-    BackendUtils::Math::bresenhamLine(p1, p2, draw);
+    SDL_RenderClear(m_renderer);
+
+    update_pixel_changes();
+    SDL_RenderTexture(m_renderer, m_texture, NULL, &m_presentRect);
+
+    SDL_RenderPresent(m_renderer);
 }
 
 void Viewport::clear()
 {
     memset(m_pixels, 0, m_size.x * m_size.y * 3 * sizeof(Uint8));
     SDL_UpdateTexture(m_texture, NULL, m_pixels, m_size.x * 3);
-}
-
-void Viewport::updatePixelChanges()
-{
-    if (!m_pixelChanged)
-    {
-        return;
-    }
-
-    const unsigned int index =
-        get_pixel_index(m_update_rect.x, m_update_rect.y);
-
-    SDL_UpdateTexture(m_texture, &m_update_rect, &m_pixels[index],
-                      m_size.x * 3);
-    reset_update_points();
-
-    m_pixelChanged = false;
-}
-
-void Viewport::reset_update_points()
-{
-    m_update_pos1.x = std::numeric_limits<unsigned int>::max();
-    m_update_pos1.y = std::numeric_limits<unsigned int>::max();
-    m_update_pos2.x = 0u;
-    m_update_pos2.y = 0u;
-}
-
-unsigned int Viewport::get_pixel_index(unsigned int x, unsigned int y)
-{
-    return BackendUtils::Math::index_2dto1d(x, y, m_size.x) * 3u;
 }

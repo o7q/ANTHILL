@@ -5,16 +5,18 @@
 #include "types/vec.hpp"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
+#include <optional>
 
 class Viewport
 {
   public:
-    Viewport() = default;
+    Viewport(SDL_Window *window, unsigned int width, unsigned int height);
     Viewport(const Viewport &other) = delete;
     Viewport &operator=(const Viewport &other) = delete;
     ~Viewport();
 
-    void init(SDL_Renderer *renderer, unsigned int width, unsigned int height);
+    void render();
+    void clear();
 
     void setPixel(unsigned int x, unsigned int y, Color color);
     Color getPixel(unsigned int x, unsigned int y);
@@ -24,14 +26,17 @@ class Viewport
 
     void drawSegment(Vec2<int> p1, Vec2<int> p2, Color color);
 
-    void clear();
-    void updatePixelChanges();
-
     Vec2<unsigned int> getSize() const { return m_size; }
     float getAspectRatio() const { return m_aspectRatio; }
-    SDL_Texture *getSDLTexture() { return m_texture; }
+
+    void recalculatePresentRect(Vec2<unsigned int> windowSize,
+                                float windowAspect);
+
+    std::optional<Vec2<unsigned int>>
+    windowToViewportPosition(Vec2<float> windowPosition);
 
   private:
+    void update_pixel_changes();
     void reset_update_points();
     unsigned int get_pixel_index(unsigned int x, unsigned int y);
 
@@ -47,5 +52,6 @@ class Viewport
     Vec2<unsigned int> m_update_pos1;
     Vec2<unsigned int> m_update_pos2;
     SDL_Rect m_update_rect;
+    SDL_FRect m_presentRect;
     bool m_pixelChanged = false;
 };
