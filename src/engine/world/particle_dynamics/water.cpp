@@ -9,38 +9,30 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
 
     Vec2<float> start = verlet.getPosition();
 
-    if (Particle *below = r_particles.get(po.x, po.y + 1))
-    {
-        if (below->isGas())
-        {
-            verlet.addForce(0.0f, m_gravity);
-        }
-    }
-
     Particle *left = r_particles.get(po.x - 1, po.y);
     Particle *right = r_particles.get(po.x + 1, po.y);
     Particle *down = r_particles.get(po.x, po.y + 1);
 
-    bool canLeft = false, canRight = false;
+    bool canDown = false, canLeft = false, canRight = false;
 
-    if (!left)
+    if (can_liquid_occupy(down))
+    {
+        canDown = true;
+    }
+
+    if (can_liquid_occupy(left) && !can_liquid_occupy(down))
     {
         canLeft = true;
     }
-    else 
-    if (left && down)
+    
+    if (can_liquid_occupy(right) && !can_liquid_occupy(down))
     {
-        if (left->isGas() && !down->isGas())
-        {
-            canLeft = true;
-        }
+        canRight = true;
     }
-    if (right && down)
+
+    if (canDown)
     {
-        if (right->isGas() && !down->isGas())
-        {
-            canRight = true;
-        }
+        verlet.addVelocity(0.0f, m_gravity, dt);
     }
 
     if (canLeft && canRight)
@@ -48,10 +40,10 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
         switch (Math::weakRandInt(0, 2))
         {
         case 0:
-            verlet.addForce(-0.3, 0);
+            verlet.addVelocity(-0.3, 0, dt);
             break;
         case 1:
-            verlet.addForce(0.3, 0);
+            verlet.addVelocity(0.3, 0,dt);
             break;
         default:
             break;
@@ -59,11 +51,11 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
     }
     else if (canLeft)
     {
-        verlet.addForce(-0.3, 0);
+        verlet.addVelocity(-0.3, 0,dt);
     }
     else if (canRight)
     {
-        verlet.addForce(0.3, 0);
+        verlet.addVelocity(0.3, 0,dt);
     }
 
     verlet.update(dt);

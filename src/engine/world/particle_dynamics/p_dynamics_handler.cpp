@@ -1,6 +1,8 @@
 #include "p_dynamics_handler.hpp"
 
 #include "engine/backend/utils/math.hpp"
+#include "engine/math/newtonian.hpp"
+#include "engine/math/random.hpp"
 #include "engine/math/verlet.hpp"
 #include "engine/world/particle.hpp"
 #include <algorithm>
@@ -11,10 +13,10 @@ void PDynamicsHandler::update(float dt)
 
     for (auto &[chunkPos, chunk] : r_particles.getChunks())
     {
-        int originChunkX = std::floor(m_updateChunksOrigin.x /
-                                      static_cast<float>(chunkSize.x));
-        int originChunkY = std::floor(m_updateChunksOrigin.y /
-                                      static_cast<float>(chunkSize.y));
+        int originChunkX = static_cast<int>(std::floor(
+            m_updateChunksOrigin.x / static_cast<float>(chunkSize.x)));
+        int originChunkY = static_cast<int>(std::floor(
+            m_updateChunksOrigin.y / static_cast<float>(chunkSize.y)));
 
         int chunkXDist = chunkPos.first - originChunkX;
         int chunkYDist = chunkPos.second - originChunkY;
@@ -73,7 +75,8 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
                                                   Vec2<float> start,
                                                   Vec2<float> end, float dt)
 {
-    Vec2<int> previousCheck{};
+    Vec2<int> previousCheck{static_cast<int>(std::floor(start.x)),
+                            static_cast<int>(std::floor(start.y))};
     Vec2<int> hitCell{};
     Particle *hitParticle = nullptr;
     bool hit = false;
@@ -84,13 +87,17 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
         {
             bool canPass = false;
 
-            if ((po.particle->isSolid() || po.particle->isLiquid()) &&
-                next->isGas())
+            if (po.particle->isSolid() && can_solid_occupy(next))
             {
                 canPass = true;
             }
 
-            if ((po.particle->isGas()) && next->isAir())
+            if (po.particle->isLiquid() && can_liquid_occupy(next))
+            {
+                canPass = true;
+            }
+
+            if (po.particle->isGas() && can_gas_occupy(next))
             {
                 canPass = true;
             }
@@ -132,25 +139,20 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
 
     float mA = verletA.getMass();
     float mB = verletB.getMass();
-    float totalMass = mA + mB;
 
     if (hitDirection.x != 0)
     {
-        newVelA.x =
-            ((mA - mB) / totalMass * velA.x + (2 * mB) / totalMass * velB.x) *
-            restitution;
-        newVelB.x =
-            ((mB - mA) / totalMass * velB.x + (2 * mA) / totalMass * velA.x) *
-            restitution;
+        newVelA.x = Math::elasticCollisionVelocityA(mA, mB, velA.x, velB.x) *
+                    restitution;
+        newVelB.x = Math::elasticCollisionVelocityB(mA, mB, velA.x, velB.x) *
+                    restitution;
     }
     if (hitDirection.y != 0)
     {
-        newVelA.y =
-            ((mA - mB) / totalMass * velA.y + (2 * mB) / totalMass * velB.y) *
-            restitution;
-        newVelB.y =
-            ((mB - mA) / totalMass * velB.y + (2 * mA) / totalMass * velA.y) *
-            restitution;
+        newVelA.y = Math::elasticCollisionVelocityA(mA, mB, velA.y, velB.y) *
+                    restitution;
+        newVelB.y = Math::elasticCollisionVelocityB(mA, mB, velA.y, velB.y) *
+                    restitution;
     }
 
     const float threshold = 0.05f;
@@ -185,4 +187,31 @@ void PDynamicsHandler::finalize_particle(ParticleObject po)
 
     po.particle->setUpdateSwapID(m_updateSwapID);
     r_particles.move(po.x, po.y, finalX, finalY);
+}
+
+bool PDynamicsHandler::can_solid_occupy(Particle *p)
+{
+    if (!p)
+    {
+        return true;
+    }
+    return p->isGas() || p->isLiquid();
+}
+
+bool PDynamicsHandler::can_liquid_occupy(Particle *p)
+{
+    if (!p)
+    {
+        return true;
+    }
+    return p->isGas();
+}
+
+bool PDynamicsHandler::can_gas_occupy(Particle *p)
+{
+    if (!p)
+    {
+        return true;
+    }
+    return p->isAir();
 }

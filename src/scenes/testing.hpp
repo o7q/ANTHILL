@@ -35,8 +35,6 @@ class TestScene : public Scene
             p.setMatterType(Particle::MatterType::Solid);
             p.setColor(Color(255, 255, 255));
             m_world.getParticleHandler().set(0, 0, p);
-            
-
 
             m_world.getParticleHandler().getDynamics().setUpdateInfo(
                 m_camera.getPosition().x, m_camera.getPosition().y, 10);
@@ -88,7 +86,7 @@ class TestScene : public Scene
                 sand.setColor(Color(20, Math::weakRandInt(50, 220), 100));
                 sand.setPhysicsType(Particle::PhysicsType::Sand);
                 sand.setMatterType(Particle::MatterType::Solid);
-                sand.setRestitution(0.1f);
+                sand.setRestitution(0.7f);
 
                 m_world.getParticleHandler().draw(worldPos.x, worldPos.y, sand,
                                                   4);
@@ -101,7 +99,7 @@ class TestScene : public Scene
                 water.setColor(Color(50, 50, 200));
                 water.setPhysicsType(Particle::PhysicsType::Water);
                 water.setMatterType(Particle::MatterType::Liquid);
-                water.setRestitution(0.05f);
+                water.setRestitution(0);
 
                 m_world.getParticleHandler().draw(worldPos.x, worldPos.y, water,
                                                   10);

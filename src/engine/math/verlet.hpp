@@ -20,6 +20,12 @@ class VerletBody
         m_positionPrev = m_position - Vec2<float>(x, y) * dt;
     }
 
+    void addVelocity(float x, float y, float dt)
+    {
+        Vec2<float> currentVelocity = getVelocity(dt);
+        setVelocity(currentVelocity.x + x, currentVelocity.y + y, dt);
+    }
+
     void setForce(float x, float y) { m_force = Vec2<float>(x, y); }
     void addForce(float x, float y) { m_force += Vec2<float>(x, y); }
     void clearForces() { m_force = Vec2<float>(0.0f, 0.0f); }

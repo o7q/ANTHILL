@@ -35,6 +35,10 @@ class PDynamicsHandler
                                     Vec2<float> end, float dt);
     void finalize_particle(ParticleObject po);
 
+    bool can_solid_occupy(Particle *p);
+    bool can_liquid_occupy(Particle *p);
+    bool can_gas_occupy(Particle *p);
+
     void update_sand_particle(ParticleObject po, float dt);
     void update_water_particle(ParticleObject po, float dt);
     void update_smoke_particle(ParticleObject po, float dt);

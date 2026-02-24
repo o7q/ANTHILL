@@ -9,33 +9,30 @@ void PDynamicsHandler::update_sand_particle(ParticleObject po, float dt)
 
     Vec2<float> start = verlet.getPosition();
 
-    if (Particle *below = r_particles.get(po.x, po.y + 1))
-    {
-        if (below->isGas())
-        {
-            verlet.addForce(0.0f, m_gravity);
-        }
-    }
-
     Particle *leftDown = r_particles.get(po.x - 1, po.y + 1);
     Particle *rightDown = r_particles.get(po.x + 1, po.y + 1);
     Particle *down = r_particles.get(po.x, po.y + 1);
 
-    bool canLeft = false, canRight = false;
+    bool canDown = false, canLeft = false, canRight = false;
 
-    if (leftDown && down)
+    if (can_solid_occupy(down))
     {
-        if (leftDown->isGas() && !down->isGas())
-        {
-            canLeft = true;
-        }
+        canDown = true;
     }
-    if (rightDown && down)
+
+    if (can_solid_occupy(leftDown) && !can_solid_occupy(down))
     {
-        if (rightDown->isGas() && !down->isGas())
-        {
-            canRight = true;
-        }
+        canLeft = true;
+    }
+
+    if (can_solid_occupy(rightDown) && !can_solid_occupy(down))
+    {
+        canRight = true;
+    }
+
+    if (canDown)
+    {
+        verlet.addForce(0.0f, m_gravity);
     }
 
     if (canLeft && canRight)
