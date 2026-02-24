@@ -9,22 +9,37 @@
 class TestScene : public Scene
 {
   public:
-    TestScene(Window &window) : Scene(window) {}
+    TestScene(Window &window)
+        : Scene(window), m_camera(window.getViewport().getSize())
+    {
+    }
 
     std::optional<SceneID> update() override
     {
         if (start())
         {
-            m_world.getParticleHandler().getDynamics().setUpdateInfo(
-                Vec2<int>(4, 4), 5);
         }
 
         if (tick())
         {
             Vec2<float> mousePos =
                 r_window.getInputHandler().getMousePosition();
-            auto viewportMousePos =
+            Vec2<int> viewportMousePos =
                 r_window.getViewport().windowToViewportPosition(mousePos);
+
+            Vec2<float> worldPos = m_camera.transformViewportPosition(
+                viewportMousePos.x, viewportMousePos.y);
+
+            Particle p;
+            p.setPhysicsType(Particle::PhysicsType::None);
+            p.setMatterType(Particle::MatterType::Solid);
+            p.setColor(Color(255, 255, 255));
+            m_world.getParticleHandler().set(0, 0, p);
+            
+
+
+            m_world.getParticleHandler().getDynamics().setUpdateInfo(
+                m_camera.getPosition().x, m_camera.getPosition().y, 10);
 
             if (r_window.getInputHandler().getInput("debugUp")->isDown())
             {
@@ -47,92 +62,71 @@ class TestScene : public Scene
                     .getInput("secondaryAction1")
                     ->isDown())
             {
-                if (viewportMousePos.has_value())
-                {
-                    Vec2<unsigned int> pos = viewportMousePos.value();
+                Particle stone;
+                stone.setColor(Color(200, 200, 200));
+                stone.setPhysicsType(Particle::PhysicsType::None);
+                stone.setMatterType(Particle::MatterType::Solid);
+                stone.getVerlet().setMass(200000000);
 
-                    Particle stone;
-                    stone.setColor(Color(200, 200, 200));
-                    stone.setPhysicsType(Particle::PhysicsType::None);
-                    stone.setMatterType(Particle::MatterType::Solid);
-
-                    m_world.getParticleHandler().draw(pos.x, pos.y, stone, 5);
-                }
+                m_world.getParticleHandler().draw(worldPos.x, worldPos.y, stone,
+                                                  5);
             }
             if (r_window.getInputHandler()
                     .getInput("secondaryAction2")
                     ->isDown())
             {
-                if (viewportMousePos.has_value())
-                {
-                    Vec2<unsigned int> pos = viewportMousePos.value();
+                Particle air;
 
-                    Particle air;
-
-                    m_world.getParticleHandler().draw(pos.x, pos.y, air, 10);
-                }
+                m_world.getParticleHandler().draw(worldPos.x, worldPos.y, air,
+                                                  10);
             }
             if (r_window.getInputHandler()
                     .getInput("secondaryAction3")
                     ->isDown())
             {
-                if (viewportMousePos.has_value())
-                {
-                    Vec2<unsigned int> pos = viewportMousePos.value();
+                Particle sand;
+                sand.setColor(Color(20, Math::weakRandInt(50, 220), 100));
+                sand.setPhysicsType(Particle::PhysicsType::Sand);
+                sand.setMatterType(Particle::MatterType::Solid);
+                sand.setRestitution(0.1f);
 
-                    Particle sand;
-                    sand.setColor(Color(20, Math::weakRandInt(50, 220), 100));
-                    sand.setPhysicsType(Particle::PhysicsType::Sand);
-                    sand.setMatterType(Particle::MatterType::Solid);
-                    sand.setRestitution(0.5f);
-
-                    m_world.getParticleHandler().draw(pos.x, pos.y, sand, 1);
-                }
+                m_world.getParticleHandler().draw(worldPos.x, worldPos.y, sand,
+                                                  4);
             }
             if (r_window.getInputHandler()
                     .getInput("secondaryAction4")
                     ->isDown())
             {
-                if (viewportMousePos.has_value())
-                {
-                    Vec2<unsigned int> pos = viewportMousePos.value();
+                Particle water;
+                water.setColor(Color(50, 50, 200));
+                water.setPhysicsType(Particle::PhysicsType::Water);
+                water.setMatterType(Particle::MatterType::Liquid);
+                water.setRestitution(0.05f);
 
-                    Particle water;
-                    water.setColor(Color(50, 50, 200));
-                    water.setPhysicsType(Particle::PhysicsType::Water);
-                    water.setMatterType(Particle::MatterType::Liquid);
-                    water.setRestitution(0.05f);
-
-                    m_world.getParticleHandler().draw(pos.x, pos.y, water, 10);
-                }
+                m_world.getParticleHandler().draw(worldPos.x, worldPos.y, water,
+                                                  10);
             }
             if (r_window.getInputHandler()
                     .getInput("secondaryAction5")
                     ->isDown())
             {
-                if (viewportMousePos.has_value())
-                {
-                    Vec2<unsigned int> pos = viewportMousePos.value();
+                Particle smoke;
+                smoke.setColor(Color(200, 220, 200));
+                smoke.setPhysicsType(Particle::PhysicsType::Smoke);
+                smoke.setMatterType(Particle::MatterType::Gas);
+                smoke.setRestitution(0.0f);
+                smoke.getVerlet().setVelocity(
+                    -1, 0, r_window.getTimeHandler().getDeltaTime());
 
-                    Particle smoke;
-                    smoke.setColor(Color(200, 220, 200));
-                    smoke.setPhysicsType(Particle::PhysicsType::Smoke);
-                    smoke.setMatterType(Particle::MatterType::Gas);
-                    smoke.setRestitution(0.0f);
-                    smoke.getVerlet().setVelocity(
-                        -1, 0, r_window.getTimeHandler().getDeltaTime());
-
-                    m_world.getParticleHandler().draw(pos.x, pos.y, smoke, 10);
-                }
+                m_world.getParticleHandler().draw(worldPos.x, worldPos.y, smoke,
+                                                  10);
             }
 
             if (r_window.getInputHandler().getInput("action1")->isDown())
             {
-                if (viewportMousePos.has_value())
-                {
-                    Vec2<unsigned int> pos = viewportMousePos.value();
-                    m_world.getParticleHandler().applyForce(pos.x, pos.y, 3.0f);
-                }
+                m_world.getParticleHandler().applyForce(
+                    worldPos.x, worldPos.y, 10.0f,
+                    r_window.getTimeHandler().getDeltaTime());
             }
 
             m_world.getParticleHandler().update(

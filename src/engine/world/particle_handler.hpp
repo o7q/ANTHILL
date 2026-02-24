@@ -30,7 +30,7 @@ class ParticleHandler
         }
     }
 
-    void applyForce(float x, float y, float power)
+    void applyForce(float x, float y, float power, float dt)
     {
         for (auto &[chunkPos, chunk] : m_particles.getChunks())
         {
@@ -54,9 +54,7 @@ class ParticleHandler
                     }
 
                     Vec2<float> dir =
-                        Vec2<float>(x, y) - p->getVerlet().getPosition();
-
-                    dir = -dir;
+                        p->getVerlet().getPosition() - Vec2<float>(x, y);
 
                     float distance = dir.length();
 
@@ -68,7 +66,7 @@ class ParticleHandler
                     float strength = power;
                     Vec2<float> force = dir * strength;
 
-                    p->getVerlet().addForce(force.x, force.y);
+                    p->getVerlet().setVelocity(force.x, force.y, dt);
                 }
             }
         }

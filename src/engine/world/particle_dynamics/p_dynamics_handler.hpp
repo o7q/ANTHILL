@@ -23,11 +23,10 @@ class PDynamicsHandler
     void setGravity(float gravity) { m_gravity = gravity; }
     void addGravity(float gravity) { m_gravity += gravity; }
     float getGravity() const { return m_gravity; }
-
-    void setUpdateInfo(Vec2<int> chunk_origin, int chunk_radius)
+    void setUpdateInfo(int originX, int originY, int chunk_radius_to_update)
     {
-        m_updateChunksOrigin = chunk_origin;
-        m_updateChunksRadius = chunk_radius;
+        m_updateChunksOrigin = Vec2<int>(originX, originY);
+        m_updateChunksRadius = chunk_radius_to_update;
     }
 
   private:

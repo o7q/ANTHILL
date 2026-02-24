@@ -25,6 +25,7 @@ class VerletBody
     void clearForces() { m_force = Vec2<float>(0.0f, 0.0f); }
 
     void setMass(float mass) { m_mass = mass; }
+    float getMass() const { return m_mass; }
 
     Vec2<float> getPosition() const { return m_position; }
     Vec2<float> getPreviousPosition() const { return m_positionPrev; }

@@ -23,6 +23,11 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
 
     bool canLeft = false, canRight = false;
 
+    if (!left)
+    {
+        canLeft = true;
+    }
+    else 
     if (left && down)
     {
         if (left->isGas() && !down->isGas())

@@ -9,7 +9,6 @@
 
 Window::Window(Vec2<unsigned int> windowSize, Vec2<unsigned int> viewportSize)
 {
-    SDL_InitSubSystem(SDL_INIT_VIDEO);
     m_window = SDL_CreateWindow("ANTHILL", windowSize.x, windowSize.y,
                                 SDL_WINDOW_RESIZABLE);
 
@@ -20,7 +19,6 @@ Window::Window(Vec2<unsigned int> windowSize, Vec2<unsigned int> viewportSize)
 Window::~Window()
 {
     SDL_DestroyWindow(m_window);
-    SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
 void Window::frameStart()

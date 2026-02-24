@@ -32,8 +32,7 @@ class Viewport
     void recalculatePresentRect(Vec2<unsigned int> windowSize,
                                 float windowAspect);
 
-    std::optional<Vec2<unsigned int>>
-    windowToViewportPosition(Vec2<float> windowPosition);
+    Vec2<int> windowToViewportPosition(Vec2<float> windowPosition);
 
   private:
     void update_pixel_changes();

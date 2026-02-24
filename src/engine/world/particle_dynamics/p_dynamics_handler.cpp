@@ -11,8 +11,13 @@ void PDynamicsHandler::update(float dt)
 
     for (auto &[chunkPos, chunk] : r_particles.getChunks())
     {
-        int chunkXDist = chunkPos.first - m_updateChunksOrigin.x;
-        int chunkYDist = chunkPos.second - m_updateChunksOrigin.y;
+        int originChunkX = std::floor(m_updateChunksOrigin.x /
+                                      static_cast<float>(chunkSize.x));
+        int originChunkY = std::floor(m_updateChunksOrigin.y /
+                                      static_cast<float>(chunkSize.y));
+
+        int chunkXDist = chunkPos.first - originChunkX;
+        int chunkYDist = chunkPos.second - originChunkY;
 
         if (chunkXDist * chunkXDist + chunkYDist * chunkYDist >=
             m_updateChunksRadius * m_updateChunksRadius)
@@ -102,60 +107,82 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
         previousCheck = Vec2<int>(x, y);
         return true;
     };
-    BackendUtils::Math::bresenhamLine(Vec2<int>(start.x, start.y),
-                                      Vec2<int>(end.x, end.y), function);
+    BackendUtils::Math::bresenhamLine(
+        Vec2<int>(std::floor(start.x), std::floor(start.y)),
+        Vec2<int>(std::floor(end.x), std::floor(end.y)), function);
 
     if (!hit)
     {
         return;
     }
 
-    VerletBody &verlet = po.particle->getVerlet();
+    VerletBody &verletA = po.particle->getVerlet();
+    VerletBody &verletB = hitParticle->getVerlet();
+
+    Vec2<float> velA = verletA.getVelocity(dt);
+    Vec2<float> velB = verletB.getVelocity(dt);
+
+    float restitution =
+        std::min(po.particle->getRestitution(), hitParticle->getRestitution());
 
     Vec2<int> hitDirection = hitCell - previousCheck;
 
-    Vec2<float> vel = verlet.getVelocity(dt);
-    Vec2<float> newVel = vel;
+    Vec2<float> newVelA = velA;
+    Vec2<float> newVelB = velB;
+
+    float mA = verletA.getMass();
+    float mB = verletB.getMass();
+    float totalMass = mA + mB;
 
     if (hitDirection.x != 0)
     {
-        newVel.x = -vel.x;
+        newVelA.x =
+            ((mA - mB) / totalMass * velA.x + (2 * mB) / totalMass * velB.x) *
+            restitution;
+        newVelB.x =
+            ((mB - mA) / totalMass * velB.x + (2 * mA) / totalMass * velA.x) *
+            restitution;
     }
-
     if (hitDirection.y != 0)
     {
-        newVel.y = -vel.y;
+        newVelA.y =
+            ((mA - mB) / totalMass * velA.y + (2 * mB) / totalMass * velB.y) *
+            restitution;
+        newVelB.y =
+            ((mB - mA) / totalMass * velB.y + (2 * mA) / totalMass * velA.y) *
+            restitution;
     }
 
-    float restitution = po.particle->getRestitution();
-    if (hitParticle)
+    const float threshold = 0.05f;
+    if (std::abs(newVelA.x) < threshold)
     {
-        restitution = std::min(restitution, hitParticle->getRestitution());
+        newVelA.x = 0;
     }
-
-    newVel.x *= restitution;
-    newVel.y *= restitution;
-
-    if (std::abs(newVel.x) < 0.1f)
+    if (std::abs(newVelA.y) < threshold)
     {
-        newVel.x = 0;
+        newVelA.y = 0;
     }
-    if (std::abs(newVel.y) < 0.1f)
+    if (std::abs(newVelB.x) < threshold)
     {
-        newVel.y = 0;
+        newVelB.x = 0;
+    }
+    if (std::abs(newVelB.y) < threshold)
+    {
+        newVelB.y = 0;
     }
 
-    verlet.setPosition(previousCheck.x, previousCheck.y);
-    verlet.setVelocity(newVel.x, newVel.y, dt);
+    verletA.setPosition(previousCheck.x, previousCheck.y);
+    verletA.setVelocity(newVelA.x, newVelA.y, dt);
+    verletB.setVelocity(newVelB.x, newVelB.y, dt);
 }
 
 void PDynamicsHandler::finalize_particle(ParticleObject po)
 {
     Vec2<float> finalPos = po.particle->getVerlet().getPosition();
 
-    int newX = static_cast<int>(std::trunc(finalPos.x));
-    int newY = static_cast<int>(std::trunc(finalPos.y));
+    int finalX = static_cast<int>(std::floor(finalPos.x));
+    int finalY = static_cast<int>(std::floor(finalPos.y));
 
     po.particle->setUpdateSwapID(m_updateSwapID);
-    r_particles.move(po.x, po.y, newX, newY);
+    r_particles.move(po.x, po.y, finalX, finalY);
 }

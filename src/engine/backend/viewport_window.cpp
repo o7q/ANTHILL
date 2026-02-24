@@ -19,8 +19,7 @@ void Viewport::recalculatePresentRect(Vec2<unsigned int> windowSize,
     m_presentRect.y = windowSize.y / 2.0f - m_presentRect.h / 2.0f;
 }
 
-std::optional<Vec2<unsigned int>>
-Viewport::windowToViewportPosition(Vec2<float> windowPosition)
+Vec2<int> Viewport::windowToViewportPosition(Vec2<float> windowPosition)
 {
     windowPosition.x -= m_presentRect.x;
     windowPosition.y -= m_presentRect.y;
@@ -29,15 +28,10 @@ Viewport::windowToViewportPosition(Vec2<float> windowPosition)
     windowPosition.x /= pixelSize;
     windowPosition.y /= pixelSize;
 
-    if (windowPosition.x < 0 || windowPosition.y < 0)
-    {
-        return std::nullopt;
-    }
-
     windowPosition.x =
         std::clamp(windowPosition.x, 0.0f, static_cast<float>(m_size.x) - 1);
     windowPosition.y =
         std::clamp(windowPosition.y, 0.0f, static_cast<float>(m_size.y) - 1);
 
-    return Vec2<unsigned int>(windowPosition.x, windowPosition.y);
+    return Vec2<int>(windowPosition.x, windowPosition.y);
 }
