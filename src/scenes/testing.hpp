@@ -2,6 +2,7 @@
 
 #include "engine/camera.hpp"
 #include "engine/math/random.hpp"
+#include "engine/player/player.hpp"
 #include "engine/scene.hpp"
 #include "engine/world/world.hpp"
 #include <optional>
@@ -87,6 +88,7 @@ class TestScene : public Scene
                 sand.setPhysicsType(Particle::PhysicsType::Sand);
                 sand.setMatterType(Particle::MatterType::Solid);
                 sand.setRestitution(0.7f);
+                sand.getVerlet().setMass(1);
 
                 m_world.getParticleHandler().draw(worldPos.x, worldPos.y, sand,
                                                   4);
@@ -131,6 +133,8 @@ class TestScene : public Scene
                 r_window.getTimeHandler().getDeltaTime());
 
             m_world.render(r_window.getViewport(), m_camera);
+
+            m_player.render(r_window.getViewport(), m_camera);
         }
 
         return SceneID::Testing;
@@ -139,4 +143,5 @@ class TestScene : public Scene
   private:
     World m_world;
     Camera m_camera;
+    Player m_player;
 };

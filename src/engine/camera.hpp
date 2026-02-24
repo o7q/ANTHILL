@@ -17,7 +17,7 @@ class Camera
 
     Vec2<float> transformViewportPosition(float x, float y) const
     {
-        return Vec2<float>(x, y) + m_position - m_viewportSize / 2.0f;
+        return Vec2<float>(x, y) - m_position + m_viewportSize / 2.0f;
     }
 
   private:

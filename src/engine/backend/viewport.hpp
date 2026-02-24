@@ -26,6 +26,44 @@ class Viewport
 
     void drawSegment(Vec2<int> p1, Vec2<int> p2, Color color);
 
+    void drawRectOutline(Vec2<int> p1, Vec2<int> p2, Color color)
+    {
+        // top
+        for (int x = p1.x; x <= p2.x; ++x)
+        {
+            setPixel(x, p1.y, color);
+        }
+
+        // left
+        for (int y = p1.y + 1; y < p2.y; ++y)
+        {
+            setPixel(p1.x, y, color);
+        }
+
+        // right
+        for (int y = p1.y + 1; y < p2.y; ++y)
+        {
+            setPixel(p2.x, y, color);
+        }
+
+        // bottom
+        for (int x = p1.x; x <= p2.x; ++x)
+        {
+            setPixel(x, p2.y, color);
+        }
+    }
+
+    void drawRectFilled(Vec2<int> p1, Vec2<int> p2, Color color)
+    {
+        for (int y = p1.y; y <= p2.y; ++y)
+        {
+            for (int x = p1.x; x <= p2.x; ++x)
+            {
+                setPixel(x, y, color);
+            }
+        }
+    }
+
     Vec2<unsigned int> getSize() const { return m_size; }
     float getAspectRatio() const { return m_aspectRatio; }
 
