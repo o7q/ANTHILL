@@ -28,8 +28,8 @@ class TestScene : public Scene
             Vec2<int> viewportMousePos =
                 r_window.getViewport().windowToViewportPosition(mousePos);
 
-            Vec2<float> worldPos = m_camera.transformViewportPosition(
-                viewportMousePos.x, viewportMousePos.y);
+            Vec2<float> worldPos = m_camera.viewportToWorld(viewportMousePos.x,
+                                                            viewportMousePos.y);
 
             Particle p;
             p.setPhysicsType(Particle::PhysicsType::None);

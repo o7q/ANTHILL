@@ -2,7 +2,7 @@
 
 #include "engine/backend/viewport.hpp"
 #include "engine/camera.hpp"
-#include "engine/entity/bounding_box.hpp"
+#include "engine/math/bounding_box.hpp"
 #include "engine/math/verlet.hpp"
 #include "engine/world/world.hpp"
 
