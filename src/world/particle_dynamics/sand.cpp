@@ -1,7 +1,7 @@
 #include "p_dynamics_handler.hpp"
 
-#include "engine/math/random.hpp"
-#include "engine/math/verlet.hpp"
+#include "math/random.hpp"
+#include "math/verlet.hpp"
 
 void PDynamicsHandler::update_sand_particle(ParticleObject po, float dt)
 {

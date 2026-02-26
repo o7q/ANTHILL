@@ -1,9 +1,9 @@
 #pragma once
 
-#include "engine/backend/event_handler.hpp"
-#include "engine/backend/types/vec.hpp"
-#include "engine/backend/window.hpp"
-#include "engine/scene.hpp"
+#include "backend/event_handler.hpp"
+#include "backend/types/vec.hpp"
+#include "backend/window.hpp"
+#include "scene/scene.hpp"
 #include "scenes/testing.hpp"
 #include <SDL3/SDL_keycode.h>
 #include <memory>

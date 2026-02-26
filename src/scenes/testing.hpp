@@ -1,10 +1,10 @@
 #pragma once
 
-#include "engine/camera.hpp"
-#include "engine/math/random.hpp"
-#include "engine/player/player.hpp"
-#include "engine/scene.hpp"
-#include "engine/world/world.hpp"
+#include "camera/camera.hpp"
+#include "math/random.hpp"
+#include "player/player.hpp"
+#include "scene/scene.hpp"
+#include "world/world.hpp"
 #include <optional>
 
 class TestScene : public Scene

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "engine/backend/viewport.hpp"
-#include "engine/camera.hpp"
-#include "engine/world/particle_handler.hpp"
+#include "backend/viewport.hpp"
+#include "camera/camera.hpp"
+#include "world/particle_handler.hpp"
 
 class World
 {

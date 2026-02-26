@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/backend/types/vec.hpp"
+#include "backend/types/vec.hpp"
 
 class BoundingBox
 {

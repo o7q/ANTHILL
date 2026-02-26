@@ -1,8 +1,8 @@
 #pragma once
 
-#include "engine/backend/viewport.hpp"
-#include "engine/camera.hpp"
-#include "engine/entity/entity.hpp"
+#include "backend/viewport.hpp"
+#include "camera/camera.hpp"
+#include "entity/entity.hpp"
 
 class Player : public Entity
 {

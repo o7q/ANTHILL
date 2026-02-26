@@ -1,8 +1,8 @@
 #pragma once
 
-#include "engine/sparse_chunk_map.hpp"
-#include "engine/world/particle.hpp"
-#include "engine/world/particle_dynamics/p_dynamics_handler.hpp"
+#include "world/particle.hpp"
+#include "world/particle_dynamics/p_dynamics_handler.hpp"
+#include "world/sparse_chunk_map.hpp"
 
 class ParticleHandler
 {

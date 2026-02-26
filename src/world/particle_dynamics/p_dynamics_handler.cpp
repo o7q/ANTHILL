@@ -1,9 +1,9 @@
 #include "p_dynamics_handler.hpp"
 
-#include "engine/backend/utils/math.hpp"
-#include "engine/math/newtonian.hpp"
-#include "engine/math/verlet.hpp"
-#include "engine/world/particle.hpp"
+#include "backend/utils/math.hpp"
+#include "math/newtonian.hpp"
+#include "math/verlet.hpp"
+#include "world/particle.hpp"
 #include <algorithm>
 
 void PDynamicsHandler::update(float dt)

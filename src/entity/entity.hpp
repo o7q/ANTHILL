@@ -1,10 +1,10 @@
 #pragma once
 
-#include "engine/backend/viewport.hpp"
-#include "engine/camera.hpp"
-#include "engine/math/bounding_box.hpp"
-#include "engine/math/verlet.hpp"
-#include "engine/world/world.hpp"
+#include "backend/viewport.hpp"
+#include "camera/camera.hpp"
+#include "math/bounding_box.hpp"
+#include "math/verlet.hpp"
+#include "world/world.hpp"
 
 class Entity
 {
