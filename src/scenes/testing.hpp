@@ -31,11 +31,11 @@ class TestScene : public Scene
             Vec2<float> worldPos = m_camera.viewportToWorld(viewportMousePos.x,
                                                             viewportMousePos.y);
 
-            Particle p;
-            p.setPhysicsType(Particle::PhysicsType::None);
-            p.setMatterType(Particle::MatterType::Solid);
-            p.setColor(Color(255, 255, 255));
-            m_world.getParticleHandler().set(0, 0, p);
+            // Particle p;
+            // p.setPhysicsType(Particle::PhysicsType::None);
+            // p.setMatterType(Particle::MatterType::Solid);
+            // p.setColor(Color(255, 255, 255));
+            // m_world.getParticleHandler().set(0, 0, p);
 
             m_world.getParticleHandler().getDynamics().setUpdateInfo(
                 m_camera.getPosition().x, m_camera.getPosition().y, 10);

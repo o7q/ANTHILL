@@ -1,6 +1,6 @@
 #include "p_dynamics_handler.hpp"
 
-#include "backend/utils/math.hpp"
+#include "math/bresenham.hpp"
 #include "math/newtonian.hpp"
 #include "math/verlet.hpp"
 #include "world/particle.hpp"
@@ -17,8 +17,8 @@ void PDynamicsHandler::update(float dt)
         int originChunkY = static_cast<int>(std::floor(
             m_updateChunksOrigin.y / static_cast<float>(chunkSize.y)));
 
-        int chunkXDist = chunkPos.first - originChunkX;
-        int chunkYDist = chunkPos.second - originChunkY;
+        int chunkXDist = chunkPos.x - originChunkX;
+        int chunkYDist = chunkPos.y - originChunkY;
 
         if (chunkXDist * chunkXDist + chunkYDist * chunkYDist >=
             m_updateChunksRadius * m_updateChunksRadius)
@@ -26,8 +26,8 @@ void PDynamicsHandler::update(float dt)
             continue;
         }
 
-        int innerBaseX = chunkPos.first * chunkSize.x;
-        int innerBaseY = chunkPos.second * chunkSize.y;
+        int innerBaseX = chunkPos.x * chunkSize.x;
+        int innerBaseY = chunkPos.y * chunkSize.y;
         for (int y = chunkSize.y - 1; y >= 0; --y)
         {
             for (int x = chunkSize.x - 1; x >= 0; --x)
@@ -113,9 +113,9 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
         previousCheck = Vec2<int>(x, y);
         return true;
     };
-    BackendUtils::Math::bresenhamLine(
-        Vec2<int>(std::floor(start.x), std::floor(start.y)),
-        Vec2<int>(std::floor(end.x), std::floor(end.y)), function);
+    Math::bresenhamLine(Vec2<int>(std::floor(start.x), std::floor(start.y)),
+                        Vec2<int>(std::floor(end.x), std::floor(end.y)),
+                        function);
 
     if (!hit)
     {

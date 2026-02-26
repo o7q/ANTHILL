@@ -1,5 +1,6 @@
 #include "viewport.hpp"
 
+#include "backend/utils/index.hpp"
 #include <limits>
 
 void Viewport::update_pixel_changes()
@@ -29,5 +30,5 @@ void Viewport::reset_update_points()
 
 unsigned int Viewport::get_pixel_index(unsigned int x, unsigned int y)
 {
-    return BackendUtils::Math::index_2dto1d(x, y, m_size.x) * 3u;
+    return Backend::Utils::Index::index_2dto1d(x, y, m_size.x) * 3u;
 }

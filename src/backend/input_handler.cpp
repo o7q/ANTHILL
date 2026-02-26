@@ -12,7 +12,7 @@
 
 void Input::poll(Bind bind, bool isDown)
 {
-    if (BackendUtils::Data::doesVectorContain(m_binds, bind))
+    if (Backend::Utils::Data::doesVectorContain(m_binds, bind))
     {
         m_down = isDown;
     }
@@ -29,7 +29,7 @@ void Input::update()
 void Input::assignBind(const Bind &bind) { m_binds.push_back(bind); }
 void Input::removeBind(const Bind &bind)
 {
-    BackendUtils::Data::removeItemFromVector(m_binds, bind);
+    Backend::Utils::Data::removeItemFromVector(m_binds, bind);
 }
 void Input::removeBindsOfType(ButtonType type)
 {

@@ -1,15 +1,44 @@
 #pragma once
 
-#include "backend/logger.hpp"
 #include "backend/types/vec.hpp"
-#include "backend/utils/data.hpp"
-#include "backend/utils/math.hpp"
+#include "backend/utils/index.hpp"
+#include <functional>
 #include <unordered_map>
-#include <utility>
 #include <vector>
 
 template <typename T> class SparseChunkMap
 {
+  public:
+    struct ChunkIndex
+    {
+        int x = 0, y = 0;
+
+        ChunkIndex() = default;
+        ChunkIndex(int x, int y) : x(x), y(y) {}
+
+        bool operator==(const ChunkIndex &other) const
+        {
+            return x == other.x && y == other.y;
+        }
+    };
+
+    // https://stackoverflow.com/a/20602159
+    struct ChunkIndexHash
+    {
+      public:
+        std::size_t operator()(const ChunkIndex &p) const
+        {
+            return hash_combine(std::hash<int>()(p.x), std::hash<int>()(p.y));
+        }
+
+      private:
+        // https://stackoverflow.com/a/27952689
+        size_t hash_combine(size_t lhs, size_t rhs) const
+        {
+            return lhs ^ (rhs + 0x9e3779b9 + (lhs << 6) + (lhs >> 2));
+        }
+    };
+
   public:
     class Chunk
     {
@@ -23,12 +52,12 @@ template <typename T> class SparseChunkMap
 
         void set(unsigned int x, unsigned int y, T v, unsigned int width)
         {
-            m_values[BackendUtils::Math::index_2dto1d(x, y, width)] = v;
+            m_values[Backend::Utils::Index::index_2dto1d(x, y, width)] = v;
         }
 
         T *get(unsigned int x, unsigned int y, unsigned int width)
         {
-            return &m_values[BackendUtils::Math::index_2dto1d(x, y, width)];
+            return &m_values[Backend::Utils::Index::index_2dto1d(x, y, width)];
         }
 
       private:
@@ -37,7 +66,6 @@ template <typename T> class SparseChunkMap
 
   public:
     SparseChunkMap(unsigned int chunkWidth, unsigned int chunkHeight)
-        : m_logger("SparseChunkMap")
     {
         m_chunkSize = Vec2<unsigned int>(chunkWidth, chunkHeight);
     }
@@ -47,7 +75,7 @@ template <typename T> class SparseChunkMap
     void set(int x, int y, T v)
     {
         Vec2<int> chunk_index = get_chunk_index(x, y);
-        std::pair<int, int> chunk_key(chunk_index.x, chunk_index.y);
+        ChunkIndex chunk_key(chunk_index.x, chunk_index.y);
 
         auto [it, _] =
             m_chunks.try_emplace(chunk_key, m_chunkSize.x, m_chunkSize.y);
@@ -59,7 +87,7 @@ template <typename T> class SparseChunkMap
     T *get(int x, int y)
     {
         Vec2<int> chunk_index = get_chunk_index(x, y);
-        std::pair<int, int> chunk_key(chunk_index.x, chunk_index.y);
+        ChunkIndex chunk_key(chunk_index.x, chunk_index.y);
 
         auto it = m_chunks.find(chunk_key);
         if (it == m_chunks.end())
@@ -96,8 +124,7 @@ template <typename T> class SparseChunkMap
         set(x2, y2, v);
     }
 
-    const std::unordered_map<std::pair<int, int>, Chunk,
-                             BackendUtils::Data::PairHash> &
+    const std::unordered_map<ChunkIndex, Chunk, ChunkIndexHash> &
     getChunks() const
     {
         return m_chunks;
@@ -130,7 +157,5 @@ template <typename T> class SparseChunkMap
   private:
     Vec2<unsigned int> m_chunkSize;
 
-    std::unordered_map<std::pair<int, int>, Chunk, BackendUtils::Data::PairHash>
-        m_chunks;
-    Logger m_logger;
+    std::unordered_map<ChunkIndex, Chunk, ChunkIndexHash> m_chunks;
 };

@@ -1,26 +1,10 @@
 #pragma once
 
-#include "../types/vec.hpp"
+#include "backend/types/vec.hpp"
 #include <cstdlib>
 
-namespace BackendUtils
-{
 namespace Math
 {
-inline unsigned int index_2dto1d(unsigned int x, unsigned int y,
-                                 unsigned int width)
-{
-    return y * width + x;
-}
-
-inline Vec2<unsigned int> index_1dTo2d(unsigned int index, unsigned int width)
-{
-    unsigned int x = index % width;
-    unsigned int y = index / width;
-
-    return Vec2<unsigned int>(x, y);
-}
-
 // https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 template <typename T>
 inline void bresenhamLine(Vec2<int> p1, Vec2<int> p2, T &function)
@@ -63,4 +47,3 @@ inline void bresenhamLine(Vec2<int> p1, Vec2<int> p2, T &function)
     }
 }
 } // namespace Math
-} // namespace BackendUtils

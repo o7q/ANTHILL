@@ -3,6 +3,7 @@
 #include "backend/viewport.hpp"
 #include "camera/camera.hpp"
 #include "entity/entity.hpp"
+#include "utils/render.hpp"
 
 class Player : public Entity
 {
@@ -19,9 +20,9 @@ class Player : public Entity
         Vec2<float> b = m_collisionBox.getB() + pos;
 
         a = camera.worldToViewport(a.x, a.y);
-        b = camera.worldToViewport(b.x, b.y);
+        b = camera.worldToViewport(b.x, b.y) - 1;
 
-        viewport.drawRectOutline(Vec2<int>(a.x, a.y), Vec2<int>(b.x, b.y),
-                                 Color(0, 255, 100));
+        Utils::Render::drawRectOutline(viewport, Vec2<int>(a.x, a.y),
+                                       Vec2<int>(b.x, b.y), Color(0, 255, 100));
     }
 };

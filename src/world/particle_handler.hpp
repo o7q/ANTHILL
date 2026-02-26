@@ -39,8 +39,8 @@ class ParticleHandler
             {
                 for (unsigned int cx = 0; cx < chunkSize.x; ++cx)
                 {
-                    const int px = chunkPos.first * chunkSize.x + cx;
-                    const int py = chunkPos.second * chunkSize.y + cy;
+                    const int px = chunkPos.x * chunkSize.x + cx;
+                    const int py = chunkPos.y * chunkSize.y + cy;
                     Particle *p = m_particles.get(px, py);
 
                     if (!p)
