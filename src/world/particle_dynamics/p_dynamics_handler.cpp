@@ -113,6 +113,7 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
         previousCheck = Vec2<int>(x, y);
         return true;
     };
+
     Math::bresenhamLine(Vec2<int>(std::floor(start.x), std::floor(start.y)),
                         Vec2<int>(std::floor(end.x), std::floor(end.y)),
                         function);

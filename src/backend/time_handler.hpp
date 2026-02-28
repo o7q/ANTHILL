@@ -20,8 +20,8 @@ class TimeHandler
 
     void setTargetFramerate(float target_fps) { m_target_fps = target_fps; }
 
-    float getFramerate() const { return m_fps; }
-    float getDeltaTime() const { return m_dt; }
+    float getFPS() const { return m_fps; }
+    float getDT() const { return m_dt; }
 
   private:
     std::chrono::steady_clock::time_point m_frame_start;

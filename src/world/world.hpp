@@ -7,6 +7,10 @@
 class World
 {
   public:
+    World() = default;
+    World(const World &other) = delete;
+    World &operator=(const World &other) = delete;
+
     void render(Viewport &viewport, const Camera &camera)
     {
         Vec2<unsigned int> viewport_size = viewport.getSize();

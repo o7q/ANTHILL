@@ -71,6 +71,20 @@ template <typename T> struct Vec2
 
     Vec2 operator-() const { return {-x, -y}; }
 
+    operator Vec2<float>() const
+    {
+        return Vec2<float>(static_cast<float>(x), static_cast<float>(y));
+    }
+    operator Vec2<int>() const
+    {
+        return Vec2<int>(static_cast<int>(x), static_cast<int>(y));
+    }
+    operator Vec2<unsigned int>() const
+    {
+        return Vec2<unsigned int>(static_cast<unsigned int>(x),
+                                  static_cast<unsigned int>(y));
+    }
+
     T length() const { return std::sqrt(x * x + y * y); }
     Vec2 normalize() const
     {

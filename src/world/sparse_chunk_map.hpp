@@ -13,7 +13,6 @@ template <typename T> class SparseChunkMap
     {
         int x = 0, y = 0;
 
-        ChunkIndex() = default;
         ChunkIndex(int x, int y) : x(x), y(y) {}
 
         bool operator==(const ChunkIndex &other) const

@@ -6,8 +6,8 @@
 namespace Math
 {
 // https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
-template <typename T>
-inline void bresenhamLine(Vec2<int> p1, Vec2<int> p2, T &function)
+template <typename F>
+inline void bresenhamLine(Vec2<int> p1, Vec2<int> p2, F &function)
 {
     int dx = std::abs(p2.x - p1.x);
     int dy = -std::abs(p2.y - p1.y);

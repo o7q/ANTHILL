@@ -9,16 +9,16 @@
 class Entity
 {
   public:
-    Entity() {}
+    Entity(World &world) : r_world(world) {}
+    virtual ~Entity() {}
 
-    virtual void update() {}
+    virtual void update(float dt) {}
     virtual void render(Viewport &viewport, const Camera &camera) {}
 
     VerletBody &getVerlet() { return m_verletBody; }
-
+    
   protected:
+    World &r_world;
     VerletBody m_verletBody;
     BoundingBox m_collisionBox;
-
-    World *p_world = nullptr;
 };

@@ -5,11 +5,11 @@
 void VerletBody::update(float dt)
 {
     Vec2<float> velocity = m_position - m_positionPrev;
-
+    Vec2<float> drag_multiplier = Vec2<float>(1.0f - m_drag.x, 1.0f - m_drag.y);
     Vec2<float> acceleration = m_force / m_mass;
 
     m_positionPrev = m_position;
-    m_position += velocity + acceleration * dt * dt;
+    m_position += velocity * drag_multiplier + acceleration * dt * dt;
 
     m_force = Vec2<float>(0.0f, 0.0f);
 }

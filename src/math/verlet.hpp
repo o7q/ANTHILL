@@ -40,9 +40,12 @@ class VerletBody
         return (m_position - m_positionPrev) / dt;
     }
 
+    void setDrag(float x, float y) { m_drag = Vec2<float>(x, y); }
+
   private:
     float m_mass = 1.0f;
     Vec2<float> m_position = Vec2<float>(0.0f, 0.0f);
     Vec2<float> m_positionPrev = Vec2<float>(0.0f, 0.0f);
     Vec2<float> m_force = Vec2<float>(0.0f, 0.0f);
+    Vec2<float> m_drag = Vec2<float>(0.0f, 0.0f);
 };

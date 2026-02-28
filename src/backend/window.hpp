@@ -29,7 +29,6 @@ class Window
     SDL_Window *m_window = nullptr;
 
     std::unique_ptr<Viewport> m_viewport;
-
     EventHandler m_eventHandler;
     InputHandler m_inputHandler;
     TimeHandler m_timeHandler;

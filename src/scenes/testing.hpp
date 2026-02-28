@@ -5,6 +5,7 @@
 #include "player/player.hpp"
 #include "scene/scene.hpp"
 #include "world/world.hpp"
+#include <memory>
 #include <optional>
 
 class TestScene : public Scene
@@ -19,50 +20,30 @@ class TestScene : public Scene
     {
         if (start())
         {
+            m_world.getParticleHandler().getDynamics().setUpdateInfo(
+                m_camera.getPosition().x, m_camera.getPosition().y, 10);
+
+            m_player = std::make_unique<Player>(m_world);
+            m_player->getVerlet().setDrag(0.9, 0.9);
         }
 
         if (tick())
         {
-            Vec2<float> mousePos =
-                r_window.getInputHandler().getMousePosition();
+            Vec2<float> mousePos = r_input.getMousePosition();
             Vec2<int> viewportMousePos =
-                r_window.getViewport().windowToViewportPosition(mousePos);
+                r_viewport.windowToViewportPosition(mousePos);
 
             Vec2<float> worldPos = m_camera.viewportToWorld(viewportMousePos.x,
                                                             viewportMousePos.y);
-
-            // Particle p;
-            // p.setPhysicsType(Particle::PhysicsType::None);
-            // p.setMatterType(Particle::MatterType::Solid);
-            // p.setColor(Color(255, 255, 255));
-            // m_world.getParticleHandler().set(0, 0, p);
-
-            m_world.getParticleHandler().getDynamics().setUpdateInfo(
-                m_camera.getPosition().x, m_camera.getPosition().y, 10);
-
-            if (r_window.getInputHandler().getInput("debugUp")->isDown())
-            {
-                m_camera.move(0, -1);
-            }
-            if (r_window.getInputHandler().getInput("debugDown")->isDown())
-            {
-                m_camera.move(0, 1);
-            }
-            if (r_window.getInputHandler().getInput("debugLeft")->isDown())
-            {
-                m_camera.move(-1, 0);
-            }
-            if (r_window.getInputHandler().getInput("debugRight")->isDown())
-            {
-                m_camera.move(1, 0);
-            }
 
             if (r_window.getInputHandler()
                     .getInput("secondaryAction1")
                     ->isDown())
             {
+
                 Particle stone;
-                stone.setColor(Color(200, 200, 200));
+                float mult = Math::weakRandInt(80, 100) / 100.0f;
+                stone.setColor(Color(200 * mult, 205 * mult, 200 * mult));
                 stone.setPhysicsType(Particle::PhysicsType::None);
                 stone.setMatterType(Particle::MatterType::Solid);
                 stone.getVerlet().setMass(200000000);
@@ -84,57 +65,39 @@ class TestScene : public Scene
                     ->isDown())
             {
                 Particle sand;
-                sand.setColor(Color(20, Math::weakRandInt(50, 220), 100));
+                float mult = Math::weakRandInt(80, 100) / 100.0f;
+                sand.setColor(Color(255 * mult, 235 * mult, 161 * mult));
                 sand.setPhysicsType(Particle::PhysicsType::Sand);
                 sand.setMatterType(Particle::MatterType::Solid);
-                sand.setRestitution(0.7f);
+                sand.setRestitution(0.1f);
                 sand.getVerlet().setMass(1);
 
                 m_world.getParticleHandler().draw(worldPos.x, worldPos.y, sand,
                                                   4);
             }
-            if (r_window.getInputHandler()
-                    .getInput("secondaryAction4")
-                    ->isDown())
-            {
-                Particle water;
-                water.setColor(Color(50, 50, 200));
-                water.setPhysicsType(Particle::PhysicsType::Water);
-                water.setMatterType(Particle::MatterType::Liquid);
-                water.setRestitution(0);
 
-                m_world.getParticleHandler().draw(worldPos.x, worldPos.y, water,
-                                                  10);
+            if (r_input.getInput("left")->isDown())
+            {
+                m_player->getVerlet().addForce(-1, 0);
             }
-            if (r_window.getInputHandler()
-                    .getInput("secondaryAction5")
-                    ->isDown())
+            if (r_input.getInput("right")->isDown())
             {
-                Particle smoke;
-                smoke.setColor(Color(200, 220, 200));
-                smoke.setPhysicsType(Particle::PhysicsType::Smoke);
-                smoke.setMatterType(Particle::MatterType::Gas);
-                smoke.setRestitution(0.0f);
-                smoke.getVerlet().setVelocity(
-                    -1, 0, r_window.getTimeHandler().getDeltaTime());
-
-                m_world.getParticleHandler().draw(worldPos.x, worldPos.y, smoke,
-                                                  10);
+                m_player->getVerlet().addForce(1, 0);
+            }
+            if (r_input.getInput("down")->isDown())
+            {
+                m_player->getVerlet().addForce(0, 1);
+            }
+            if (r_input.getInput("up")->isDown())
+            {
+                m_player->getVerlet().addForce(0, -1);
             }
 
-            if (r_window.getInputHandler().getInput("action1")->isDown())
-            {
-                m_world.getParticleHandler().applyForce(
-                    worldPos.x, worldPos.y, 10.0f,
-                    r_window.getTimeHandler().getDeltaTime());
-            }
+            m_world.getParticleHandler().update(r_time.getDT());
+            m_player->update(r_time.getDT());
 
-            m_world.getParticleHandler().update(
-                r_window.getTimeHandler().getDeltaTime());
-
-            m_world.render(r_window.getViewport(), m_camera);
-
-            m_player.render(r_window.getViewport(), m_camera);
+            m_world.render(r_viewport, m_camera);
+            m_player->render(r_viewport, m_camera);
         }
 
         return SceneID::Testing;
@@ -143,5 +106,5 @@ class TestScene : public Scene
   private:
     World m_world;
     Camera m_camera;
-    Player m_player;
+    std::unique_ptr<Player> m_player;
 };

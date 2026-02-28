@@ -2,6 +2,15 @@
 
 void Game::init_binds()
 {
+    m_window.getInputHandler().addInput("left",
+                                        {{Input::ButtonType::Key, SDLK_A}});
+    m_window.getInputHandler().addInput("right",
+                                        {{Input::ButtonType::Key, SDLK_D}});
+    m_window.getInputHandler().addInput("up",
+                                        {{Input::ButtonType::Key, SDLK_W}});
+    m_window.getInputHandler().addInput("down",
+                                        {{Input::ButtonType::Key, SDLK_S}});
+
     m_window.getInputHandler().addInput(
         "action1", {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});
     m_window.getInputHandler().addInput(

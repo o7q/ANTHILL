@@ -1,5 +1,7 @@
 #pragma once
 
+#include "backend/input_handler.hpp"
+#include "backend/time_handler.hpp"
 #include "backend/window.hpp"
 #include <optional>
 
@@ -11,7 +13,11 @@ enum class SceneID
 class Scene
 {
   public:
-    Scene(Window &window) : r_window(window) {}
+    Scene(Window &window)
+        : r_window(window), r_viewport(window.getViewport()),
+          r_input(window.getInputHandler()), r_time(window.getTimeHandler())
+    {
+    }
     Scene(const Scene &other) = delete;
     Scene &operator=(const Scene &other) = delete;
     virtual ~Scene() {}
@@ -19,20 +25,14 @@ class Scene
     virtual std::optional<SceneID> update() { return std::nullopt; }
 
   protected:
-    bool start()
-    {
-        if (m_firstTick)
-        {
-            m_firstTick = false;
-            return true;
-        }
-
-        return false;
-    }
-    bool tick() { return true; }
+    bool start();
+    bool tick();
 
   protected:
     Window &r_window;
+    Viewport &r_viewport;
+    InputHandler &r_input;
+    TimeHandler &r_time;
 
   private:
     bool m_firstTick = true;
