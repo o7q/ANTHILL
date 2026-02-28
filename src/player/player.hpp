@@ -3,11 +3,19 @@
 #include "backend/viewport.hpp"
 #include "camera/camera.hpp"
 #include "entity/entity.hpp"
+#include "math/bounding_box.hpp"
 #include "utils/render.hpp"
 #include <iostream>
 
 class Player : public Entity
 {
+  public:
+    struct CollisionResult
+    {
+        bool collided = false;
+        Vec2<float> resolveDirection;
+    };
+
   public:
     Player(World &world) : Entity(world)
     {
@@ -19,6 +27,9 @@ class Player : public Entity
 
     void render(Viewport &viewport, const Camera &camera) override
     {
+        Vec2<float> col = calculateWorldResolvePosition();
+        m_verletBody.setPosition(col.x, col.y);
+
         Vec2<float> pos = m_verletBody.getPosition();
 
         Vec2<float> a = m_collisionBox.getA() + pos;
@@ -29,44 +40,5 @@ class Player : public Entity
 
         Utils::Render::drawRectOutline(viewport, Vec2<int>(a.x, a.y),
                                        Vec2<int>(b.x, b.y), Color(0, 255, 100));
-
-        Vec2<float> avg;
-        int iter = 0;
-        Vec2<float> centerpos = camera.worldToViewport(pos.x, pos.y);
-
-        for (int y = 0; y < m_collisionBox.getSize().y; ++y)
-        {
-            for (int x = 0; x < m_collisionBox.getSize().x; ++x)
-            {
-                int px = x + pos.x - m_collisionBox.getSize().x / 2.0f;
-                int py = y + pos.y - m_collisionBox.getSize().y / 2.0f;
-
-                Vec2<float> ppos = camera.worldToViewport(px, py);
-
-                Particle *p =
-                    r_world.getParticleHandler().getParticles().get(px, py);
-                if (!p)
-                {
-                    continue;
-                }
-
-                if (p->isSolid())
-                {
-                    Utils::Render::drawSegment(viewport, ppos, centerpos,
-                                               Color(0, 0, 255));
-                    avg += ppos;
-
-                    ++iter;
-                }
-            }
-        }
-
-        if (iter > 0)
-        {
-            avg /= iter;
-
-            Utils::Render::drawSegment(viewport, centerpos, avg,
-                                       Color(255, 0, 0));
-        }
     }
 };
