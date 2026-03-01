@@ -1,11 +1,10 @@
 #pragma once
 
 #include "camera/camera.hpp"
-#include "math/random.hpp"
-#include "player/player.hpp"
+#include "entity/player/player.hpp"
 #include "scene/scene.hpp"
+#include "utils/math/random.hpp"
 #include "world/world.hpp"
-#include <memory>
 #include <optional>
 
 class TestScene : public Scene
@@ -24,7 +23,7 @@ class TestScene : public Scene
                 m_camera.getPosition().x, m_camera.getPosition().y, 10);
 
             m_player = std::make_unique<Player>(m_world);
-            m_player->getVerlet().setDrag(0.9, 0.9);
+            m_player->getVerlet().setDrag(1, 1);
         }
 
         if (tick())
@@ -42,7 +41,7 @@ class TestScene : public Scene
             {
 
                 Particle stone;
-                float mult = Math::weakRandInt(80, 100) / 100.0f;
+                float mult = Utils::Math::Random::weakRandInt(80, 100) / 100.0f;
                 stone.setColor(Color(200 * mult, 205 * mult, 200 * mult));
                 stone.setPhysicsType(Particle::PhysicsType::None);
                 stone.setMatterType(Particle::MatterType::Solid);
@@ -65,7 +64,7 @@ class TestScene : public Scene
                     ->isDown())
             {
                 Particle sand;
-                float mult = Math::weakRandInt(80, 100) / 100.0f;
+                float mult = Utils::Math::Random::weakRandInt(80, 100) / 100.0f;
                 sand.setColor(Color(255 * mult, 235 * mult, 161 * mult));
                 sand.setPhysicsType(Particle::PhysicsType::Sand);
                 sand.setMatterType(Particle::MatterType::Solid);
@@ -78,20 +77,22 @@ class TestScene : public Scene
 
             if (r_input.getInput("left")->isDown())
             {
-                m_player->getVerlet().addForce(-1, 0);
+                m_player->getVerlet().addForce(-5, 0);
             }
             if (r_input.getInput("right")->isDown())
             {
-                m_player->getVerlet().addForce(1, 0);
+                m_player->getVerlet().addForce(5, 0);
             }
             if (r_input.getInput("down")->isDown())
             {
-                m_player->getVerlet().addForce(0, 1);
+                m_player->getVerlet().addForce(0, 5);
             }
             if (r_input.getInput("up")->isDown())
             {
-                m_player->getVerlet().addForce(0, -1);
+                m_player->getVerlet().addForce(0, -5);
             }
+
+            m_player->getVerlet().addForce(0, 1);
 
             m_world.getParticleHandler().update(r_time.getDT());
             m_player->update(r_time.getDT());

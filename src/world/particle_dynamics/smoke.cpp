@@ -1,7 +1,7 @@
 #include "p_dynamics_handler.hpp"
 
-#include "math/random.hpp"
-#include "math/verlet.hpp"
+#include "types/physics/verlet.hpp"
+#include "utils/math/random.hpp"
 
 void PDynamicsHandler::update_smoke_particle(ParticleObject po, float dt)
 {
@@ -37,13 +37,13 @@ void PDynamicsHandler::update_smoke_particle(ParticleObject po, float dt)
 
     if (canLeft && canRight)
     {
-        switch (Math::weakRandInt(0, 2))
+        switch (Utils::Math::Random::weakRandInt(0, 2))
         {
         case 0:
-            verlet.addForce(-0.03, 0);
+            verlet.addForce(-0.03f, 0);
             break;
         case 1:
-            verlet.addForce(0.03, 0);
+            verlet.addForce(0.03f, 0);
             break;
         default:
             break;
@@ -51,11 +51,11 @@ void PDynamicsHandler::update_smoke_particle(ParticleObject po, float dt)
     }
     else if (canLeft)
     {
-        verlet.addForce(-0.03, 0);
+        verlet.addForce(-0.03f, 0);
     }
     else if (canRight)
     {
-        verlet.addForce(0.03, 0);
+        verlet.addForce(0.03f, 0);
     }
 
     verlet.update(dt);

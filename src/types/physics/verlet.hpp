@@ -1,15 +1,16 @@
 #pragma once
 
 #include "backend/types/vec.hpp"
+#include "types/physics/body.hpp"
 
-class VerletBody
+class VerletBody : public PhysicsBody
 {
   public:
     VerletBody() = default;
 
-    void update(float dt);
+    void update(float dt) override;
 
-    void setPosition(float x, float y)
+    void stopInPosition(float x, float y)
     {
         m_position = Vec2<float>(x, y);
         m_positionPrev = Vec2<float>(x, y);
@@ -30,10 +31,6 @@ class VerletBody
     void addForce(float x, float y) { m_force += Vec2<float>(x, y); }
     void clearForces() { m_force = Vec2<float>(0.0f, 0.0f); }
 
-    void setMass(float mass) { m_mass = mass; }
-    float getMass() const { return m_mass; }
-
-    Vec2<float> getPosition() const { return m_position; }
     Vec2<float> getPreviousPosition() const { return m_positionPrev; }
     Vec2<float> getVelocity(float dt) const
     {
@@ -43,8 +40,6 @@ class VerletBody
     void setDrag(float x, float y) { m_drag = Vec2<float>(x, y); }
 
   private:
-    float m_mass = 1.0f;
-    Vec2<float> m_position = Vec2<float>(0.0f, 0.0f);
     Vec2<float> m_positionPrev = Vec2<float>(0.0f, 0.0f);
     Vec2<float> m_force = Vec2<float>(0.0f, 0.0f);
     Vec2<float> m_drag = Vec2<float>(0.0f, 0.0f);

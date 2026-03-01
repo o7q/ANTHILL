@@ -2,7 +2,11 @@
 
 #include <random>
 
+namespace Utils
+{
 namespace Math
+{
+namespace Random
 {
 inline int weakRandInt(int min, int max)
 {
@@ -10,4 +14,6 @@ inline int weakRandInt(int min, int max)
     int range = max - min;
     return (gen() % range) + min;
 }
+} // namespace Random
 } // namespace Math
+} // namespace Utils

@@ -1,6 +1,10 @@
 #pragma once
 
+namespace Utils
+{
 namespace Math
+{
+namespace Physics
 {
 // https://en.wikipedia.org/wiki/Elastic_collision
 inline float elasticCollisionVelocityA(float mA, float mB, float velA,
@@ -16,4 +20,6 @@ inline float elasticCollisionVelocityB(float mA, float mB, float velA,
     float totalMass = mA + mB;
     return (mB - mA) / totalMass * velB + (2 * mA) / totalMass * velA;
 }
+} // namespace Physics
 } // namespace Math
+} // namespace Utils

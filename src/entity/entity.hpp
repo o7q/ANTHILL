@@ -2,10 +2,9 @@
 
 #include "backend/viewport.hpp"
 #include "camera/camera.hpp"
-#include "math/bounding_box.hpp"
-#include "math/verlet.hpp"
+#include "types/bounding_box.hpp"
+#include "types/physics/verlet.hpp"
 #include "world/world.hpp"
-#include <optional>
 
 class Entity
 {
@@ -19,11 +18,8 @@ class Entity
     VerletBody &getVerlet() { return m_verletBody; }
 
   protected:
-    Vec2<float> calculateWorldResolvePosition();
-
-  private:
-    std::optional<Vec2<float>>
-    calculate_world_resolve_direction(Vec2<float> pos, Vec2<float> size);
+    Vec2<int> calculateWorldPenetration_MTV(Vec2<int> pos);
+    Vec2<float> calculateWorldPenetration_averageDirection(Vec2<int> pos);
 
   protected:
     World &r_world;

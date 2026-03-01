@@ -92,4 +92,5 @@ template <typename T> struct Vec2
         return {x / l, y / l};
     }
     T dot(const Vec2 &other) const { return x * other.x + y * other.y; }
+    Vec2 floor() const { return {std::floor(x), std::floor(y)}; }
 };

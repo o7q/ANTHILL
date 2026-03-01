@@ -3,7 +3,7 @@
 #include "backend/types/color.hpp"
 #include "backend/types/vec.hpp"
 #include "backend/viewport.hpp"
-#include "math/bresenham.hpp"
+#include "utils/math/line.hpp"
 
 namespace Utils
 {
@@ -17,7 +17,7 @@ inline void drawSegment(Viewport &viewport, Vec2<int> p1, Vec2<int> p2,
         viewport.setPixel(x, y, color);
         return true;
     };
-    Math::bresenhamLine(p1, p2, draw);
+    Utils::Math::Line::bresenhamLine(p1, p2, draw);
 }
 
 inline void drawRectOutline(Viewport &viewport, Vec2<int> p1, Vec2<int> p2,

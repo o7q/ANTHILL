@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cmath>
+
+namespace Utils
+{
 namespace Math
 {
 namespace Interpolation
@@ -20,3 +23,4 @@ inline float easeOutCubic(float a, float b, float t)
 }
 } // namespace Interpolation
 } // namespace Math
+} // namespace Utils

@@ -1,8 +1,8 @@
 #include "p_dynamics_handler.hpp"
 
-#include "math/bresenham.hpp"
-#include "math/newtonian.hpp"
-#include "math/verlet.hpp"
+#include "types/physics/verlet.hpp"
+#include "utils/math/line.hpp"
+#include "utils/math/physics.hpp"
 #include "world/particle.hpp"
 #include <algorithm>
 
@@ -114,9 +114,9 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
         return true;
     };
 
-    Math::bresenhamLine(Vec2<int>(std::floor(start.x), std::floor(start.y)),
-                        Vec2<int>(std::floor(end.x), std::floor(end.y)),
-                        function);
+    Utils::Math::Line::bresenhamLine(
+        Vec2<int>(std::floor(start.x), std::floor(start.y)),
+        Vec2<int>(std::floor(end.x), std::floor(end.y)), function);
 
     if (!hit)
     {
@@ -142,16 +142,20 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
 
     if (hitDirection.x != 0)
     {
-        newVelA.x = Math::elasticCollisionVelocityA(mA, mB, velA.x, velB.x) *
+        newVelA.x = Utils::Math::Physics::elasticCollisionVelocityA(
+                        mA, mB, velA.x, velB.x) *
                     restitution;
-        newVelB.x = Math::elasticCollisionVelocityB(mA, mB, velA.x, velB.x) *
+        newVelB.x = Utils::Math::Physics::elasticCollisionVelocityB(
+                        mA, mB, velA.x, velB.x) *
                     restitution;
     }
     if (hitDirection.y != 0)
     {
-        newVelA.y = Math::elasticCollisionVelocityA(mA, mB, velA.y, velB.y) *
+        newVelA.y = Utils::Math::Physics::elasticCollisionVelocityA(
+                        mA, mB, velA.y, velB.y) *
                     restitution;
-        newVelB.y = Math::elasticCollisionVelocityB(mA, mB, velA.y, velB.y) *
+        newVelB.y = Utils::Math::Physics::elasticCollisionVelocityB(
+                        mA, mB, velA.y, velB.y) *
                     restitution;
     }
 
@@ -173,7 +177,7 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
         newVelB.y = 0;
     }
 
-    verletA.setPosition(previousCheck.x, previousCheck.y);
+    verletA.stopInPosition(previousCheck.x, previousCheck.y);
     verletA.setVelocity(newVelA.x, newVelA.y, dt);
     verletB.setVelocity(newVelB.x, newVelB.y, dt);
 }
