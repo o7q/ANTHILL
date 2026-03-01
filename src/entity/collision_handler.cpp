@@ -1,9 +1,13 @@
-#include "entity.hpp"
+#include "collision_handler.hpp"
+#include "world/particle.hpp"
+#include "world/world.hpp"
+#include <array>
 
 // minimum translation vector
-Vec2<int> Entity::calculateWorldPenetration_MTV(Vec2<int> pos)
+Vec2<int> CollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos,
+                                                          World &world)
 {
-    Vec2<int> size = m_collisionBox.getSize().floor();
+    Vec2<int> size = m_collisionBox.getSize().toGrid();
     Vec2<int> topLeft = pos - size / 2;
 
     //    0
@@ -17,7 +21,7 @@ Vec2<int> Entity::calculateWorldPenetration_MTV(Vec2<int> pos)
         {
             Vec2<int> worldPos = topLeft + Vec2<int>(x, y);
 
-            Particle *p = r_world.getParticleHandler().getParticles().get(
+            Particle *p = world.getParticleHandler().getParticles().get(
                 worldPos.x, worldPos.y);
 
             if (!p)
@@ -74,7 +78,9 @@ Vec2<int> Entity::calculateWorldPenetration_MTV(Vec2<int> pos)
     return out;
 }
 
-Vec2<float> Entity::calculateWorldPenetration_averageDirection(Vec2<int> pos)
+Vec2<float>
+CollisionHandler::calculateWorldPenetration_averageDirection(Vec2<int> pos,
+                                                             World &world)
 {
     Vec2<int> size = m_collisionBox.getSize().floor();
 
@@ -89,7 +95,7 @@ Vec2<float> Entity::calculateWorldPenetration_averageDirection(Vec2<int> pos)
         {
             Vec2<int> worldPos = topLeft + Vec2<int>(x, y);
 
-            Particle *p = r_world.getParticleHandler().getParticles().get(
+            Particle *p = world.getParticleHandler().getParticles().get(
                 worldPos.x, worldPos.y);
             if (!p)
             {

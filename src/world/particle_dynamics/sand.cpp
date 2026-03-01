@@ -58,7 +58,7 @@ void PDynamicsHandler::update_sand_particle(ParticleObject po, float dt)
         verlet.addForce(0.3f, 0);
     }
 
-    verlet.update(dt);
+    verlet.integrate(dt);
 
     Vec2<float> end = verlet.getPosition();
 

@@ -84,6 +84,10 @@ template <typename T> struct Vec2
         return Vec2<unsigned int>(static_cast<unsigned int>(x),
                                   static_cast<unsigned int>(y));
     }
+    operator Vec2<double>() const
+    {
+        return Vec2<double>(static_cast<double>(x), static_cast<double>(y));
+    }
 
     T length() const { return std::sqrt(x * x + y * y); }
     Vec2 normalize() const
@@ -92,5 +96,22 @@ template <typename T> struct Vec2
         return {x / l, y / l};
     }
     T dot(const Vec2 &other) const { return x * other.x + y * other.y; }
-    Vec2 floor() const { return {std::floor(x), std::floor(y)}; }
+    Vec2 floor() const
+    {
+        return {static_cast<T>(std::floor(x)), static_cast<T>(std::floor(y))};
+    }
+    Vec2 ceil() const
+    {
+        return {static_cast<T>(std::ceil(x)), static_cast<T>(std::ceil(y))};
+    }
+    Vec2 pow(const Vec2 &other)
+    {
+        return {std::pow(x, other.x), std::pow(y, other.y)};
+    }
+
+    Vec2<int> toGrid()
+    {
+        return {static_cast<int>(std::floor(x)),
+                static_cast<int>(std::floor(y))};
+    }
 };

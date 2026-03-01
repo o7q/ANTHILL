@@ -2,7 +2,7 @@
 
 #include "backend/types/vec.hpp"
 
-void VerletBody::update(float dt)
+void VerletBody::integrate(float dt)
 {
     Vec2<float> velocity = m_position - m_positionPrev;
     Vec2<float> drag_multiplier = Vec2<float>(1.0f - m_drag.x, 1.0f - m_drag.y);

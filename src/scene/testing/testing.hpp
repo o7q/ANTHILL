@@ -4,6 +4,7 @@
 #include "entity/player/player.hpp"
 #include "scene/scene.hpp"
 #include "utils/math/random.hpp"
+#include "utils/render.hpp"
 #include "world/world.hpp"
 #include <optional>
 
@@ -23,7 +24,6 @@ class TestScene : public Scene
                 m_camera.getPosition().x, m_camera.getPosition().y, 10);
 
             m_player = std::make_unique<Player>(m_world);
-            m_player->getVerlet().setDrag(1, 1);
         }
 
         if (tick())
@@ -77,22 +77,24 @@ class TestScene : public Scene
 
             if (r_input.getInput("left")->isDown())
             {
-                m_player->getVerlet().addForce(-5, 0);
+                m_player->getController().move(-0.4, 0);
             }
             if (r_input.getInput("right")->isDown())
             {
-                m_player->getVerlet().addForce(5, 0);
+                m_player->getController().move(0.4, 0);
             }
             if (r_input.getInput("down")->isDown())
             {
-                m_player->getVerlet().addForce(0, 5);
+                m_player->getController().move(0, 0.4);
             }
             if (r_input.getInput("up")->isDown())
             {
-                m_player->getVerlet().addForce(0, -5);
+                m_player->getController().move(0, -0.4);
             }
-
-            m_player->getVerlet().addForce(0, 1);
+            if (r_input.getInput("jump")->wasPressed())
+            {
+                m_player->getController().jump();
+            }
 
             m_world.getParticleHandler().update(r_time.getDT());
             m_player->update(r_time.getDT());

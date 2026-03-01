@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include <SDL3/SDL_keycode.h>
 
 void Game::init_binds()
 {
@@ -10,6 +11,9 @@ void Game::init_binds()
                                         {{Input::ButtonType::Key, SDLK_W}});
     m_window.getInputHandler().addInput("down",
                                         {{Input::ButtonType::Key, SDLK_S}});
+
+    m_window.getInputHandler().addInput("jump",
+                                        {{Input::ButtonType::Key, SDLK_SPACE}});
 
     m_window.getInputHandler().addInput(
         "action1", {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});

@@ -58,7 +58,7 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
         verlet.addVelocity(0.3f, 0, dt);
     }
 
-    verlet.update(dt);
+    verlet.integrate(dt);
 
     Vec2<float> end = verlet.getPosition();
 

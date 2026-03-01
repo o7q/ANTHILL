@@ -2,8 +2,8 @@
 
 #include "backend/viewport.hpp"
 #include "camera/camera.hpp"
-#include "types/bounding_box.hpp"
-#include "types/physics/verlet.hpp"
+#include "entity/collision_handler.hpp"
+#include "entity/kinematic_controller.hpp"
 #include "world/world.hpp"
 
 class Entity
@@ -15,14 +15,11 @@ class Entity
     virtual void update(float dt) {}
     virtual void render(Viewport &viewport, const Camera &camera) {}
 
-    VerletBody &getVerlet() { return m_verletBody; }
-
-  protected:
-    Vec2<int> calculateWorldPenetration_MTV(Vec2<int> pos);
-    Vec2<float> calculateWorldPenetration_averageDirection(Vec2<int> pos);
+    KinematicController &getController() { return m_kinematicController; }
 
   protected:
     World &r_world;
-    VerletBody m_verletBody;
-    BoundingBox m_collisionBox;
+
+    KinematicController m_kinematicController;
+    CollisionHandler m_collisionHandler;
 };

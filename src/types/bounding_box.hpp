@@ -7,11 +7,11 @@ class BoundingBox
   public:
     BoundingBox() {}
 
-    void setSize(Vec2<float> size) { m_size = size; }
-    Vec2<float> getSize() const { return m_size; }
-    Vec2<float> getA() const { return -m_size / 2.0f; }
-    Vec2<float> getB() const { return m_size / 2.0f; }
+    void setSize(int width, int height) { m_size = Vec2<int>(width, height); }
+    Vec2<int> getSize() const { return m_size; }
+    Vec2<int> getA() const { return -(m_size / 2); }
+    Vec2<int> getB() const { return getA() + m_size - 1; }
 
   private:
-    Vec2<float> m_size;
+    Vec2<int> m_size = Vec2<int>(0, 0);
 };

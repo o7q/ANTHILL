@@ -12,7 +12,7 @@ class ParticleHandler
     void update(float dt) { m_pDynamicsHandler.update(dt); }
     void set(int x, int y, Particle p)
     {
-        p.getVerlet().stopInPosition(x, y);
+        p.getVerlet().setPosition(x, y);
         m_particles.set(x, y, p);
     }
 

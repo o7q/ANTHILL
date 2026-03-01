@@ -74,8 +74,7 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
                                                   Vec2<float> start,
                                                   Vec2<float> end, float dt)
 {
-    Vec2<int> previousCheck{static_cast<int>(std::floor(start.x)),
-                            static_cast<int>(std::floor(start.y))};
+    Vec2<int> previousCheck = start.toGrid();
     Vec2<int> hitCell{};
     Particle *hitParticle = nullptr;
     bool hit = false;
@@ -114,9 +113,7 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
         return true;
     };
 
-    Utils::Math::Line::bresenhamLine(
-        Vec2<int>(std::floor(start.x), std::floor(start.y)),
-        Vec2<int>(std::floor(end.x), std::floor(end.y)), function);
+    Utils::Math::Line::bresenhamLine(start.toGrid(), end.toGrid(), function);
 
     if (!hit)
     {
@@ -177,20 +174,17 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
         newVelB.y = 0;
     }
 
-    verletA.stopInPosition(previousCheck.x, previousCheck.y);
+    verletA.setPosition(previousCheck.x, previousCheck.y);
     verletA.setVelocity(newVelA.x, newVelA.y, dt);
     verletB.setVelocity(newVelB.x, newVelB.y, dt);
 }
 
 void PDynamicsHandler::finalize_particle(ParticleObject po)
 {
-    Vec2<float> finalPos = po.particle->getVerlet().getPosition();
-
-    int finalX = static_cast<int>(std::floor(finalPos.x));
-    int finalY = static_cast<int>(std::floor(finalPos.y));
+    Vec2<int> finalPos = po.particle->getVerlet().getPosition().toGrid();
 
     po.particle->setUpdateSwapID(m_updateSwapID);
-    r_particles.move(po.x, po.y, finalX, finalY);
+    r_particles.move(po.x, po.y, finalPos.x, finalPos.y);
 }
 
 bool PDynamicsHandler::can_solid_occupy(Particle *p)
