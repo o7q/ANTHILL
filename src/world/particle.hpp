@@ -53,6 +53,11 @@ class Particle
     void setUpdateSwapID(bool updateSwapID) { m_updateSwapID = updateSwapID; }
     bool getUpdateSwapID() const { return m_updateSwapID; }
 
+    bool inMotion() const
+    {
+        return m_verletBody.getPosition() != m_verletBody.getPreviousPosition();
+    }
+
   private:
     Color m_color;
     PhysicsType m_physicsType = PhysicsType::None;

@@ -1,13 +1,14 @@
 #pragma once
 
 #include "backend/types/vec.hpp"
+#include "types/physics/body.hpp"
 
-class VerletBody
+class VerletBody : public PhysicsBody
 {
   public:
     VerletBody() = default;
 
-    void integrate(float dt);
+    void integrate(float dt) override;
 
     void setPosition(float x, float y)
     {
@@ -42,7 +43,6 @@ class VerletBody
     float getMass() const { return m_mass; }
 
   private:
-    Vec2<float> m_position = Vec2<float>(0.0f, 0.0f);
     Vec2<float> m_positionPrev = Vec2<float>(0.0f, 0.0f);
     Vec2<float> m_force = Vec2<float>(0.0f, 0.0f);
     Vec2<float> m_drag = Vec2<float>(0.0f, 0.0f);

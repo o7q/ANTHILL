@@ -1,14 +1,14 @@
-#include "collision_handler.hpp"
+#include "world_collision_handler.hpp"
+
 #include "world/particle.hpp"
 #include "world/world.hpp"
 #include <array>
 
 // minimum translation vector
-Vec2<int> CollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos,
-                                                          World &world)
+Vec2<int> WorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
 {
     Vec2<int> size = m_collisionBox.getSize().toGrid();
-    Vec2<int> topLeft = pos - size / 2;
+    Vec2<int> topLeft = m_collisionBox.getA() + pos;
 
     //    0
     // 3 [-] 1
@@ -21,7 +21,7 @@ Vec2<int> CollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos,
         {
             Vec2<int> worldPos = topLeft + Vec2<int>(x, y);
 
-            Particle *p = world.getParticleHandler().getParticles().get(
+            Particle *p = r_world.getParticleHandler().getParticles().get(
                 worldPos.x, worldPos.y);
 
             if (!p)
@@ -29,7 +29,7 @@ Vec2<int> CollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos,
                 continue;
             }
 
-            if (p->isSolid())
+            if (p->isSolid() && !p->inMotion())
             {
                 penetration[0] = std::max(penetration[0], y + 1);
                 penetration[1] = std::max(penetration[1], size.x - x);
@@ -79,14 +79,12 @@ Vec2<int> CollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos,
 }
 
 Vec2<float>
-CollisionHandler::calculateWorldPenetration_averageDirection(Vec2<int> pos,
-                                                             World &world)
+WorldCollisionHandler::calculateWorldPenetration_averageDirection(Vec2<int> pos)
 {
-    Vec2<int> size = m_collisionBox.getSize().floor();
+    Vec2<int> size = m_collisionBox.getSize();
+    Vec2<int> topLeft = pos + m_collisionBox.getA();
 
-    Vec2<int> topLeft = pos - size / 2;
-
-    Vec2<float> sum(0, 0);
+    Vec2<int> sum(0, 0);
     int count = 0;
 
     for (int y = 0; y < size.y; ++y)
@@ -95,7 +93,7 @@ CollisionHandler::calculateWorldPenetration_averageDirection(Vec2<int> pos,
         {
             Vec2<int> worldPos = topLeft + Vec2<int>(x, y);
 
-            Particle *p = world.getParticleHandler().getParticles().get(
+            Particle *p = r_world.getParticleHandler().getParticles().get(
                 worldPos.x, worldPos.y);
             if (!p)
             {
@@ -115,5 +113,5 @@ CollisionHandler::calculateWorldPenetration_averageDirection(Vec2<int> pos,
         return Vec2<float>(0, 0);
     }
 
-    return (sum / count).normalize();
+    return (sum.toFloat() / count).normalize();
 }

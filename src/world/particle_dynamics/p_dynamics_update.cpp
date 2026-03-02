@@ -105,12 +105,12 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
                 hit = true;
                 hitCell = Vec2<int>(x, y);
                 hitParticle = next;
-                return false;
+                return true;
             }
         }
 
         previousCheck = Vec2<int>(x, y);
-        return true;
+        return false;
     };
 
     Utils::Math::Line::bresenhamLine(start.toGrid(), end.toGrid(), function);

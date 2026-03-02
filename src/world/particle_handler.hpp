@@ -10,63 +10,26 @@ class ParticleHandler
     ParticleHandler() : m_particles(32, 32), m_pDynamicsHandler(m_particles) {}
 
     void update(float dt) { m_pDynamicsHandler.update(dt); }
-    void set(int x, int y, Particle p)
-    {
-        p.getVerlet().setPosition(x, y);
-        m_particles.set(x, y, p);
-    }
 
-    void draw(int x, int y, Particle p, int radius = 5)
+    void set(int x, int y, Particle p);
+    void draw(int x, int y, Particle p, int radius = 5);
+
+    template <typename F> void query(Vec2<int> start, Vec2<int> end, F &query)
     {
-        for (int ry = -radius; ry <= radius; ++ry)
+        for (int y = start.y; y <= end.y; ++y)
         {
-            for (int rx = -radius; rx <= radius; ++rx)
+            for (int x = start.x; x <= end.x; ++x)
             {
-                if (rx * rx + ry * ry <= radius * radius)
+                Particle *p = m_particles.get(x, y);
+
+                if (!p)
                 {
-                    set(x + rx, y + ry, p);
+                    continue;
                 }
-            }
-        }
-    }
 
-    void applyForce(float x, float y, float power, float dt)
-    {
-        for (auto &[chunkPos, chunk] : m_particles.getChunks())
-        {
-            Vec2<unsigned int> chunkSize = m_particles.getChunkSize();
-            for (unsigned int cy = 0; cy < chunkSize.y; ++cy)
-            {
-                for (unsigned int cx = 0; cx < chunkSize.x; ++cx)
+                if (query(p))
                 {
-                    const int px = chunkPos.x * chunkSize.x + cx;
-                    const int py = chunkPos.y * chunkSize.y + cy;
-                    Particle *p = m_particles.get(px, py);
-
-                    if (!p)
-                    {
-                        continue;
-                    }
-
-                    if (p->isAir())
-                    {
-                        continue;
-                    }
-
-                    Vec2<float> dir =
-                        p->getVerlet().getPosition() - Vec2<float>(x, y);
-
-                    float distance = dir.length();
-
-                    if (distance > 0.001f)
-                    {
-                        dir = dir / distance;
-                    }
-
-                    float strength = power;
-                    Vec2<float> force = dir * strength;
-
-                    p->getVerlet().setVelocity(force.x, force.y, dt);
+                    return;
                 }
             }
         }

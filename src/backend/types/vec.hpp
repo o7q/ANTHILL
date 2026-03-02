@@ -71,22 +71,13 @@ template <typename T> struct Vec2
 
     Vec2 operator-() const { return {-x, -y}; }
 
-    operator Vec2<float>() const
+    bool operator==(const Vec2 &other) const
     {
-        return Vec2<float>(static_cast<float>(x), static_cast<float>(y));
+        return x == other.x && y == other.y;
     }
-    operator Vec2<int>() const
+    bool operator!=(const Vec2 &other) const
     {
-        return Vec2<int>(static_cast<int>(x), static_cast<int>(y));
-    }
-    operator Vec2<unsigned int>() const
-    {
-        return Vec2<unsigned int>(static_cast<unsigned int>(x),
-                                  static_cast<unsigned int>(y));
-    }
-    operator Vec2<double>() const
-    {
-        return Vec2<double>(static_cast<double>(x), static_cast<double>(y));
+        return x != other.x || y != other.y;
     }
 
     T length() const { return std::sqrt(x * x + y * y); }
@@ -104,14 +95,34 @@ template <typename T> struct Vec2
     {
         return {static_cast<T>(std::ceil(x)), static_cast<T>(std::ceil(y))};
     }
-    Vec2 pow(const Vec2 &other)
+    Vec2 pow(const Vec2 &other) const
     {
         return {std::pow(x, other.x), std::pow(y, other.y)};
     }
 
-    Vec2<int> toGrid()
+    Vec2<int> toGrid() const
     {
         return {static_cast<int>(std::floor(x)),
                 static_cast<int>(std::floor(y))};
+    }
+
+    Vec2<float> toFloat() const
+    {
+        return {static_cast<float>(x), static_cast<float>(y)};
+    }
+
+    Vec2<float> toDouble() const
+    {
+        return {static_cast<double>(x), static_cast<double>(y)};
+    }
+
+    Vec2<float> toInt() const
+    {
+        return {static_cast<int>(x), static_cast<int>(y)};
+    }
+
+    Vec2<float> toUnsignedInt() const
+    {
+        return {static_cast<unsigned int>(x), static_cast<unsigned int>(y)};
     }
 };

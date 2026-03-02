@@ -24,7 +24,7 @@ inline void bresenhamLine(Vec2<int> p1, Vec2<int> p2, F &function)
 
     while (true)
     {
-        if (!function(p1.x, p1.y))
+        if (function(p1.x, p1.y))
         {
             break;
         }
@@ -62,7 +62,7 @@ ddaRaycast(Vec2<float> rayStart, Vec2<float> rayDirection, F &checkFunction)
     Vec2<float> rayUnitStepSize = {std::sqrt(1.0f + a * a),
                                    std::sqrt(1.0f + b * b)};
 
-    Vec2<int> gridCheck = rayStart;
+    Vec2<int> gridCheck = rayStart.toGrid();
     Vec2<float> rayLength1D;
 
     Vec2<float> step;

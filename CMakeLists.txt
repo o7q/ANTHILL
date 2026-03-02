@@ -14,5 +14,4 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 target_compile_options(${PROJECT_NAME} PRIVATE -O3 -Wall)
 
 find_package(SDL3 REQUIRED)
-
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)

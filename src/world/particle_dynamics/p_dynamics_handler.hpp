@@ -29,6 +29,8 @@ class PDynamicsHandler
         m_updateChunksRadius = chunk_radius_to_update;
     }
 
+    void applyForce(float x, float y, float power, float dt);
+
   private:
     void update_particle(ParticleObject po, float dt);
     void resolve_particle_collision(ParticleObject po, Vec2<float> start,

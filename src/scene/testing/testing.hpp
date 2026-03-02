@@ -32,7 +32,7 @@ class TestScene : public Scene
             Vec2<int> viewportMousePos =
                 r_viewport.windowToViewportPosition(mousePos);
 
-            Vec2<float> worldPos = m_camera.viewportToWorld(viewportMousePos.x,
+            Vec2<int> worldPos = m_camera.viewportToWorld(viewportMousePos.x,
                                                             viewportMousePos.y);
 
             if (r_window.getInputHandler()
@@ -77,19 +77,19 @@ class TestScene : public Scene
 
             if (r_input.getInput("left")->isDown())
             {
-                m_player->getController().move(-0.4, 0);
+                m_player->getController().move(-1, 0);
             }
             if (r_input.getInput("right")->isDown())
             {
-                m_player->getController().move(0.4, 0);
+                m_player->getController().move(1, 0);
             }
             if (r_input.getInput("down")->isDown())
             {
-                m_player->getController().move(0, 0.4);
+                m_player->getController().move(0, 1);
             }
             if (r_input.getInput("up")->isDown())
             {
-                m_player->getController().move(0, -0.4);
+                m_player->getController().move(0, -1);
             }
             if (r_input.getInput("jump")->wasPressed())
             {
