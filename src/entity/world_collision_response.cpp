@@ -25,11 +25,31 @@ WorldCollisionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
 
             return false;
         };
-
         r_world.getParticleHandler().query(a, b, query);
 
         if (collidedThisIteration)
         {
+            // prevent floating if colliding with a single corner
+            if (againstSolidCorner(Vec2<int>(previousPos.x, previousPos.y),
+                                   BoundingBox::Corner::BottomLeft) &&
+                !againstSolidSurface(Vec2<int>(previousPos.x, previousPos.y),
+                                     BoundingBox::Side::Left) &&
+                !againstSolidSurface(Vec2<int>(previousPos.x, previousPos.y),
+                                     BoundingBox::Side::Bottom))
+            {
+                previousPos.x--;
+            }
+            else if (againstSolidCorner(Vec2<int>(previousPos.x, previousPos.y),
+                                        BoundingBox::Corner::BottomRight) &&
+                     !againstSolidSurface(
+                         Vec2<int>(previousPos.x, previousPos.y),
+                         BoundingBox::Side::Right) &&
+                     !againstSolidSurface(
+                         Vec2<int>(previousPos.x, previousPos.y),
+                         BoundingBox::Side::Bottom))
+            {
+                previousPos.x++;
+            }
             collided = true;
             return true;
         }
@@ -42,8 +62,8 @@ WorldCollisionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
 
     Utils::Math::Line::bresenhamLine(start, end, check);
 
-    TrajectoryCollisionResponse out;
-    out.collided = collided;
-    out.resolvePos = previousPos;
-    return out;
+    TrajectoryCollisionResponse response;
+    response.collided = collided;
+    response.resolvePos = previousPos;
+    return response;
 }

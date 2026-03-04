@@ -76,11 +76,11 @@ class TestScene : public Scene
 
             if (r_input.getInput("left")->isDown())
             {
-                m_player->getController().move(-5, 0);
+                m_player->getController().move(-10, 0);
             }
             if (r_input.getInput("right")->isDown())
             {
-                m_player->getController().move(5, 0);
+                m_player->getController().move(10, 0);
             }
             if (r_input.getInput("down")->isDown())
             {
@@ -98,11 +98,12 @@ class TestScene : public Scene
             m_world.getParticleHandler().update(r_time.getDT());
             m_player->update(r_time.getDT());
 
+            m_camera.setPosition(m_player->getController().getPosition().x,
+                                 m_player->getController().getPosition().y);
+
             m_world.render(r_viewport, m_camera);
             m_player->render(r_viewport, m_camera);
 
-            m_camera.setPosition(m_player->getController().getPosition().x,
-                                 m_player->getController().getPosition().y);
         }
 
         return SceneID::Testing;

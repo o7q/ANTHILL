@@ -32,6 +32,7 @@ class WorldCollisionHandler
     calculateCollisionFromTrajectory(Vec2<int> start, Vec2<int> end);
 
     bool againstSolidSurface(Vec2<int> pos, BoundingBox::Side side);
+    bool againstSolidCorner(Vec2<int> pos, BoundingBox::Corner corner);
 
     BoundingBox &getCollisionBox() { return m_collisionBox; }
 

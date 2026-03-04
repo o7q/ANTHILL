@@ -55,3 +55,65 @@ bool WorldCollisionHandler::againstSolidSurface(Vec2<int> pos,
 
     return collided;
 }
+
+bool WorldCollisionHandler::againstSolidCorner(Vec2<int> pos,
+                                               BoundingBox::Corner corner)
+{
+    Vec2<int> size = m_collisionBox.getSize();
+    Vec2<int> topLeft = pos + m_collisionBox.getA();
+
+    bool collided = false;
+    switch (corner)
+    {
+    case BoundingBox::Corner::TopLeft:
+    {
+        if (Particle *p = r_world.getParticleHandler().getParticles().get(
+                topLeft.x + size.x, topLeft.y - 1))
+        {
+            if (p->isSolid() && !p->inMotion())
+            {
+                collided = true;
+            }
+        }
+    }
+    break;
+    case BoundingBox::Corner::TopRight:
+    {
+        if (Particle *p = r_world.getParticleHandler().getParticles().get(
+                topLeft.x - 1, topLeft.y - 1))
+        {
+            if (p->isSolid() && !p->inMotion())
+            {
+                collided = true;
+            }
+        }
+    }
+    break;
+    case BoundingBox::Corner::BottomLeft:
+    {
+        if (Particle *p = r_world.getParticleHandler().getParticles().get(
+                topLeft.x - 1, topLeft.y + size.y))
+        {
+            if (p->isSolid() && !p->inMotion())
+            {
+                collided = true;
+            }
+        }
+    }
+    break;
+    case BoundingBox::Corner::BottomRight:
+    {
+        if (Particle *p = r_world.getParticleHandler().getParticles().get(
+                topLeft.x + size.x, topLeft.y + size.y))
+        {
+            if (p->isSolid() && !p->inMotion())
+            {
+                collided = true;
+            }
+        }
+    }
+    break;
+    }
+
+    return collided;
+}

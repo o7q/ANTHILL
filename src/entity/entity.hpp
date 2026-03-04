@@ -5,6 +5,7 @@
 #include "entity/kinematic_controller.hpp"
 #include "entity/world_collision_handler.hpp"
 #include "world/world.hpp"
+#include <cstdio>
 #include <iostream>
 
 class Entity
@@ -68,6 +69,38 @@ class Entity
 
         Vec2<int> pos = m_kinematicController.getPosition();
 
+        Vec2<float> vel = m_kinematicController.getVelocity();
+
+        bool blockedLeft = m_worldCollisionHandler.againstSolidSurface(
+            pos, BoundingBox::Side::Left);
+        bool blockedRight = m_worldCollisionHandler.againstSolidSurface(
+            pos, BoundingBox::Side::Right);
+
+        if ((blockedLeft && vel.x < 0) || (blockedRight && vel.x > 0))
+        {
+            for (int step = 1; step <= 3; ++step)
+            {
+                Vec2<int> steppedPos = {pos.x, pos.y - step};
+
+                bool stillBlockedRight =
+                    blockedRight && m_worldCollisionHandler.againstSolidSurface(
+                                        steppedPos, BoundingBox::Side::Right);
+                bool stillBlockedLeft =
+                    blockedLeft && m_worldCollisionHandler.againstSolidSurface(
+                                       steppedPos, BoundingBox::Side::Left);
+
+                if (!stillBlockedRight && !stillBlockedLeft)
+                {
+                    m_kinematicController.setPosition(steppedPos.x,
+                                                      steppedPos.y);
+                    pos = steppedPos;
+                    blockedRight = false;
+                    blockedLeft = false;
+                    break;
+                }
+            }
+        }
+
         // cancel motion in solid direction
         if (m_worldCollisionHandler.againstSolidSurface(pos,
                                                         BoundingBox::Side::Top))
@@ -89,6 +122,9 @@ class Entity
         {
             m_kinematicController.haltMotionInDirection(-1, 0);
         }
+
+        std::cout << m_kinematicController.getVelocity().x << " "
+                  << m_kinematicController.getVelocity().y << std::endl;
 
         // resolve collisions
         Vec2<int> start = pos;

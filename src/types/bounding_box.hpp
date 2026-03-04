@@ -13,6 +13,14 @@ class BoundingBox
         Bottom
     };
 
+    enum class Corner
+    {
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight
+    };
+
   public:
     BoundingBox() {}
 
