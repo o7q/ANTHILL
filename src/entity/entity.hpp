@@ -5,6 +5,7 @@
 #include "entity/kinematic_controller.hpp"
 #include "entity/world_collision_handler.hpp"
 #include "world/world.hpp"
+#include <iostream>
 
 class Entity
 {
@@ -36,7 +37,6 @@ class Entity
             }
             return false;
         };
-
         r_world.getParticleHandler().query(a, b, query);
 
         if (solidCount > 0)
@@ -91,7 +91,7 @@ class Entity
         }
 
         // resolve collisions
-        Vec2<int> start = m_kinematicController.getPosition();
+        Vec2<int> start = pos;
 
         m_kinematicController.update(dt);
 

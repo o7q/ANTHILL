@@ -22,12 +22,12 @@ class SemiImplicitEulerBody : public PhysicsBody
     void addForce(float x, float y) { m_force += Vec2<float>(x, y); }
     void clearForces() { m_force = Vec2<float>(0.0f, 0.0f); }
 
-    void setDamping(float x, float y) { m_damp = Vec2<float>(x, y); }
-    Vec2<float> getDamping() const { return m_damp; }
+    void setDamping(float x, float y) { m_damping = Vec2<float>(x, y); }
+    Vec2<float> getDamping() const { return m_damping; }
 
   protected:
     Vec2<float> m_velocity = Vec2<float>(0.0f, 0.0f);
     Vec2<float> m_force = Vec2<float>(0.0f, 0.0f);
-    Vec2<float> m_damp = Vec2<float>(0.0f, 0.0f);
+    Vec2<float> m_damping = Vec2<float>(0.0f, 0.0f);
     float m_mass = 1.0f;
 };

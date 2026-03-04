@@ -5,7 +5,8 @@
 #include <array>
 
 // minimum translation vector
-Vec2<int> WorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
+WorldCollisionHandler::MTVPenetrationResponse
+WorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
 {
     Vec2<int> size = m_collisionBox.getSize().toGrid();
     Vec2<int> topLeft = m_collisionBox.getA() + pos;
@@ -41,9 +42,16 @@ Vec2<int> WorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
         }
     }
 
+    MTVPenetrationResponse response;
+    response.top = penetration[0];
+    response.right = penetration[1];
+    response.bottom = penetration[2];
+    response.left = penetration[3];
+    response.resolve = Vec2<int>(0, 0);
+
     if (!collisionOccurred)
     {
-        return Vec2<int>(0, 0);
+        return response;
     }
 
     int lowest = std::numeric_limits<int>::max();
@@ -58,24 +66,23 @@ Vec2<int> WorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
         }
     }
 
-    Vec2<int> out;
     switch (side)
     {
     case 0:
-        out = Vec2<int>(0, lowest);
+        response.resolve = Vec2<int>(0, lowest);
         break;
     case 1:
-        out = Vec2<int>(-lowest, 0);
+        response.resolve = Vec2<int>(-lowest, 0);
         break;
     case 2:
-        out = Vec2<int>(0, -lowest);
+        response.resolve = Vec2<int>(0, -lowest);
         break;
     case 3:
-        out = Vec2<int>(lowest, 0);
+        response.resolve = Vec2<int>(lowest, 0);
         break;
     }
 
-    return out;
+    return response;
 }
 
 Vec2<float>

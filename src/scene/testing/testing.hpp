@@ -4,7 +4,6 @@
 #include "entity/player/player.hpp"
 #include "scene/scene.hpp"
 #include "utils/math/random.hpp"
-#include "utils/render.hpp"
 #include "world/world.hpp"
 #include <optional>
 
@@ -20,20 +19,20 @@ class TestScene : public Scene
     {
         if (start())
         {
-            m_world.getParticleHandler().getDynamics().setUpdateInfo(
-                m_camera.getPosition().x, m_camera.getPosition().y, 10);
-
+            
             m_player = std::make_unique<Player>(m_world);
         }
-
+        
         if (tick())
         {
+            m_world.getParticleHandler().getDynamics().setUpdateInfo(
+                m_camera.getPosition().x, m_camera.getPosition().y, 10);
             Vec2<float> mousePos = r_input.getMousePosition();
             Vec2<int> viewportMousePos =
                 r_viewport.windowToViewportPosition(mousePos);
 
             Vec2<int> worldPos = m_camera.viewportToWorld(viewportMousePos.x,
-                                                            viewportMousePos.y);
+                                                          viewportMousePos.y);
 
             if (r_window.getInputHandler()
                     .getInput("secondaryAction1")
@@ -77,19 +76,19 @@ class TestScene : public Scene
 
             if (r_input.getInput("left")->isDown())
             {
-                m_player->getController().move(-1, 0);
+                m_player->getController().move(-5, 0);
             }
             if (r_input.getInput("right")->isDown())
             {
-                m_player->getController().move(1, 0);
+                m_player->getController().move(5, 0);
             }
             if (r_input.getInput("down")->isDown())
             {
-                m_player->getController().move(0, 1);
+                m_player->getController().move(0, 5);
             }
             if (r_input.getInput("up")->isDown())
             {
-                m_player->getController().move(0, -1);
+                m_player->getController().move(0, -5);
             }
             if (r_input.getInput("jump")->wasPressed())
             {
@@ -101,6 +100,9 @@ class TestScene : public Scene
 
             m_world.render(r_viewport, m_camera);
             m_player->render(r_viewport, m_camera);
+
+            m_camera.setPosition(m_player->getController().getPosition().x,
+                                 m_player->getController().getPosition().y);
         }
 
         return SceneID::Testing;

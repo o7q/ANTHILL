@@ -1,5 +1,32 @@
 #include "p_dynamics_handler.hpp"
 
+bool PDynamicsHandler::can_solid_occupy(Particle *p)
+{
+    if (!p)
+    {
+        return true;
+    }
+    return p->isGas() || p->isLiquid();
+}
+
+bool PDynamicsHandler::can_liquid_occupy(Particle *p)
+{
+    if (!p)
+    {
+        return true;
+    }
+    return p->isGas();
+}
+
+bool PDynamicsHandler::can_gas_occupy(Particle *p)
+{
+    if (!p)
+    {
+        return true;
+    }
+    return p->isAir();
+}
+
 void PDynamicsHandler::applyForce(float x, float y, float power, float dt)
 {
     for (auto &[chunkPos, chunk] : r_particles.getChunks())

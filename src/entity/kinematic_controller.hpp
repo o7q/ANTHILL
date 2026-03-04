@@ -61,6 +61,9 @@ class KinematicController
         m_movementDamping = Vec2<float>(x, y);
     }
 
+    bool horizontallyInMotion() { return m_body.horizontallyInMotion(); }
+    bool verticallyInMotion() { return m_body.verticallyInMotion(); }
+
   private:
     KinematicBody m_body;
 

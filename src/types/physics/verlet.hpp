@@ -36,8 +36,8 @@ class VerletBody : public PhysicsBody
     void addForce(float x, float y) { m_force += Vec2<float>(x, y); }
     void clearForces() { m_force = Vec2<float>(0.0f, 0.0f); }
 
-    void setDrag(float x, float y) { m_drag = Vec2<float>(x, y); }
-    Vec2<float> getDrag() const { return m_drag; }
+    void setDamping(float x, float y) { m_damping = Vec2<float>(x, y); }
+    Vec2<float> getDamping() const { return m_damping; }
 
     void setMass(float mass) { m_mass = mass; }
     float getMass() const { return m_mass; }
@@ -45,6 +45,6 @@ class VerletBody : public PhysicsBody
   private:
     Vec2<float> m_positionPrev = Vec2<float>(0.0f, 0.0f);
     Vec2<float> m_force = Vec2<float>(0.0f, 0.0f);
-    Vec2<float> m_drag = Vec2<float>(0.0f, 0.0f);
+    Vec2<float> m_damping = Vec2<float>(0.0f, 0.0f);
     float m_mass = 1.0f;
 };

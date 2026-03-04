@@ -186,30 +186,3 @@ void PDynamicsHandler::finalize_particle(ParticleObject po)
     po.particle->setUpdateSwapID(m_updateSwapID);
     r_particles.move(po.x, po.y, finalPos.x, finalPos.y);
 }
-
-bool PDynamicsHandler::can_solid_occupy(Particle *p)
-{
-    if (!p)
-    {
-        return true;
-    }
-    return p->isGas() || p->isLiquid();
-}
-
-bool PDynamicsHandler::can_liquid_occupy(Particle *p)
-{
-    if (!p)
-    {
-        return true;
-    }
-    return p->isGas();
-}
-
-bool PDynamicsHandler::can_gas_occupy(Particle *p)
-{
-    if (!p)
-    {
-        return true;
-    }
-    return p->isAir();
-}
