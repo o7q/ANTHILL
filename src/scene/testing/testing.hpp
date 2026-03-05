@@ -76,19 +76,19 @@ class TestScene : public Scene
 
             if (r_input.getInput("left")->isDown())
             {
-                m_player->getController().move(-10, 0);
+                m_player->getController().addForce(-10, 0);
             }
             if (r_input.getInput("right")->isDown())
             {
-                m_player->getController().move(10, 0);
+                m_player->getController().addForce(10, 0);
             }
             if (r_input.getInput("down")->isDown())
             {
-                m_player->getController().move(0, 5);
+                m_player->getController().addForce(0, 5);
             }
             if (r_input.getInput("up")->isDown())
             {
-                m_player->getController().move(0, -5);
+                m_player->getController().addForce(0, -5);
             }
             if (r_input.getInput("jump")->wasPressed())
             {

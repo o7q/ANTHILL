@@ -29,27 +29,6 @@ WorldCollisionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
 
         if (collidedThisIteration)
         {
-            // prevent floating if colliding with a single corner
-            if (againstSolidCorner(Vec2<int>(previousPos.x, previousPos.y),
-                                   BoundingBox::Corner::BottomLeft) &&
-                !againstSolidSurface(Vec2<int>(previousPos.x, previousPos.y),
-                                     BoundingBox::Side::Left) &&
-                !againstSolidSurface(Vec2<int>(previousPos.x, previousPos.y),
-                                     BoundingBox::Side::Bottom))
-            {
-                previousPos.x--;
-            }
-            else if (againstSolidCorner(Vec2<int>(previousPos.x, previousPos.y),
-                                        BoundingBox::Corner::BottomRight) &&
-                     !againstSolidSurface(
-                         Vec2<int>(previousPos.x, previousPos.y),
-                         BoundingBox::Side::Right) &&
-                     !againstSolidSurface(
-                         Vec2<int>(previousPos.x, previousPos.y),
-                         BoundingBox::Side::Bottom))
-            {
-                previousPos.x++;
-            }
             collided = true;
             return true;
         }
