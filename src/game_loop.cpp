@@ -1,6 +1,6 @@
 #include "game.hpp"
 
-#include "scene/testing/testing.hpp"
+#include "scenes/testing/testing.hpp"
 #include <optional>
 
 void Game::update_loop()

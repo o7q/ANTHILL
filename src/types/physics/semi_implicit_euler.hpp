@@ -17,6 +17,7 @@ class SemiImplicitEulerBody : public PhysicsBody
     void setVelocityX(float x) { m_velocity.x = x; }
     void setVelocityY(float y) { m_velocity.y = y; }
     Vec2<float> getVelocity() const { return m_velocity; }
+    Vec2<float> getForce() const { return m_force; }
 
     void setForce(float x, float y) { m_force = Vec2<float>(x, y); }
     void addForce(float x, float y) { m_force += Vec2<float>(x, y); }

@@ -4,7 +4,7 @@
 #include "backend/types/vec.hpp"
 #include "backend/window.hpp"
 #include "scene/scene.hpp"
-#include "scene/testing/testing.hpp"
+#include "scenes/testing/testing.hpp"
 #include <SDL3/SDL_keycode.h>
 #include <memory>
 

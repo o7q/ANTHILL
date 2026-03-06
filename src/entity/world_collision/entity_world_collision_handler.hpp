@@ -4,7 +4,7 @@
 #include "types/bounding_box.hpp"
 #include "world/world.hpp"
 
-class WorldCollisionHandler
+class EntityWorldCollisionHandler
 {
   public:
     struct TrajectoryCollisionResponse
@@ -23,7 +23,7 @@ class WorldCollisionHandler
     };
 
   public:
-    WorldCollisionHandler(World &world) : r_world(world) {}
+    EntityWorldCollisionHandler(World &world) : r_world(world) {}
 
     MTVPenetrationResponse calculateWorldPenetration_MTV(Vec2<int> pos);
     Vec2<float> calculateWorldPenetration_averageDirection(Vec2<int> pos);

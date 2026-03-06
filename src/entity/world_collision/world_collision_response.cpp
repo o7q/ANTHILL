@@ -1,10 +1,10 @@
-#include "world_collision_handler.hpp"
+#include "entity_world_collision_handler.hpp"
 
 #include "utils/math/line.hpp"
 
-WorldCollisionHandler::TrajectoryCollisionResponse
-WorldCollisionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
-                                                        Vec2<int> end)
+EntityWorldCollisionHandler::TrajectoryCollisionResponse
+EntityWorldCollisionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
+                                                              Vec2<int> end)
 {
     bool collided = false;
     Vec2<int> previousPos = start;

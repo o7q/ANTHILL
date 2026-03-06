@@ -2,9 +2,9 @@
 
 #include "backend/viewport.hpp"
 #include "camera/camera.hpp"
-#include "entity/kinematic_controller.hpp"
-#include "entity/world_collision_handler.hpp"
+#include "dynamic_body/entity_dynamic_body.hpp"
 #include "world/world.hpp"
+#include "world_collision/entity_world_collision_handler.hpp"
 
 class Entity
 {
@@ -15,7 +15,7 @@ class Entity
     virtual void update(float dt) {}
     virtual void render(Viewport &viewport, const Camera &camera) {}
 
-    KinematicController &getController() { return m_kinematicController; }
+    EntityDynamicBody &getBody() { return m_body; }
 
   protected:
     void handleMotion();
@@ -27,6 +27,6 @@ class Entity
   protected:
     World &r_world;
 
-    KinematicController m_kinematicController;
-    WorldCollisionHandler m_worldCollisionHandler;
+    EntityDynamicBody m_body;
+    EntityWorldCollisionHandler m_worldCollisionHandler;
 };

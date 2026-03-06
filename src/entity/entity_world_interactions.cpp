@@ -1,8 +1,10 @@
 #include "entity.hpp"
 
+#include "world_collision/entity_world_collision_handler.hpp"
+
 void Entity::handleWorldInteractions(float dt)
 {
-    Vec2<int> pos = m_kinematicController.getPosition();
+    Vec2<int> pos = m_body.getPosition();
     Vec2<int> a = m_worldCollisionHandler.getCollisionBox().getA() + pos;
     Vec2<int> b = m_worldCollisionHandler.getCollisionBox().getB() + pos;
 
@@ -30,24 +32,24 @@ void Entity::handleWorldInteractions(float dt)
 
 void Entity::handleWorldInteractions_colliding(float dt)
 {
-    m_kinematicController.setMovementDamping(0.9f, 0.9f);
+    m_body.setMovementDamping(0.9f, 0.9f);
 
-    Vec2<int> pos = m_kinematicController.getPosition();
+    Vec2<int> pos = m_body.getPosition();
     if (m_worldCollisionHandler.againstSolidSurface(pos,
                                                     BoundingBox::Side::Bottom))
     {
-        m_kinematicController.haltMotionInDirection(0, 1);
+        m_body.haltMotionInDirection(0, 1);
     }
 
-    m_kinematicController.update(dt);
+    m_body.update(dt);
 }
 
 void Entity::handleWorldInteractions_notColliding(float dt)
 {
-    m_kinematicController.setMovementDamping(0, 0);
+    m_body.setMovementDamping(0, 0);
 
-    Vec2<int> pos = m_kinematicController.getPosition();
-    Vec2<float> vel = m_kinematicController.getVelocity();
+    Vec2<int> pos = m_body.getPosition();
+    Vec2<float> vel = m_body.getVelocity();
 
     bool blockedLeft = m_worldCollisionHandler.againstSolidSurface(
         pos, BoundingBox::Side::Left);
@@ -69,7 +71,14 @@ void Entity::handleWorldInteractions_notColliding(float dt)
 
             if (!stillBlockedRight && !stillBlockedLeft)
             {
-                m_kinematicController.setPosition(steppedPos.x, steppedPos.y);
+                EntityWorldCollisionHandler::TrajectoryCollisionResponse test =
+                    m_worldCollisionHandler.calculateCollisionFromTrajectory(
+                        pos, steppedPos);
+                if (test.collided)
+                {
+                    break;
+                }
+                m_body.setPosition(steppedPos.x, steppedPos.y);
                 pos = steppedPos;
                 blockedRight = false;
                 blockedLeft = false;
@@ -78,39 +87,40 @@ void Entity::handleWorldInteractions_notColliding(float dt)
         }
     }
 
-    Vec2<int> start0 = pos;
-    m_kinematicController.update(dt);
-    Vec2<int> end0 = m_kinematicController.getPosition();
+    Vec2<int> start = pos;
+    m_body.update(dt);
+    Vec2<int> end = m_body.getPosition();
 
-    WorldCollisionHandler::TrajectoryCollisionResponse response0 =
-        m_worldCollisionHandler.calculateCollisionFromTrajectory(start0, end0);
+    EntityWorldCollisionHandler::TrajectoryCollisionResponse xy_response =
+        m_worldCollisionHandler.calculateCollisionFromTrajectory(start, end);
 
-    // initial diagonal check
-    if (response0.collided)
+    // all axis
+    if (xy_response.collided)
     {
-        Vec2<int> finalResolve(0, 0);
+        Vec2<int> finalResolve = {0, 0};
 
-        // horizontal check
-        Vec2<int> end1 = {end0.x, response0.resolvePos.y};
-        WorldCollisionHandler::TrajectoryCollisionResponse response1 =
-            m_worldCollisionHandler.calculateCollisionFromTrajectory(start0,
-                                                                     end1);
+        // horizontal axis
+        Vec2<int> end_x = {end.x, xy_response.resolvePos.y};
+        EntityWorldCollisionHandler::TrajectoryCollisionResponse x_response =
+            m_worldCollisionHandler.calculateCollisionFromTrajectory(
+                xy_response.resolvePos, end_x);
 
-        if (response0.resolvePos == response1.resolvePos)
+        if (xy_response.resolvePos == x_response.resolvePos)
         {
-            // vertical check
-            Vec2<int> end2 = {response0.resolvePos.x, end0.y};
-            WorldCollisionHandler::TrajectoryCollisionResponse response2 =
-                m_worldCollisionHandler.calculateCollisionFromTrajectory(start0,
-                                                                         end2);
+            // vertical axis
+            Vec2<int> end_y = {xy_response.resolvePos.x, end.y};
+            EntityWorldCollisionHandler::TrajectoryCollisionResponse
+                y_response =
+                    m_worldCollisionHandler.calculateCollisionFromTrajectory(
+                        xy_response.resolvePos, end_y);
 
-            finalResolve = response2.resolvePos;
+            finalResolve = y_response.resolvePos;
         }
         else
         {
-            finalResolve = response1.resolvePos;
+            finalResolve = x_response.resolvePos;
         }
 
-        m_kinematicController.setPosition(finalResolve.x, finalResolve.y);
+        m_body.setPosition(finalResolve.x, finalResolve.y);
     }
 }

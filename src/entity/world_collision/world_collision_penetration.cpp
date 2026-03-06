@@ -1,12 +1,12 @@
-#include "world_collision_handler.hpp"
+#include "entity_world_collision_handler.hpp"
 
 #include "world/particle.hpp"
 #include "world/world.hpp"
 #include <array>
 
 // minimum translation vector
-WorldCollisionHandler::MTVPenetrationResponse
-WorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
+EntityWorldCollisionHandler::MTVPenetrationResponse
+EntityWorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
 {
     Vec2<int> size = m_collisionBox.getSize().toGrid();
     Vec2<int> topLeft = m_collisionBox.getA() + pos;
@@ -86,7 +86,8 @@ WorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
 }
 
 Vec2<float>
-WorldCollisionHandler::calculateWorldPenetration_averageDirection(Vec2<int> pos)
+EntityWorldCollisionHandler::calculateWorldPenetration_averageDirection(
+    Vec2<int> pos)
 {
     Vec2<int> size = m_collisionBox.getSize();
     Vec2<int> topLeft = pos + m_collisionBox.getA();

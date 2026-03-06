@@ -1,7 +1,7 @@
 #pragma once
 
 #include "camera/camera.hpp"
-#include "entity/player/player.hpp"
+#include "entities/player/player.hpp"
 #include "scene/scene.hpp"
 #include "utils/math/random.hpp"
 #include "world/world.hpp"
@@ -19,10 +19,10 @@ class TestScene : public Scene
     {
         if (start())
         {
-            
+
             m_player = std::make_unique<Player>(m_world);
         }
-        
+
         if (tick())
         {
             m_world.getParticleHandler().getDynamics().setUpdateInfo(
@@ -76,34 +76,33 @@ class TestScene : public Scene
 
             if (r_input.getInput("left")->isDown())
             {
-                m_player->getController().addForce(-10, 0);
+                m_player->getBody().addForce(-10, 0);
             }
             if (r_input.getInput("right")->isDown())
             {
-                m_player->getController().addForce(10, 0);
+                m_player->getBody().addForce(10, 0);
             }
             if (r_input.getInput("down")->isDown())
             {
-                m_player->getController().addForce(0, 5);
+                m_player->getBody().addForce(0, 5);
             }
             if (r_input.getInput("up")->isDown())
             {
-                m_player->getController().addForce(0, -5);
+                m_player->getBody().addForce(0, -5);
             }
             if (r_input.getInput("jump")->wasPressed())
             {
-                m_player->getController().jump();
+                m_player->getBody().jump();
             }
 
             m_world.getParticleHandler().update(r_time.getDT());
             m_player->update(r_time.getDT());
 
-            m_camera.setPosition(m_player->getController().getPosition().x,
-                                 m_player->getController().getPosition().y);
+            // m_camera.setPosition(m_player->getController().getPosition().x,
+            //                      m_player->getController().getPosition().y);
 
             m_world.render(r_viewport, m_camera);
             m_player->render(r_viewport, m_camera);
-
         }
 
         return SceneID::Testing;

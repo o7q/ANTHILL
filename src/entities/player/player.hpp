@@ -23,7 +23,7 @@ class Player : public Entity
 
     void render(Viewport &viewport, const Camera &camera) override
     {
-        Vec2<int> pos = m_kinematicController.getPosition().toGrid();
+        Vec2<int> pos = m_body.getPosition().toGrid();
 
         Vec2<int> a = m_worldCollisionHandler.getCollisionBox().getA() + pos;
         Vec2<int> b = m_worldCollisionHandler.getCollisionBox().getB() + pos;

@@ -2,19 +2,19 @@
 
 void Entity::handleMotion()
 {
-    if (m_worldCollisionHandler.againstSolidSurface(
-            m_kinematicController.getPosition(), BoundingBox::Side::Bottom))
+    if (m_worldCollisionHandler.againstSolidSurface(m_body.getPosition(),
+                                                    BoundingBox::Side::Bottom))
     {
-        m_kinematicController.haltMotionInDirection(0, 1);
+        m_body.haltMotionInDirection(0, 1);
     }
     else
     {
-        m_kinematicController.applyGravity();
+        m_body.applyGravity();
     }
 
-    if (m_worldCollisionHandler.againstSolidSurface(
-            m_kinematicController.getPosition(), BoundingBox::Side::Top))
+    if (m_worldCollisionHandler.againstSolidSurface(m_body.getPosition(),
+                                                    BoundingBox::Side::Top))
     {
-        m_kinematicController.haltMotionInDirection(0, -1);
+        m_body.haltMotionInDirection(0, -1);
     }
 }
