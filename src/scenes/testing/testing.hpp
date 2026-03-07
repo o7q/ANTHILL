@@ -1,7 +1,7 @@
 #pragma once
 
 #include "camera/camera.hpp"
-#include "entities/player/player.hpp"
+#include "player/player.hpp"
 #include "scene/scene.hpp"
 #include "utils/math/random.hpp"
 #include "world/world.hpp"

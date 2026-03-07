@@ -2,7 +2,7 @@
 
 #include "backend/viewport.hpp"
 #include "camera/camera.hpp"
-#include "entity/entity.hpp"
+#include "entity/base/entity.hpp"
 #include "types/bounding_box.hpp"
 #include "utils/render.hpp"
 
@@ -18,7 +18,7 @@ class Player : public Entity
     void update(float dt) override
     {
         handleMotion();
-        handleWorldInteractions(dt);
+        handleWorldInteraction(dt);
     }
 
     void render(Viewport &viewport, const Camera &camera) override

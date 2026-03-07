@@ -3,7 +3,7 @@
 #include "backend/viewport.hpp"
 #include "camera/camera.hpp"
 #include "collision/entity_collision_box.hpp"
-#include "movement/entity_movement.hpp"
+#include "entity/base/kinetic_body/entity_kinetic_body.hpp"
 #include "world/world.hpp"
 
 class Entity
@@ -15,21 +15,16 @@ class Entity
     virtual void update(float dt) {}
     virtual void render(Viewport &viewport, const Camera &camera) {}
 
-    EntityMovementController &getMovementController()
-    {
-        return m_movementController;
-    }
+    EntityKineticBody &getBody() { return m_body; }
 
   protected:
     void handleMotion();
 
-    void handleWorldInteractions(float dt);
-    void handleWorldInteractions_colliding(float dt);
-    void handleWorldInteractions_notColliding(float dt);
+    virtual void handleWorldInteraction(float dt);
 
   protected:
     World &r_world;
 
-    EntityMovementController m_movementController;
+    EntityKineticBody m_body;
     EntityCollisionBox m_collisionBox;
 };

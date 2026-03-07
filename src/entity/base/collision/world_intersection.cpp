@@ -5,8 +5,8 @@
 #include <array>
 
 // minimum translation vector
-EntityWorldCollisionHandler::MTVPenetrationResponse
-EntityWorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
+EntityWorldCollisionHandler::MTVIntersectionResponse
+EntityWorldCollisionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
 {
     Vec2<int> size = r_boundingBox.getSize().toGrid();
     Vec2<int> topLeft = r_boundingBox.getA() + pos;
@@ -15,7 +15,7 @@ EntityWorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
     // 3 [-] 1
     //    2
     bool collisionOccurred = false;
-    std::array<int, 4> penetration = {0, 0, 0, 0};
+    std::array<int, 4> intersection = {0, 0, 0, 0};
     for (int y = 0; y < size.y; ++y)
     {
         for (int x = 0; x < size.x; ++x)
@@ -32,21 +32,21 @@ EntityWorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
 
             if (p->isSolid() && !p->inMotion())
             {
-                penetration[0] = std::max(penetration[0], y + 1);
-                penetration[1] = std::max(penetration[1], size.x - x);
-                penetration[2] = std::max(penetration[2], size.y - y);
-                penetration[3] = std::max(penetration[3], x + 1);
+                intersection[0] = std::max(intersection[0], y + 1);
+                intersection[1] = std::max(intersection[1], size.x - x);
+                intersection[2] = std::max(intersection[2], size.y - y);
+                intersection[3] = std::max(intersection[3], x + 1);
 
                 collisionOccurred = true;
             }
         }
     }
 
-    MTVPenetrationResponse response;
-    response.top = penetration[0];
-    response.right = penetration[1];
-    response.bottom = penetration[2];
-    response.left = penetration[3];
+    MTVIntersectionResponse response;
+    response.top = intersection[0];
+    response.right = intersection[1];
+    response.bottom = intersection[2];
+    response.left = intersection[3];
     response.resolve = Vec2<int>(0, 0);
 
     if (!collisionOccurred)
@@ -59,9 +59,9 @@ EntityWorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
 
     for (int i = 0; i < 4; ++i)
     {
-        if (penetration[i] < lowest)
+        if (intersection[i] < lowest)
         {
-            lowest = penetration[i];
+            lowest = intersection[i];
             side = i;
         }
     }
@@ -86,7 +86,7 @@ EntityWorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
 }
 
 Vec2<float>
-EntityWorldCollisionHandler::calculateWorldPenetration_averageDirection(
+EntityWorldCollisionHandler::calculateWorldIntersection_averageDirection(
     Vec2<int> pos)
 {
     Vec2<unsigned int> size = r_boundingBox.getSize();

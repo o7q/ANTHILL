@@ -17,4 +17,16 @@ void Entity::handleMotion()
     {
         m_body.haltMotionInDirection(0, -1);
     }
+    
+    if (m_collisionBox.getWorldHandler().againstSolidSurface(
+            m_body.getPosition(), BoundingBox::Side::Left))
+    {
+        m_body.haltMotionInDirection(-1, 0);
+    }
+
+    if (m_collisionBox.getWorldHandler().againstSolidSurface(
+            m_body.getPosition(), BoundingBox::Side::Right))
+    {
+        m_body.haltMotionInDirection(1, 0);
+    }
 }
