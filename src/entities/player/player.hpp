@@ -11,7 +11,7 @@ class Player : public Entity
   public:
     Player(World &world) : Entity(world)
     {
-        m_worldCollisionHandler.getCollisionBox().setSize(20, 30);
+        m_collisionBox.getBoundingBox().setSize(20, 30);
     }
     ~Player() override {}
 
@@ -25,8 +25,8 @@ class Player : public Entity
     {
         Vec2<int> pos = m_body.getPosition().toGrid();
 
-        Vec2<int> a = m_worldCollisionHandler.getCollisionBox().getA() + pos;
-        Vec2<int> b = m_worldCollisionHandler.getCollisionBox().getB() + pos;
+        Vec2<int> a = m_collisionBox.getBoundingBox().getA() + pos;
+        Vec2<int> b = m_collisionBox.getBoundingBox().getB() + pos;
 
         a = camera.worldToViewport(a.x, a.y);
         b = camera.worldToViewport(b.x, b.y);

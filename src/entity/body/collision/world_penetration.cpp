@@ -1,4 +1,4 @@
-#include "entity_world_collision_handler.hpp"
+#include "entity_world_collision.hpp"
 
 #include "world/particle.hpp"
 #include "world/world.hpp"
@@ -8,8 +8,8 @@
 EntityWorldCollisionHandler::MTVPenetrationResponse
 EntityWorldCollisionHandler::calculateWorldPenetration_MTV(Vec2<int> pos)
 {
-    Vec2<int> size = m_collisionBox.getSize().toGrid();
-    Vec2<int> topLeft = m_collisionBox.getA() + pos;
+    Vec2<int> size = r_boundingBox.getSize().toGrid();
+    Vec2<int> topLeft = r_boundingBox.getA() + pos;
 
     //    0
     // 3 [-] 1
@@ -89,10 +89,10 @@ Vec2<float>
 EntityWorldCollisionHandler::calculateWorldPenetration_averageDirection(
     Vec2<int> pos)
 {
-    Vec2<int> size = m_collisionBox.getSize();
-    Vec2<int> topLeft = pos + m_collisionBox.getA();
+    Vec2<unsigned int> size = r_boundingBox.getSize();
+    Vec2<int> topLeft = pos + r_boundingBox.getA();
 
-    Vec2<int> sum(0, 0);
+    Vec2<int> sum = Vec2<int>(0, 0);
     int count = 0;
 
     for (int y = 0; y < size.y; ++y)

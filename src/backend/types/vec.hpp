@@ -111,17 +111,17 @@ template <typename T> struct Vec2
         return {static_cast<float>(x), static_cast<float>(y)};
     }
 
-    Vec2<float> toDouble() const
+    Vec2<double> toDouble() const
     {
         return {static_cast<double>(x), static_cast<double>(y)};
     }
 
-    Vec2<float> toInt() const
+    Vec2<int> toInt() const
     {
         return {static_cast<int>(x), static_cast<int>(y)};
     }
 
-    Vec2<float> toUnsignedInt() const
+    Vec2<unsigned int> toUnsignedInt() const
     {
         return {static_cast<unsigned int>(x), static_cast<unsigned int>(y)};
     }

@@ -4,10 +4,10 @@
 #include "types/physics/semi_implicit_euler.hpp"
 #include "utils/math/numbers.hpp"
 
-class EntityDynamicBody
+class EntityMovementController
 {
   public:
-    EntityDynamicBody() {}
+    EntityMovementController() {}
 
     void jump() { m_body.setVelocityY(-m_jump_power); }
 

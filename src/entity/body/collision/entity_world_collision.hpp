@@ -13,7 +13,8 @@ class EntityWorldCollisionHandler
         bool collided = false;
     };
 
-    struct MTVPenetrationResponse {
+    struct MTVPenetrationResponse
+    {
         int left = 0;
         int right = 0;
         int top = 0;
@@ -23,7 +24,10 @@ class EntityWorldCollisionHandler
     };
 
   public:
-    EntityWorldCollisionHandler(World &world) : r_world(world) {}
+    EntityWorldCollisionHandler(World &world, BoundingBox &bb)
+        : r_world(world), r_boundingBox(bb)
+    {
+    }
 
     MTVPenetrationResponse calculateWorldPenetration_MTV(Vec2<int> pos);
     Vec2<float> calculateWorldPenetration_averageDirection(Vec2<int> pos);
@@ -34,9 +38,7 @@ class EntityWorldCollisionHandler
     bool againstSolidSurface(Vec2<int> pos, BoundingBox::Side side);
     bool againstSolidCorner(Vec2<int> pos, BoundingBox::Corner corner);
 
-    BoundingBox &getCollisionBox() { return m_collisionBox; }
-
   private:
     World &r_world;
-    BoundingBox m_collisionBox;
+    BoundingBox &r_boundingBox;
 };

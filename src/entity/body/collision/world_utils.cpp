@@ -1,4 +1,4 @@
-#include "entity_world_collision_handler.hpp"
+#include "entity_world_collision.hpp"
 
 #include "types/bounding_box.hpp"
 #include "world/particle.hpp"
@@ -6,8 +6,8 @@
 bool EntityWorldCollisionHandler::againstSolidSurface(Vec2<int> pos,
                                                       BoundingBox::Side side)
 {
-    Vec2<int> size = m_collisionBox.getSize();
-    Vec2<int> topLeft = pos + m_collisionBox.getA();
+    Vec2<unsigned int> size = r_boundingBox.getSize();
+    Vec2<int> topLeft = pos + r_boundingBox.getA();
 
     bool collided = false;
 
@@ -59,8 +59,8 @@ bool EntityWorldCollisionHandler::againstSolidSurface(Vec2<int> pos,
 bool EntityWorldCollisionHandler::againstSolidCorner(Vec2<int> pos,
                                                      BoundingBox::Corner corner)
 {
-    Vec2<int> size = m_collisionBox.getSize();
-    Vec2<int> topLeft = pos + m_collisionBox.getA();
+    Vec2<unsigned int> size = r_boundingBox.getSize();
+    Vec2<int> topLeft = pos + r_boundingBox.getA();
 
     bool collided = false;
     switch (corner)

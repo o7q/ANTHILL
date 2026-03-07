@@ -2,20 +2,23 @@
 
 #include "backend/viewport.hpp"
 #include "camera/camera.hpp"
-#include "dynamic_body/entity_dynamic_body.hpp"
+#include "collision/entity_collision_box.hpp"
+#include "movement/entity_movement.hpp"
 #include "world/world.hpp"
-#include "world_collision/entity_world_collision_handler.hpp"
 
 class Entity
 {
   public:
-    Entity(World &world) : r_world(world), m_worldCollisionHandler(world) {}
+    Entity(World &world) : r_world(world), m_collisionBox(world) {}
     virtual ~Entity() {}
 
     virtual void update(float dt) {}
     virtual void render(Viewport &viewport, const Camera &camera) {}
 
-    EntityDynamicBody &getBody() { return m_body; }
+    EntityMovementController &getMovementController()
+    {
+        return m_movementController;
+    }
 
   protected:
     void handleMotion();
@@ -27,6 +30,6 @@ class Entity
   protected:
     World &r_world;
 
-    EntityDynamicBody m_body;
-    EntityWorldCollisionHandler m_worldCollisionHandler;
+    EntityMovementController m_movementController;
+    EntityCollisionBox m_collisionBox;
 };

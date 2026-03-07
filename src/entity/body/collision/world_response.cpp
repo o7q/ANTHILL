@@ -1,5 +1,4 @@
-#include "entity_world_collision_handler.hpp"
-
+#include "entity_world_collision.hpp"
 #include "utils/math/line.hpp"
 
 EntityWorldCollisionHandler::TrajectoryCollisionResponse
@@ -11,8 +10,8 @@ EntityWorldCollisionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
 
     auto check = [&](int x, int y)
     {
-        Vec2<int> a = m_collisionBox.getA() + Vec2<int>(x, y);
-        Vec2<int> b = m_collisionBox.getB() + Vec2<int>(x, y);
+        Vec2<int> a = r_boundingBox.getA() + Vec2<int>(x, y);
+        Vec2<int> b = r_boundingBox.getB() + Vec2<int>(x, y);
 
         bool collidedThisIteration = false;
         auto query = [&](Particle *p)

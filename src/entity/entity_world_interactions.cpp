@@ -1,12 +1,13 @@
 #include "entity.hpp"
 
-#include "world_collision/entity_world_collision_handler.hpp"
+#include "collision_box/entity_collision_box.hpp"
+#include "collision_box/world/entity_world_collision.hpp"
 
 void Entity::handleWorldInteractions(float dt)
 {
     Vec2<int> pos = m_body.getPosition();
-    Vec2<int> a = m_worldCollisionHandler.getCollisionBox().getA() + pos;
-    Vec2<int> b = m_worldCollisionHandler.getCollisionBox().getB() + pos;
+    Vec2<int> a = m_collisionBox.getBoundingBox().getA() + pos;
+    Vec2<int> b = m_collisionBox.getBoundingBox().getB() + pos;
 
     int solidCount = 0;
     auto query = [&](Particle *p)
@@ -35,8 +36,8 @@ void Entity::handleWorldInteractions_colliding(float dt)
     m_body.setMovementDamping(0.9f, 0.9f);
 
     Vec2<int> pos = m_body.getPosition();
-    if (m_worldCollisionHandler.againstSolidSurface(pos,
-                                                    BoundingBox::Side::Bottom))
+    if (m_collisionBox.getWorldHandler().againstSolidSurface(
+            pos, BoundingBox::Side::Bottom))
     {
         m_body.haltMotionInDirection(0, 1);
     }
@@ -51,9 +52,9 @@ void Entity::handleWorldInteractions_notColliding(float dt)
     Vec2<int> pos = m_body.getPosition();
     Vec2<float> vel = m_body.getVelocity();
 
-    bool blockedLeft = m_worldCollisionHandler.againstSolidSurface(
+    bool blockedLeft = m_collisionBox.getWorldHandler().againstSolidSurface(
         pos, BoundingBox::Side::Left);
-    bool blockedRight = m_worldCollisionHandler.againstSolidSurface(
+    bool blockedRight = m_collisionBox.getWorldHandler().againstSolidSurface(
         pos, BoundingBox::Side::Right);
 
     if ((blockedLeft && vel.x < 0) || (blockedRight && vel.x > 0))
@@ -63,17 +64,19 @@ void Entity::handleWorldInteractions_notColliding(float dt)
             Vec2<int> steppedPos = {pos.x, pos.y - step};
 
             bool stillBlockedRight =
-                blockedRight && m_worldCollisionHandler.againstSolidSurface(
-                                    steppedPos, BoundingBox::Side::Right);
+                blockedRight &&
+                m_collisionBox.getWorldHandler().againstSolidSurface(
+                    steppedPos, BoundingBox::Side::Right);
             bool stillBlockedLeft =
-                blockedLeft && m_worldCollisionHandler.againstSolidSurface(
-                                   steppedPos, BoundingBox::Side::Left);
+                blockedLeft &&
+                m_collisionBox.getWorldHandler().againstSolidSurface(
+                    steppedPos, BoundingBox::Side::Left);
 
             if (!stillBlockedRight && !stillBlockedLeft)
             {
                 EntityWorldCollisionHandler::TrajectoryCollisionResponse test =
-                    m_worldCollisionHandler.calculateCollisionFromTrajectory(
-                        pos, steppedPos);
+                    m_collisionBox.getWorldHandler()
+                        .calculateCollisionFromTrajectory(pos, steppedPos);
                 if (test.collided)
                 {
                     break;
@@ -92,7 +95,8 @@ void Entity::handleWorldInteractions_notColliding(float dt)
     Vec2<int> end = m_body.getPosition();
 
     EntityWorldCollisionHandler::TrajectoryCollisionResponse xy_response =
-        m_worldCollisionHandler.calculateCollisionFromTrajectory(start, end);
+        m_collisionBox.getWorldHandler().calculateCollisionFromTrajectory(start,
+                                                                          end);
 
     // all axis
     if (xy_response.collided)
@@ -102,7 +106,7 @@ void Entity::handleWorldInteractions_notColliding(float dt)
         // horizontal axis
         Vec2<int> end_x = {end.x, xy_response.resolvePos.y};
         EntityWorldCollisionHandler::TrajectoryCollisionResponse x_response =
-            m_worldCollisionHandler.calculateCollisionFromTrajectory(
+            m_collisionBox.getWorldHandler().calculateCollisionFromTrajectory(
                 xy_response.resolvePos, end_x);
 
         if (xy_response.resolvePos == x_response.resolvePos)
@@ -110,9 +114,9 @@ void Entity::handleWorldInteractions_notColliding(float dt)
             // vertical axis
             Vec2<int> end_y = {xy_response.resolvePos.x, end.y};
             EntityWorldCollisionHandler::TrajectoryCollisionResponse
-                y_response =
-                    m_worldCollisionHandler.calculateCollisionFromTrajectory(
-                        xy_response.resolvePos, end_y);
+                y_response = m_collisionBox.getWorldHandler()
+                                 .calculateCollisionFromTrajectory(
+                                     xy_response.resolvePos, end_y);
 
             finalResolve = y_response.resolvePos;
         }
