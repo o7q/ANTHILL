@@ -1,26 +1,13 @@
 #include "world.hpp"
 
+void World::update(float dt)
+{
+    m_particleHandler.update(dt);
+    m_entityHandler.update(dt);
+}
+
 void World::render(Viewport &viewport, const Camera &camera)
 {
-    Vec2<unsigned int> viewport_size = viewport.getSize();
-
-    for (unsigned int y = 0; y < viewport_size.y; ++y)
-    {
-        for (unsigned int x = 0; x < viewport_size.x; ++x)
-        {
-            Vec2<int> pp = camera.viewportToWorld(x, y);
-
-            if (Particle *p = m_particleHandler.getParticles().get(pp.x, pp.y))
-            {
-                Color pixel = p->getColor();
-
-                if (p->isAir())
-                {
-                    pixel = Color(50, 0, 0);
-                }
-
-                viewport.setPixel(x, y, pixel);
-            }
-        }
-    }
+    m_particleHandler.render(viewport, camera);
+    m_entityHandler.render(viewport, camera);
 }

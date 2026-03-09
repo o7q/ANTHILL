@@ -3,7 +3,7 @@
 #include "types/physics/verlet.hpp"
 #include "utils/math/line.hpp"
 #include "utils/math/physics.hpp"
-#include "world/particle.hpp"
+#include "world/particle/particle.hpp"
 #include <algorithm>
 
 void PDynamicsHandler::update(float dt)

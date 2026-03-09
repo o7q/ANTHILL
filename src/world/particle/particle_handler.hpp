@@ -1,8 +1,10 @@
 #pragma once
 
-#include "world/particle.hpp"
-#include "world/particle_dynamics/p_dynamics_handler.hpp"
-#include "world/sparse_chunk_map.hpp"
+#include "backend/viewport.hpp"
+#include "camera/camera.hpp"
+#include "world/particle/particle.hpp"
+#include "world/particle/particle_dynamics/p_dynamics_handler.hpp"
+#include "world/particle/sparse_chunk_map.hpp"
 
 class ParticleHandler
 {
@@ -30,6 +32,31 @@ class ParticleHandler
                 if (query(p))
                 {
                     return;
+                }
+            }
+        }
+    }
+
+    void render(Viewport &viewport, const Camera &camera)
+    {
+        Vec2<unsigned int> viewport_size = viewport.getSize();
+
+        for (unsigned int y = 0; y < viewport_size.y; ++y)
+        {
+            for (unsigned int x = 0; x < viewport_size.x; ++x)
+            {
+                Vec2<int> pp = camera.viewportToWorld(x, y);
+
+                if (Particle *p = m_particles.get(pp.x, pp.y))
+                {
+                    Color pixel = p->getColor();
+
+                    if (p->isAir())
+                    {
+                        pixel = Color(50, 0, 0);
+                    }
+
+                    viewport.setPixel(x, y, pixel);
                 }
             }
         }

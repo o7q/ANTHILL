@@ -1,7 +1,7 @@
 #pragma once
 
-#include "world/particle.hpp"
-#include "world/sparse_chunk_map.hpp"
+#include "world/particle/particle.hpp"
+#include "world/particle/sparse_chunk_map.hpp"
 
 class PDynamicsHandler
 {

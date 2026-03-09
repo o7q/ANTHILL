@@ -1,10 +1,12 @@
 #pragma once
 
 #include "camera/camera.hpp"
+#include "entity/ai/ai_entity.hpp"
 #include "player/player.hpp"
 #include "scene/scene.hpp"
 #include "utils/math/random.hpp"
 #include "world/world.hpp"
+#include <memory>
 #include <optional>
 
 class TestScene : public Scene
@@ -19,8 +21,14 @@ class TestScene : public Scene
     {
         if (start())
         {
+            m_world.getEntityHandler().addPlayer(std::make_unique<Player>(
+                m_world.getParticleHandler(), r_input));
 
-            m_player = std::make_unique<Player>(m_world);
+            std::unique_ptr<AIEntity> test =
+                std::make_unique<AIEntity>(m_world.getParticleHandler(), m_world.getEntityHandler().getCurrentPlayer());
+            // test->getBody().setGravity(0.1f);
+
+            m_world.getEntityHandler().addEntity(std::move(test));
         }
 
         if (tick())
@@ -45,6 +53,7 @@ class TestScene : public Scene
                 stone.setPhysicsType(Particle::PhysicsType::None);
                 stone.setMatterType(Particle::MatterType::Solid);
                 stone.getVerlet().setMass(200000000);
+                stone.setImmovable(true);
 
                 m_world.getParticleHandler().draw(worldPos.x, worldPos.y, stone,
                                                   5);
@@ -73,36 +82,15 @@ class TestScene : public Scene
                 m_world.getParticleHandler().draw(worldPos.x, worldPos.y, sand,
                                                   4);
             }
+            m_world.update(r_time.getDT());
 
-            if (r_input.getInput("left")->isDown())
+            if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
             {
-                m_player->getBody().addForce(-10, 0);
+                m_camera.setPosition(player->getBody().getPosition().x,
+                                     player->getBody().getPosition().y);
             }
-            if (r_input.getInput("right")->isDown())
-            {
-                m_player->getBody().addForce(10, 0);
-            }
-            if (r_input.getInput("down")->isDown())
-            {
-                m_player->getBody().addForce(0, 5);
-            }
-            if (r_input.getInput("up")->isDown())
-            {
-                m_player->getBody().addForce(0, -5);
-            }
-            if (r_input.getInput("jump")->wasPressed())
-            {
-                m_player->getBody().jump();
-            }
-
-            m_world.getParticleHandler().update(r_time.getDT());
-            m_player->update(r_time.getDT());
-
-            // m_camera.setPosition(m_player->getController().getPosition().x,
-            //                      m_player->getController().getPosition().y);
 
             m_world.render(r_viewport, m_camera);
-            m_player->render(r_viewport, m_camera);
         }
 
         return SceneID::Testing;
@@ -111,5 +99,4 @@ class TestScene : public Scene
   private:
     World m_world;
     Camera m_camera;
-    std::unique_ptr<Player> m_player;
 };

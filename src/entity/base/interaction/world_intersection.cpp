@@ -1,12 +1,10 @@
-#include "entity_world_collision.hpp"
+#include "entity_world_interaction.hpp"
 
-#include "world/particle.hpp"
-#include "world/world.hpp"
 #include <array>
 
 // minimum translation vector
-EntityWorldCollisionHandler::MTVIntersectionResponse
-EntityWorldCollisionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
+EntityWorldInteractionHandler::MTVIntersectionResponse
+EntityWorldInteractionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
 {
     Vec2<int> size = r_boundingBox.getSize().toGrid();
     Vec2<int> topLeft = r_boundingBox.getA() + pos;
@@ -22,15 +20,15 @@ EntityWorldCollisionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
         {
             Vec2<int> worldPos = topLeft + Vec2<int>(x, y);
 
-            Particle *p = r_world.getParticleHandler().getParticles().get(
-                worldPos.x, worldPos.y);
+            Particle *p =
+                r_particles.getParticles().get(worldPos.x, worldPos.y);
 
             if (!p)
             {
                 continue;
             }
 
-            if (p->isSolid() && !p->inMotion())
+            if (p->isSolid() && !p->isMoving())
             {
                 intersection[0] = std::max(intersection[0], y + 1);
                 intersection[1] = std::max(intersection[1], size.x - x);
@@ -82,11 +80,13 @@ EntityWorldCollisionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
         break;
     }
 
+    response.resolveDistance = lowest;
+
     return response;
 }
 
 Vec2<float>
-EntityWorldCollisionHandler::calculateWorldIntersection_averageDirection(
+EntityWorldInteractionHandler::calculateWorldIntersection_averageDirection(
     Vec2<int> pos)
 {
     Vec2<unsigned int> size = r_boundingBox.getSize();
@@ -95,14 +95,14 @@ EntityWorldCollisionHandler::calculateWorldIntersection_averageDirection(
     Vec2<int> sum = Vec2<int>(0, 0);
     int count = 0;
 
-    for (int y = 0; y < size.y; ++y)
+    for (unsigned int y = 0; y < size.y; ++y)
     {
-        for (int x = 0; x < size.x; ++x)
+        for (unsigned int x = 0; x < size.x; ++x)
         {
             Vec2<int> worldPos = topLeft + Vec2<int>(x, y);
 
-            Particle *p = r_world.getParticleHandler().getParticles().get(
-                worldPos.x, worldPos.y);
+            Particle *p =
+                r_particles.getParticles().get(worldPos.x, worldPos.y);
             if (!p)
             {
                 continue;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "backend/utils/math/numbers.hpp"
 #include <cmath>
 
 template <typename T> struct Vec2
@@ -124,5 +125,11 @@ template <typename T> struct Vec2
     Vec2<unsigned int> toUnsignedInt() const
     {
         return {static_cast<unsigned int>(x), static_cast<unsigned int>(y)};
+    }
+
+    Vec2 clamp(const Vec2 &min, const Vec2 &max)
+    {
+        return {Backend::Utils::Math::Numbers::clamp(x, min.x, max.x),
+                Backend::Utils::Math::Numbers::clamp(y, min.y, max.y)};
     }
 };
