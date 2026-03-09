@@ -1,21 +1,18 @@
 #pragma once
 
-#include "camera/camera.hpp"
 #include "entity/ai/ai_entity.hpp"
 #include "player/player.hpp"
 #include "scene/scene.hpp"
 #include "utils/math/random.hpp"
 #include "world/world.hpp"
+#include <iostream>
 #include <memory>
 #include <optional>
 
 class TestScene : public Scene
 {
   public:
-    TestScene(Window &window)
-        : Scene(window), m_camera(window.getViewport().getSize())
-    {
-    }
+    TestScene(Window &window) : Scene(window) {}
 
     std::optional<SceneID> update() override
     {
@@ -24,8 +21,9 @@ class TestScene : public Scene
             m_world.getEntityHandler().addPlayer(std::make_unique<Player>(
                 m_world.getParticleHandler(), r_input));
 
-            std::unique_ptr<AIEntity> test =
-                std::make_unique<AIEntity>(m_world.getParticleHandler(), m_world.getEntityHandler().getCurrentPlayer());
+            std::unique_ptr<AIEntity> test = std::make_unique<AIEntity>(
+                m_world.getParticleHandler(),
+                m_world.getEntityHandler().getCurrentPlayer());
             // test->getBody().setGravity(0.1f);
 
             m_world.getEntityHandler().addEntity(std::move(test));
@@ -33,14 +31,12 @@ class TestScene : public Scene
 
         if (tick())
         {
-            m_world.getParticleHandler().getDynamics().setUpdateInfo(
-                m_camera.getPosition().x, m_camera.getPosition().y, 10);
             Vec2<float> mousePos = r_input.getMousePosition();
             Vec2<int> viewportMousePos =
                 r_viewport.windowToViewportPosition(mousePos);
 
-            Vec2<int> worldPos = m_camera.viewportToWorld(viewportMousePos.x,
-                                                          viewportMousePos.y);
+            Vec2<int> worldPos = m_world.getCamera().viewportToWorld(
+                viewportMousePos.x, viewportMousePos.y, r_viewport);
 
             if (r_window.getInputHandler()
                     .getInput("secondaryAction1")
@@ -86,11 +82,18 @@ class TestScene : public Scene
 
             if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
             {
-                m_camera.setPosition(player->getBody().getPosition().x,
-                                     player->getBody().getPosition().y);
+                m_world.getCamera().setGoal(player->getBody().getPosition().x,
+                                            player->getBody().getPosition().y);
+
+                m_world.getCamera().update(r_time.getDT());
             }
 
-            m_world.render(r_viewport, m_camera);
+            m_world.render(r_viewport);
+
+            // Vec2<int> start = {1, 1};
+            // Vec2<int> end = {200, 200};
+
+            std::cout << r_time.getFPS() << std::endl;
         }
 
         return SceneID::Testing;
@@ -98,5 +101,4 @@ class TestScene : public Scene
 
   private:
     World m_world;
-    Camera m_camera;
 };

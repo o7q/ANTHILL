@@ -1,11 +1,11 @@
 #pragma once
 
 #include "backend/viewport.hpp"
-#include "camera/camera.hpp"
 #include "entities/metadata.hpp"
 #include "entity/base/kinetic_body/entity_kinetic_body.hpp"
 #include "interaction/entity_interaction_box.hpp"
 #include "utils/render.hpp"
+#include "world/camera/camera.hpp"
 #include "world/particle/particle_handler.hpp"
 
 class Entity
@@ -26,8 +26,8 @@ class Entity
         Vec2<int> a = m_interactionBox.getBoundingBox().getA() + pos;
         Vec2<int> b = m_interactionBox.getBoundingBox().getB() + pos;
 
-        a = camera.worldToViewport(a.x, a.y);
-        b = camera.worldToViewport(b.x, b.y);
+        a = camera.worldToViewport(a.x, a.y, viewport);
+        b = camera.worldToViewport(b.x, b.y, viewport);
 
         Utils::Render::drawRectOutline(viewport, a, b, Color(245, 66, 120));
     }

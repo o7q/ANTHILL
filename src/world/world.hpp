@@ -13,12 +13,16 @@ class World
     World &operator=(const World &other) = delete;
 
     void update(float dt);
-    void render(Viewport &viewport, const Camera &camera);
+    void render(Viewport &viewport);
 
     ParticleHandler &getParticleHandler() { return m_particleHandler; }
     EntityHandler &getEntityHandler() { return m_entityHandler; }
 
+    Camera &getCamera() { return m_camera; }
+
   private:
     ParticleHandler m_particleHandler;
     EntityHandler m_entityHandler;
+
+    Camera m_camera;
 };

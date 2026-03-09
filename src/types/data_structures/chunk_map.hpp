@@ -2,42 +2,12 @@
 
 #include "backend/types/vec.hpp"
 #include "backend/utils/index.hpp"
-#include <functional>
+#include "types/data_structures/chunk_index.hpp"
 #include <unordered_map>
 #include <vector>
 
-template <typename T> class SparseChunkMap
+template <typename T> class ChunkMap
 {
-  public:
-    struct ChunkIndex
-    {
-        int x = 0, y = 0;
-
-        ChunkIndex(int x, int y) : x(x), y(y) {}
-
-        bool operator==(const ChunkIndex &other) const
-        {
-            return x == other.x && y == other.y;
-        }
-    };
-
-    // https://stackoverflow.com/a/20602159
-    struct ChunkIndexHash
-    {
-      public:
-        std::size_t operator()(const ChunkIndex &p) const
-        {
-            return hash_combine(std::hash<int>()(p.x), std::hash<int>()(p.y));
-        }
-
-      private:
-        // https://stackoverflow.com/a/27952689
-        size_t hash_combine(size_t lhs, size_t rhs) const
-        {
-            return lhs ^ (rhs + 0x9e3779b9 + (lhs << 6) + (lhs >> 2));
-        }
-    };
-
   public:
     class Chunk
     {
@@ -64,12 +34,12 @@ template <typename T> class SparseChunkMap
     };
 
   public:
-    SparseChunkMap(unsigned int chunkWidth, unsigned int chunkHeight)
+    ChunkMap(unsigned int chunkWidth, unsigned int chunkHeight)
     {
         m_chunkSize = Vec2<unsigned int>(chunkWidth, chunkHeight);
     }
-    SparseChunkMap(const SparseChunkMap &other) = delete;
-    SparseChunkMap &operator=(const SparseChunkMap &other) = delete;
+    ChunkMap(const ChunkMap &other) = delete;
+    ChunkMap &operator=(const ChunkMap &other) = delete;
 
     void set(int x, int y, T v)
     {

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "types/data_structures/chunk_map.hpp"
 #include "world/particle/particle.hpp"
-#include "world/particle/sparse_chunk_map.hpp"
 
 class PDynamicsHandler
 {
@@ -13,10 +13,7 @@ class PDynamicsHandler
     };
 
   public:
-    PDynamicsHandler(SparseChunkMap<Particle> &particles)
-        : r_particles(particles)
-    {
-    }
+    PDynamicsHandler(ChunkMap<Particle> &particles) : r_particles(particles) {}
 
     void update(float dt);
 
@@ -46,7 +43,7 @@ class PDynamicsHandler
     void update_smoke_particle(ParticleObject po, float dt);
 
   private:
-    SparseChunkMap<Particle> &r_particles;
+    ChunkMap<Particle> &r_particles;
     bool m_updateSwapID = 0;
 
     float m_gravity = 0.1f;

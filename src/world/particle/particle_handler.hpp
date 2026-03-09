@@ -1,10 +1,10 @@
 #pragma once
 
 #include "backend/viewport.hpp"
-#include "camera/camera.hpp"
+#include "types/data_structures/chunk_map.hpp"
+#include "world/camera/camera.hpp"
 #include "world/particle/particle.hpp"
 #include "world/particle/particle_dynamics/p_dynamics_handler.hpp"
-#include "world/particle/sparse_chunk_map.hpp"
 
 class ParticleHandler
 {
@@ -45,7 +45,7 @@ class ParticleHandler
         {
             for (unsigned int x = 0; x < viewport_size.x; ++x)
             {
-                Vec2<int> pp = camera.viewportToWorld(x, y);
+                Vec2<int> pp = camera.viewportToWorld(x, y, viewport);
 
                 if (Particle *p = m_particles.get(pp.x, pp.y))
                 {
@@ -62,10 +62,10 @@ class ParticleHandler
         }
     }
 
-    SparseChunkMap<Particle> &getParticles() { return m_particles; }
+    ChunkMap<Particle> &getParticles() { return m_particles; }
     PDynamicsHandler &getDynamics() { return m_pDynamicsHandler; }
 
   private:
-    SparseChunkMap<Particle> m_particles;
+    ChunkMap<Particle> m_particles;
     PDynamicsHandler m_pDynamicsHandler;
 };

@@ -2,12 +2,15 @@
 
 void World::update(float dt)
 {
+    Vec2<int> cameraPos = m_camera.getPosition();
+    m_particleHandler.getDynamics().setUpdateInfo(cameraPos.x, cameraPos.y, 12);
+
     m_particleHandler.update(dt);
     m_entityHandler.update(dt);
 }
 
-void World::render(Viewport &viewport, const Camera &camera)
+void World::render(Viewport &viewport)
 {
-    m_particleHandler.render(viewport, camera);
-    m_entityHandler.render(viewport, camera);
+    m_particleHandler.render(viewport, m_camera);
+    m_entityHandler.render(viewport, m_camera);
 }
