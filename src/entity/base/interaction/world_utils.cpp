@@ -143,8 +143,9 @@ EntityWorldInteractionHandler::calculateStepResponse(Vec2<int> pos,
             if (!stillBlockedRight && !stillBlockedLeft)
             {
                 EntityWorldInteractionHandler::TrajectoryCollisionResponse
-                    test = calculateCollisionFromTrajectory(pos, steppedPos);
-                if (test.collided)
+                    collisionCheck =
+                        calculateCollisionFromTrajectory(pos, steppedPos);
+                if (collisionCheck.collided)
                 {
                     break;
                 }

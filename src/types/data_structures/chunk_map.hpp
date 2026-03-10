@@ -2,7 +2,7 @@
 
 #include "backend/types/vec.hpp"
 #include "backend/utils/index.hpp"
-#include "types/data_structures/chunk_index.hpp"
+#include "types/data_structures/index_2d.hpp"
 #include <unordered_map>
 #include <vector>
 
@@ -44,7 +44,7 @@ template <typename T> class ChunkMap
     void set(int x, int y, T v)
     {
         Vec2<int> chunk_index = get_chunk_index(x, y);
-        ChunkIndex chunk_key(chunk_index.x, chunk_index.y);
+        Index2D chunk_key(chunk_index.x, chunk_index.y);
 
         auto [it, _] =
             m_chunks.try_emplace(chunk_key, m_chunkSize.x, m_chunkSize.y);
@@ -56,7 +56,7 @@ template <typename T> class ChunkMap
     T *get(int x, int y)
     {
         Vec2<int> chunk_index = get_chunk_index(x, y);
-        ChunkIndex chunk_key(chunk_index.x, chunk_index.y);
+        Index2D chunk_key(chunk_index.x, chunk_index.y);
 
         auto it = m_chunks.find(chunk_key);
         if (it == m_chunks.end())
@@ -66,6 +66,15 @@ template <typename T> class ChunkMap
 
         Vec2<unsigned int> inner_index = get_inner_index(x, y, chunk_index);
         return it->second.get(inner_index.x, inner_index.y, m_chunkSize.x);
+    }
+
+    bool hasValue(int x, int y)
+    {
+        Vec2<int> chunk_index = get_chunk_index(x, y);
+        Index2D chunk_key(chunk_index.x, chunk_index.y);
+
+        auto it = m_chunks.find(chunk_key);
+        return it != m_chunks.end();
     }
 
     void swap(int x1, int y1, int x2, int y2)
@@ -93,8 +102,7 @@ template <typename T> class ChunkMap
         set(x2, y2, v);
     }
 
-    const std::unordered_map<ChunkIndex, Chunk, ChunkIndexHash> &
-    getChunks() const
+    const std::unordered_map<Index2D, Chunk, Index2DHash> &getChunks() const
     {
         return m_chunks;
     }
@@ -126,5 +134,5 @@ template <typename T> class ChunkMap
   private:
     Vec2<unsigned int> m_chunkSize;
 
-    std::unordered_map<ChunkIndex, Chunk, ChunkIndexHash> m_chunks;
+    std::unordered_map<Index2D, Chunk, Index2DHash> m_chunks;
 };

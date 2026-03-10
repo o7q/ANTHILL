@@ -11,8 +11,8 @@ class Camera
 
     void update(float dt)
     {
-        m_position.x += (m_goal.x - m_position.x) * m_goalSpeed;
-        m_position.y += (m_goal.y - m_position.y) * m_goalSpeed;
+        m_position.x += (m_goal.x - m_position.x) * m_goalSpeed * dt;
+        m_position.y += (m_goal.y - m_position.y) * m_goalSpeed * dt;
     }
 
     void setGoal(float x, float y)
@@ -32,7 +32,7 @@ class Camera
             .toGrid();
     }
 
-    Vec2<int> worldToViewport(float x, float y, const Viewport &viewport) const
+    Vec2<int> worldToViewport(int x, int y, const Viewport &viewport) const
     {
         return (Vec2<float>(x, y) - m_position +
                 viewport.getSize().toFloat() / 2.0f)

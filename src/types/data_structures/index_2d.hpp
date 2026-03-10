@@ -2,23 +2,23 @@
 
 #include <functional>
 
-struct ChunkIndex
+struct Index2D
 {
     int x = 0, y = 0;
 
-    ChunkIndex(int x, int y) : x(x), y(y) {}
+    Index2D(int x, int y) : x(x), y(y) {}
 
-    bool operator==(const ChunkIndex &other) const
+    bool operator==(const Index2D &other) const
     {
         return x == other.x && y == other.y;
     }
 };
 
 // https://stackoverflow.com/a/20602159
-struct ChunkIndexHash
+struct Index2DHash
 {
   public:
-    std::size_t operator()(const ChunkIndex &p) const
+    std::size_t operator()(const Index2D &p) const
     {
         return hash_combine(std::hash<int>()(p.x), std::hash<int>()(p.y));
     }
