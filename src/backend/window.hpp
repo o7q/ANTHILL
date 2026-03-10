@@ -6,6 +6,7 @@
 #include "types/vec.hpp"
 #include "viewport.hpp"
 #include <SDL3/SDL_video.h>
+#include <memory>
 
 class Window
 {

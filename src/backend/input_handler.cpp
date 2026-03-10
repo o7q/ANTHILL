@@ -97,7 +97,7 @@ void InputHandler::addInput(const std::string &id,
 
 const std::optional<Input> InputHandler::getInput(const std::string &id)
 {
-    if (m_inputs.contains(id))
+    if (m_inputs.count(id))
     {
         return m_inputs.at(id);
     }

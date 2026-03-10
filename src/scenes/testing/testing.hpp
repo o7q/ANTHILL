@@ -3,7 +3,8 @@
 #include "entity/ai/ai_entity.hpp"
 #include "player/player.hpp"
 #include "scene/scene.hpp"
-#include "scenes/testing/a_star.hpp"
+#include "utils/a_star.hpp"
+#include "utils/a_star_world_pathfind.hpp"
 #include "utils/math/random.hpp"
 #include "world/world.hpp"
 #include <iostream>
@@ -19,15 +20,15 @@ class TestScene : public Scene
     {
         if (start())
         {
-            m_world.getEntityHandler().addPlayer(std::make_unique<Player>(
-                m_world.getParticleHandler(), r_input));
+            // m_world.getEntityHandler().addPlayer(std::make_unique<Player>(
+            //     m_world.getParticleHandler(), r_input));
 
-            std::unique_ptr<AIEntity> test = std::make_unique<AIEntity>(
-                m_world.getParticleHandler(),
-                m_world.getEntityHandler().getCurrentPlayer());
+            // std::unique_ptr<AIEntity> test = std::make_unique<AIEntity>(
+            //     m_world.getParticleHandler(),
+            //     m_world.getEntityHandler().getCurrentPlayer());
             // test->getBody().setGravity(0.1f);
 
-            m_world.getEntityHandler().addEntity(std::move(test));
+            // m_world.getEntityHandler().addEntity(std::move(test));
         }
 
         if (tick())
@@ -81,24 +82,29 @@ class TestScene : public Scene
             }
             m_world.update(r_time.getDT());
 
-            // if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
+            // if (Player *player =
+            // m_world.getEntityHandler().getCurrentPlayer())
             // {
-            //     // m_world.getCamera().setGoal(player->getBody().getPosition().x,
-            //     //                             player->getBody().getPosition().y);
+            //     //
+            //     m_world.getCamera().setGoal(player->getBody().getPosition().x,
+            //     // player->getBody().getPosition().y);
 
             //     // m_world.getCamera().update(r_time.getDT());
             // }
 
             m_world.render(r_viewport);
 
-            Vec2<int> start = {-100, 0};
-            Vec2<int> end = {100, 100};
+            Vec2<int> start = {-150, -150};
+            Vec2<int> end = {150, 100};
 
-            std::vector<Vec2<int>> path = findPath(start, end, m_world.getParticleHandler().getParticles());
+            AStarWorld astar(m_world.getParticleHandler().getParticles());
 
-            for (Vec2<int>& point : path)
+            std::vector<Vec2<int>> path = astar.findPath(start, end);
+
+            for (Vec2<int> &point : path)
             {
-                Vec2<int> vpos = m_world.getCamera().worldToViewport(point.x, point.y, r_viewport);
+                Vec2<int> vpos = m_world.getCamera().worldToViewport(
+                    point.x, point.y, r_viewport);
 
                 r_viewport.setPixel(vpos.x, vpos.y, Color(0, 255, 0));
             }
@@ -113,12 +119,8 @@ class TestScene : public Scene
                 Color(255, 0, 0));
 
             r_viewport.setPixel(
-                m_world.getCamera()
-                    .worldToViewport(end.x, end.y, r_viewport)
-                    .x,
-                m_world.getCamera()
-                    .worldToViewport(end.x, end.y, r_viewport)
-                    .y,
+                m_world.getCamera().worldToViewport(end.x, end.y, r_viewport).x,
+                m_world.getCamera().worldToViewport(end.x, end.y, r_viewport).y,
                 Color(255, 0, 0));
         }
 

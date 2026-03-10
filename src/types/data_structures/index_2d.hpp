@@ -6,6 +6,7 @@ struct Index2D
 {
     int x = 0, y = 0;
 
+    Index2D() = default;
     Index2D(int x, int y) : x(x), y(y) {}
 
     bool operator==(const Index2D &other) const

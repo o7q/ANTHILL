@@ -1,6 +1,7 @@
 #include "time_handler.hpp"
 
 #include <SDL3/SDL_timer.h>
+#include <algorithm>
 #include <chrono>
 
 void TimeHandler::frameStart()
