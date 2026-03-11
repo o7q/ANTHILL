@@ -1,6 +1,6 @@
 #include "viewport.hpp"
 
-#include "types/vec.hpp"
+#include "utils/vec.hpp"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <cstddef>

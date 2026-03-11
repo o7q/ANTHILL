@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/types/vec.hpp"
-#include "types/physics/body.hpp"
+#include "backend/utils/vec.hpp"
+#include "utils/physics/body.hpp"
 
 class VerletBody : public PhysicsBody
 {

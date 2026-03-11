@@ -2,26 +2,28 @@
 
 #include "backend/input_handler.hpp"
 #include "backend/viewport.hpp"
-#include "entity/living/living_entity.hpp"
-#include "types/bounding_box.hpp"
-#include "utils/render.hpp"
+#include "entity/base/entity.hpp"
+#include "entity/mixins/directional.hpp"
+#include "entity/modules/jump/entity_jump_module.hpp"
+#include "utils/bounding_box.hpp"
 #include "world/camera/camera.hpp"
 #include "world/particle/particle_handler.hpp"
 
-class Player : public LivingEntity
+class Player : public Entity, public IDirectional
 {
   public:
     Player(ParticleHandler &particles, InputHandler &input)
-        : LivingEntity(particles), r_input(input)
+        : Entity(particles), r_input(input)
     {
-        m_interactionBox.getBoundingBox().setSize(20, 30);
+        m_interactionBox.getBoundingBox().setSize(10, 25);
         m_body.setGravity(0.4f);
 
         m_metadata.type = EntityType::Player;
     }
     virtual ~Player() = default;
 
-    void update(float dt) override
+    virtual void
+    update(float dt, const std::vector<const Entity *> &nearbyEntities) override
     {
         if (r_input.getInput("left")->isDown())
         {
@@ -42,25 +44,28 @@ class Player : public LivingEntity
 
         if (r_input.getInput("jump")->wasPressed())
         {
-            jump();
+            m_jumpModule.requestJump();
         }
 
-        updateInternal(dt);
+        bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
+            m_body.getPosition(), BoundingBox::Side::Bottom);
+        m_jumpModule.update(dt, onGround);
+
+        if (m_jumpModule.canJump())
+        {
+            m_body.setVelocityY(-m_jumpModule.getJumpHeight());
+        }
+
+        updateMotion(dt);
+        updateHealth();
     }
 
     void render(Viewport &viewport, const Camera &camera) override
     {
-        Vec2<int> pos = m_body.getPosition().toGrid();
-
-        Vec2<int> a = m_interactionBox.getBoundingBox().getA() + pos;
-        Vec2<int> b = m_interactionBox.getBoundingBox().getB() + pos;
-
-        a = camera.worldToViewport(a.x, a.y, viewport);
-        b = camera.worldToViewport(b.x, b.y, viewport);
-
-        Utils::Render::drawRectOutline(viewport, a, b, Color(0, 255, 100));
+        renderDebug_boundingBox(viewport, camera, Color(79, 255, 94));
     }
 
   private:
     InputHandler &r_input;
+    JumpModule m_jumpModule;
 };

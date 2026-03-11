@@ -1,13 +1,13 @@
 #pragma once
 
 #include "a_star.hpp"
-#include "types/data_structures/chunk_map.hpp"
+#include "utils/data_structures/chunk_map.hpp"
 #include "world/particle/particle.hpp"
 
-class AStarWorld : public AStarSystem
+class AStarWorldSolver : public AStarSolver
 {
   public:
-    AStarWorld(ChunkMap<Particle> &particles) : r_particles(particles) {}
+    AStarWorldSolver(ChunkMap<Particle> &particles) : r_particles(particles) {}
     bool isNeighborWalkable(int x, int y) override
     {
         if (Particle *p = r_particles.get(x, y))

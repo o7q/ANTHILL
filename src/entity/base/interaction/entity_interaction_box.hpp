@@ -1,7 +1,7 @@
 #pragma once
 
 #include "entity_world_interaction.hpp"
-#include "types/bounding_box.hpp"
+#include "utils/bounding_box.hpp"
 
 class EntityInteractionBox
 {

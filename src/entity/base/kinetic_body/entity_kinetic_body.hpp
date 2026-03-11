@@ -1,8 +1,7 @@
 #pragma once
 
-#include "backend/types/vec.hpp"
-#include "types/physics/semi_implicit_euler.hpp"
-#include "utils/math/numbers.hpp"
+#include "backend/utils/vec.hpp"
+#include "utils/physics/semi_implicit_euler.hpp"
 
 class EntityKineticBody
 {
@@ -13,21 +12,7 @@ class EntityKineticBody
     void applyGravity() { m_body.addForce(0.0f, m_gravity); }
     void setGravity(float gravity) { m_gravity = gravity; }
 
-    void update(float dt)
-    {
-        m_lastPos = getPosition();
-
-        if (std::abs(m_body.getVelocity().x) < 0.01f)
-        {
-            m_body.setVelocityX(0);
-        }
-        if (std::abs(m_body.getVelocity().y) < 0.01f)
-        {
-            m_body.setVelocityY(0);
-        }
-
-        m_body.integrate(dt);
-    }
+    void update(float dt);
 
     void setPosition(int x, int y)
     {
@@ -48,34 +33,7 @@ class EntityKineticBody
 
     void addForce(float x, float y) { m_body.addForce(x, y); }
 
-    void haltMotionInDirection(int dirX, int dirY)
-    {
-        Vec2<float> force = m_body.getForce();
-        if (Utils::Math::Numbers::sign(force.x) ==
-            Utils::Math::Numbers::sign(dirX))
-        {
-            force.x = 0.0f;
-        }
-        if (Utils::Math::Numbers::sign(force.y) ==
-            Utils::Math::Numbers::sign(dirY))
-        {
-            force.y = 0.0f;
-        }
-        m_body.setForce(force.x, force.y);
-
-        Vec2<float> vel = m_body.getVelocity();
-        if (Utils::Math::Numbers::sign(vel.x) ==
-            Utils::Math::Numbers::sign(dirX))
-        {
-            vel.x = 0.0f;
-        }
-        if (Utils::Math::Numbers::sign(vel.y) ==
-            Utils::Math::Numbers::sign(dirY))
-        {
-            vel.y = 0.0f;
-        }
-        m_body.setVelocity(vel.x, vel.y);
-    }
+    void haltMotionInDirection(int dirX, int dirY);
 
   protected:
     SemiImplicitEulerBody m_body;

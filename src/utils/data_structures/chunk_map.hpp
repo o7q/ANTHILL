@@ -1,8 +1,8 @@
 #pragma once
 
-#include "backend/types/vec.hpp"
 #include "backend/utils/index.hpp"
-#include "types/data_structures/index_2d.hpp"
+#include "backend/utils/vec.hpp"
+#include "utils/data_structures/index_2d.hpp"
 #include <unordered_map>
 #include <vector>
 

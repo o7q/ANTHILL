@@ -2,9 +2,8 @@
 
 #include "backend/viewport.hpp"
 #include "entities/metadata.hpp"
+#include "entity/base/interaction/entity_interaction_box.hpp"
 #include "entity/base/kinetic_body/entity_kinetic_body.hpp"
-#include "interaction/entity_interaction_box.hpp"
-#include "utils/render.hpp"
 #include "world/camera/camera.hpp"
 #include "world/particle/particle_handler.hpp"
 
@@ -18,32 +17,30 @@ class Entity
     }
     virtual ~Entity() = default;
 
-    virtual void update(float dt) { updateInternal(dt); }
-    virtual void render(Viewport &viewport, const Camera &camera)
-    {
-        Vec2<int> pos = m_body.getPosition().toGrid();
+    virtual void update(float dt,
+                        const std::vector<const Entity *> &nearbyEntities) = 0;
+    virtual void render(Viewport &viewport, const Camera &camera) = 0;
 
-        Vec2<int> a = m_interactionBox.getBoundingBox().getA() + pos;
-        Vec2<int> b = m_interactionBox.getBoundingBox().getB() + pos;
-
-        a = camera.worldToViewport(a.x, a.y, viewport);
-        b = camera.worldToViewport(b.x, b.y, viewport);
-
-        Utils::Render::drawRectOutline(viewport, a, b, Color(245, 66, 120));
-    }
-
-    EntityKineticBody &getBody() { return m_body; }
-
-    void kill() { m_dead = true; }
-    bool isDead() const { return m_dead; }
-
-    Entity *getParent() { return m_parent; }
-
+    const Entity *const getParent() const { return m_parent; }
+    const EntityKineticBody &getBody() const { return m_body; }
     EntityMetadata getMetadata() const { return m_metadata; }
 
+    void kill() { m_dead = true; }
+    void damage(float amount) { m_health -= amount; }
+    bool isDead() const { return m_dead; }
+
   protected:
-    virtual void updateInternal(float dt) { updateMotion(dt); }
     virtual void updateMotion(float dt);
+    virtual void updateHealth()
+    {
+        if (m_health <= 0.0f)
+        {
+            kill();
+        }
+    }
+
+    void renderDebug_boundingBox(Viewport &viewport, const Camera &camera,
+                                 Color color = Color(43, 255, 223));
 
   private:
     void applyExternalMotion();
@@ -62,5 +59,6 @@ class Entity
   private:
     Entity *m_parent = nullptr;
 
+    float m_health = 100.0f;
     bool m_dead = false;
 };

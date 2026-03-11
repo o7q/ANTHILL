@@ -1,5 +1,5 @@
 
-#include "types/physics/semi_implicit_euler.hpp"
+#include "semi_implicit_euler.hpp"
 
 void SemiImplicitEulerBody::integrate(float dt)
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "backend/viewport.hpp"
-#include "types/data_structures/chunk_map.hpp"
+#include "utils/data_structures/chunk_map.hpp"
 #include "world/camera/camera.hpp"
 #include "world/particle/particle.hpp"
 #include "world/particle/particle_dynamics/p_dynamics_handler.hpp"

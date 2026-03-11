@@ -1,6 +1,6 @@
 #include "entity_world_interaction.hpp"
 
-#include "types/bounding_box.hpp"
+#include "utils/bounding_box.hpp"
 
 bool EntityWorldInteractionHandler::againstSolidSurface(Vec2<int> pos,
                                                         BoundingBox::Side side)

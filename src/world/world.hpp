@@ -1,7 +1,7 @@
 #pragma once
 
 #include "backend/viewport.hpp"
-#include "camera/camera.hpp"
+#include "world/camera/camera.hpp"
 #include "world/entity/entity_handler.hpp"
 #include "world/particle/particle_handler.hpp"
 

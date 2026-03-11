@@ -1,14 +1,8 @@
-#include "living_entity.hpp"
+#include "entity_jump_module.hpp"
 
-void LivingEntity::updateJumpPhysics(float dt)
+void JumpModule::update(float dt, bool onGround)
 {
-    bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
-        m_body.getPosition(), BoundingBox::Side::Bottom);
-
-    if (onGround)
-    {
-        m_jumped = false;
-    }
+    m_canJump = false;
 
     if (!onGround)
     {
@@ -21,18 +15,16 @@ void LivingEntity::updateJumpPhysics(float dt)
         m_jumpBufferTimer = 0.0f;
     }
 
-    if (onGround && m_jumpRequested && !m_jumped)
+    if (onGround && m_jumpRequested)
     {
-        m_body.setVelocityY(-m_jumpHeight);
-        m_jumped = true;
+        m_canJump = true;
     }
 
     if (m_jumpBufferTimerEnable)
     {
-        if (onGround && m_jumpBufferTimer < m_jumpBufferDuration && !m_jumped)
+        if (onGround && m_jumpBufferTimer < m_jumpBufferDuration)
         {
-            m_body.setVelocityY(-m_jumpHeight);
-            m_jumped = true;
+            m_canJump = true;
             m_jumpBufferTimerEnable = false;
             m_jumpBufferTimer = 0.0f;
         }
@@ -45,10 +37,9 @@ void LivingEntity::updateJumpPhysics(float dt)
     if (m_jumpCoyoteTimerEnable)
     {
         if (!onGround && m_jumpCoyoteTimer < m_jumpCoyoteDuration &&
-            m_jumpRequested && !m_jumped)
+            m_jumpRequested)
         {
-            m_body.setVelocityY(-m_jumpHeight);
-            m_jumped = true;
+            m_canJump = true;
             m_jumpCoyoteTimerEnable = false;
             m_jumpCoyoteTimer = 0.0f;
         }

@@ -1,6 +1,6 @@
 #include "verlet.hpp"
 
-#include "backend/types/vec.hpp"
+#include "backend/utils/vec.hpp"
 #include <cmath>
 
 void VerletBody::integrate(float dt)

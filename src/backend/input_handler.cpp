@@ -1,7 +1,7 @@
 #include "input_handler.hpp"
 
-#include "types/vec.hpp"
 #include "utils/data.hpp"
+#include "utils/vec.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keycode.h>
 #include <SDL3/SDL_mouse.h>

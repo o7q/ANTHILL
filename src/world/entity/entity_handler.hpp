@@ -14,14 +14,24 @@ class EntityHandler
 
     void update(float dt)
     {
-        for (std::unique_ptr<Entity> &entity : m_entities)
+        for (auto it = m_entities.begin(); it != m_entities.end();)
         {
-            if (!entity)
+            std::vector<const Entity *> nearby;
+
+            for (auto &entity : m_entities)
             {
-                continue;
+                nearby.push_back(entity.get());
             }
 
-            entity->update(dt);
+            (*it)->update(dt, nearby);
+            if ((*it)->isDead())
+            {
+                it = m_entities.erase(it);
+            }
+            else
+            {
+                it++;
+            }
         }
     }
 

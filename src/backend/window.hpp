@@ -3,7 +3,7 @@
 #include "event_handler.hpp"
 #include "input_handler.hpp"
 #include "time_handler.hpp"
-#include "types/vec.hpp"
+#include "utils/vec.hpp"
 #include "viewport.hpp"
 #include <SDL3/SDL_video.h>
 #include <memory>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "backend/event_handler.hpp"
-#include "backend/types/vec.hpp"
+#include "backend/utils/vec.hpp"
 #include "backend/window.hpp"
 #include "scene/scene.hpp"
 #include "scenes/testing/testing.hpp"
@@ -24,7 +24,7 @@ class Game
     {
         init_binds();
 
-        m_window.getTimeHandler().setTargetFramerate(144);
+        m_window.getTimeHandler().setTargetFramerate(1000);
 
         currentScene = std::make_unique<TestScene>(m_window);
 

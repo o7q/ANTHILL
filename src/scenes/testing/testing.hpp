@@ -1,10 +1,8 @@
 #pragma once
 
-#include "entity/ai/ai_entity.hpp"
+#include "entities/test.hpp"
 #include "player/player.hpp"
 #include "scene/scene.hpp"
-#include "utils/a_star.hpp"
-#include "utils/a_star_world_pathfind.hpp"
 #include "utils/math/random.hpp"
 #include "world/world.hpp"
 #include <iostream>
@@ -20,15 +18,31 @@ class TestScene : public Scene
     {
         if (start())
         {
-            // m_world.getEntityHandler().addPlayer(std::make_unique<Player>(
-            //     m_world.getParticleHandler(), r_input));
+            m_world.getEntityHandler().addPlayer(std::make_unique<Player>(
+                m_world.getParticleHandler(), r_input));
 
-            // std::unique_ptr<AIEntity> test = std::make_unique<AIEntity>(
-            //     m_world.getParticleHandler(),
-            //     m_world.getEntityHandler().getCurrentPlayer());
-            // test->getBody().setGravity(0.1f);
+            std::unique_ptr<TestEntity> test =
+                std::make_unique<TestEntity>(m_world.getParticleHandler());
 
-            // m_world.getEntityHandler().addEntity(std::move(test));
+            m_world.getEntityHandler().addEntity(std::move(test));
+
+            Particle stone;
+            stone.setColor(Color(200, 205, 200));
+            stone.setPhysicsType(Particle::PhysicsType::None);
+            stone.setMatterType(Particle::MatterType::Solid);
+            stone.getVerlet().setMass(200000000);
+            stone.setImmovable(true);
+
+            m_world.getParticleHandler().draw(0, 300, stone, 150);
+
+            for (int i = 0; i < 1000; ++i)
+            {
+                int sign = Utils::Math::Random::weakRandInt(0, 2) == 0 ? -1 : 1;
+
+                m_world.getParticleHandler().draw(
+                    sign * Utils::Math::Random::weakRandInt(50, 1000),
+                    Utils::Math::Random::weakRandInt(300, 400), stone, 30);
+            }
         }
 
         if (tick())
@@ -54,7 +68,7 @@ class TestScene : public Scene
                 stone.setImmovable(true);
 
                 m_world.getParticleHandler().draw(worldPos.x, worldPos.y, stone,
-                                                  5);
+                                                  20);
             }
             if (r_window.getInputHandler()
                     .getInput("secondaryAction2")
@@ -81,48 +95,20 @@ class TestScene : public Scene
                                                   4);
             }
             m_world.update(r_time.getDT());
-
-            // if (Player *player =
-            // m_world.getEntityHandler().getCurrentPlayer())
-            // {
-            //     //
-            //     m_world.getCamera().setGoal(player->getBody().getPosition().x,
-            //     // player->getBody().getPosition().y);
-
-            //     // m_world.getCamera().update(r_time.getDT());
-            // }
-
-            m_world.render(r_viewport);
-
-            Vec2<int> start = {-150, -150};
-            Vec2<int> end = {150, 100};
-
-            AStarWorld astar(m_world.getParticleHandler().getParticles());
-
-            std::vector<Vec2<int>> path = astar.findPath(start, end);
-
-            for (Vec2<int> &point : path)
+            if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
             {
-                Vec2<int> vpos = m_world.getCamera().worldToViewport(
-                    point.x, point.y, r_viewport);
+                // m_world.getCamera().setPosition(player->getBody().getPosition().x,
+                //                             player->getBody().getPosition().y);
+                m_world.getCamera().setGoal(player->getBody().getPosition().x,
+                                            player->getBody().getPosition().y);
 
-                r_viewport.setPixel(vpos.x, vpos.y, Color(0, 255, 0));
+                m_world.getCamera().update(r_time.getDT());
             }
 
-            r_viewport.setPixel(
-                m_world.getCamera()
-                    .worldToViewport(start.x, start.y, r_viewport)
-                    .x,
-                m_world.getCamera()
-                    .worldToViewport(start.x, start.y, r_viewport)
-                    .y,
-                Color(255, 0, 0));
-
-            r_viewport.setPixel(
-                m_world.getCamera().worldToViewport(end.x, end.y, r_viewport).x,
-                m_world.getCamera().worldToViewport(end.x, end.y, r_viewport).y,
-                Color(255, 0, 0));
+            m_world.render(r_viewport);
         }
+
+        // std::cout << r_time.getFPS() << std::endl;
 
         return SceneID::Testing;
     }

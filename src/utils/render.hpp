@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/types/color.hpp"
-#include "backend/types/vec.hpp"
+#include "backend/utils/color.hpp"
+#include "backend/utils/vec.hpp"
 #include "backend/viewport.hpp"
 #include "utils/math/line.hpp"
 

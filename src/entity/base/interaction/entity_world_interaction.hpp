@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/types/vec.hpp"
-#include "types/bounding_box.hpp"
+#include "backend/utils/vec.hpp"
+#include "utils/bounding_box.hpp"
 #include "world/particle/particle_handler.hpp"
 
 class EntityWorldInteractionHandler

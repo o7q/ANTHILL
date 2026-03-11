@@ -1,6 +1,6 @@
 #pragma once
 
-#include "backend/types/vec.hpp"
+#include "backend/utils/vec.hpp"
 
 class BoundingBox
 {
@@ -36,6 +36,11 @@ class BoundingBox
     Vec2<int> getB() const { return m_b; }
 
     int getArea() const { return m_area; }
+
+    bool pointInside(int x, int y)
+    {
+        return x >= m_a.x && x <= m_b.x && y >= m_a.y && y <= m_b.y;
+    }
 
   private:
     Vec2<unsigned int> m_size = Vec2<unsigned int>(0, 0);

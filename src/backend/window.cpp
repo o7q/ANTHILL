@@ -1,6 +1,6 @@
 #include "window.hpp"
 
-#include "types/vec.hpp"
+#include "utils/vec.hpp"
 #include "viewport.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_init.h>
@@ -16,10 +16,7 @@ Window::Window(Vec2<unsigned int> windowSize, Vec2<unsigned int> viewportSize)
         std::make_unique<Viewport>(m_window, viewportSize.x, viewportSize.y);
 }
 
-Window::~Window()
-{
-    SDL_DestroyWindow(m_window);
-}
+Window::~Window() { SDL_DestroyWindow(m_window); }
 
 void Window::frameStart()
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "backend/types/vec.hpp"
+#include "backend/utils/vec.hpp"
 
 class PhysicsBody
 {

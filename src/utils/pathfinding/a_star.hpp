@@ -1,11 +1,11 @@
 #pragma once
 
-#include "backend/types/vec.hpp"
-#include "types/data_structures/index_2d.hpp"
+#include "backend/utils/vec.hpp"
+#include "utils/data_structures/index_2d.hpp"
 #include <cstdlib>
 #include <vector>
 
-class AStarSystem
+class AStarSolver
 {
   private:
     struct AStarNode
@@ -34,8 +34,8 @@ class AStarSystem
     };
 
   public:
-    AStarSystem() = default;
-    virtual ~AStarSystem() = default;
+    AStarSolver() = default;
+    virtual ~AStarSolver() = default;
 
     std::vector<Vec2<int>> findPath(Vec2<int> start, Vec2<int> end);
 

@@ -1,8 +1,8 @@
 #include "p_dynamics_handler.hpp"
 
-#include "types/physics/verlet.hpp"
 #include "utils/math/line.hpp"
 #include "utils/math/physics.hpp"
+#include "utils/physics/verlet.hpp"
 #include "world/particle/particle.hpp"
 #include <algorithm>
 
@@ -37,7 +37,8 @@ void PDynamicsHandler::update(float dt)
 
                 if (Particle *p = r_particles.get(px, py))
                 {
-                    if (p->getUpdateSwapID() == m_updateSwapID || p->isAir())
+                    if (p->getUpdateSwapID() == m_updateSwapID || p->isAir() ||
+                        p->isImmovable())
                     {
                         continue;
                     }

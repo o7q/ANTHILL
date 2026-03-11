@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types/data_structures/chunk_map.hpp"
+#include "utils/data_structures/chunk_map.hpp"
 #include "world/particle/particle.hpp"
 
 class PDynamicsHandler
