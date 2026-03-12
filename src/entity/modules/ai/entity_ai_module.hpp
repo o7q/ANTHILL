@@ -6,39 +6,29 @@
 #include "utils/math/line.hpp"
 #include "utils/pathfinding/a_star_world.hpp"
 #include "world/camera/camera.hpp"
+#include <iostream>
 #include <vector>
 
 class AIModule
 {
   public:
-    enum class GoalType
+    AIModule(ChunkMap<Particle> &particles) : astar(particles)
     {
-        Attack,
-        Follow
-    };
+        astar.setMaxIterations(100000);
+    }
 
-    struct Goal
-    {
-        GoalType type;
-        int actRadius = 40;
-        Vec2<int> pos;
-    };
-
-  public:
-    AIModule() {}
-
-    void update(Vec2<int> headPos, float dt,
-                ChunkMap<Particle> &particles)
+    void update(Vec2<int> headPos, float dt, ChunkMap<Particle> &particles)
     {
         if (++m_pathRecalculateTimer >= m_pathRecalculateInterval && m_goalSet)
         {
-            AStarWorldSolver astar(particles);
-    
-            astar.setMaxIterations(100000);
-            m_pathCheckpoints.clear();
-            m_pathCheckpoints = astar.findPath(headPos, m_goal);
-
+            astar.reset(headPos, m_goal);
             m_pathRecalculateTimer = 0.0f;
+        }
+        if (!astar.endReached())
+        {
+            astar.iteratePath(1000);
+            m_pathCheckpoints.clear();
+            m_pathCheckpoints = astar.generatePath();
         }
     }
 
@@ -75,7 +65,7 @@ class AIModule
         }
     }
 
-    void setGoal(Vec2<int> goalPos)
+    void setGoal(Vec2<int> headPos, Vec2<int> goalPos)
     {
         m_goal = goalPos;
         m_goalSet = true;
@@ -83,8 +73,8 @@ class AIModule
 
     void clearGoal()
     {
-        // m_pathCheckpoints.clear();
-        // m_goalSet = false;
+        m_pathCheckpoints.clear();
+        m_goalSet = false;
     }
 
     void renderDebug(Viewport &viewport, const Camera &camera,
@@ -109,6 +99,8 @@ class AIModule
     void setSightRayAmount(int amount) { m_sightRayAmount = amount; }
 
   private:
+    AStarWorldSolver astar;
+
     std::vector<Vec2<int>> m_sightPoints;
 
     std::vector<Vec2<int>> m_pathCheckpoints;
@@ -116,7 +108,7 @@ class AIModule
     bool m_goalSet = false;
     Vec2<int> m_goal = {0, 0};
 
-    float m_pathRecalculateInterval = 10.0f;
+    float m_pathRecalculateInterval = 2000.0f;
     float m_pathRecalculateTimer = 0.0f;
 
     float m_detectionRadius = 0.0f;

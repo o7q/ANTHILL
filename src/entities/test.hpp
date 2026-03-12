@@ -11,7 +11,8 @@
 class TestEntity : public Entity, public IDirectional
 {
   public:
-    TestEntity(ParticleHandler &particles) : Entity(particles)
+    TestEntity(ParticleHandler &particles)
+        : Entity(particles), m_aiModule(particles.getParticles())
     {
         m_interactionBox.getBoundingBox().setSize(15, 20);
         m_body.setGravity(0.4f);
@@ -51,7 +52,7 @@ class TestEntity : public Entity, public IDirectional
                 }
 
                 Vec2<int> targetPos = target->getBody().getPosition();
-                m_aiModule.setGoal(targetPos);
+                m_aiModule.setGoal(pos, targetPos);
                 // if (target->getInteractionBox().pointInside(targetPos, x, y))
                 // {
                 //     return true;
