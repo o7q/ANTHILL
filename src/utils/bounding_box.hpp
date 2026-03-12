@@ -34,10 +34,9 @@ class BoundingBox
     Vec2<unsigned int> getSize() const { return m_size; }
     Vec2<int> getA() const { return m_a; }
     Vec2<int> getB() const { return m_b; }
-
     int getArea() const { return m_area; }
 
-    bool pointInside(int x, int y)
+    bool pointInside(int x, int y) const
     {
         return x >= m_a.x && x <= m_b.x && y >= m_a.y && y <= m_b.y;
     }

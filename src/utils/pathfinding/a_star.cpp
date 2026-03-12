@@ -11,17 +11,19 @@ std::vector<Vec2<int>> AStarSolver::findPath(Vec2<int> start, Vec2<int> end)
 {
     std::priority_queue<AStarNode, std::vector<AStarNode>, AStarNodeCompare>
         toSearch;
-
-    std::unordered_map<Index2D, AStarNode, Index2DHash> open;
-    std::unordered_map<Index2D, AStarNode, Index2DHash> closed;
+    std::unordered_map<Index2D, AStarNode, Index2DHash> nodes;
 
     AStarNode startNode;
+    startNode.index = Index2D(start.x, start.y);
     startNode.hCost = dist({start.x, start.y}, {end.x, end.y});
     startNode.calculateFCost();
-    startNode.index = Index2D(start.x, start.y);
+    startNode.state = State::Open;
 
+    static constexpr int nx[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
+    static constexpr int ny[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
+
+    nodes[startNode.index] = startNode;
     toSearch.push(startNode);
-    open[startNode.index] = startNode;
 
     int iterations = 0;
     while (!toSearch.empty())
@@ -33,52 +35,57 @@ std::vector<Vec2<int>> AStarSolver::findPath(Vec2<int> start, Vec2<int> end)
 
         AStarNode current = toSearch.top();
         toSearch.pop();
-        open.erase(current.index);
 
-        if (closed.count(current.index))
+        if (nodes[current.index].state == State::Closed)
         {
             continue;
         }
 
-        closed[current.index] = current;
+        nodes[current.index].state = State::Closed;
 
         if (current.index == Index2D(end.x, end.y))
         {
             std::vector<Vec2<int>> path;
-            AStarNode *node = &closed[current.index];
+            AStarNode *node = &nodes[current.index];
             while (node->hasParent)
             {
                 path.push_back({node->index.x, node->index.y});
-                node = &closed[node->parentIndex];
+                node = &nodes[node->parentIndex];
             }
             path.push_back({node->index.x, node->index.y});
             std::reverse(path.begin(), path.end());
+
             return path;
         }
 
-        for (Index2D neighborIndex : get_neighbors(current.index))
+        for (int i = 0; i < 8; ++i)
         {
-            if (closed.count(neighborIndex))
+            Index2D neighborIndex = {current.index.x + nx[i],
+                                     current.index.y + ny[i]};
+
+            if (!isNeighborWalkable(neighborIndex.x, neighborIndex.y))
             {
                 continue;
             }
 
+            AStarNode &neighbor = nodes[neighborIndex];
             float costToNeightbor =
                 current.gCost + dist(current.index, neighborIndex);
 
-            if (!open.count(neighborIndex) ||
-                costToNeightbor < open[neighborIndex].gCost)
+            if (neighbor.state == State::Unvisited ||
+                costToNeightbor < neighbor.gCost)
             {
                 AStarNode next;
                 next.index = neighborIndex;
+                next.parentIndex = current.index;
+                next.hasParent = true;
+                next.state = State::Open;
                 next.gCost = costToNeightbor;
                 next.hCost = dist(neighborIndex, {end.x, end.y});
                 next.calculateFCost();
-                next.parentIndex = current.index;
-                next.hasParent = true;
 
+                nodes[neighborIndex] = next;
                 toSearch.push(next);
-                open[neighborIndex] = next;
             }
         }
 
@@ -88,32 +95,13 @@ std::vector<Vec2<int>> AStarSolver::findPath(Vec2<int> start, Vec2<int> end)
     return std::vector<Vec2<int>>();
 }
 
-// manhattan distance
+// https://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html#diagonal-distance
 float AStarSolver::dist(Index2D start, Index2D end)
 {
     int dx = std::abs(end.x - start.x);
     int dy = std::abs(end.y - start.y);
-    float D = 1.0f;
-    return D * (dx + dy);
-}
-
-std::vector<Index2D> AStarSolver::get_neighbors(Index2D index)
-{
-    std::vector<Index2D> neighbors;
-    for (int y = index.y - 1; y <= index.y + 1; ++y)
-    {
-        for (int x = index.x - 1; x <= index.x + 1; ++x)
-        {
-            if (x == index.x && y == index.y)
-            {
-                continue;
-            }
-
-            if (isNeighborWalkable(x, y))
-            {
-                neighbors.push_back({x, y});
-            }
-        }
-    }
-    return neighbors;
+    // float D = 1.0f;
+    // float D2 = 1.4142f; // sqrt(2)
+    // return D * (dx + dy) + (D2 - 2.0f * D) * std::min(dx, dy);
+    return (dx + dy);
 }

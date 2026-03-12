@@ -1,8 +1,10 @@
 #pragma once
 
 #include "backend/viewport.hpp"
+#include "utils/data_structures/chunk_map.hpp"
 #include "utils/math/angle.hpp"
 #include "utils/math/line.hpp"
+#include "utils/pathfinding/a_star_world.hpp"
 #include "world/camera/camera.hpp"
 #include <vector>
 
@@ -25,7 +27,20 @@ class AIModule
   public:
     AIModule() {}
 
-    void update(Vec2<int> headPos, float angle) {}
+    void update(Vec2<int> headPos, float dt,
+                ChunkMap<Particle> &particles)
+    {
+        if (++m_pathRecalculateTimer >= m_pathRecalculateInterval && m_goalSet)
+        {
+            AStarWorldSolver astar(particles);
+    
+            astar.setMaxIterations(100000);
+            m_pathCheckpoints.clear();
+            m_pathCheckpoints = astar.findPath(headPos, m_goal);
+
+            m_pathRecalculateTimer = 0.0f;
+        }
+    }
 
     template <typename CheckFunction>
     void checkForInterestsInSight(Vec2<int> headPos, float headAngle,
@@ -60,10 +75,16 @@ class AIModule
         }
     }
 
-    void setGoal(int x, int y)
+    void setGoal(Vec2<int> goalPos)
     {
-        m_goal.x = x;
-        m_goal.y = y;
+        m_goal = goalPos;
+        m_goalSet = true;
+    }
+
+    void clearGoal()
+    {
+        // m_pathCheckpoints.clear();
+        // m_goalSet = false;
     }
 
     void renderDebug(Viewport &viewport, const Camera &camera,
@@ -73,6 +94,12 @@ class AIModule
         {
             Vec2<int> ppos = camera.worldToViewport(p.x, p.y, viewport);
             viewport.setPixel(ppos.x, ppos.y, Color(255, 252, 99));
+        }
+
+        for (Vec2<int> p : m_pathCheckpoints)
+        {
+            Vec2<int> ppos = camera.worldToViewport(p.x, p.y, viewport);
+            viewport.setPixel(ppos.x, ppos.y, Color(255, 105, 245));
         }
     }
 
@@ -84,10 +111,16 @@ class AIModule
   private:
     std::vector<Vec2<int>> m_sightPoints;
 
+    std::vector<Vec2<int>> m_pathCheckpoints;
+
+    bool m_goalSet = false;
+    Vec2<int> m_goal = {0, 0};
+
+    float m_pathRecalculateInterval = 10.0f;
+    float m_pathRecalculateTimer = 0.0f;
+
     float m_detectionRadius = 0.0f;
     float m_sightAngle = 0.0f;
     int m_sightDistance = 0;
     int m_sightRayAmount = 7;
-
-    Vec2<int> m_goal = {0, 0};
 };

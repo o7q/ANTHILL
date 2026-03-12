@@ -14,6 +14,11 @@ class EntityInteractionBox
     EntityWorldInteractionHandler &getWorldHandler() { return m_worldHandler; }
     BoundingBox &getBoundingBox() { return m_boundingBox; }
 
+    bool pointInside(Vec2<int> pos, int x, int y) const
+    {
+        return m_boundingBox.pointInside(x - pos.x, y - pos.y);
+    }
+
   private:
     BoundingBox m_boundingBox;
     EntityWorldInteractionHandler m_worldHandler;

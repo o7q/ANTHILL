@@ -23,6 +23,10 @@ class Entity
 
     const Entity *const getParent() const { return m_parent; }
     const EntityKineticBody &getBody() const { return m_body; }
+    const EntityInteractionBox &getInteractionBox() const
+    {
+        return m_interactionBox;
+    }
     EntityMetadata getMetadata() const { return m_metadata; }
 
     void kill() { m_dead = true; }

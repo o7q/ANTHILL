@@ -8,11 +8,20 @@
 class AStarSolver
 {
   private:
+    enum class State
+    {
+        Open,
+        Closed,
+        Unvisited
+    };
+
     struct AStarNode
     {
         Index2D index;
         Index2D parentIndex;
         bool hasParent = false;
+        
+        State state = State::Unvisited;
 
         float gCost = 0.0f; // distance from starting node
         float hCost = 0.0f; // distance from end node
@@ -24,7 +33,7 @@ class AStarSolver
     {
         bool operator()(const AStarNode &a, const AStarNode &b) const
         {
-            if (std::abs(a.fCostCached - b.fCostCached) > 0.0001f)
+            if (std::abs(a.fCostCached - b.fCostCached) > 0.000001f)
             {
                 return a.fCostCached > b.fCostCached;
             }

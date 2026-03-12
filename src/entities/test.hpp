@@ -16,40 +16,51 @@ class TestEntity : public Entity, public IDirectional
         m_interactionBox.getBoundingBox().setSize(15, 20);
         m_body.setGravity(0.4f);
 
-        m_aiModule.setSightAngle(40.0f);
-        m_aiModule.setSightDistance(150);
+        m_aiModule.setSightAngle(100.0f);
+        m_aiModule.setSightDistance(500);
+        m_aiModule.setSightRayAmount(20);
         m_lookAngle = 0.0f;
+
+        m_body.setPosition(100, 0);
     }
 
     void update(float dt,
                 const std::vector<const Entity *> &nearbyEntities) override
     {
         Vec2<int> pos = m_body.getPosition();
-        Vec2<int> goal = pos;
+        const Entity *target = nullptr;
         for (const Entity *entity : nearbyEntities)
         {
             if (entity->getMetadata().type == EntityType::Player)
             {
-                goal = entity->getBody().getPosition();
+                target = entity;
                 break;
             }
         }
 
-        auto check = [&](int x, int y)
-        {
-            if (Particle *p = r_particleHandler.getParticles().get(x, y))
+        m_aiModule.checkForInterestsInSight(
+            m_body.getPosition(), m_lookAngle,
+            [&](int x, int y)
             {
-                if (p->isSolid())
+                if (Particle *p = r_particleHandler.getParticles().get(x, y))
                 {
-                    return true;
+                    if (p->isSolid())
+                    {
+                        return true;
+                    }
                 }
-            }
 
-            return false;
-        };
+                Vec2<int> targetPos = target->getBody().getPosition();
+                m_aiModule.setGoal(targetPos);
+                // if (target->getInteractionBox().pointInside(targetPos, x, y))
+                // {
+                //     return true;
+                // }
 
-        m_aiModule.checkForInterestsInSight(m_body.getPosition(), m_lookAngle,
-                                            check);
+                return false;
+            });
+
+        m_aiModule.update(pos, dt, r_particleHandler.getParticles());
         updateMotion(dt);
     }
 

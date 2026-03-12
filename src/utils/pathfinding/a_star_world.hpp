@@ -12,12 +12,13 @@ class AStarWorldSolver : public AStarSolver
     {
         if (Particle *p = r_particles.get(x, y))
         {
-            return !p->isSolid() || p->isMoving();
+            if (!p->isSolid() || p->isMoving())
+            {
+                return true;
+            }
         }
-        else
-        {
-            return true;
-        }
+
+        return false;
     }
 
   private:

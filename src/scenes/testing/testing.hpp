@@ -108,7 +108,7 @@ class TestScene : public Scene
             m_world.render(r_viewport);
         }
 
-        // std::cout << r_time.getFPS() << std::endl;
+        std::cout << r_time.getFPS() << std::endl;
 
         return SceneID::Testing;
     }

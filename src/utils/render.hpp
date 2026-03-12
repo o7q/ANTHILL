@@ -12,12 +12,12 @@ namespace Render
 inline void drawSegment(Viewport &viewport, Vec2<int> p1, Vec2<int> p2,
                         Color color)
 {
-    auto draw = [&](int x, int y)
-    {
-        viewport.setPixel(x, y, color);
-        return false;
-    };
-    Utils::Math::Line::bresenhamLine(p1, p2, draw);
+    Utils::Math::Line::bresenhamLine(p1, p2,
+                                     [&viewport, &color](int x, int y)
+                                     {
+                                         viewport.setPixel(x, y, color);
+                                         return false;
+                                     });
 }
 
 inline void drawRectOutline(Viewport &viewport, Vec2<int> p1, Vec2<int> p2,
