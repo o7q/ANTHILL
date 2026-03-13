@@ -41,9 +41,9 @@ class Particle
         return m_physicsType == PhysicsType::None &&
                m_matterType == MatterType::Gas;
     }
-    bool isSolid() { return m_matterType == MatterType::Solid; }
-    bool isLiquid() { return m_matterType == MatterType::Liquid; }
-    bool isGas() { return m_matterType == MatterType::Gas; }
+    bool isSolid() const { return m_matterType == MatterType::Solid; }
+    bool isLiquid() const { return m_matterType == MatterType::Liquid; }
+    bool isGas() const { return m_matterType == MatterType::Gas; }
 
     void setRestitution(float restitution) { m_restitution = restitution; }
     float getRestitution() const { return m_restitution; }

@@ -54,14 +54,14 @@ class Entity
                                                    float dt);
 
   protected:
-    ParticleHandler &r_particleHandler;
+    const ParticleHandler &r_particleHandler;
     EntityInteractionBox m_interactionBox;
     EntityKineticBody m_body;
 
     EntityMetadata m_metadata;
 
   private:
-    Entity *m_parent = nullptr;
+    const Entity *m_parent = nullptr;
 
     float m_health = 100.0f;
     bool m_dead = false;

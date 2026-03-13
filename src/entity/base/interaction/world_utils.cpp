@@ -10,7 +10,7 @@ bool EntityWorldInteractionHandler::againstSolidSurface(Vec2<int> pos,
 
     bool collided = false;
 
-    auto query = [&](Particle *p)
+    auto query = [&](const Particle *p)
     {
         if (p->isSolid() && !p->isMoving())
         {
@@ -66,8 +66,8 @@ bool EntityWorldInteractionHandler::againstSolidCorner(
     {
     case BoundingBox::Corner::TopLeft:
     {
-        if (Particle *p = r_particles.getParticles().get(topLeft.x + size.x,
-                                                         topLeft.y - 1))
+        if (const Particle *p = r_particles.getParticles().get(
+                topLeft.x + size.x, topLeft.y - 1))
         {
             if (p->isSolid() && !p->isMoving())
             {
@@ -78,7 +78,7 @@ bool EntityWorldInteractionHandler::againstSolidCorner(
     break;
     case BoundingBox::Corner::TopRight:
     {
-        if (Particle *p =
+        if (const Particle *p =
                 r_particles.getParticles().get(topLeft.x - 1, topLeft.y - 1))
         {
             if (p->isSolid() && !p->isMoving())
@@ -90,8 +90,8 @@ bool EntityWorldInteractionHandler::againstSolidCorner(
     break;
     case BoundingBox::Corner::BottomLeft:
     {
-        if (Particle *p = r_particles.getParticles().get(topLeft.x - 1,
-                                                         topLeft.y + size.y))
+        if (const Particle *p = r_particles.getParticles().get(
+                topLeft.x - 1, topLeft.y + size.y))
         {
             if (p->isSolid() && !p->isMoving())
             {
@@ -102,8 +102,8 @@ bool EntityWorldInteractionHandler::againstSolidCorner(
     break;
     case BoundingBox::Corner::BottomRight:
     {
-        if (Particle *p = r_particles.getParticles().get(topLeft.x + size.x,
-                                                         topLeft.y + size.y))
+        if (const Particle *p = r_particles.getParticles().get(
+                topLeft.x + size.x, topLeft.y + size.y))
         {
             if (p->isSolid() && !p->isMoving())
             {
@@ -166,7 +166,7 @@ EntityWorldInteractionHandler::generateLocalWorldQuery(Vec2<int> pos)
 {
     LocalWorldQuery out;
 
-    auto query = [&](Particle *p)
+    auto query = [&](const Particle *p)
     {
         if (p->isSolid() && !p->isMoving())
         {

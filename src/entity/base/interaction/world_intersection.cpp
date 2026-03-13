@@ -6,8 +6,8 @@
 EntityWorldInteractionHandler::MTVIntersectionResponse
 EntityWorldInteractionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
 {
-    Vec2<int> size = r_boundingBox.getSize().toGrid();
-    Vec2<int> topLeft = r_boundingBox.getA() + pos;
+    const Vec2<int> size = r_boundingBox.getSize().toGrid();
+    const Vec2<int> topLeft = r_boundingBox.getA() + pos;
 
     //    0
     // 3 [-] 1
@@ -20,7 +20,7 @@ EntityWorldInteractionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
         {
             Vec2<int> worldPos = topLeft + Vec2<int>(x, y);
 
-            Particle *p =
+            const Particle *p =
                 r_particles.getParticles().get(worldPos.x, worldPos.y);
 
             if (!p)
@@ -89,8 +89,8 @@ Vec2<float>
 EntityWorldInteractionHandler::calculateWorldIntersection_averageDirection(
     Vec2<int> pos)
 {
-    Vec2<unsigned int> size = r_boundingBox.getSize();
-    Vec2<int> topLeft = pos + r_boundingBox.getA();
+    const Vec2<unsigned int> size = r_boundingBox.getSize();
+    const Vec2<int> topLeft = pos + r_boundingBox.getA();
 
     Vec2<int> sum = Vec2<int>(0, 0);
     int count = 0;
@@ -101,7 +101,7 @@ EntityWorldInteractionHandler::calculateWorldIntersection_averageDirection(
         {
             Vec2<int> worldPos = topLeft + Vec2<int>(x, y);
 
-            Particle *p =
+            const Particle *p =
                 r_particles.getParticles().get(worldPos.x, worldPos.y);
             if (!p)
             {

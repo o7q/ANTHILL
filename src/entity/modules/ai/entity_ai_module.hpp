@@ -1,36 +1,62 @@
 #pragma once
 
 #include "backend/viewport.hpp"
+#include "entity/base/interaction/entity_interaction_box.hpp"
 #include "entity/base/kinetic_body/entity_kinetic_body.hpp"
 #include "utils/data_structures/chunk_map.hpp"
 #include "utils/math/angle.hpp"
 #include "utils/math/line.hpp"
-#include "utils/pathfinding/a_star_world.hpp"
+#include "utils/math/numbers.hpp"
+#include "utils/pathfinding/a_star.hpp"
 #include "world/camera/camera.hpp"
+#include "world/particle/particle.hpp"
 #include <iostream>
 #include <vector>
 
 class AIModule
 {
   public:
-    AIModule(ChunkMap<Particle> &particles) : astar(particles)
+    AIModule() {}
+
+    void update(Vec2<int> headPos, float dt,
+                const ChunkMap<Particle> &particles)
     {
-        astar.setMaxIterations(100000);
+        if (m_goalSet && !m_astar.endReached())
+        {
+            m_astar.iteratePath(m_astarSubIterateAmount,
+                                [&](int x, int y)
+                                {
+                                    const Particle *p = particles.get(x, y);
+
+                                    if (!p)
+                                    {
+                                        return true;
+                                    }
+
+                                    if (!p->isSolid())
+                                    {
+                                        return true;
+                                    }
+
+                                    return false;
+                                });
+        }
+
+        if (m_goalSet && m_astar.endReached())
+        {
+            m_pathCheckpoints = m_astar.generatePath();
+            m_goalSet = false;
+        }
     }
 
-    void update(Vec2<int> headPos, float dt, ChunkMap<Particle> &particles)
+    void setAStarMaxIterations(int maxIterations)
     {
-        if (++m_pathRecalculateTimer >= m_pathRecalculateInterval && m_goalSet)
-        {
-            astar.reset(headPos, m_goal);
-            m_pathRecalculateTimer = 0.0f;
-        }
-        if (!astar.endReached())
-        {
-            astar.iteratePath(10);
-            m_pathCheckpoints.clear();
-            m_pathCheckpoints = astar.generatePath();
-        }
+        m_astar.setMaxIterations(maxIterations);
+    }
+
+    void AStarSubIterateAmount(int subIterateAmount)
+    {
+        m_astarSubIterateAmount = subIterateAmount;
     }
 
     template <typename CheckFunction>
@@ -66,38 +92,32 @@ class AIModule
         }
     }
 
-    void updateBody(EntityKineticBody& body)
+    void updateBody(EntityKineticBody &body)
     {
-        
+        if (m_pathCheckpoints.empty())
+        {
+            return;
+        }
+
+        Vec2<int> pos = body.getPosition();
+
+        Vec2<int> p = m_pathCheckpoints[0];
+
+        int dirX = Utils::Math::Numbers::sign(p.x - pos.x);
+        if ((dirX == -1 && pos.x <= p.x) || (dirX == 1 && pos.x >= p.x))
+        {
+            m_pathCheckpoints.erase(m_pathCheckpoints.begin());
+        }
+
+        body.setVelocityX(dirX);
     }
 
-    void setGoal(Vec2<int> headPos, Vec2<int> goalPos)
-    {
-        m_goal = goalPos;
-        m_goalSet = true;
-    }
-
-    void clearGoal()
-    {
-        m_pathCheckpoints.clear();
-        m_goalSet = false;
-    }
+    void setGoal(Vec2<int> startPos, Vec2<int> endPos, bool force = false);
+    void clearGoal();
+    bool isGoalAlreadySet(Vec2<int> start, Vec2<int> end);
 
     void renderDebug(Viewport &viewport, const Camera &camera,
-                     Vec2<int> headPos, float headAngle)
-    {
-        for (Vec2<int> p : m_sightPoints)
-        {
-            Vec2<int> ppos = camera.worldToViewport(p.x, p.y, viewport);
-            viewport.setPixel(ppos.x, ppos.y, Color(255, 252, 99));
-        }
-
-        for (Vec2<int> p : m_pathCheckpoints)
-        {
-            Vec2<int> ppos = camera.worldToViewport(p.x, p.y, viewport);
-            viewport.setPixel(ppos.x, ppos.y, Color(255, 105, 245));
-        }
-    }
+                     Vec2<int> headPos, float headAngle);
 
     void setDetectionRadius(float radius) { m_detectionRadius = radius; }
     void setSightAngle(float angle) { m_sightAngle = angle; }
@@ -105,17 +125,15 @@ class AIModule
     void setSightRayAmount(int amount) { m_sightRayAmount = amount; }
 
   private:
-    AStarWorldSolver astar;
+    AStarSolver m_astar;
+    int m_astarSubIterateAmount = 1000;
 
     std::vector<Vec2<int>> m_sightPoints;
-
     std::vector<Vec2<int>> m_pathCheckpoints;
 
     bool m_goalSet = false;
-    Vec2<int> m_goal = {0, 0};
-
-    float m_pathRecalculateInterval = 2000.0f;
-    float m_pathRecalculateTimer = 0.0f;
+    Vec2<int> m_goalStartPos = {0, 0};
+    Vec2<int> m_goalEndPos = {0, 0};
 
     float m_detectionRadius = 0.0f;
     float m_sightAngle = 0.0f;

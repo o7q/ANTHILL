@@ -15,7 +15,7 @@ EntityWorldInteractionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
         Vec2<int> b = r_boundingBox.getB() + Vec2<int>(x, y);
 
         bool collidedThisIteration = false;
-        auto query = [&](Particle *p)
+        auto query = [&](const Particle *p)
         {
             if (p->isSolid() && !p->isMoving())
             {

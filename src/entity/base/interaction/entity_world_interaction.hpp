@@ -65,6 +65,6 @@ class EntityWorldInteractionHandler
     LocalWorldQuery generateLocalWorldQuery(Vec2<int> pos);
 
   private:
-    ParticleHandler &r_particles;
-    BoundingBox &r_boundingBox;
+    const ParticleHandler &r_particles;
+    const BoundingBox &r_boundingBox;
 };

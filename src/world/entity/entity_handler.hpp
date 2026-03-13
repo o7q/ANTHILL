@@ -50,6 +50,7 @@ class EntityHandler
 
     void addEntity(std::unique_ptr<Entity> entity)
     {
+        m_latestEntity = entity.get();
         m_entities.push_back(std::move(entity));
     }
 
@@ -60,8 +61,12 @@ class EntityHandler
     }
 
     Player *getCurrentPlayer() { return m_currentPlayer; }
+    const Player *getCurrentPlayer() const { return m_currentPlayer; }
+    Entity *getLatestEntity() { return m_latestEntity; }
+    const Entity *getLatestEntity() const { return m_latestEntity; }
 
   private:
     Player *m_currentPlayer = nullptr;
+    Entity *m_latestEntity = nullptr;
     std::vector<std::unique_ptr<Entity>> m_entities;
 };

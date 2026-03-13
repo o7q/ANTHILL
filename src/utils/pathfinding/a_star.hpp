@@ -49,7 +49,70 @@ class AStarSolver
 
     void reset(Vec2<int> start, Vec2<int> end);
 
-    void iteratePath(int amount);
+    template <typename NeighborCheckFunction>
+    void iteratePath(int amount, NeighborCheckFunction &&checkFunction)
+    {
+        int i = 0;
+        while (!m_toSearch.empty() && i < amount && !m_endReached)
+        {
+            if (m_iterations > m_maxIterations)
+            {
+                m_endReached = true;
+                return;
+            }
+
+            m_current = m_toSearch.top();
+            m_toSearch.pop();
+
+            if (m_nodes[m_current.index].state == State::Closed)
+            {
+                continue;
+            }
+
+            m_nodes[m_current.index].state = State::Closed;
+
+            if (m_current.index == Index2D(m_end.x, m_end.y))
+            {
+                m_endReached = true;
+                return;
+            }
+
+            for (int i = 0; i < 8; ++i)
+            {
+                Index2D neighborIndex = {
+                    m_current.index.x + M_NEIGHBOR_INDICIES_X[i],
+                    m_current.index.y + M_NEIGHBOR_INDICIES_Y[i]};
+
+                if (!checkFunction(neighborIndex.x, neighborIndex.y))
+                {
+                    continue;
+                }
+
+                AStarNode &neighbor = m_nodes[neighborIndex];
+                float costToNeightbor =
+                    m_current.gCost + dist(m_current.index, neighborIndex);
+
+                if (neighbor.state == State::Unvisited ||
+                    costToNeightbor < neighbor.gCost)
+                {
+                    AStarNode next;
+                    next.index = neighborIndex;
+                    next.parentIndex = m_current.index;
+                    next.hasParent = true;
+                    next.state = State::Open;
+                    next.gCost = costToNeightbor;
+                    next.hCost = dist(neighborIndex, {m_end.x, m_end.y});
+                    next.calculateFCost();
+
+                    m_nodes[neighborIndex] = next;
+                    m_toSearch.push(next);
+                }
+            }
+
+            ++i;
+            ++m_iterations;
+        }
+    }
     std::vector<Vec2<int>> generatePath();
 
     bool endReached() const { return m_endReached; }
@@ -57,9 +120,6 @@ class AStarSolver
     {
         m_maxIterations = maxIterations;
     }
-
-  protected:
-    virtual bool isNeighborWalkable(int x, int y) { return true; }
 
   private:
     float dist(Index2D start, Index2D end);

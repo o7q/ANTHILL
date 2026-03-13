@@ -16,13 +16,14 @@ class ParticleHandler
     void set(int x, int y, Particle p);
     void draw(int x, int y, Particle p, int radius = 5);
 
-    template <typename F> void query(Vec2<int> start, Vec2<int> end, F &query)
+    template <typename F>
+    void query(Vec2<int> start, Vec2<int> end, F &query) const
     {
         for (int y = start.y; y <= end.y; ++y)
         {
             for (int x = start.x; x <= end.x; ++x)
             {
-                Particle *p = m_particles.get(x, y);
+                const Particle *p = m_particles.get(x, y);
 
                 if (!p)
                 {
@@ -63,6 +64,7 @@ class ParticleHandler
     }
 
     ChunkMap<Particle> &getParticles() { return m_particles; }
+    const ChunkMap<Particle> &getParticles() const { return m_particles; }
     PDynamicsHandler &getDynamics() { return m_pDynamicsHandler; }
 
   private:

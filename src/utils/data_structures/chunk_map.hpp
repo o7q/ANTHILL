@@ -24,9 +24,15 @@ template <typename T> class ChunkMap
             m_values[Backend::Utils::Index::index_2dto1d(x, y, width)] = v;
         }
 
-        T *get(unsigned int x, unsigned int y, unsigned int width)
+        const T *get(unsigned int x, unsigned int y, unsigned int width) const
         {
             return &m_values[Backend::Utils::Index::index_2dto1d(x, y, width)];
+        }
+
+        T *get(unsigned int x, unsigned int y, unsigned int width)
+        {
+            const T *v = static_cast<const Chunk *>(this)->get(x, y, width);
+            return const_cast<T *>(v);
         }
 
       private:
@@ -53,7 +59,7 @@ template <typename T> class ChunkMap
         it->second.set(inner_index.x, inner_index.y, v, m_chunkSize.x);
     }
 
-    T *get(int x, int y)
+    const T *get(int x, int y) const
     {
         Vec2<int> chunk_index = get_chunk_index(x, y);
         Index2D chunk_key(chunk_index.x, chunk_index.y);
@@ -66,6 +72,12 @@ template <typename T> class ChunkMap
 
         Vec2<unsigned int> inner_index = get_inner_index(x, y, chunk_index);
         return it->second.get(inner_index.x, inner_index.y, m_chunkSize.x);
+    }
+
+    T *get(int x, int y)
+    {
+        const T *v = static_cast<const ChunkMap *>(this)->get(x, y);
+        return const_cast<T *>(v);
     }
 
     bool hasValue(int x, int y)

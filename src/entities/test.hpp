@@ -11,8 +11,7 @@
 class TestEntity : public Entity, public IDirectional
 {
   public:
-    TestEntity(ParticleHandler &particles)
-        : Entity(particles), m_aiModule(particles.getParticles())
+    TestEntity(ParticleHandler &particles) : Entity(particles)
     {
         m_interactionBox.getBoundingBox().setSize(15, 20);
         m_body.setGravity(0.4f);
@@ -20,6 +19,8 @@ class TestEntity : public Entity, public IDirectional
         m_aiModule.setSightAngle(100.0f);
         m_aiModule.setSightDistance(500);
         m_aiModule.setSightRayAmount(20);
+        m_aiModule.setAStarMaxIterations(1000000);
+        m_aiModule.AStarSubIterateAmount(100);
         m_lookAngle = 0.0f;
 
         m_body.setPosition(100, 0);
@@ -39,29 +40,38 @@ class TestEntity : public Entity, public IDirectional
             }
         }
 
-        m_aiModule.checkForInterestsInSight(
-            m_body.getPosition(), m_lookAngle,
-            [&](int x, int y)
-            {
-                if (Particle *p = r_particleHandler.getParticles().get(x, y))
-                {
-                    if (p->isSolid())
-                    {
-                        return true;
-                    }
-                }
+        // m_aiModule.checkForInterestsInSight(
+        //     m_body.getPosition(), m_lookAngle,
+        //     [&](int x, int y)
+        //     {
+        //         if (const Particle *p =
+        //                 r_particleHandler.getParticles().get(x, y))
+        //         {
+        //             if (p->isSolid())
+        //             {
+        //                 return true;
+        //             }
+        //         }
 
-                Vec2<int> targetPos = target->getBody().getPosition();
-                m_aiModule.setGoal(pos, targetPos);
-                // if (target->getInteractionBox().pointInside(targetPos, x, y))
-                // {
-                //     return true;
-                // }
+        //         Vec2<int> targetPos = target->getBody().getPosition();
+        //         if (target->getInteractionBox().pointInside(targetPos, x, y))
+        //         {
+        //             if (!m_aiModule.isGoalAlreadySet(pos, targetPos))
+        //             {
+        //                 m_aiModule.setGoal(pos, targetPos, true);
+        //             }
+        //             return true;
+        //         }
 
-                return false;
-            });
+        //         return false;
+        //     });
 
+        if (!m_aiModule.isGoalAlreadySet(pos, target->getBody().getPosition()))
+        {
+            m_aiModule.setGoal(pos, target->getBody().getPosition(), true);
+        }
         m_aiModule.update(pos, dt, r_particleHandler.getParticles());
+        m_aiModule.updateBody(m_body);
         updateMotion(dt);
     }
 
