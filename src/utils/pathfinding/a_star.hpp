@@ -2,7 +2,6 @@
 
 #include "backend/utils/vec.hpp"
 #include "utils/data_structures/index_2d.hpp"
-#include <algorithm>
 #include <cstdlib>
 #include <queue>
 #include <vector>
@@ -45,51 +44,15 @@ class AStarSolver
     };
 
   public:
-    AStarSolver() = default;
+    AStarSolver() { reset(Vec2<int>(0, 0), Vec2<int>(0, 0)); }
     virtual ~AStarSolver() = default;
 
-    void reset(Vec2<int> start, Vec2<int> end)
-    {
-        m_nodes.clear();
-        m_toSearch = std::priority_queue<AStarNode, std::vector<AStarNode>,
-                                         AStarNodeCompare>();
-
-        m_start = start;
-        m_end = end;
-
-        m_endReached = false;
-
-        m_iterations = 0;
-
-        AStarNode startNode;
-        startNode.index = Index2D(start.x, start.y);
-        startNode.hCost = dist({start.x, start.y}, {end.x, end.y});
-        startNode.calculateFCost();
-        startNode.state = State::Open;
-
-        m_nodes[startNode.index] = startNode;
-        m_toSearch.push(startNode);
-    }
+    void reset(Vec2<int> start, Vec2<int> end);
 
     void iteratePath(int amount);
-
-    std::vector<Vec2<int>> generatePath()
-    {
-        std::vector<Vec2<int>> path;
-        AStarNode *node = &m_nodes[m_current.index];
-        while (node->hasParent)
-        {
-            path.push_back({node->index.x, node->index.y});
-            node = &m_nodes[node->parentIndex];
-        }
-        path.push_back({node->index.x, node->index.y});
-        std::reverse(path.begin(), path.end());
-
-        return path;
-    }
+    std::vector<Vec2<int>> generatePath();
 
     bool endReached() const { return m_endReached; }
-
     void setMaxIterations(int maxIterations)
     {
         m_maxIterations = maxIterations;
@@ -100,17 +63,15 @@ class AStarSolver
 
   private:
     float dist(Index2D start, Index2D end);
-    std::vector<Index2D> get_neighbors(Index2D index);
 
   private:
     std::priority_queue<AStarNode, std::vector<AStarNode>, AStarNodeCompare>
         m_toSearch;
     std::unordered_map<Index2D, AStarNode, Index2DHash> m_nodes;
+    static constexpr int M_NEIGHBOR_INDICIES_X[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
+    static constexpr int M_NEIGHBOR_INDICIES_Y[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 
     AStarNode m_current;
-
-    static constexpr int m_neighborX[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
-    static constexpr int m_neighborY[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 
     Vec2<int> m_start, m_end;
 

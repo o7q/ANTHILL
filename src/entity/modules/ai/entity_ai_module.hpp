@@ -1,6 +1,7 @@
 #pragma once
 
 #include "backend/viewport.hpp"
+#include "entity/base/kinetic_body/entity_kinetic_body.hpp"
 #include "utils/data_structures/chunk_map.hpp"
 #include "utils/math/angle.hpp"
 #include "utils/math/line.hpp"
@@ -26,7 +27,7 @@ class AIModule
         }
         if (!astar.endReached())
         {
-            astar.iteratePath(1000);
+            astar.iteratePath(10);
             m_pathCheckpoints.clear();
             m_pathCheckpoints = astar.generatePath();
         }
@@ -63,6 +64,11 @@ class AIModule
             Utils::Math::Line::bresenhamRaycast(headPos, a, test,
                                                 m_sightDistance);
         }
+    }
+
+    void updateBody(EntityKineticBody& body)
+    {
+        
     }
 
     void setGoal(Vec2<int> headPos, Vec2<int> goalPos)

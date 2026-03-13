@@ -2,6 +2,7 @@
 
 #include "backend/utils/vec.hpp"
 #include "utils/data_structures/index_2d.hpp"
+#include <algorithm>
 #include <unordered_map>
 
 void AStarSolver::iteratePath(int amount)
@@ -33,8 +34,9 @@ void AStarSolver::iteratePath(int amount)
 
         for (int i = 0; i < 8; ++i)
         {
-            Index2D neighborIndex = {m_current.index.x + m_neighborX[i],
-                                     m_current.index.y + m_neighborY[i]};
+            Index2D neighborIndex = {
+                m_current.index.x + M_NEIGHBOR_INDICIES_X[i],
+                m_current.index.y + M_NEIGHBOR_INDICIES_Y[i]};
 
             if (!isNeighborWalkable(neighborIndex.x, neighborIndex.y))
             {
@@ -76,4 +78,42 @@ float AStarSolver::dist(Index2D start, Index2D end)
     float D2 = 1.4142f; // sqrt(2)
     return D * (dx + dy) + (D2 - 2.0f * D) * std::min(dx, dy);
     // return (dx + dy);
+}
+
+std::vector<Vec2<int>> AStarSolver::generatePath()
+{
+    std::vector<Vec2<int>> path;
+    AStarNode *node = &m_nodes[m_current.index];
+    while (node->hasParent)
+    {
+        path.push_back({node->index.x, node->index.y});
+        node = &m_nodes[node->parentIndex];
+    }
+    path.push_back({node->index.x, node->index.y});
+    std::reverse(path.begin(), path.end());
+
+    return path;
+}
+
+void AStarSolver::reset(Vec2<int> start, Vec2<int> end)
+{
+    m_nodes.clear();
+    m_toSearch = std::priority_queue<AStarNode, std::vector<AStarNode>,
+                                     AStarNodeCompare>();
+
+    m_start = start;
+    m_end = end;
+
+    m_endReached = false;
+
+    m_iterations = 0;
+
+    AStarNode startNode;
+    startNode.index = Index2D(start.x, start.y);
+    startNode.hCost = dist({start.x, start.y}, {end.x, end.y});
+    startNode.calculateFCost();
+    startNode.state = State::Open;
+
+    m_nodes[startNode.index] = startNode;
+    m_toSearch.push(startNode);
 }
