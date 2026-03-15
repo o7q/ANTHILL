@@ -2,8 +2,8 @@
 
 #include "backend/viewport.hpp"
 #include "entities/metadata.hpp"
-#include "entity/interaction/entity_interaction_box.hpp"
-#include "entity/kinetic_body/entity_kinetic_body.hpp"
+#include "entity/interaction/interaction_box.hpp"
+#include "entity/kinetic_body/kinetic_body.hpp"
 #include "world/camera/camera.hpp"
 #include "world/particle/particle_handler.hpp"
 
@@ -22,12 +22,9 @@ class Entity
     virtual void render(Viewport &viewport, const Camera &camera) = 0;
 
     const Entity *const getParent() const { return m_parent; }
-    EntityKineticBody &getBody() { return m_body; }
-    const EntityKineticBody &getBody() const { return m_body; }
-    const EntityInteractionBox &getInteractionBox() const
-    {
-        return m_interactionBox;
-    }
+    KineticBody &getBody() { return m_body; }
+    const KineticBody &getBody() const { return m_body; }
+    const InteractionBox &getInteractionBox() const { return m_interactionBox; }
     EntityMetadata getMetadata() const { return m_metadata; }
 
     void kill() { m_dead = true; }
@@ -56,8 +53,8 @@ class Entity
 
   protected:
     const ParticleHandler &r_particleHandler;
-    EntityInteractionBox m_interactionBox;
-    EntityKineticBody m_body;
+    InteractionBox m_interactionBox;
+    KineticBody m_body;
 
     EntityMetadata m_metadata;
 

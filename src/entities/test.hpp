@@ -4,10 +4,10 @@
 #include "entities/metadata.hpp"
 #include "entity/entity.hpp"
 #include "entity/mixins/directional.hpp"
-#include "entity/modules/ai/movement/entity_ai_movement_module.hpp"
-#include "entity/modules/ai/navigation/entity_ai_navigation_module.hpp"
-#include "entity/modules/ai/perception/entity_ai_perception_module.hpp"
-#include "entity/modules/jump/entity_jump_module.hpp"
+#include "entity/modules/ai/movement/ai_movement_module.hpp"
+#include "entity/modules/ai/navigation/ai_navigation_module.hpp"
+#include "entity/modules/ai/perception/ai_perception_module.hpp"
+#include "entity/modules/jump/jump_module.hpp"
 #include "world/camera/camera.hpp"
 
 class TestEntity : public Entity, public IDirectional
@@ -130,7 +130,7 @@ class TestEntity : public Entity, public IDirectional
             m_aiNavigation.update(dt, validSpot);
 
             if (m_aiNavigation.getPathState() ==
-                EntityAINavigationModule::PathState::Ready)
+                AINavigationModule::PathState::Ready)
             {
                 m_aiMovement.setCheckpoints(m_aiNavigation.getCheckpoints());
                 m_aiNavigation.sleep();
@@ -139,12 +139,19 @@ class TestEntity : public Entity, public IDirectional
             m_aiMovement.update(pos, m_interactionBox.getBoundingBox());
         }
 
-        if (m_aiMovement.shouldJump())
+        if (m_aiMovement.shouldMove())
         {
-            m_jumpModule.requestJump();
-        }
+            m_body.setVelocityX(m_aiMovement.getMoveDirection().x * 6);
 
-        m_body.setVelocityX(m_aiMovement.getMoveDirection() * 6);
+            if (m_aiMovement.getMoveDirection().y < 0)
+            {
+                m_jumpModule.requestJump();
+            }
+        }
+        else
+        {
+            m_body.setVelocityX(0);
+        }
 
         if (m_aiMovement.shouldSetPosition())
         {
@@ -169,21 +176,20 @@ class TestEntity : public Entity, public IDirectional
 
         m_aiPerception.renderDebug(viewport, camera);
 
-        for (EntityAINavigationModule::Checkpoint p :
-             m_aiMovement.getMutatedCheckpoints())
-        {
-            Vec2<int> ppos = camera.worldToViewport(p.pos.x, p.pos.y, viewport);
-            viewport.setPixel(ppos.x, ppos.y,
-                              p.axis ==
-                                      EntityAINavigationModule::Axis::Horizontal
-                                  ? Color(255, 105, 245)
-                                  : Color(255, 245, 105));
-        }
+        // for (AINavigationModule::Checkpoint p :
+        //      m_aiMovement.getMutatedCheckpoints())
+        // {
+        //     Vec2<int> ppos = camera.worldToViewport(p.pos.x, p.pos.y, viewport);
+        //     viewport.setPixel(ppos.x, ppos.y,
+        //                       p.axis == AINavigationModule::Axis::Horizontal
+        //                           ? Color(255, 105, 245)
+        //                           : Color(255, 245, 105));
+        // }
     }
 
   private:
-    EntityJumpModule m_jumpModule;
-    EntityAIPerceptionModule m_aiPerception;
-    EntityAINavigationModule m_aiNavigation;
-    EntityAIMovementModule m_aiMovement;
+    JumpModule m_jumpModule;
+    AIPerceptionModule m_aiPerception;
+    AINavigationModule m_aiNavigation;
+    AIMovementModule m_aiMovement;
 };

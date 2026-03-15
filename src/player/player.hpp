@@ -4,7 +4,7 @@
 #include "backend/viewport.hpp"
 #include "entity/entity.hpp"
 #include "entity/mixins/directional.hpp"
-#include "entity/modules/jump/entity_jump_module.hpp"
+#include "entity/modules/jump/jump_module.hpp"
 #include "utils/bounding_box.hpp"
 #include "world/camera/camera.hpp"
 #include "world/particle/particle_handler.hpp"
@@ -73,5 +73,5 @@ class Player : public Entity, public IDirectional
 
   private:
     InputHandler &r_input;
-    EntityJumpModule m_jumpModule;
+    JumpModule m_jumpModule;
 };

@@ -1,17 +1,17 @@
 #pragma once
 
-#include "entity_world_interaction.hpp"
 #include "utils/bounding_box.hpp"
+#include "world_interaction.hpp"
 
-class EntityInteractionBox
+class InteractionBox
 {
   public:
-    EntityInteractionBox(ParticleHandler &particles)
+    InteractionBox(ParticleHandler &particles)
         : m_worldHandler(particles, m_boundingBox)
     {
     }
 
-    EntityWorldInteractionHandler &getWorldHandler() { return m_worldHandler; }
+    WorldInteractionHandler &getWorldHandler() { return m_worldHandler; }
     BoundingBox &getBoundingBox() { return m_boundingBox; }
 
     bool pointInside(Vec2<int> pos, int x, int y) const
@@ -21,5 +21,5 @@ class EntityInteractionBox
 
   private:
     BoundingBox m_boundingBox;
-    EntityWorldInteractionHandler m_worldHandler;
+    WorldInteractionHandler m_worldHandler;
 };

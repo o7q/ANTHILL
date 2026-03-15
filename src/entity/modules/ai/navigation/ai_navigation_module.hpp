@@ -2,7 +2,7 @@
 
 #include "utils/pathfinding/a_star.hpp"
 
-class EntityAINavigationModule
+class AINavigationModule
 {
   public:
     enum class PathState
@@ -25,7 +25,7 @@ class EntityAINavigationModule
     };
 
   public:
-    EntityAINavigationModule() {}
+    AINavigationModule() {}
 
     template <typename NeighborCheckFunction>
     void update(float dt, NeighborCheckFunction &&checkFunction)

@@ -1,7 +1,6 @@
-#include "entity_ai_perception_module.hpp"
+#include "ai_perception_module.hpp"
 
-void EntityAIPerceptionModule::renderDebug(Viewport &viewport,
-                                           const Camera &camera)
+void AIPerceptionModule::renderDebug(Viewport &viewport, const Camera &camera)
 {
     for (Vec2<int> p : m_sightPoints)
     {

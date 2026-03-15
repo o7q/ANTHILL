@@ -1,9 +1,9 @@
-#include "entity_world_interaction.hpp"
+#include "world_interaction.hpp"
 
 #include "utils/bounding_box.hpp"
 
-bool EntityWorldInteractionHandler::againstSolidSurface(Vec2<int> pos,
-                                                        BoundingBox::Side side)
+bool WorldInteractionHandler::againstSolidSurface(Vec2<int> pos,
+                                                  BoundingBox::Side side)
 {
     Vec2<unsigned int> size = r_boundingBox.getSize();
     Vec2<int> topLeft = pos + r_boundingBox.getA();
@@ -55,8 +55,8 @@ bool EntityWorldInteractionHandler::againstSolidSurface(Vec2<int> pos,
     return collided;
 }
 
-bool EntityWorldInteractionHandler::againstSolidCorner(
-    Vec2<int> pos, BoundingBox::Corner corner)
+bool WorldInteractionHandler::againstSolidCorner(Vec2<int> pos,
+                                                 BoundingBox::Corner corner)
 {
     Vec2<unsigned int> size = r_boundingBox.getSize();
     Vec2<int> topLeft = pos + r_boundingBox.getA();
@@ -117,9 +117,9 @@ bool EntityWorldInteractionHandler::againstSolidCorner(
     return collided;
 }
 
-EntityWorldInteractionHandler::StepResponse
-EntityWorldInteractionHandler::calculateStepResponse(Vec2<int> pos,
-                                                     Vec2<float> velocity)
+WorldInteractionHandler::StepResponse
+WorldInteractionHandler::calculateStepResponse(Vec2<int> pos,
+                                               Vec2<float> velocity)
 {
     StepResponse out;
     out.stepPosition = pos;
@@ -142,7 +142,7 @@ EntityWorldInteractionHandler::calculateStepResponse(Vec2<int> pos,
 
             if (!stillBlockedRight && !stillBlockedLeft)
             {
-                EntityWorldInteractionHandler::TrajectoryCollisionResponse
+                WorldInteractionHandler::TrajectoryCollisionResponse
                     collisionCheck =
                         calculateCollisionFromTrajectory(pos, steppedPos);
                 if (collisionCheck.collided)
@@ -161,8 +161,8 @@ EntityWorldInteractionHandler::calculateStepResponse(Vec2<int> pos,
     return out;
 }
 
-EntityWorldInteractionHandler::LocalWorldQuery
-EntityWorldInteractionHandler::generateLocalWorldQuery(Vec2<int> pos)
+WorldInteractionHandler::LocalWorldQuery
+WorldInteractionHandler::generateLocalWorldQuery(Vec2<int> pos)
 {
     LocalWorldQuery out;
 

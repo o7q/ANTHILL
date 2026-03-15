@@ -1,8 +1,8 @@
-#include "entity_kinetic_body.hpp"
+#include "kinetic_body.hpp"
 
 #include "utils/math/numbers.hpp"
 
-void EntityKineticBody::haltMotionInDirection(int dirX, int dirY)
+void KineticBody::haltMotionInDirection(int dirX, int dirY)
 {
     Vec2<float> force = m_body.getForce();
     if (Utils::Math::Numbers::sign(force.x) == Utils::Math::Numbers::sign(dirX))
@@ -27,7 +27,7 @@ void EntityKineticBody::haltMotionInDirection(int dirX, int dirY)
     m_body.setVelocity(vel.x, vel.y);
 }
 
-void EntityKineticBody::update(float dt)
+void KineticBody::update(float dt)
 {
     m_lastPos = getPosition();
 
@@ -39,6 +39,10 @@ void EntityKineticBody::update(float dt)
     {
         m_body.setVelocityY(0);
     }
+
+    // Vec2<float> vel =
+    //     m_body.getVelocity().clamp(Vec2<float>(0, 0), m_maxVelocity);
+    // m_body.setVelocity(vel.x, vel.y);
 
     m_body.integrate(dt);
 }

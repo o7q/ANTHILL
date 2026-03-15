@@ -1,10 +1,10 @@
-#include "entity_world_interaction.hpp"
+#include "world_interaction.hpp"
 
 #include <array>
 
 // minimum translation vector
-EntityWorldInteractionHandler::MTVIntersectionResponse
-EntityWorldInteractionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
+WorldInteractionHandler::MTVIntersectionResponse
+WorldInteractionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
 {
     const Vec2<int> size = r_boundingBox.getSize().toGrid();
     const Vec2<int> topLeft = r_boundingBox.getA() + pos;
@@ -86,7 +86,7 @@ EntityWorldInteractionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
 }
 
 Vec2<float>
-EntityWorldInteractionHandler::calculateWorldIntersection_averageDirection(
+WorldInteractionHandler::calculateWorldIntersection_averageDirection(
     Vec2<int> pos)
 {
     const Vec2<unsigned int> size = r_boundingBox.getSize();

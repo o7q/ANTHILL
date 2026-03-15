@@ -1,7 +1,6 @@
-#include "entity_jump_module.hpp"
-#include <iostream>
+#include "jump_module.hpp"
 
-void EntityJumpModule::update(float dt, bool onGround)
+void JumpModule::update(float dt, bool onGround)
 {
     m_canJump = false;
     // if (m_jumpHoldTimer >= m_jumpHoldDuration)

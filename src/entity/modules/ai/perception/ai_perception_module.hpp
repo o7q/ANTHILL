@@ -7,27 +7,10 @@
 #include "world/camera/camera.hpp"
 #include <vector>
 
-class EntityAIPerceptionModule
+class AIPerceptionModule
 {
   public:
-    EntityAIPerceptionModule() {}
-
-    // template <typename CheckFunction>
-    // void checkForBoundingBoxInSight(Vec2<int> headPos, float headAngle,
-    //                                 Vec2<int> boxPosition,
-    //                                 const BoundingBox &box,
-    //                                 CheckFunction &&function)
-    // {
-    //     for (int i = 0; i < box.getSize().x; ++i)
-    //     {
-            
-    //     }
-
-    //     for (int i = 0; i < box.getSize().x; ++i)
-    //     {
-
-    //     }
-    // }
+    AIPerceptionModule() {}
 
     template <typename CheckFunction>
     void checkForInterestsInSight(Vec2<int> headPos, float headAngle,

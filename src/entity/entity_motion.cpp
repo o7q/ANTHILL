@@ -25,7 +25,7 @@ void Entity::updateMotion(float dt)
 
     Vec2<int> currentPos = m_body.getPosition();
     Vec2<float> velocity = m_body.getVelocity();
-    EntityWorldInteractionHandler::LocalWorldQuery worldQuery =
+    WorldInteractionHandler::LocalWorldQuery worldQuery =
         m_interactionBox.getWorldHandler().generateLocalWorldQuery(currentPos);
 
     if (worldQuery.staticSolidCount == 0)
@@ -35,7 +35,7 @@ void Entity::updateMotion(float dt)
     }
     else
     {
-        EntityWorldInteractionHandler::MTVIntersectionResponse response =
+        WorldInteractionHandler::MTVIntersectionResponse response =
             m_interactionBox.getWorldHandler().calculateWorldIntersection_MTV(
                 currentPos);
 
@@ -52,7 +52,7 @@ void Entity::updateMotion(float dt)
 
 Vec2<int> Entity::updateMotion_step(Vec2<int> currentPos, Vec2<float> velocity)
 {
-    EntityWorldInteractionHandler::StepResponse stepResponse =
+    WorldInteractionHandler::StepResponse stepResponse =
         m_interactionBox.getWorldHandler().calculateStepResponse(currentPos,
                                                                  velocity);
 
@@ -72,7 +72,7 @@ void Entity::updateMotion_moveAndPreventWorldCollision(Vec2<int> currentPos,
     m_body.update(dt);
     Vec2<int> endPos = m_body.getPosition();
 
-    EntityWorldInteractionHandler::TrajectoryCollisionResponse response =
+    WorldInteractionHandler::TrajectoryCollisionResponse response =
         m_interactionBox.getWorldHandler()
             .calculateCollisionFromTrajectorySlide(currentPos, endPos);
 

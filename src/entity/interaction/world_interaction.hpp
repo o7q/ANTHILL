@@ -4,7 +4,7 @@
 #include "utils/bounding_box.hpp"
 #include "world/particle/particle_handler.hpp"
 
-class EntityWorldInteractionHandler
+class WorldInteractionHandler
 {
   public:
     struct TrajectoryCollisionResponse
@@ -43,7 +43,7 @@ class EntityWorldInteractionHandler
     };
 
   public:
-    EntityWorldInteractionHandler(ParticleHandler &particles, BoundingBox &bb)
+    WorldInteractionHandler(ParticleHandler &particles, BoundingBox &bb)
         : r_particles(particles), r_boundingBox(bb)
     {
     }

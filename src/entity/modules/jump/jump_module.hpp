@@ -1,10 +1,10 @@
 #pragma once
 
-class EntityJumpModule
+class JumpModule
 {
   public:
-    EntityJumpModule() = default;
-    virtual ~EntityJumpModule() = default;
+    JumpModule() = default;
+    virtual ~JumpModule() = default;
 
     void requestJump() { m_jumpRequested = true; }
     void cancelJump() { m_canJump = false; }

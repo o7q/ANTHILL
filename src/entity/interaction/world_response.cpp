@@ -1,10 +1,10 @@
-#include "entity_world_interaction.hpp"
+#include "world_interaction.hpp"
 
 #include "utils/math/line.hpp"
 
-EntityWorldInteractionHandler::TrajectoryCollisionResponse
-EntityWorldInteractionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
-                                                                Vec2<int> end)
+WorldInteractionHandler::TrajectoryCollisionResponse
+WorldInteractionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
+                                                          Vec2<int> end)
 {
     bool collided = false;
     Vec2<int> previousPos = start;
@@ -47,9 +47,9 @@ EntityWorldInteractionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
     return response;
 }
 
-EntityWorldInteractionHandler::TrajectoryCollisionResponse
-EntityWorldInteractionHandler::calculateCollisionFromTrajectorySlide(
-    Vec2<int> start, Vec2<int> end)
+WorldInteractionHandler::TrajectoryCollisionResponse
+WorldInteractionHandler::calculateCollisionFromTrajectorySlide(Vec2<int> start,
+                                                               Vec2<int> end)
 {
     TrajectoryCollisionResponse out;
 
