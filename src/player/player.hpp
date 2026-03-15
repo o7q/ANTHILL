@@ -2,7 +2,7 @@
 
 #include "backend/input_handler.hpp"
 #include "backend/viewport.hpp"
-#include "entity/base/entity.hpp"
+#include "entity/entity.hpp"
 #include "entity/mixins/directional.hpp"
 #include "entity/modules/jump/entity_jump_module.hpp"
 #include "utils/bounding_box.hpp"
@@ -44,7 +44,13 @@ class Player : public Entity, public IDirectional
 
         if (r_input.getInput("jump")->wasPressed())
         {
-            m_jumpModule.requestJump();
+            // m_jumpModule.requestJump();
+            m_body.setVelocityY(-m_jumpModule.getJumpPower());
+        }
+
+        if (r_input.getInput("jump")->wasUnpressed())
+        {
+            // m_jumpModule.cancelJump();
         }
 
         bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
@@ -53,7 +59,7 @@ class Player : public Entity, public IDirectional
 
         if (m_jumpModule.canJump())
         {
-            m_body.setVelocityY(-m_jumpModule.getJumpHeight());
+            // m_body.setVelocityY(-m_jumpModule.getJumpPower());
         }
 
         updateMotion(dt);
@@ -67,5 +73,5 @@ class Player : public Entity, public IDirectional
 
   private:
     InputHandler &r_input;
-    JumpModule m_jumpModule;
+    EntityJumpModule m_jumpModule;
 };

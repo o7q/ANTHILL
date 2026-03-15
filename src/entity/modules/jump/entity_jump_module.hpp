@@ -1,28 +1,36 @@
 #pragma once
 
-class JumpModule
+class EntityJumpModule
 {
   public:
-    JumpModule() = default;
-    virtual ~JumpModule() = default;
+    EntityJumpModule() = default;
+    virtual ~EntityJumpModule() = default;
 
     void requestJump() { m_jumpRequested = true; }
+    void cancelJump() { m_canJump = false; }
 
-    void setJumpHeight(float jumpHeight) { m_jumpHeight = jumpHeight; }
-    float getJumpHeight() const { return m_jumpHeight; }
+    void setJumpPower(float power) { m_jumpPower = power; }
+    float getJumpPower() const { return m_jumpPower; }
     void update(float dt, bool onGround);
 
     bool canJump() const { return m_canJump; }
 
+    void setCoyoteDuration(float duration) { m_jumpCoyoteDuration = duration; }
+    void setBufferDuration(float duration) { m_jumpBufferDuration = duration; }
+    void setHoldDuration(float duration) { m_jumpHoldDuration = duration; }
+
   private:
-    float m_jumpHeight = 7.0f;
+    float m_jumpPower = 5.0f;
 
     bool m_jumpRequested = false;
     bool m_canJump = false;
-    const float m_jumpCoyoteDuration = 8.0f;
+    float m_jumpCoyoteDuration = 8.0f;
     bool m_jumpBufferTimerEnable = false;
     float m_jumpBufferTimer = 0.0f;
-    const float m_jumpBufferDuration = 7.0f;
+    float m_jumpBufferDuration = 7.0f;
     bool m_jumpCoyoteTimerEnable = false;
     float m_jumpCoyoteTimer = 0.0f;
+
+    float m_jumpHoldTimer = 0.0f;
+    float m_jumpHoldDuration = 20.0f;
 };

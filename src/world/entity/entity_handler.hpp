@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entity/base/entity.hpp"
+#include "entity/entity.hpp"
 #include "player/player.hpp"
 #include <memory>
 #include <vector>

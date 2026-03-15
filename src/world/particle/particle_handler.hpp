@@ -16,8 +16,9 @@ class ParticleHandler
     void set(int x, int y, Particle p);
     void draw(int x, int y, Particle p, int radius = 5);
 
-    template <typename F>
-    void query(Vec2<int> start, Vec2<int> end, F &query) const
+    template <typename QueryFunction>
+    void query(Vec2<int> start, Vec2<int> end, QueryFunction &&query,
+               bool skipNull = true) const
     {
         for (int y = start.y; y <= end.y; ++y)
         {
@@ -25,7 +26,7 @@ class ParticleHandler
             {
                 const Particle *p = m_particles.get(x, y);
 
-                if (!p)
+                if (!p && skipNull)
                 {
                     continue;
                 }

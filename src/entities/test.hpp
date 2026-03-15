@@ -2,9 +2,11 @@
 
 #include "backend/viewport.hpp"
 #include "entities/metadata.hpp"
-#include "entity/base/entity.hpp"
+#include "entity/entity.hpp"
 #include "entity/mixins/directional.hpp"
-#include "entity/modules/ai/entity_ai_module.hpp"
+#include "entity/modules/ai/movement/entity_ai_movement_module.hpp"
+#include "entity/modules/ai/navigation/entity_ai_navigation_module.hpp"
+#include "entity/modules/ai/perception/entity_ai_perception_module.hpp"
 #include "entity/modules/jump/entity_jump_module.hpp"
 #include "world/camera/camera.hpp"
 
@@ -13,76 +15,175 @@ class TestEntity : public Entity, public IDirectional
   public:
     TestEntity(ParticleHandler &particles) : Entity(particles)
     {
-        m_interactionBox.getBoundingBox().setSize(15, 20);
+        m_interactionBox.getBoundingBox().setSize(11, 11);
         m_body.setGravity(0.4f);
 
-        m_aiModule.setSightAngle(100.0f);
-        m_aiModule.setSightDistance(500);
-        m_aiModule.setSightRayAmount(20);
-        m_aiModule.setAStarMaxIterations(1000000);
-        m_aiModule.AStarSubIterateAmount(100);
-        m_lookAngle = 0.0f;
+        m_aiPerception.setSightFOV(100);
+        m_aiPerception.setSightRayAmount(20);
+        m_aiPerception.setSightDistance(1000);
+        m_aiNavigation.setAStarSubIterateAmount(1000);
+        m_aiNavigation.setAStarMaxIterations(100000);
+        m_aiNavigation.setAStarTerminationDistance(10);
 
-        m_body.setPosition(100, 0);
+        m_jumpModule.setHoldDuration(0.0f);
+        m_jumpModule.setJumpPower(5);
     }
 
     void update(float dt,
                 const std::vector<const Entity *> &nearbyEntities) override
     {
-        Vec2<int> pos = m_body.getPosition();
-        const Entity *target = nullptr;
+        const Entity *player = nullptr;
         for (const Entity *entity : nearbyEntities)
         {
             if (entity->getMetadata().type == EntityType::Player)
             {
-                target = entity;
+                player = entity;
                 break;
             }
         }
 
-        // m_aiModule.checkForInterestsInSight(
-        //     m_body.getPosition(), m_lookAngle,
-        //     [&](int x, int y)
-        //     {
-        //         if (const Particle *p =
-        //                 r_particleHandler.getParticles().get(x, y))
-        //         {
-        //             if (p->isSolid())
-        //             {
-        //                 return true;
-        //             }
-        //         }
-
-        //         Vec2<int> targetPos = target->getBody().getPosition();
-        //         if (target->getInteractionBox().pointInside(targetPos, x, y))
-        //         {
-        //             if (!m_aiModule.isGoalAlreadySet(pos, targetPos))
-        //             {
-        //                 m_aiModule.setGoal(pos, targetPos, true);
-        //             }
-        //             return true;
-        //         }
-
-        //         return false;
-        //     });
-
-        if (!m_aiModule.isGoalAlreadySet(pos, target->getBody().getPosition()))
+        if (player)
         {
-            m_aiModule.setGoal(pos, target->getBody().getPosition(), true);
+            Vec2<int> pos = m_body.getPosition();
+            Vec2<int> playerPos = player->getBody().getPosition();
+
+            if (playerPos != player->getBody().getLastPosition())
+            {
+                m_aiNavigation.setGoal(pos, playerPos);
+            }
+
+            m_aiPerception.checkForInterestsInSight(
+                pos, 0,
+                [&](int x, int y)
+                {
+                    const Particle *p =
+                        r_particleHandler.getParticles().get(x, y);
+
+                    if (!p)
+                    {
+                        return false;
+                    }
+
+                    if (p->isSolid())
+                    {
+                        return true;
+                    }
+
+                    return false;
+                });
+
+            auto validSpot = [&](int x, int y)
+            {
+                Vec2<int> a = m_interactionBox.getBoundingBox().getA();
+                Vec2<int> b = m_interactionBox.getBoundingBox().getB();
+
+                Vec2<int> points[4] = {{x + a.x, y + a.y},
+                                       {x + b.x, y + a.y},
+                                       {x + a.x, y + b.y},
+                                       {x + b.x, y + b.y}};
+
+                // if (y < pos.y)
+                // {
+                //     bool ground = false;
+                //     for (int i = 0; i < 40; ++i)
+                //     {
+                //         const Particle *p =
+                //             r_particleHandler.getParticles().get(x, y + i);
+
+                //         if (p)
+                //         {
+                //             if (p->isSolid())
+                //             {
+                //                 ground = true;
+                //                 break;
+                //             }
+                //         }
+                //     }
+
+                //     if (!ground)
+                //     {
+                //         return false;
+                //     }
+                // }
+
+                for (int i = 0; i < 4; ++i)
+                {
+                    const Particle *p = r_particleHandler.getParticles().get(
+                        points[i].x, points[i].y);
+
+                    if (!p)
+                    {
+                        continue;
+                    }
+
+                    if (!p->isSolid())
+                    {
+                        continue;
+                    }
+
+                    return false;
+                }
+
+                return true;
+            };
+
+            m_aiNavigation.update(dt, validSpot);
+
+            if (m_aiNavigation.getPathState() ==
+                EntityAINavigationModule::PathState::Ready)
+            {
+                m_aiMovement.setCheckpoints(m_aiNavigation.getCheckpoints());
+                m_aiNavigation.sleep();
+            }
+
+            m_aiMovement.update(pos, m_interactionBox.getBoundingBox());
         }
-        m_aiModule.update(pos, dt, r_particleHandler.getParticles());
-        m_aiModule.updateBody(m_body);
+
+        if (m_aiMovement.shouldJump())
+        {
+            m_jumpModule.requestJump();
+        }
+
+        m_body.setVelocityX(m_aiMovement.getMoveDirection() * 6);
+
+        if (m_aiMovement.shouldSetPosition())
+        {
+            m_body.setPosition(m_aiMovement.getSetPosition().x,
+                               m_aiMovement.getSetPosition().y);
+        }
+
+        bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
+            m_body.getPosition(), BoundingBox::Side::Bottom);
+        m_jumpModule.update(dt, onGround);
+
+        if (m_jumpModule.canJump())
+        {
+            m_body.setVelocityY(-m_jumpModule.getJumpPower());
+        }
         updateMotion(dt);
     }
 
     void render(Viewport &viewport, const Camera &camera) override
     {
         renderDebug_boundingBox(viewport, camera);
-        m_aiModule.renderDebug(viewport, camera, m_body.getPosition(),
-                               m_lookAngle);
+
+        m_aiPerception.renderDebug(viewport, camera);
+
+        for (EntityAINavigationModule::Checkpoint p :
+             m_aiMovement.getMutatedCheckpoints())
+        {
+            Vec2<int> ppos = camera.worldToViewport(p.pos.x, p.pos.y, viewport);
+            viewport.setPixel(ppos.x, ppos.y,
+                              p.axis ==
+                                      EntityAINavigationModule::Axis::Horizontal
+                                  ? Color(255, 105, 245)
+                                  : Color(255, 245, 105));
+        }
     }
 
   private:
-    JumpModule m_jumpModule;
-    AIModule m_aiModule;
+    EntityJumpModule m_jumpModule;
+    EntityAIPerceptionModule m_aiPerception;
+    EntityAINavigationModule m_aiNavigation;
+    EntityAIMovementModule m_aiMovement;
 };

@@ -21,10 +21,15 @@ class TestScene : public Scene
             m_world.getEntityHandler().addPlayer(std::make_unique<Player>(
                 m_world.getParticleHandler(), r_input));
 
-            std::unique_ptr<TestEntity> test =
-                std::make_unique<TestEntity>(m_world.getParticleHandler());
+            for (int i = 0; i < 1; ++i)
+            {
+                std::unique_ptr<TestEntity> test =
+                    std::make_unique<TestEntity>(m_world.getParticleHandler());
 
-            m_world.getEntityHandler().addEntity(std::move(test));
+                test->getBody().setPosition(5 * i, 0);
+
+                m_world.getEntityHandler().addEntity(std::move(test));
+            }
 
             Particle stone;
             stone.setColor(Color(200, 205, 200));
@@ -108,7 +113,7 @@ class TestScene : public Scene
             m_world.render(r_viewport);
         }
 
-        std::cout << r_time.getFPS() << std::endl;
+        // std::cout << static_cast<int>(r_time.getFPS()) << std::endl;
 
         return SceneID::Testing;
     }

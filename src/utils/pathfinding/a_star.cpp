@@ -13,7 +13,6 @@ float AStarSolver::dist(Index2D start, Index2D end)
     float D = 1.0f;
     float D2 = 1.4142f; // sqrt(2)
     return D * (dx + dy) + (D2 - 2.0f * D) * std::min(dx, dy);
-    // return (dx + dy);
 }
 
 std::vector<Vec2<int>> AStarSolver::generatePath()
@@ -36,6 +35,8 @@ void AStarSolver::reset(Vec2<int> start, Vec2<int> end)
     m_nodes.clear();
     m_toSearch = std::priority_queue<AStarNode, std::vector<AStarNode>,
                                      AStarNodeCompare>();
+
+    // m_current = {};
 
     m_start = start;
     m_end = end;
