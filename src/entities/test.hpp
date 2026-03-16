@@ -13,7 +13,7 @@ class TestEntity : public Entity, public IDirectional
   public:
     TestEntity()
     {
-        m_interactionBox.getBoundingBox().setSize(11, 11);
+        m_interactionBox.getBoundingBox().setSize(50, 89);
         m_body.setGravity(0.4f);
 
         m_ai.getPerception().setSightFOV(100);
@@ -21,7 +21,7 @@ class TestEntity : public Entity, public IDirectional
         m_ai.getPerception().setSightDistance(1000);
         m_ai.getNavigation().setAStarSubIterateAmount(1000);
         m_ai.getNavigation().setAStarMaxIterations(100000);
-        m_ai.getNavigation().setAStarTerminationDistance(10);
+        m_ai.getNavigation().setAStarTerminationDistance(30);
 
         m_jumpHandler.setJumpPower(5);
         m_jumpHandler.setHoldDuration(0.0f);
@@ -74,7 +74,7 @@ class TestEntity : public Entity, public IDirectional
         }
 
         bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
-            m_body.getPosition(), BoundingBox::Side::Bottom, context.particles);
+            m_body.getPosition(), RectangleSide::Bottom, context.particles);
         m_jumpHandler.update(context.dt, onGround);
 
         if (m_jumpHandler.canJump())

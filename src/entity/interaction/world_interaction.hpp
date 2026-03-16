@@ -1,7 +1,7 @@
 #pragma once
 
 #include "backend/utils/vec.hpp"
-#include "utils/bounding_box.hpp"
+#include "utils/rectangle.hpp"
 #include "world/particle/particle_handler.hpp"
 
 class WorldInteractionHandler
@@ -43,7 +43,9 @@ class WorldInteractionHandler
     };
 
   public:
-    WorldInteractionHandler(const BoundingBox &bb) : r_boundingBox(bb) {}
+    WorldInteractionHandler(const StaticGridRectangle &bb) : r_boundingBox(bb)
+    {
+    }
 
     MTVIntersectionResponse
     calculateWorldIntersection_MTV(Vec2<int> pos,
@@ -55,9 +57,9 @@ class WorldInteractionHandler
     calculateCollisionFromTrajectory(Vec2<int> start, Vec2<int> end,
                                      const ParticleHandler &particles);
 
-    bool againstSolidSurface(Vec2<int> pos, BoundingBox::Side side,
+    bool againstSolidSurface(Vec2<int> pos, RectangleSide side,
                              const ParticleHandler &particles);
-    bool againstSolidCorner(Vec2<int> pos, BoundingBox::Corner corner,
+    bool againstSolidCorner(Vec2<int> pos, RectangleCorner corner,
                             const ParticleHandler &particles);
 
     StepResponse calculateStepResponse(Vec2<int> pos, Vec2<float> velocity,
@@ -71,5 +73,5 @@ class WorldInteractionHandler
                                             const ParticleHandler &particles);
 
   private:
-    const BoundingBox &r_boundingBox;
+    const StaticGridRectangle &r_boundingBox;
 };

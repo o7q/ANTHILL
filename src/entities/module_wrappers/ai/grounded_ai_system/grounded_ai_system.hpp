@@ -9,7 +9,7 @@
 class GroundedAISystem
 {
   public:
-    void update(Vec2<int> pos, const BoundingBox &bb,
+    void update(Vec2<int> pos, const StaticGridRectangle &bb,
                 const ChunkMap<Particle> &particles, float dt)
     {
         auto neighborCheck = [&](int x, int y)

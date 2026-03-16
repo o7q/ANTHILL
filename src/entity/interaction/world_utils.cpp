@@ -1,9 +1,8 @@
+#include "utils/rectangle.hpp"
 #include "world_interaction.hpp"
 
-#include "utils/bounding_box.hpp"
-
 bool WorldInteractionHandler::againstSolidSurface(
-    Vec2<int> pos, BoundingBox::Side side, const ParticleHandler &particles)
+    Vec2<int> pos, RectangleSide side, const ParticleHandler &particles)
 {
     Vec2<unsigned int> size = r_boundingBox.getSize();
     Vec2<int> topLeft = pos + r_boundingBox.getA();
@@ -22,28 +21,28 @@ bool WorldInteractionHandler::againstSolidSurface(
 
     switch (side)
     {
-    case BoundingBox::Side::Top:
+    case RectangleSide::Top:
     {
         Vec2<int> start = Vec2<int>(topLeft.x, topLeft.y - 1);
         Vec2<int> end = Vec2<int>(topLeft.x + size.x - 1, topLeft.y - 1);
         particles.query(start, end, query);
     }
     break;
-    case BoundingBox::Side::Right:
+    case RectangleSide::Right:
     {
         Vec2<int> start = Vec2<int>(topLeft.x + size.x, topLeft.y);
         Vec2<int> end = Vec2<int>(topLeft.x + size.x, topLeft.y + size.y - 1);
         particles.query(start, end, query);
     }
     break;
-    case BoundingBox::Side::Bottom:
+    case RectangleSide::Bottom:
     {
         Vec2<int> start = Vec2<int>(topLeft.x, topLeft.y + size.y);
         Vec2<int> end = Vec2<int>(topLeft.x + size.x - 1, topLeft.y + size.y);
         particles.query(start, end, query);
     }
     break;
-    case BoundingBox::Side::Left:
+    case RectangleSide::Left:
     {
         Vec2<int> start = Vec2<int>(topLeft.x - 1, topLeft.y);
         Vec2<int> end = Vec2<int>(topLeft.x - 1, topLeft.y + size.y - 1);
@@ -56,7 +55,7 @@ bool WorldInteractionHandler::againstSolidSurface(
 }
 
 bool WorldInteractionHandler::againstSolidCorner(
-    Vec2<int> pos, BoundingBox::Corner corner, const ParticleHandler &particles)
+    Vec2<int> pos, RectangleCorner corner, const ParticleHandler &particles)
 {
     Vec2<unsigned int> size = r_boundingBox.getSize();
     Vec2<int> topLeft = pos + r_boundingBox.getA();
@@ -64,7 +63,7 @@ bool WorldInteractionHandler::againstSolidCorner(
     bool collided = false;
     switch (corner)
     {
-    case BoundingBox::Corner::TopLeft:
+    case RectangleCorner::TopLeft:
     {
         if (const Particle *p =
                 particles.getParticles().get(topLeft.x + size.x, topLeft.y - 1))
@@ -76,7 +75,7 @@ bool WorldInteractionHandler::againstSolidCorner(
         }
     }
     break;
-    case BoundingBox::Corner::TopRight:
+    case RectangleCorner::TopRight:
     {
         if (const Particle *p =
                 particles.getParticles().get(topLeft.x - 1, topLeft.y - 1))
@@ -88,7 +87,7 @@ bool WorldInteractionHandler::againstSolidCorner(
         }
     }
     break;
-    case BoundingBox::Corner::BottomLeft:
+    case RectangleCorner::BottomLeft:
     {
         if (const Particle *p =
                 particles.getParticles().get(topLeft.x - 1, topLeft.y + size.y))
@@ -100,7 +99,7 @@ bool WorldInteractionHandler::againstSolidCorner(
         }
     }
     break;
-    case BoundingBox::Corner::BottomRight:
+    case RectangleCorner::BottomRight:
     {
         if (const Particle *p = particles.getParticles().get(
                 topLeft.x + size.x, topLeft.y + size.y))
@@ -124,10 +123,9 @@ WorldInteractionHandler::calculateStepResponse(Vec2<int> pos,
 {
     StepResponse out;
     out.stepPosition = pos;
-    bool blockedLeft =
-        againstSolidSurface(pos, BoundingBox::Side::Left, particles);
+    bool blockedLeft = againstSolidSurface(pos, RectangleSide::Left, particles);
     bool blockedRight =
-        againstSolidSurface(pos, BoundingBox::Side::Right, particles);
+        againstSolidSurface(pos, RectangleSide::Right, particles);
 
     if ((blockedLeft && velocity.x < 0.0f) ||
         (blockedRight && velocity.x > 0.0f))
@@ -138,12 +136,11 @@ WorldInteractionHandler::calculateStepResponse(Vec2<int> pos,
 
             bool stillBlockedRight =
                 blockedRight &&
-                againstSolidSurface(steppedPos, BoundingBox::Side::Right,
+                againstSolidSurface(steppedPos, RectangleSide::Right,
                                     particles);
             bool stillBlockedLeft =
                 blockedLeft &&
-                againstSolidSurface(steppedPos, BoundingBox::Side::Left,
-                                    particles);
+                againstSolidSurface(steppedPos, RectangleSide::Left, particles);
 
             if (!stillBlockedRight && !stillBlockedLeft)
             {

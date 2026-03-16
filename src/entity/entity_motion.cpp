@@ -1,9 +1,10 @@
 #include "entity.hpp"
+#include "utils/rectangle.hpp"
 
 void Entity::updateApplyExternalMotion(EntityUpdateContext &context)
 {
     if (m_interactionBox.getWorldHandler().againstSolidSurface(
-            m_body.getPosition(), BoundingBox::Side::Bottom, context.particles))
+            m_body.getPosition(), RectangleSide::Bottom, context.particles))
     {
         m_body.haltMotionInDirection(0, 1);
     }
@@ -13,7 +14,7 @@ void Entity::updateApplyExternalMotion(EntityUpdateContext &context)
     }
 
     if (m_interactionBox.getWorldHandler().againstSolidSurface(
-            m_body.getPosition(), BoundingBox::Side::Top, context.particles))
+            m_body.getPosition(), RectangleSide::Top, context.particles))
     {
         m_body.haltMotionInDirection(0, -1);
     }

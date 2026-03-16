@@ -3,7 +3,7 @@
 #include "entity/modules/ai/navigation/ai_navigation.hpp"
 #include "utils/math/numbers.hpp"
 
-void AIMovement::update(Vec2<int> pos, const BoundingBox &box)
+void AIMovement::update(Vec2<int> pos, const StaticGridRectangle &bb)
 {
     m_shouldMove = false;
     m_shouldSetPosition = false;
@@ -28,8 +28,8 @@ void AIMovement::update(Vec2<int> pos, const BoundingBox &box)
         switch (current.axis)
         {
         case AINavigation::Axis::Horizontal:
-            if (current.pos.x >= box.getA().x + pos.x &&
-                current.pos.x <= box.getB().x + pos.x)
+            if (current.pos.x >= bb.getA().x + pos.x &&
+                current.pos.x <= bb.getB().x + pos.x)
             {
                 m_checkpoints.erase(m_checkpoints.begin());
             }
@@ -39,8 +39,8 @@ void AIMovement::update(Vec2<int> pos, const BoundingBox &box)
             }
             break;
         case AINavigation::Axis::Vertical:
-            if (current.pos.y >= box.getA().y + pos.y &&
-                current.pos.y <= box.getB().y + pos.y)
+            if (current.pos.y >= bb.getA().y + pos.y &&
+                current.pos.y <= bb.getB().y + pos.y)
             {
                 m_checkpoints.erase(m_checkpoints.begin());
             }

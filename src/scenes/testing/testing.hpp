@@ -5,16 +5,16 @@
 #include "scene/scene.hpp"
 #include "utils/math/angle.hpp"
 #include "utils/math/random.hpp"
+#include "utils/rectangle.hpp"
 #include "utils/render.hpp"
 #include "world/world.hpp"
-#include <iostream>
 #include <memory>
 #include <optional>
 
 class TestScene : public Scene
 {
   public:
-    TestScene(Window &window) : Scene(window) {}
+    TestScene(Window &window) : Scene(window), m_testTexture("carter.png") {}
 
     std::optional<SceneID> update() override
     {
@@ -104,31 +104,16 @@ class TestScene : public Scene
             m_world.update(r_time.getDT());
             if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
             {
-                // m_world.getCamera().setPosition(player->getBody().getPosition().x,
-                //                             player->getBody().getPosition().y);
                 m_world.getCamera().setGoal(player->getBody().getPosition().x,
                                             player->getBody().getPosition().y);
 
                 m_world.getCamera().update(r_time.getDT());
             }
 
-            Vec2<int> playerPos = m_world.getEntityHandler()
-                                      .getCurrentPlayer()
-                                      ->getBody()
-                                      .getPosition();
-
-            Vec2<int> viewportPlayerPos = m_world.getCamera().worldToViewport(
-                playerPos.x, playerPos.y, r_viewport);
+                Vec2<int> pos = m_world.getEntityHandler().getLatestEntity()->getBody().getPosition();
 
             m_world.render(r_viewport);
-            Utils::Render::drawSegment(r_viewport, viewportPlayerPos,
-                                       viewportMousePos, Color(255, 0, 0));
-
-            std::cout << Utils::Math::Angle::radiansToDegrees(
-                             Utils::Math::Angle::vectorsToAngle(
-                                 viewportPlayerPos.toFloat(),
-                                 viewportMousePos.toFloat()))
-                      << std::endl;
+            Utils::Render::drawTexture(r_viewport, m_testTexture, m_world.getCamera().worldToViewport(pos.x, pos.y, r_viewport));
         }
 
         // std::cout << static_cast<int>(r_time.getFPS()) << std::endl;
@@ -138,4 +123,5 @@ class TestScene : public Scene
 
   private:
     World m_world;
+    Texture m_testTexture;
 };

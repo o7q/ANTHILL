@@ -7,10 +7,9 @@
 #include "entity/modules/inventory/inventory.hpp"
 #include "entity/modules/jump_handler/jump_handler.hpp"
 #include "item/weapon/weapon.hpp"
-#include "utils/bounding_box.hpp"
 #include "utils/math/angle.hpp"
+#include "utils/rectangle.hpp"
 #include "world/camera/camera.hpp"
-#include "world/particle/particle_handler.hpp"
 
 class Player : public Entity, public IDirectional
 {
@@ -55,7 +54,7 @@ class Player : public Entity, public IDirectional
         }
 
         bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
-            m_body.getPosition(), BoundingBox::Side::Bottom, context.particles);
+            m_body.getPosition(), RectangleSide::Bottom, context.particles);
         m_jumpHandler.update(context.dt, onGround);
 
         if (m_jumpHandler.canJump())

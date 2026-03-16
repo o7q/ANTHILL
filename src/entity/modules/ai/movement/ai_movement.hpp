@@ -2,7 +2,7 @@
 
 #include "backend/utils/vec.hpp"
 #include "entity/modules/ai/navigation/ai_navigation.hpp"
-#include "utils/bounding_box.hpp"
+#include "utils/rectangle.hpp"
 #include <vector>
 
 class AIMovement
@@ -11,7 +11,7 @@ class AIMovement
     AIMovement() = default;
     virtual ~AIMovement() = default;
 
-    void update(Vec2<int> pos, const BoundingBox &box);
+    void update(Vec2<int> pos, const StaticGridRectangle &bb);
 
     void
     setCheckpoints(const std::vector<AINavigation::Checkpoint> &checkpoints)

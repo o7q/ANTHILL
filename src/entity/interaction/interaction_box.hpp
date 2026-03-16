@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utils/bounding_box.hpp"
+#include "utils/rectangle.hpp"
 #include "world_interaction.hpp"
 
 class InteractionBox
@@ -9,7 +9,7 @@ class InteractionBox
     InteractionBox() : m_worldHandler(m_boundingBox) {}
 
     WorldInteractionHandler &getWorldHandler() { return m_worldHandler; }
-    BoundingBox &getBoundingBox() { return m_boundingBox; }
+    StaticGridRectangle &getBoundingBox() { return m_boundingBox; }
 
     bool pointInside(Vec2<int> pos, int x, int y) const
     {
@@ -17,6 +17,6 @@ class InteractionBox
     }
 
   private:
-    BoundingBox m_boundingBox;
+    StaticGridRectangle m_boundingBox;
     WorldInteractionHandler m_worldHandler;
 };
