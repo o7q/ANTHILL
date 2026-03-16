@@ -36,14 +36,14 @@ void AStarSolver::reset(Vec2<int> start, Vec2<int> end)
     m_toSearch = std::priority_queue<AStarNode, std::vector<AStarNode>,
                                      AStarNodeCompare>();
 
-    // m_current = {};
+    m_current = AStarNode();
 
     m_start = start;
     m_end = end;
 
     m_endReached = false;
 
-    m_iterations = 0;
+    m_iterationCount = 0;
 
     AStarNode startNode;
     startNode.index = Index2D(start.x, start.y);

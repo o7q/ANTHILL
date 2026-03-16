@@ -48,6 +48,12 @@ inline void drawRectOutline(Viewport &viewport, Vec2<int> p1, Vec2<int> p2,
     }
 }
 
+inline void drawRectOutlineRotated(Viewport &viewport, Vec2<int> p1,
+                                   Vec2<int> p2, float angle)
+{
+    
+}
+
 inline void drawRectFilled(Viewport &viewport, Vec2<int> p1, Vec2<int> p2,
                            Color color)
 {

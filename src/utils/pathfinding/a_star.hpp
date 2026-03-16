@@ -53,10 +53,10 @@ class AStarSolver
     template <typename NeighborCheckFunction>
     void iteratePath(int amount, NeighborCheckFunction &&checkFunction)
     {
-        int i = 0;
-        while (!m_toSearch.empty() && i < amount && !m_endReached)
+        int localIterations = 0;
+        while (!m_toSearch.empty() && localIterations < amount && !m_endReached)
         {
-            if (m_iterations > m_maxIterations)
+            if (m_iterationCount > m_maxIterations)
             {
                 return;
             }
@@ -75,10 +75,10 @@ class AStarSolver
 
             if (m_terminateDistance.has_value())
             {
-                int distTest = std::abs(m_current.index.x - m_end.x) +
-                               std::abs(m_current.index.y - m_end.y);
+                int terminateDistTest = std::abs(m_current.index.x - m_end.x) +
+                                        std::abs(m_current.index.y - m_end.y);
 
-                if (distTest < m_terminateDistance)
+                if (terminateDistTest < m_terminateDistance)
                 {
                     terminate = true;
                 }
@@ -122,8 +122,8 @@ class AStarSolver
                 }
             }
 
-            ++i;
-            ++m_iterations;
+            ++localIterations;
+            ++m_iterationCount;
         }
     }
     std::vector<Vec2<int>> generatePath();
@@ -141,18 +141,19 @@ class AStarSolver
     float dist(Index2D start, Index2D end);
 
   private:
+    static constexpr int M_NEIGHBOR_INDICIES_X[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
+    static constexpr int M_NEIGHBOR_INDICIES_Y[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
+
     std::unordered_map<Index2D, AStarNode, Index2DHash> m_nodes;
     std::priority_queue<AStarNode, std::vector<AStarNode>, AStarNodeCompare>
         m_toSearch;
-    static constexpr int M_NEIGHBOR_INDICIES_X[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
-    static constexpr int M_NEIGHBOR_INDICIES_Y[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 
     AStarNode m_current;
 
     Vec2<int> m_start, m_end;
 
     int m_maxIterations = 50000;
-    int m_iterations = 0;
+    int m_iterationCount = 0;
 
     bool m_endReached = false;
 

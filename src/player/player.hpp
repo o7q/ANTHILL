@@ -3,7 +3,7 @@
 #include "backend/input_handler.hpp"
 #include "backend/viewport.hpp"
 #include "entity/entity.hpp"
-#include "entity/mixins/directional.hpp"
+#include "entity/interfaces/directional.hpp"
 #include "entity/modules/jump/jump_module.hpp"
 #include "utils/bounding_box.hpp"
 #include "world/camera/camera.hpp"
