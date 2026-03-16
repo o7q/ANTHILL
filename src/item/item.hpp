@@ -13,7 +13,6 @@ class Item
     Item(const std::string &name) : m_name(name) {}
     virtual ~Item() {}
 
-    virtual void update() = 0;
     std::string getName() { return m_name; }
 
   private:

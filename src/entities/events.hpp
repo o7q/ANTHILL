@@ -15,10 +15,13 @@ enum class EntityEventType
 
 struct EntityEvent
 {
-    EntityEvent(EntityEventType type) : type(type) {}
+    EntityEvent(Entity *const caller, EntityEventType type)
+        : caller(caller), type(type)
+    {
+    }
     virtual ~EntityEvent() = default;
 
-    Entity *caller = nullptr;
+    Entity *const caller = nullptr;
     const EntityEventType type;
 };
 
@@ -43,7 +46,10 @@ class EntityEventEmitter
 
 struct EntityDamageEvent : public EntityEvent
 {
-    EntityDamageEvent() : EntityEvent(EntityEventType::EntityDamage) {}
+    EntityDamageEvent(Entity *const caller)
+        : EntityEvent(caller, EntityEventType::EntityDamage)
+    {
+    }
 
     Entity *target = nullptr;
     int damage = 0;
@@ -51,8 +57,9 @@ struct EntityDamageEvent : public EntityEvent
 
 struct EntityWorldModifyEvent : public EntityEvent
 {
-    EntityWorldModifyEvent(EntityEventType type = EntityEventType::WorldModify)
-        : EntityEvent(type)
+    EntityWorldModifyEvent(Entity *const caller,
+                           EntityEventType type = EntityEventType::WorldModify)
+        : EntityEvent(caller, type)
     {
     }
     virtual ~EntityWorldModifyEvent() = default;
@@ -62,8 +69,8 @@ struct EntityWorldModifyEvent : public EntityEvent
 
 struct EntityWorldModifyDrawEvent : public EntityWorldModifyEvent
 {
-    EntityWorldModifyDrawEvent()
-        : EntityWorldModifyEvent(EntityEventType::WorldModifyDraw)
+    EntityWorldModifyDrawEvent(Entity *const caller)
+        : EntityWorldModifyEvent(caller, EntityEventType::WorldModifyDraw)
     {
     }
 

@@ -4,7 +4,8 @@
 
 // minimum translation vector
 WorldInteractionHandler::MTVIntersectionResponse
-WorldInteractionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
+WorldInteractionHandler::calculateWorldIntersection_MTV(
+    Vec2<int> pos, const ParticleHandler &particles)
 {
     const Vec2<int> size = r_boundingBox.getSize().toGrid();
     const Vec2<int> topLeft = r_boundingBox.getA() + pos;
@@ -21,7 +22,7 @@ WorldInteractionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
             Vec2<int> worldPos = topLeft + Vec2<int>(x, y);
 
             const Particle *p =
-                r_particles.getParticles().get(worldPos.x, worldPos.y);
+                particles.getParticles().get(worldPos.x, worldPos.y);
 
             if (!p)
             {
@@ -87,7 +88,7 @@ WorldInteractionHandler::calculateWorldIntersection_MTV(Vec2<int> pos)
 
 Vec2<float>
 WorldInteractionHandler::calculateWorldIntersection_averageDirection(
-    Vec2<int> pos)
+    Vec2<int> pos, const ParticleHandler &particles)
 {
     const Vec2<unsigned int> size = r_boundingBox.getSize();
     const Vec2<int> topLeft = pos + r_boundingBox.getA();
@@ -102,7 +103,7 @@ WorldInteractionHandler::calculateWorldIntersection_averageDirection(
             Vec2<int> worldPos = topLeft + Vec2<int>(x, y);
 
             const Particle *p =
-                r_particles.getParticles().get(worldPos.x, worldPos.y);
+                particles.getParticles().get(worldPos.x, worldPos.y);
             if (!p)
             {
                 continue;

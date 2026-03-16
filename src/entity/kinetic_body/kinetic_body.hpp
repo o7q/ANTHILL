@@ -23,6 +23,7 @@ class KineticBody
 
     void setVelocityX(float x) { m_body.setVelocityX(x); }
     void setVelocityY(float y) { m_body.setVelocityY(y); }
+    void setVelocity(float x, float y) { m_body.setVelocity(x, y); }
 
     Vec2<float> getVelocity() const { return m_body.getVelocity(); }
 

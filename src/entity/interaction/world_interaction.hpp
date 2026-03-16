@@ -43,28 +43,33 @@ class WorldInteractionHandler
     };
 
   public:
-    WorldInteractionHandler(ParticleHandler &particles, BoundingBox &bb)
-        : r_particles(particles), r_boundingBox(bb)
-    {
-    }
+    WorldInteractionHandler(const BoundingBox &bb) : r_boundingBox(bb) {}
 
-    MTVIntersectionResponse calculateWorldIntersection_MTV(Vec2<int> pos);
-    Vec2<float> calculateWorldIntersection_averageDirection(Vec2<int> pos);
-
-    TrajectoryCollisionResponse
-    calculateCollisionFromTrajectory(Vec2<int> start, Vec2<int> end);
-
-    bool againstSolidSurface(Vec2<int> pos, BoundingBox::Side side);
-    bool againstSolidCorner(Vec2<int> pos, BoundingBox::Corner corner);
-
-    StepResponse calculateStepResponse(Vec2<int> pos, Vec2<float> velocity);
+    MTVIntersectionResponse
+    calculateWorldIntersection_MTV(Vec2<int> pos,
+                                   const ParticleHandler &particles);
+    Vec2<float> calculateWorldIntersection_averageDirection(
+        Vec2<int> pos, const ParticleHandler &particles);
 
     TrajectoryCollisionResponse
-    calculateCollisionFromTrajectorySlide(Vec2<int> start, Vec2<int> end);
+    calculateCollisionFromTrajectory(Vec2<int> start, Vec2<int> end,
+                                     const ParticleHandler &particles);
 
-    LocalWorldQuery generateLocalWorldQuery(Vec2<int> pos);
+    bool againstSolidSurface(Vec2<int> pos, BoundingBox::Side side,
+                             const ParticleHandler &particles);
+    bool againstSolidCorner(Vec2<int> pos, BoundingBox::Corner corner,
+                            const ParticleHandler &particles);
+
+    StepResponse calculateStepResponse(Vec2<int> pos, Vec2<float> velocity,
+                                       const ParticleHandler &particles);
+
+    TrajectoryCollisionResponse
+    calculateCollisionFromTrajectorySlide(Vec2<int> start, Vec2<int> end,
+                                          const ParticleHandler &particles);
+
+    LocalWorldQuery generateLocalWorldQuery(Vec2<int> pos,
+                                            const ParticleHandler &particles);
 
   private:
-    const ParticleHandler &r_particles;
     const BoundingBox &r_boundingBox;
 };

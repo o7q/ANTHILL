@@ -2,8 +2,8 @@
 
 #include "utils/bounding_box.hpp"
 
-bool WorldInteractionHandler::againstSolidSurface(Vec2<int> pos,
-                                                  BoundingBox::Side side)
+bool WorldInteractionHandler::againstSolidSurface(
+    Vec2<int> pos, BoundingBox::Side side, const ParticleHandler &particles)
 {
     Vec2<unsigned int> size = r_boundingBox.getSize();
     Vec2<int> topLeft = pos + r_boundingBox.getA();
@@ -26,28 +26,28 @@ bool WorldInteractionHandler::againstSolidSurface(Vec2<int> pos,
     {
         Vec2<int> start = Vec2<int>(topLeft.x, topLeft.y - 1);
         Vec2<int> end = Vec2<int>(topLeft.x + size.x - 1, topLeft.y - 1);
-        r_particles.query(start, end, query);
+        particles.query(start, end, query);
     }
     break;
     case BoundingBox::Side::Right:
     {
         Vec2<int> start = Vec2<int>(topLeft.x + size.x, topLeft.y);
         Vec2<int> end = Vec2<int>(topLeft.x + size.x, topLeft.y + size.y - 1);
-        r_particles.query(start, end, query);
+        particles.query(start, end, query);
     }
     break;
     case BoundingBox::Side::Bottom:
     {
         Vec2<int> start = Vec2<int>(topLeft.x, topLeft.y + size.y);
         Vec2<int> end = Vec2<int>(topLeft.x + size.x - 1, topLeft.y + size.y);
-        r_particles.query(start, end, query);
+        particles.query(start, end, query);
     }
     break;
     case BoundingBox::Side::Left:
     {
         Vec2<int> start = Vec2<int>(topLeft.x - 1, topLeft.y);
         Vec2<int> end = Vec2<int>(topLeft.x - 1, topLeft.y + size.y - 1);
-        r_particles.query(start, end, query);
+        particles.query(start, end, query);
     }
     break;
     }
@@ -55,8 +55,8 @@ bool WorldInteractionHandler::againstSolidSurface(Vec2<int> pos,
     return collided;
 }
 
-bool WorldInteractionHandler::againstSolidCorner(Vec2<int> pos,
-                                                 BoundingBox::Corner corner)
+bool WorldInteractionHandler::againstSolidCorner(
+    Vec2<int> pos, BoundingBox::Corner corner, const ParticleHandler &particles)
 {
     Vec2<unsigned int> size = r_boundingBox.getSize();
     Vec2<int> topLeft = pos + r_boundingBox.getA();
@@ -66,8 +66,8 @@ bool WorldInteractionHandler::againstSolidCorner(Vec2<int> pos,
     {
     case BoundingBox::Corner::TopLeft:
     {
-        if (const Particle *p = r_particles.getParticles().get(
-                topLeft.x + size.x, topLeft.y - 1))
+        if (const Particle *p =
+                particles.getParticles().get(topLeft.x + size.x, topLeft.y - 1))
         {
             if (p->isSolid() && !p->isMoving())
             {
@@ -79,7 +79,7 @@ bool WorldInteractionHandler::againstSolidCorner(Vec2<int> pos,
     case BoundingBox::Corner::TopRight:
     {
         if (const Particle *p =
-                r_particles.getParticles().get(topLeft.x - 1, topLeft.y - 1))
+                particles.getParticles().get(topLeft.x - 1, topLeft.y - 1))
         {
             if (p->isSolid() && !p->isMoving())
             {
@@ -90,8 +90,8 @@ bool WorldInteractionHandler::againstSolidCorner(Vec2<int> pos,
     break;
     case BoundingBox::Corner::BottomLeft:
     {
-        if (const Particle *p = r_particles.getParticles().get(
-                topLeft.x - 1, topLeft.y + size.y))
+        if (const Particle *p =
+                particles.getParticles().get(topLeft.x - 1, topLeft.y + size.y))
         {
             if (p->isSolid() && !p->isMoving())
             {
@@ -102,7 +102,7 @@ bool WorldInteractionHandler::againstSolidCorner(Vec2<int> pos,
     break;
     case BoundingBox::Corner::BottomRight:
     {
-        if (const Particle *p = r_particles.getParticles().get(
+        if (const Particle *p = particles.getParticles().get(
                 topLeft.x + size.x, topLeft.y + size.y))
         {
             if (p->isSolid() && !p->isMoving())
@@ -119,12 +119,15 @@ bool WorldInteractionHandler::againstSolidCorner(Vec2<int> pos,
 
 WorldInteractionHandler::StepResponse
 WorldInteractionHandler::calculateStepResponse(Vec2<int> pos,
-                                               Vec2<float> velocity)
+                                               Vec2<float> velocity,
+                                               const ParticleHandler &particles)
 {
     StepResponse out;
     out.stepPosition = pos;
-    bool blockedLeft = againstSolidSurface(pos, BoundingBox::Side::Left);
-    bool blockedRight = againstSolidSurface(pos, BoundingBox::Side::Right);
+    bool blockedLeft =
+        againstSolidSurface(pos, BoundingBox::Side::Left, particles);
+    bool blockedRight =
+        againstSolidSurface(pos, BoundingBox::Side::Right, particles);
 
     if ((blockedLeft && velocity.x < 0.0f) ||
         (blockedRight && velocity.x > 0.0f))
@@ -135,16 +138,18 @@ WorldInteractionHandler::calculateStepResponse(Vec2<int> pos,
 
             bool stillBlockedRight =
                 blockedRight &&
-                againstSolidSurface(steppedPos, BoundingBox::Side::Right);
+                againstSolidSurface(steppedPos, BoundingBox::Side::Right,
+                                    particles);
             bool stillBlockedLeft =
                 blockedLeft &&
-                againstSolidSurface(steppedPos, BoundingBox::Side::Left);
+                againstSolidSurface(steppedPos, BoundingBox::Side::Left,
+                                    particles);
 
             if (!stillBlockedRight && !stillBlockedLeft)
             {
                 WorldInteractionHandler::TrajectoryCollisionResponse
-                    collisionCheck =
-                        calculateCollisionFromTrajectory(pos, steppedPos);
+                    collisionCheck = calculateCollisionFromTrajectory(
+                        pos, steppedPos, particles);
                 if (collisionCheck.collided)
                 {
                     break;
@@ -162,7 +167,8 @@ WorldInteractionHandler::calculateStepResponse(Vec2<int> pos,
 }
 
 WorldInteractionHandler::LocalWorldQuery
-WorldInteractionHandler::generateLocalWorldQuery(Vec2<int> pos)
+WorldInteractionHandler::generateLocalWorldQuery(
+    Vec2<int> pos, const ParticleHandler &particles)
 {
     LocalWorldQuery out;
 
@@ -190,8 +196,8 @@ WorldInteractionHandler::generateLocalWorldQuery(Vec2<int> pos)
     out.staticSolidPercentage = static_cast<float>(out.staticSolidCount) / area;
     out.immovablePercentage = static_cast<float>(out.immovableCount) / area;
 
-    r_particles.query(r_boundingBox.getA() + pos, r_boundingBox.getB() + pos,
-                      query);
+    particles.query(r_boundingBox.getA() + pos, r_boundingBox.getB() + pos,
+                    query);
 
     return out;
 }

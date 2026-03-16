@@ -11,8 +11,7 @@
 class TestEntity : public Entity, public IDirectional
 {
   public:
-    TestEntity(ParticleHandler &particles)
-        : Entity(EntityType::Generic, particles)
+    TestEntity()
     {
         m_interactionBox.getBoundingBox().setSize(11, 11);
         m_body.setGravity(0.4f);
@@ -28,11 +27,10 @@ class TestEntity : public Entity, public IDirectional
         m_jumpHandler.setHoldDuration(0.0f);
     }
 
-    void update(float dt,
-                const std::vector<const Entity *> &nearbyEntities) override
+    void update(EntityUpdateContext &context) override
     {
         const Entity *player = nullptr;
-        for (const Entity *entity : nearbyEntities)
+        for (const Entity *entity : context.nearbyEntities)
         {
             if (entity->getMetadata().type == EntityType::Player)
             {
@@ -53,7 +51,7 @@ class TestEntity : public Entity, public IDirectional
         }
 
         m_ai.update(pos, m_interactionBox.getBoundingBox(),
-                    r_particleHandler.getParticles(), dt);
+                    context.particles.getParticles(), context.dt);
 
         if (m_ai.getMovement().shouldMove())
         {
@@ -76,14 +74,14 @@ class TestEntity : public Entity, public IDirectional
         }
 
         bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
-            m_body.getPosition(), BoundingBox::Side::Bottom);
-        m_jumpHandler.update(dt, onGround);
+            m_body.getPosition(), BoundingBox::Side::Bottom, context.particles);
+        m_jumpHandler.update(context.dt, onGround);
 
         if (m_jumpHandler.canJump())
         {
             m_body.setVelocityY(-m_jumpHandler.getJumpPower());
         }
-        updateMotion(dt);
+        updateMotion(context);
     }
 
     void render(Viewport &viewport, const Camera &camera) override

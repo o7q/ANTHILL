@@ -6,10 +6,7 @@
 class InteractionBox
 {
   public:
-    InteractionBox(ParticleHandler &particles)
-        : m_worldHandler(particles, m_boundingBox)
-    {
-    }
+    InteractionBox() : m_worldHandler(m_boundingBox) {}
 
     WorldInteractionHandler &getWorldHandler() { return m_worldHandler; }
     BoundingBox &getBoundingBox() { return m_boundingBox; }

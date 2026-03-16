@@ -20,13 +20,13 @@ class TestScene : public Scene
     {
         if (start())
         {
-            m_world.getEntityHandler().addPlayer(std::make_unique<Player>(
-                m_world.getParticleHandler(), r_input));
+            m_world.getEntityHandler().addPlayer(
+                std::make_unique<Player>(r_input));
 
             for (int i = 0; i < 1; ++i)
             {
                 std::unique_ptr<TestEntity> test =
-                    std::make_unique<TestEntity>(m_world.getParticleHandler());
+                    std::make_unique<TestEntity>();
 
                 test->getBody().setPosition(5 * i, 0);
 

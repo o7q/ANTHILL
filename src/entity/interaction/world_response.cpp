@@ -3,8 +3,8 @@
 #include "utils/math/line.hpp"
 
 WorldInteractionHandler::TrajectoryCollisionResponse
-WorldInteractionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
-                                                          Vec2<int> end)
+WorldInteractionHandler::calculateCollisionFromTrajectory(
+    Vec2<int> start, Vec2<int> end, const ParticleHandler &particles)
 {
     bool collided = false;
     Vec2<int> previousPos = start;
@@ -25,7 +25,7 @@ WorldInteractionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
 
             return false;
         };
-        r_particles.query(a, b, query);
+        particles.query(a, b, query);
 
         if (collidedThisIteration)
         {
@@ -48,13 +48,13 @@ WorldInteractionHandler::calculateCollisionFromTrajectory(Vec2<int> start,
 }
 
 WorldInteractionHandler::TrajectoryCollisionResponse
-WorldInteractionHandler::calculateCollisionFromTrajectorySlide(Vec2<int> start,
-                                                               Vec2<int> end)
+WorldInteractionHandler::calculateCollisionFromTrajectorySlide(
+    Vec2<int> start, Vec2<int> end, const ParticleHandler &particles)
 {
     TrajectoryCollisionResponse out;
 
     TrajectoryCollisionResponse xy_response =
-        calculateCollisionFromTrajectory(start, end);
+        calculateCollisionFromTrajectory(start, end, particles);
 
     // all axis
     if (xy_response.collided)
@@ -62,14 +62,16 @@ WorldInteractionHandler::calculateCollisionFromTrajectorySlide(Vec2<int> start,
         // horizontal axis
         Vec2<int> end_x = {end.x, xy_response.resolvePos.y};
         TrajectoryCollisionResponse x_response =
-            calculateCollisionFromTrajectory(xy_response.resolvePos, end_x);
+            calculateCollisionFromTrajectory(xy_response.resolvePos, end_x,
+                                             particles);
 
         if (xy_response.resolvePos == x_response.resolvePos)
         {
             // vertical axis
             Vec2<int> end_y = {xy_response.resolvePos.x, end.y};
             TrajectoryCollisionResponse y_response =
-                calculateCollisionFromTrajectory(xy_response.resolvePos, end_y);
+                calculateCollisionFromTrajectory(xy_response.resolvePos, end_y,
+                                                 particles);
 
             out.resolvePos = y_response.resolvePos;
         }

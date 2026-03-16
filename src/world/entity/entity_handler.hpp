@@ -1,14 +1,19 @@
 #pragma once
 
 #include "entity/entity.hpp"
+#include "entity/update_context.hpp"
 #include "player/player.hpp"
+#include "world/particle/particle_handler.hpp"
 #include <memory>
 #include <vector>
 
 class EntityHandler
 {
   public:
-    EntityHandler() = default;
+    EntityHandler(ParticleHandler &particleHandler)
+        : r_particleHandler(particleHandler)
+    {
+    }
     EntityHandler(const EntityHandler &other) = delete;
     EntityHandler &operator=(const EntityHandler &other) = delete;
 
@@ -23,7 +28,9 @@ class EntityHandler
                 nearby.push_back(entity.get());
             }
 
-            (*it)->update(dt, nearby);
+            EntityUpdateContext context{dt, r_particleHandler, nearby};
+
+            (*it)->update(context);
             if ((*it)->isDead())
             {
                 it = m_entities.erase(it);
@@ -64,6 +71,8 @@ class EntityHandler
     Entity *getLatestEntity() { return m_latestEntity; }
 
   private:
+    ParticleHandler &r_particleHandler;
+
     Player *m_currentPlayer = nullptr;
     Entity *m_latestEntity = nullptr;
     std::vector<std::unique_ptr<Entity>> m_entities;

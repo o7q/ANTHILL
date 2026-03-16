@@ -8,7 +8,7 @@
 class World
 {
   public:
-    World() = default;
+    World() : m_entityHandler(m_particleHandler) {}
     World(const World &other) = delete;
     World &operator=(const World &other) = delete;
 
