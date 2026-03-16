@@ -1,8 +1,8 @@
 #pragma once
 
-#include "entity/modules/ai/movement/ai_movement_module.hpp"
-#include "entity/modules/ai/navigation/ai_navigation_module.hpp"
-#include "entity/modules/ai/perception/ai_perception_module.hpp"
+#include "entity/modules/ai/movement/ai_movement.hpp"
+#include "entity/modules/ai/navigation/ai_navigation.hpp"
+#include "entity/modules/ai/perception/ai_perception.hpp"
 #include "utils/data_structures/chunk_map.hpp"
 #include "world/particle/particle.hpp"
 
@@ -44,8 +44,7 @@ class GroundedAISystem
 
         m_aiNavigation.update(dt, neighborCheck);
 
-        if (m_aiNavigation.getPathState() ==
-            AINavigationModule::PathState::Ready)
+        if (m_aiNavigation.getPathState() == AINavigation::PathState::Ready)
         {
             m_aiMovement.setCheckpoints(m_aiNavigation.getCheckpoints());
             m_aiNavigation.sleep();
@@ -54,12 +53,12 @@ class GroundedAISystem
         m_aiMovement.update(pos, bb);
     }
 
-    AIPerceptionModule &getPerception() { return m_aiPerception; }
-    AINavigationModule &getNavigation() { return m_aiNavigation; }
-    AIMovementModule &getMovement() { return m_aiMovement; }
+    AIPerception &getPerception() { return m_aiPerception; }
+    AINavigation &getNavigation() { return m_aiNavigation; }
+    AIMovement &getMovement() { return m_aiMovement; }
 
   private:
-    AIPerceptionModule m_aiPerception;
-    AINavigationModule m_aiNavigation;
-    AIMovementModule m_aiMovement;
+    AIPerception m_aiPerception;
+    AINavigation m_aiNavigation;
+    AIMovement m_aiMovement;
 };

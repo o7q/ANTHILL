@@ -1,8 +1,9 @@
-#include "ai_movement_module.hpp"
+#include "ai_movement.hpp"
 
+#include "entity/modules/ai/navigation/ai_navigation.hpp"
 #include "utils/math/numbers.hpp"
 
-void AIMovementModule::update(Vec2<int> pos, const BoundingBox &box)
+void AIMovement::update(Vec2<int> pos, const BoundingBox &box)
 {
     m_shouldMove = false;
     m_shouldSetPosition = false;
@@ -12,7 +13,7 @@ void AIMovementModule::update(Vec2<int> pos, const BoundingBox &box)
         return;
     }
 
-    AINavigationModule::Checkpoint current;
+    AINavigation::Checkpoint current;
     while (true)
     {
         if (m_checkpoints.empty())
@@ -26,7 +27,7 @@ void AIMovementModule::update(Vec2<int> pos, const BoundingBox &box)
 
         switch (current.axis)
         {
-        case AINavigationModule::Axis::Horizontal:
+        case AINavigation::Axis::Horizontal:
             if (current.pos.x >= box.getA().x + pos.x &&
                 current.pos.x <= box.getB().x + pos.x)
             {
@@ -37,7 +38,7 @@ void AIMovementModule::update(Vec2<int> pos, const BoundingBox &box)
                 breakout = true;
             }
             break;
-        case AINavigationModule::Axis::Vertical:
+        case AINavigation::Axis::Vertical:
             if (current.pos.y >= box.getA().y + pos.y &&
                 current.pos.y <= box.getB().y + pos.y)
             {
@@ -56,8 +57,8 @@ void AIMovementModule::update(Vec2<int> pos, const BoundingBox &box)
         }
     }
 
-    if (m_previousCheckpoint.axis == AINavigationModule::Axis::Horizontal &&
-        current.axis == AINavigationModule::Axis::Vertical)
+    if (m_previousCheckpoint.axis == AINavigation::Axis::Horizontal &&
+        current.axis == AINavigation::Axis::Vertical)
     {
         // m_setPosition = current.pos;
         // m_shouldSetPosition = true;

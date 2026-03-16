@@ -2,8 +2,9 @@
 
 enum class EntityType
 {
-    None,
-    Player
+    Generic,
+    Player,
+    Projectile
 };
 
 struct EntityMetadata

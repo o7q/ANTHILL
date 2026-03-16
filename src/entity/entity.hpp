@@ -1,6 +1,7 @@
 #pragma once
 
 #include "backend/viewport.hpp"
+#include "entities/events.hpp"
 #include "entities/metadata.hpp"
 #include "entity/interaction/interaction_box.hpp"
 #include "entity/kinetic_body/kinetic_body.hpp"
@@ -10,9 +11,11 @@
 class Entity
 {
   public:
-    Entity(ParticleHandler &particles, Entity *parent = nullptr)
+    Entity(EntityType type, ParticleHandler &particles,
+           Entity *parent = nullptr)
         : r_particleHandler(particles), m_interactionBox(particles)
     {
+        m_metadata.type = type;
         m_parent = parent;
     }
     virtual ~Entity() = default;
@@ -40,6 +43,7 @@ class Entity
             kill();
         }
     }
+    virtual void updateEvents() { m_eventEmitter.purge(); }
 
     void renderDebug_boundingBox(Viewport &viewport, const Camera &camera,
                                  Color color = Color(43, 255, 223));
@@ -51,12 +55,15 @@ class Entity
     void updateMotion_moveAndPreventWorldCollision(Vec2<int> currentPos,
                                                    float dt);
 
+    const EntityEventEmitter &getEventEmitter() const { return m_eventEmitter; }
+
   protected:
     const ParticleHandler &r_particleHandler;
     InteractionBox m_interactionBox;
     KineticBody m_body;
 
     EntityMetadata m_metadata;
+    EntityEventEmitter m_eventEmitter;
 
   private:
     const Entity *m_parent = nullptr;

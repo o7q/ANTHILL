@@ -5,13 +5,14 @@
 #include "entities/module_wrappers/ai/grounded_ai_system/grounded_ai_system.hpp"
 #include "entity/entity.hpp"
 #include "entity/interfaces/directional.hpp"
-#include "entity/modules/jump/jump_module.hpp"
+#include "entity/modules/jump_handler/jump_handler.hpp"
 #include "world/camera/camera.hpp"
 
 class TestEntity : public Entity, public IDirectional
 {
   public:
-    TestEntity(ParticleHandler &particles) : Entity(particles)
+    TestEntity(ParticleHandler &particles)
+        : Entity(EntityType::Generic, particles)
     {
         m_interactionBox.getBoundingBox().setSize(11, 11);
         m_body.setGravity(0.4f);
@@ -23,8 +24,8 @@ class TestEntity : public Entity, public IDirectional
         m_ai.getNavigation().setAStarMaxIterations(100000);
         m_ai.getNavigation().setAStarTerminationDistance(10);
 
-        m_jumpModule.setHoldDuration(0.0f);
-        m_jumpModule.setJumpPower(5);
+        m_jumpHandler.setJumpPower(5);
+        m_jumpHandler.setHoldDuration(0.0f);
     }
 
     void update(float dt,
@@ -60,7 +61,7 @@ class TestEntity : public Entity, public IDirectional
 
             if (m_ai.getMovement().getMoveDirection().y < 0)
             {
-                m_jumpModule.requestJump();
+                m_jumpHandler.requestJump();
             }
         }
         else
@@ -76,11 +77,11 @@ class TestEntity : public Entity, public IDirectional
 
         bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
             m_body.getPosition(), BoundingBox::Side::Bottom);
-        m_jumpModule.update(dt, onGround);
+        m_jumpHandler.update(dt, onGround);
 
-        if (m_jumpModule.canJump())
+        if (m_jumpHandler.canJump())
         {
-            m_body.setVelocityY(-m_jumpModule.getJumpPower());
+            m_body.setVelocityY(-m_jumpHandler.getJumpPower());
         }
         updateMotion(dt);
     }
@@ -91,18 +92,18 @@ class TestEntity : public Entity, public IDirectional
 
         // m_aiPerception.renderDebug(viewport, camera);
 
-        for (AINavigationModule::Checkpoint p :
+        for (AINavigation::Checkpoint p :
              m_ai.getMovement().getMutatedCheckpoints())
         {
             Vec2<int> ppos = camera.worldToViewport(p.pos.x, p.pos.y, viewport);
             viewport.setPixel(ppos.x, ppos.y,
-                              p.axis == AINavigationModule::Axis::Horizontal
+                              p.axis == AINavigation::Axis::Horizontal
                                   ? Color(255, 105, 245)
                                   : Color(255, 245, 105));
         }
     }
 
   private:
-    JumpModule m_jumpModule;
+    JumpHandler m_jumpHandler;
     GroundedAISystem m_ai;
 };

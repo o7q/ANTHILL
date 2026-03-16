@@ -3,7 +3,9 @@
 #include "entities/test.hpp"
 #include "player/player.hpp"
 #include "scene/scene.hpp"
+#include "utils/math/angle.hpp"
 #include "utils/math/random.hpp"
+#include "utils/render.hpp"
 #include "world/world.hpp"
 #include <iostream>
 #include <memory>
@@ -110,7 +112,23 @@ class TestScene : public Scene
                 m_world.getCamera().update(r_time.getDT());
             }
 
+            Vec2<int> playerPos = m_world.getEntityHandler()
+                                      .getCurrentPlayer()
+                                      ->getBody()
+                                      .getPosition();
+
+            Vec2<int> viewportPlayerPos = m_world.getCamera().worldToViewport(
+                playerPos.x, playerPos.y, r_viewport);
+
             m_world.render(r_viewport);
+            Utils::Render::drawSegment(r_viewport, viewportPlayerPos,
+                                       viewportMousePos, Color(255, 0, 0));
+
+            std::cout << Utils::Math::Angle::radiansToDegrees(
+                             Utils::Math::Angle::vectorsToAngle(
+                                 viewportPlayerPos.toFloat(),
+                                 viewportMousePos.toFloat()))
+                      << std::endl;
         }
 
         // std::cout << static_cast<int>(r_time.getFPS()) << std::endl;

@@ -1,6 +1,6 @@
-#include "jump_module.hpp"
+#include "jump_handler.hpp"
 
-void JumpModule::update(float dt, bool onGround)
+void JumpHandler::update(float dt, bool onGround)
 {
     m_canJump = false;
     // if (m_jumpHoldTimer >= m_jumpHoldDuration)

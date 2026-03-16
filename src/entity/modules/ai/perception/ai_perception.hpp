@@ -4,10 +4,11 @@
 #include "utils/math/line.hpp"
 #include <vector>
 
-class AIPerceptionModule
+class AIPerception
 {
   public:
-    AIPerceptionModule() {}
+    AIPerception() = default;
+    virtual ~AIPerception() = default;
 
     template <typename CheckFunction>
     void checkForInterestsInSight(Vec2<int> headPos, float headAngle,

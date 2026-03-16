@@ -1,10 +1,10 @@
 #pragma once
 
-class JumpModule
+class JumpHandler
 {
   public:
-    JumpModule() = default;
-    virtual ~JumpModule() = default;
+    JumpHandler() = default;
+    virtual ~JumpHandler() = default;
 
     void requestJump() { m_jumpRequested = true; }
     void cancelJump() { m_canJump = false; }

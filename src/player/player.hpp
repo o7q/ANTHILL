@@ -4,7 +4,9 @@
 #include "backend/viewport.hpp"
 #include "entity/entity.hpp"
 #include "entity/interfaces/directional.hpp"
-#include "entity/modules/jump/jump_module.hpp"
+#include "entity/modules/inventory/inventory.hpp"
+#include "entity/modules/jump_handler/jump_handler.hpp"
+#include "item/weapon/weapon.hpp"
 #include "utils/bounding_box.hpp"
 #include "world/camera/camera.hpp"
 #include "world/particle/particle_handler.hpp"
@@ -13,14 +15,14 @@ class Player : public Entity, public IDirectional
 {
   public:
     Player(ParticleHandler &particles, InputHandler &input)
-        : Entity(particles), r_input(input)
+        : Entity(EntityType::Player, particles), r_input(input)
     {
         m_interactionBox.getBoundingBox().setSize(10, 25);
         m_body.setGravity(0.4f);
-
-        m_metadata.type = EntityType::Player;
     }
     virtual ~Player() = default;
+
+    Inventory &getInventory() { return m_inventory; }
 
     virtual void
     update(float dt, const std::vector<const Entity *> &nearbyEntities) override
@@ -45,7 +47,7 @@ class Player : public Entity, public IDirectional
         if (r_input.getInput("jump")->wasPressed())
         {
             // m_jumpModule.requestJump();
-            m_body.setVelocityY(-m_jumpModule.getJumpPower());
+            m_body.setVelocityY(-m_jumpHandler.getJumpPower());
         }
 
         if (r_input.getInput("jump")->wasUnpressed())
@@ -55,9 +57,9 @@ class Player : public Entity, public IDirectional
 
         bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
             m_body.getPosition(), BoundingBox::Side::Bottom);
-        m_jumpModule.update(dt, onGround);
+        m_jumpHandler.update(dt, onGround);
 
-        if (m_jumpModule.canJump())
+        if (m_jumpHandler.canJump())
         {
             // m_body.setVelocityY(-m_jumpModule.getJumpPower());
         }
@@ -73,5 +75,8 @@ class Player : public Entity, public IDirectional
 
   private:
     InputHandler &r_input;
-    JumpModule m_jumpModule;
+    JumpHandler m_jumpHandler;
+    Inventory m_inventory;
+
+    Weapon *weapon = nullptr;
 };

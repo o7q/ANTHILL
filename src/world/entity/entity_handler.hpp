@@ -61,9 +61,7 @@ class EntityHandler
     }
 
     Player *getCurrentPlayer() { return m_currentPlayer; }
-    const Player *getCurrentPlayer() const { return m_currentPlayer; }
     Entity *getLatestEntity() { return m_latestEntity; }
-    const Entity *getLatestEntity() const { return m_latestEntity; }
 
   private:
     Player *m_currentPlayer = nullptr;

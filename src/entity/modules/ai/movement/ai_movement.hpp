@@ -1,24 +1,26 @@
 #pragma once
 
 #include "backend/utils/vec.hpp"
-#include "entity/modules/ai/navigation/ai_navigation_module.hpp"
+#include "entity/modules/ai/navigation/ai_navigation.hpp"
 #include "utils/bounding_box.hpp"
 #include <vector>
 
-class AIMovementModule
+class AIMovement
 {
   public:
+    AIMovement() = default;
+    virtual ~AIMovement() = default;
+
     void update(Vec2<int> pos, const BoundingBox &box);
 
-    void setCheckpoints(
-        const std::vector<AINavigationModule::Checkpoint> &checkpoints)
+    void
+    setCheckpoints(const std::vector<AINavigation::Checkpoint> &checkpoints)
     {
         // copy checkpoints
         m_checkpoints = checkpoints;
     }
 
-    const std::vector<AINavigationModule::Checkpoint> &
-    getMutatedCheckpoints() const
+    const std::vector<AINavigation::Checkpoint> &getMutatedCheckpoints() const
     {
         return m_checkpoints;
     }
@@ -34,6 +36,6 @@ class AIMovementModule
     bool m_shouldSetPosition = false;
     Vec2<int> m_setPosition;
 
-    std::vector<AINavigationModule::Checkpoint> m_checkpoints;
-    AINavigationModule::Checkpoint m_previousCheckpoint;
+    std::vector<AINavigation::Checkpoint> m_checkpoints;
+    AINavigation::Checkpoint m_previousCheckpoint;
 };
