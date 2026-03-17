@@ -6,7 +6,7 @@
 #include "texture/texture.hpp"
 #include "utils/math/angle.hpp"
 #include "utils/math/line.hpp"
-#include <iostream>
+#include <cmath>
 #include <optional>
 
 namespace Utils
@@ -54,24 +54,33 @@ inline void drawRectOutline(Viewport &viewport, Vec2<int> p1, Vec2<int> p2,
 
 inline void drawRectOutlineRotated(Viewport &viewport, Vec2<int> p1,
                                    Vec2<int> p2,
-                                   std::optional<Vec2<int>> rotationPoint,
+                                   std::optional<Vec2<int>> rotateOrigin,
                                    float angle, Color color)
 {
-    Vec2<int> rotPoint =
-        rotationPoint.has_value() ? rotationPoint.value() : (p2 - p1) / 2 + p1;
+    Vec2<int> midpoint = (p2 - p1) / 2 + p1;
+
+    Vec2<int> rotationPoint =
+        rotateOrigin.has_value() ? midpoint + rotateOrigin.value() : midpoint;
 
     Vec2<int> c1 = p1;
     Vec2<int> c2 = {p2.x, p1.y};
     Vec2<int> c3 = p2;
     Vec2<int> c4 = {p1.x, p2.y};
 
-    c1 = Math::Angle::rotatePoint(rotPoint.toFloat(), c1.toFloat(), angle)
+    float cosA = std::cosf(angle);
+    float sinA = std::sinf(angle);
+
+    c1 = Math::Angle::rotatePoint(rotationPoint.toFloat(), c1.toFloat(), cosA,
+                                  sinA)
              .toGrid();
-    c2 = Math::Angle::rotatePoint(rotPoint.toFloat(), c2.toFloat(), angle)
+    c2 = Math::Angle::rotatePoint(rotationPoint.toFloat(), c2.toFloat(), cosA,
+                                  sinA)
              .toGrid();
-    c3 = Math::Angle::rotatePoint(rotPoint.toFloat(), c3.toFloat(), angle)
+    c3 = Math::Angle::rotatePoint(rotationPoint.toFloat(), c3.toFloat(), cosA,
+                                  sinA)
              .toGrid();
-    c4 = Math::Angle::rotatePoint(rotPoint.toFloat(), c4.toFloat(), angle)
+    c4 = Math::Angle::rotatePoint(rotationPoint.toFloat(), c4.toFloat(), cosA,
+                                  sinA)
              .toGrid();
 
     drawSegment(viewport, c1, c2, color);
@@ -111,27 +120,42 @@ inline void drawTexture(Viewport &viewport, const Texture &texture,
 
 inline void drawTextureRotated(Viewport &viewport, const Texture &texture,
                                Vec2<int> pos,
-                               std::optional<Vec2<int>> rotationPoint,
+                               std::optional<Vec2<int>> rotateOrigin,
                                float angle)
 {
+    Vec2<int> textureSize = texture.getSize().toInt();
+    Vec2<int> halfTextureSize = textureSize / 2;
+    Vec2<int> origin = rotateOrigin.value_or(halfTextureSize);
 
-    Vec2<int> size = texture.getSize().toInt();
-    Vec2<int> halfSize = size / 2;
+    float cosA = std::cosf(angle);
+    float sinA = std::sinf(angle);
 
-    Vec2<int> rotPoint =
-        rotationPoint.has_value() ? rotationPoint.value() : pos;
-
-    for (int y = 0; y < size.y; ++y)
+    for (int y = 0; y < textureSize.y; ++y)
     {
-        for (int x = 0; x < size.x; ++x)
+        for (int x = 0; x < textureSize.x; ++x)
         {
-            Vec2<int> point = {pos.x - halfSize.x + x, pos.y - halfSize.y + y};
-            point = Math::Angle::rotatePoint(rotPoint.toFloat(),
-                                             point.toFloat(), angle)
-                        .toGrid();
+            float dx = x - origin.x;
+            float dy = y - origin.y;
+
+            float rotatedX = cosA * dx - sinA * dy;
+            float rotatedY = sinA * dx + cosA * dy;
+
+            int destX = static_cast<int>(
+                std::roundf(pos.x + rotatedX + origin.x - halfTextureSize.x));
+            int destY = static_cast<int>(
+                std::roundf(pos.y + rotatedY + origin.y - halfTextureSize.y));
 
             Color color = texture.getPixel(x, y);
-            viewport.setPixel(point.x, point.y, color);
+
+            for (int py = 0; py <= 1; ++py)
+            {
+                for (int px = 0; px <= 1; ++px)
+                {
+                    int fx = destX + px;
+                    int fy = destY + py;
+                    viewport.setPixel(fx, fy, color);
+                }
+            }
         }
     }
 }

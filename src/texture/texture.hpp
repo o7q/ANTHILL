@@ -44,6 +44,9 @@ class Texture
         }
 
         stbi_image_free(data);
+
+        m_logger.log(Logger::Severity::Info, "Texture()",
+                     "Successfully loaded: " + pathStr);
     }
 
     Vec2<unsigned int> getSize() const { return m_size; }

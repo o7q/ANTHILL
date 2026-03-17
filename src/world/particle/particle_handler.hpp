@@ -1,6 +1,7 @@
 #pragma once
 
 #include "backend/viewport.hpp"
+#include "texture/texture.hpp"
 #include "utils/data_structures/chunk_map.hpp"
 #include "world/camera/camera.hpp"
 #include "world/particle/particle.hpp"
@@ -15,6 +16,24 @@ class ParticleHandler
 
     void set(int x, int y, Particle p);
     void draw(int x, int y, Particle p, int radius = 5);
+
+    void textureToParticles(const Texture &texture, Vec2<int> pos, Particle p)
+    {
+        Vec2<int> size = texture.getSize().toInt();
+        Vec2<int> halfSize = texture.getSize().toInt() / 2;
+
+        for (int y = 0; y < size.y; ++y)
+        {
+            for (int x = 0; x < size.x; ++x)
+            {
+                Color col = texture.getPixel(x, y);
+                p.setColor(col);
+
+                set(pos.x + static_cast<int>(x) - halfSize.x,
+                                pos.y + static_cast<int>(y) - halfSize.y, p);
+            }
+        }
+    }
 
     template <typename QueryFunction>
     void query(Vec2<int> start, Vec2<int> end, QueryFunction &&query,
@@ -53,12 +72,11 @@ class ParticleHandler
                 {
                     Color pixel = p->getColor();
 
-                    if (p->isAir())
+                    if (!p->isAir())
                     {
-                        pixel = Color(50, 0, 0);
+                        // pixel = Color(50, 0, 0);
+                        viewport.setPixel(x, y, pixel);
                     }
-
-                    viewport.setPixel(x, y, pixel);
                 }
             }
         }

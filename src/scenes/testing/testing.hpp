@@ -8,6 +8,7 @@
 #include "utils/rectangle.hpp"
 #include "utils/render.hpp"
 #include "world/world.hpp"
+#include <iostream>
 #include <memory>
 #include <optional>
 
@@ -50,6 +51,17 @@ class TestScene : public Scene
                     sign * Utils::Math::Random::weakRandInt(50, 1000),
                     Utils::Math::Random::weakRandInt(300, 400), stone, 30);
             }
+
+            Particle p;
+            p.setImmovable(false);
+            p.setPhysicsType(Particle::PhysicsType::Sand);
+            p.setMatterType(Particle::MatterType::Solid);
+            p.setDensity(1);
+            p.setRestitution(0.999);
+            p.getVerlet().setMass(1);
+
+            m_world.getParticleHandler().textureToParticles(
+                m_testTexture, Vec2<int>(100, 250), p);
         }
 
         if (tick())
@@ -109,16 +121,10 @@ class TestScene : public Scene
 
                 m_world.getCamera().update(r_time.getDT());
             }
-
             m_world.render(r_viewport);
-
-            float angle = viewportMousePos.x / (float)r_viewport.getSize().x * 3.14159f * 2;
-
-            Utils::Render::drawTextureRotated(
-                r_viewport, m_testTexture, viewportMousePos, std::nullopt, angle);
         }
 
-        // std::cout << static_cast<int>(r_time.getFPS()) << std::endl;
+        std::cout << static_cast<int>(r_time.getFPS()) << std::endl;
 
         return SceneID::Testing;
     }
