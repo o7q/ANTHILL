@@ -14,7 +14,7 @@
 class TestScene : public Scene
 {
   public:
-    TestScene(Window &window) : Scene(window), m_testTexture("carter.png") {}
+    TestScene(Window &window) : Scene(window), m_testTexture("noodle.png") {}
 
     std::optional<SceneID> update() override
     {
@@ -110,10 +110,12 @@ class TestScene : public Scene
                 m_world.getCamera().update(r_time.getDT());
             }
 
-                Vec2<int> pos = m_world.getEntityHandler().getLatestEntity()->getBody().getPosition();
-
             m_world.render(r_viewport);
-            Utils::Render::drawTexture(r_viewport, m_testTexture, m_world.getCamera().worldToViewport(pos.x, pos.y, r_viewport));
+
+            float angle = viewportMousePos.x / (float)r_viewport.getSize().x * 3.14159f * 2;
+
+            Utils::Render::drawTextureRotated(
+                r_viewport, m_testTexture, viewportMousePos, std::nullopt, angle);
         }
 
         // std::cout << static_cast<int>(r_time.getFPS()) << std::endl;

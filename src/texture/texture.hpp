@@ -1,40 +1,41 @@
 #pragma once
 
+#include "backend/logger.hpp"
 #include "backend/utils/color.hpp"
 #include "backend/utils/index.hpp"
 #include "backend/utils/vec.hpp"
 #include <filesystem>
-#include <iostream>
 #include <stb/stb_image.h>
 #include <vector>
 
 class Texture
 {
   public:
-    Texture(const std::filesystem::path &path)
+    Texture(unsigned int width, unsigned int height) : m_logger("Texture") {}
+    Texture(const std::filesystem::path &path) : m_logger("Texture")
     {
         const std::string pathStr = path.string();
-        const char *pathStr2 = path.c_str();
 
         int width, height;
         stbi_uc *data =
-            stbi_load(pathStr2, &width, &height, NULL, STBI_rgb_alpha);
+            stbi_load(pathStr.c_str(), &width, &height, NULL, STBI_rgb_alpha);
 
         if (!data)
         {
-            std::cout << "ERR" << std::endl;
+            m_logger.log(Logger::Severity::Error, "Texture()",
+                         "Failed to load: " + pathStr);
             return;
         }
 
         m_size.x = static_cast<unsigned int>(width);
         m_size.y = static_cast<unsigned int>(height);
-        
+
         m_pixels.resize(width * height);
-        
+
         for (int i = 0; i < width * height; ++i)
         {
             int dataIndex = i * 4;
-            
+
             Color color;
             color.r = data[dataIndex];
             color.g = data[dataIndex + 1];
@@ -62,4 +63,6 @@ class Texture
   private:
     Vec2<unsigned int> m_size;
     std::vector<Color> m_pixels;
+
+    Logger m_logger;
 };

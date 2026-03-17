@@ -13,7 +13,7 @@ class TestEntity : public Entity, public IDirectional
   public:
     TestEntity()
     {
-        m_interactionBox.getBoundingBox().setSize(50, 89);
+        m_interactionBox.getBoundingBox().setSize(21, 30);
         m_body.setGravity(0.4f);
 
         m_ai.getPerception().setSightFOV(100);
@@ -21,7 +21,7 @@ class TestEntity : public Entity, public IDirectional
         m_ai.getPerception().setSightDistance(1000);
         m_ai.getNavigation().setAStarSubIterateAmount(1000);
         m_ai.getNavigation().setAStarMaxIterations(100000);
-        m_ai.getNavigation().setAStarTerminationDistance(30);
+        m_ai.getNavigation().setAStarTerminationDistance(10);
 
         m_jumpHandler.setJumpPower(5);
         m_jumpHandler.setHoldDuration(0.0f);

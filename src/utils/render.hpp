@@ -108,5 +108,32 @@ inline void drawTexture(Viewport &viewport, const Texture &texture,
         }
     }
 }
+
+inline void drawTextureRotated(Viewport &viewport, const Texture &texture,
+                               Vec2<int> pos,
+                               std::optional<Vec2<int>> rotationPoint,
+                               float angle)
+{
+
+    Vec2<int> size = texture.getSize().toInt();
+    Vec2<int> halfSize = size / 2;
+
+    Vec2<int> rotPoint =
+        rotationPoint.has_value() ? rotationPoint.value() : pos;
+
+    for (int y = 0; y < size.y; ++y)
+    {
+        for (int x = 0; x < size.x; ++x)
+        {
+            Vec2<int> point = {pos.x - halfSize.x + x, pos.y - halfSize.y + y};
+            point = Math::Angle::rotatePoint(rotPoint.toFloat(),
+                                             point.toFloat(), angle)
+                        .toGrid();
+
+            Color color = texture.getPixel(x, y);
+            viewport.setPixel(point.x, point.y, color);
+        }
+    }
+}
 } // namespace Render
 } // namespace Utils
