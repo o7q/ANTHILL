@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utils/rectangle.hpp"
+#include "math/rectangle.hpp"
 #include "world_interaction.hpp"
 
 class InteractionBox

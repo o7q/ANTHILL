@@ -3,8 +3,6 @@
 #include <algorithm>
 #include <vector>
 
-namespace Backend
-{
 namespace Utils
 {
 namespace Data
@@ -23,4 +21,3 @@ inline void removeItemFromVector(std::vector<T> &vector, const T &value)
 }
 } // namespace Data
 } // namespace Utils
-} // namespace Backend

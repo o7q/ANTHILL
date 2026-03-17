@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/utils/vec.hpp"
-#include "utils/math/constants.hpp"
+#include "constants.hpp"
+#include "math/vec.hpp"
 #include <cmath>
 
 namespace Utils
@@ -24,11 +24,14 @@ inline float vectorsToAngle(Vec2<float> a, Vec2<float> b)
     return std::atan2(d.y, d.x);
 }
 inline Vec2<float> rotatePoint(Vec2<float> origin, Vec2<float> point,
-                               float cosA, float sinA)
+                               float angle)
 {
     Vec2<float> out;
 
     point -= origin;
+
+    float cosA = std::cosf(angle);
+    float sinA = std::sinf(angle);
 
     out.x = point.x * cosA - point.y * sinA;
     out.y = point.x * sinA + point.y * cosA;

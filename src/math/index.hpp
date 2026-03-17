@@ -1,9 +1,7 @@
 #pragma once
 
-#include "backend/utils/vec.hpp"
+#include "math/vec.hpp"
 
-namespace Backend
-{
 namespace Utils
 {
 namespace Index
@@ -23,4 +21,3 @@ inline Vec2<unsigned int> index_1dTo2d(unsigned int index, unsigned int width)
 }
 } // namespace Index
 } // namespace Utils
-} // namespace Backend

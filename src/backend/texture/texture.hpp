@@ -1,9 +1,9 @@
 #pragma once
 
-#include "backend/logger.hpp"
-#include "backend/utils/color.hpp"
-#include "backend/utils/index.hpp"
-#include "backend/utils/vec.hpp"
+#include "backend/logger/logger.hpp"
+#include "math/color.hpp"
+#include "math/index.hpp"
+#include "math/vec.hpp"
 #include <filesystem>
 #include <stb/stb_image.h>
 #include <vector>
@@ -58,7 +58,7 @@ class Texture
             return Color();
         }
 
-        return m_pixels[Backend::Utils::Index::index_2dto1d(x, y, m_size.x)];
+        return m_pixels[Utils::Index::index_2dto1d(x, y, m_size.x)];
     }
 
     const std::vector<Color> &getPixels() const { return m_pixels; }

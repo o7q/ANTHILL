@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/viewport.hpp"
-#include "texture/texture.hpp"
+#include "backend/texture/texture.hpp"
+#include "backend/viewport/viewport.hpp"
 #include "utils/data_structures/chunk_map.hpp"
 #include "world/camera/camera.hpp"
 #include "world/particle/particle.hpp"
@@ -30,7 +30,7 @@ class ParticleHandler
                 p.setColor(col);
 
                 set(pos.x + static_cast<int>(x) - halfSize.x,
-                                pos.y + static_cast<int>(y) - halfSize.y, p);
+                    pos.y + static_cast<int>(y) - halfSize.y, p);
             }
         }
     }

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "event_handler.hpp"
-#include "input_handler.hpp"
-#include "time_handler.hpp"
-#include "utils/vec.hpp"
-#include "viewport.hpp"
+#include "backend/event/event_handler.hpp"
+#include "backend/input/input_handler.hpp"
+#include "backend/time/time_handler.hpp"
+#include "backend/viewport/viewport.hpp"
+#include "math/vec.hpp"
 #include <SDL3/SDL_video.h>
 #include <memory>
 

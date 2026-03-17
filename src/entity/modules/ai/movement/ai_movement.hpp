@@ -1,8 +1,8 @@
 #pragma once
 
-#include "backend/utils/vec.hpp"
 #include "entity/modules/ai/navigation/ai_navigation.hpp"
-#include "utils/rectangle.hpp"
+#include "math/rectangle.hpp"
+#include "math/vec.hpp"
 #include <vector>
 
 class AIMovement

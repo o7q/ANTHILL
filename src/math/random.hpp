@@ -2,8 +2,6 @@
 
 #include <random>
 
-namespace Utils
-{
 namespace Math
 {
 namespace Random
@@ -16,4 +14,3 @@ inline int weakRandInt(int min, int max)
 }
 } // namespace Random
 } // namespace Math
-} // namespace Utils

@@ -1,5 +1,4 @@
 #include "entity.hpp"
-#include "utils/render.hpp"
 
 void Entity::renderDebug_boundingBox(Viewport &viewport, const Camera &camera,
                                      Color color)
@@ -12,5 +11,5 @@ void Entity::renderDebug_boundingBox(Viewport &viewport, const Camera &camera,
     a = camera.worldToViewport(a.x, a.y, viewport);
     b = camera.worldToViewport(b.x, b.y, viewport);
 
-    Utils::Render::drawRectOutline(viewport, a, b, color);
+    viewport.drawRectOutline(a, b, color);
 }

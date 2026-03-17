@@ -1,8 +1,8 @@
 #pragma once
 
-#include "backend/event_handler.hpp"
-#include "backend/utils/vec.hpp"
-#include "backend/window.hpp"
+#include "backend/event/event_handler.hpp"
+#include "backend/window/window.hpp"
+#include "math/vec.hpp"
 #include "scene/scene.hpp"
 #include "scenes/testing/testing.hpp"
 #include <SDL3/SDL_keycode.h>

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "backend/viewport.hpp"
-#include "entities/metadata.hpp"
+#include "backend/viewport/viewport.hpp"
 #include "entities/module_wrappers/ai/grounded_ai_system/grounded_ai_system.hpp"
 #include "entity/entity.hpp"
 #include "entity/interfaces/directional.hpp"

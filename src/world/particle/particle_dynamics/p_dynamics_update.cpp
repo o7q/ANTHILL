@@ -1,8 +1,8 @@
 #include "p_dynamics_handler.hpp"
 
-#include "utils/math/line.hpp"
-#include "utils/math/physics.hpp"
-#include "utils/physics/verlet.hpp"
+#include "math/line.hpp"
+#include "math/physics/utils.hpp"
+#include "math/physics/verlet.hpp"
 #include "world/particle/particle.hpp"
 #include <algorithm>
 
@@ -114,7 +114,7 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
         return false;
     };
 
-    Utils::Math::Line::bresenhamLine(start.toGrid(), end.toGrid(), function);
+    Math::Line::bresenhamLine(start.toGrid(), end.toGrid(), function);
 
     if (!hit)
     {

@@ -1,26 +1,26 @@
 #include "kinetic_body.hpp"
 
-#include "utils/math/numbers.hpp"
+#include "math/numbers.hpp"
 
 void KineticBody::haltMotionInDirection(int dirX, int dirY)
 {
     Vec2<float> force = m_body.getForce();
-    if (Utils::Math::Numbers::sign(force.x) == Utils::Math::Numbers::sign(dirX))
+    if (Math::Numbers::sign(force.x) == Math::Numbers::sign(dirX))
     {
         force.x = 0.0f;
     }
-    if (Utils::Math::Numbers::sign(force.y) == Utils::Math::Numbers::sign(dirY))
+    if (Math::Numbers::sign(force.y) == Math::Numbers::sign(dirY))
     {
         force.y = 0.0f;
     }
     m_body.setForce(force.x, force.y);
 
     Vec2<float> vel = m_body.getVelocity();
-    if (Utils::Math::Numbers::sign(vel.x) == Utils::Math::Numbers::sign(dirX))
+    if (Math::Numbers::sign(vel.x) == Math::Numbers::sign(dirX))
     {
         vel.x = 0.0f;
     }
-    if (Utils::Math::Numbers::sign(vel.y) == Utils::Math::Numbers::sign(dirY))
+    if (Math::Numbers::sign(vel.y) == Math::Numbers::sign(dirY))
     {
         vel.y = 0.0f;
     }

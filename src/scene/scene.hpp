@@ -1,8 +1,8 @@
 #pragma once
 
-#include "backend/input_handler.hpp"
-#include "backend/time_handler.hpp"
-#include "backend/window.hpp"
+#include "backend/input/input_handler.hpp"
+#include "backend/time/time_handler.hpp"
+#include "backend/window/window.hpp"
 #include <optional>
 
 enum class SceneID

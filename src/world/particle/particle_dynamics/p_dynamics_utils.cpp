@@ -45,7 +45,7 @@ void PDynamicsHandler::applyForce(float x, float y, float power, float dt)
                     continue;
                 }
 
-                if (p->isAir())
+                if (p->isAir() || p->isImmovable())
                 {
                     continue;
                 }

@@ -16,6 +16,5 @@ void EventHandler::poll(SDL_Event &event)
 
 bool EventHandler::didEventOccur(EventType eventType) const
 {
-    return Backend::Utils::Data::doesVectorContain(m_triggeredEvents,
-                                                   eventType);
+    return Utils::Data::doesVectorContain(m_triggeredEvents, eventType);
 }

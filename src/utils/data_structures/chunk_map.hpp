@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/utils/index.hpp"
-#include "backend/utils/vec.hpp"
+#include "math/index.hpp"
+#include "math/vec.hpp"
 #include "utils/data_structures/index_2d.hpp"
 #include <unordered_map>
 #include <vector>
@@ -21,12 +21,12 @@ template <typename T> class ChunkMap
 
         void set(unsigned int x, unsigned int y, T v, unsigned int width)
         {
-            m_values[Backend::Utils::Index::index_2dto1d(x, y, width)] = v;
+            m_values[Utils::Index::index_2dto1d(x, y, width)] = v;
         }
 
         const T *get(unsigned int x, unsigned int y, unsigned int width) const
         {
-            return &m_values[Backend::Utils::Index::index_2dto1d(x, y, width)];
+            return &m_values[Utils::Index::index_2dto1d(x, y, width)];
         }
 
         T *get(unsigned int x, unsigned int y, unsigned int width)

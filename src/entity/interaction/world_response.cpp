@@ -1,6 +1,6 @@
 #include "world_interaction.hpp"
 
-#include "utils/math/line.hpp"
+#include "math/line.hpp"
 
 WorldInteractionHandler::TrajectoryCollisionResponse
 WorldInteractionHandler::calculateCollisionFromTrajectory(
@@ -39,7 +39,7 @@ WorldInteractionHandler::calculateCollisionFromTrajectory(
         return false;
     };
 
-    Utils::Math::Line::bresenhamLine(start, end, check);
+    Math::Line::bresenhamLine(start, end, check);
 
     TrajectoryCollisionResponse response;
     response.collided = collided;

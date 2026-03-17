@@ -1,10 +1,8 @@
 #pragma once
 
-#include "backend/utils/vec.hpp"
+#include "math/vec.hpp"
 #include <cmath>
 
-namespace Utils
-{
 namespace Math
 {
 namespace Line
@@ -62,4 +60,3 @@ inline void bresenhamRaycast(const Vec2<int> &start, float angle,
 }
 } // namespace Line
 } // namespace Math
-} // namespace Utils

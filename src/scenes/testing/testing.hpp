@@ -1,12 +1,10 @@
 #pragma once
 
 #include "entities/test.hpp"
+#include "math/angle.hpp"
+#include "math/random.hpp"
 #include "player/player.hpp"
 #include "scene/scene.hpp"
-#include "utils/math/angle.hpp"
-#include "utils/math/random.hpp"
-#include "utils/rectangle.hpp"
-#include "utils/render.hpp"
 #include "world/world.hpp"
 #include <iostream>
 #include <memory>
@@ -45,11 +43,11 @@ class TestScene : public Scene
 
             for (int i = 0; i < 1000; ++i)
             {
-                int sign = Utils::Math::Random::weakRandInt(0, 2) == 0 ? -1 : 1;
+                int sign = Math::Random::weakRandInt(0, 2) == 0 ? -1 : 1;
 
                 m_world.getParticleHandler().draw(
-                    sign * Utils::Math::Random::weakRandInt(50, 1000),
-                    Utils::Math::Random::weakRandInt(300, 400), stone, 30);
+                    sign * Math::Random::weakRandInt(50, 1000),
+                    Math::Random::weakRandInt(300, 400), stone, 30);
             }
 
             Particle p;
@@ -57,7 +55,7 @@ class TestScene : public Scene
             p.setPhysicsType(Particle::PhysicsType::Sand);
             p.setMatterType(Particle::MatterType::Solid);
             p.setDensity(1);
-            p.setRestitution(0.999);
+            p.setRestitution(0.8);
             p.getVerlet().setMass(1);
 
             m_world.getParticleHandler().textureToParticles(
@@ -79,7 +77,7 @@ class TestScene : public Scene
             {
 
                 Particle stone;
-                float mult = Utils::Math::Random::weakRandInt(80, 100) / 100.0f;
+                float mult = Math::Random::weakRandInt(80, 100) / 100.0f;
                 stone.setColor(Color(200 * mult, 205 * mult, 200 * mult));
                 stone.setPhysicsType(Particle::PhysicsType::None);
                 stone.setMatterType(Particle::MatterType::Solid);
@@ -103,7 +101,7 @@ class TestScene : public Scene
                     ->isDown())
             {
                 Particle sand;
-                float mult = Utils::Math::Random::weakRandInt(80, 100) / 100.0f;
+                float mult = Math::Random::weakRandInt(80, 100) / 100.0f;
                 sand.setColor(Color(255 * mult, 235 * mult, 161 * mult));
                 sand.setPhysicsType(Particle::PhysicsType::Sand);
                 sand.setMatterType(Particle::MatterType::Solid);
@@ -113,6 +111,13 @@ class TestScene : public Scene
                 m_world.getParticleHandler().draw(worldPos.x, worldPos.y, sand,
                                                   4);
             }
+
+            if (r_window.getInputHandler().getInput("action1")->isDown())
+            {
+                m_world.getParticleHandler().getDynamics().applyForce(
+                    worldPos.x, worldPos.y, 100, r_time.getDT());
+            }
+
             m_world.update(r_time.getDT());
             if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
             {
@@ -121,10 +126,18 @@ class TestScene : public Scene
 
                 m_world.getCamera().update(r_time.getDT());
             }
+
+            std::cout << static_cast<int>(r_time.getFPS()) << std::endl;
+
+            float angle =
+                (viewportMousePos.x / (float)r_viewport.getSize().x) * 360;
+
+            r_viewport.drawTextureRotated(
+                m_testTexture,
+                m_world.getCamera().worldToViewport(0, 0, r_viewport),
+                std::nullopt, Utils::Math::Angle::degreesToRadians(angle));
             m_world.render(r_viewport);
         }
-
-        std::cout << static_cast<int>(r_time.getFPS()) << std::endl;
 
         return SceneID::Testing;
     }

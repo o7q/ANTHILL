@@ -1,9 +1,11 @@
 #pragma once
 
-#include "utils/color.hpp"
-#include "utils/vec.hpp"
+#include "backend/texture/texture.hpp"
+#include "math/color.hpp"
+#include "math/vec.hpp"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
+#include <optional>
 
 class Viewport
 {
@@ -26,6 +28,14 @@ class Viewport
                                 float windowAspect);
 
     Vec2<int> windowToViewportPosition(Vec2<float> windowPosition);
+
+  public:
+    void drawSegment(Vec2<int> p1, Vec2<int> p2, Color color);
+    void drawRectOutline(Vec2<int> p1, Vec2<int> p2, Color color);
+    void drawRectFilled(Vec2<int> p1, Vec2<int> p2, Color color);
+    void drawTexture(const Texture &texture, Vec2<int> pos);
+    void drawTextureRotated(const Texture &texture, Vec2<int> pos,
+                            std::optional<Vec2<int>> rotateOrigin, float angle);
 
   private:
     void update_pixel_changes();

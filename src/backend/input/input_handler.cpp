@@ -1,7 +1,7 @@
 #include "input_handler.hpp"
 
+#include "math/vec.hpp"
 #include "utils/data.hpp"
-#include "utils/vec.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keycode.h>
 #include <SDL3/SDL_mouse.h>
@@ -12,7 +12,7 @@
 
 void Input::poll(Bind bind, bool isDown)
 {
-    if (Backend::Utils::Data::doesVectorContain(m_binds, bind))
+    if (Utils::Data::doesVectorContain(m_binds, bind))
     {
         m_down = isDown;
     }
@@ -29,7 +29,7 @@ void Input::update()
 void Input::assignBind(const Bind &bind) { m_binds.push_back(bind); }
 void Input::removeBind(const Bind &bind)
 {
-    Backend::Utils::Data::removeItemFromVector(m_binds, bind);
+    Utils::Data::removeItemFromVector(m_binds, bind);
 }
 void Input::removeBindsOfType(ButtonType type)
 {

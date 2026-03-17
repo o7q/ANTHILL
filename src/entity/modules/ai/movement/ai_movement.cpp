@@ -1,7 +1,7 @@
 #include "ai_movement.hpp"
 
 #include "entity/modules/ai/navigation/ai_navigation.hpp"
-#include "utils/math/numbers.hpp"
+#include "math/numbers.hpp"
 
 void AIMovement::update(Vec2<int> pos, const StaticGridRectangle &bb)
 {
@@ -65,8 +65,8 @@ void AIMovement::update(Vec2<int> pos, const StaticGridRectangle &bb)
     }
     else
     {
-        int dirX = Utils::Math::Numbers::sign(current.pos.x - pos.x);
-        int dirY = Utils::Math::Numbers::sign(current.pos.y - pos.y);
+        int dirX = Math::Numbers::sign(current.pos.x - pos.x);
+        int dirY = Math::Numbers::sign(current.pos.y - pos.y);
         m_moveDirection = {dirX, dirY};
         m_shouldMove = true;
     }

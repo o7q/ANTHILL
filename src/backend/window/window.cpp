@@ -1,7 +1,6 @@
 #include "window.hpp"
 
-#include "utils/vec.hpp"
-#include "viewport.hpp"
+#include "backend/viewport/viewport.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_video.h>

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/utils/vec.hpp"
-#include "backend/viewport.hpp"
+#include "math/vec.hpp"
+#include "backend/viewport/viewport.hpp"
 
 class Camera
 {

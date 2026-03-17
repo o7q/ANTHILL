@@ -1,14 +1,14 @@
 #pragma once
 
-#include "backend/input_handler.hpp"
-#include "backend/viewport.hpp"
+#include "backend/input/input_handler.hpp"
+#include "backend/viewport/viewport.hpp"
 #include "entity/entity.hpp"
 #include "entity/interfaces/directional.hpp"
 #include "entity/modules/inventory/inventory.hpp"
 #include "entity/modules/jump_handler/jump_handler.hpp"
 #include "item/weapon/weapon.hpp"
-#include "utils/math/angle.hpp"
-#include "utils/rectangle.hpp"
+#include "math/angle.hpp"
+#include "math/rectangle.hpp"
 #include "world/camera/camera.hpp"
 
 class Player : public Entity, public IDirectional

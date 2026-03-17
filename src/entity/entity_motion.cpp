@@ -1,5 +1,5 @@
 #include "entity.hpp"
-#include "utils/rectangle.hpp"
+#include "math/rectangle.hpp"
 
 void Entity::updateApplyExternalMotion(EntityUpdateContext &context)
 {

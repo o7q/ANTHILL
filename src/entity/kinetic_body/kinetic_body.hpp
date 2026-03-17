@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/utils/vec.hpp"
-#include "utils/physics/semi_implicit_euler.hpp"
+#include "math/physics/semi_implicit_euler.hpp"
+#include "math/vec.hpp"
 
 class KineticBody
 {

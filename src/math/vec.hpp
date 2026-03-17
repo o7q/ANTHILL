@@ -1,6 +1,6 @@
 #pragma once
 
-#include "backend/utils/math/numbers.hpp"
+#include "math/numbers.hpp"
 #include <cmath>
 
 template <typename T> struct Vec2
@@ -129,7 +129,7 @@ template <typename T> struct Vec2
 
     Vec2 clamp(const Vec2 &min, const Vec2 &max)
     {
-        return {Backend::Utils::Math::Numbers::clamp(x, min.x, max.x),
-                Backend::Utils::Math::Numbers::clamp(y, min.y, max.y)};
+        return {Math::Numbers::clamp(x, min.x, max.x),
+                Math::Numbers::clamp(y, min.y, max.y)};
     }
 };

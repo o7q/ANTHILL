@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/utils/vec.hpp"
-#include "utils/physics/body.hpp"
+#include "math/physics/body.hpp"
+#include "math/vec.hpp"
 
 class SemiImplicitEulerBody : public PhysicsBody
 {

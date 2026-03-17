@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/utils/vec.hpp"
-#include "utils/rectangle.hpp"
+#include "math/rectangle.hpp"
+#include "math/vec.hpp"
 #include "world/particle/particle_handler.hpp"
 
 class WorldInteractionHandler
