@@ -25,30 +25,30 @@ class Player : public Entity, public IDirectional
 
     virtual void update(EntityUpdateContext &context) override
     {
-        if (r_input.getInput("left")->isDown())
+        if (r_input.getInput(InputID::Left)->isDown())
         {
             m_body.setVelocityX(-7);
         }
-        if (r_input.getInput("right")->isDown())
+        if (r_input.getInput(InputID::Right)->isDown())
         {
             m_body.setVelocityX(7);
         }
-        if (r_input.getInput("left")->wasUnpressed())
+        if (r_input.getInput(InputID::Left)->wasUnpressed())
         {
             m_body.setVelocityX(0);
         }
-        if (r_input.getInput("right")->wasUnpressed())
+        if (r_input.getInput(InputID::Right)->wasUnpressed())
         {
             m_body.setVelocityX(0);
         }
 
-        if (r_input.getInput("jump")->wasPressed())
+        if (r_input.getInput(InputID::Jump)->wasPressed())
         {
             // m_jumpModule.requestJump();
             m_body.setVelocityY(-m_jumpHandler.getJumpPower());
         }
 
-        if (r_input.getInput("jump")->wasUnpressed())
+        if (r_input.getInput(InputID::Jump)->wasUnpressed())
         {
             // m_jumpModule.cancelJump();
         }

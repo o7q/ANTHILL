@@ -6,7 +6,6 @@
 #include <SDL3/SDL_keycode.h>
 #include <SDL3/SDL_mouse.h>
 #include <optional>
-#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -83,7 +82,7 @@ void InputHandler::update()
     }
 }
 
-void InputHandler::addInput(const std::string &id,
+void InputHandler::addInput(InputIDKey key,
                             const std::vector<Input::Bind> &binds)
 {
     Input input;
@@ -92,14 +91,14 @@ void InputHandler::addInput(const std::string &id,
         input.assignBind(bind);
     }
 
-    m_inputs[id] = input;
+    m_inputs[key] = input;
 }
 
-const std::optional<Input> InputHandler::getInput(const std::string &id)
+const std::optional<Input> InputHandler::getInput(InputIDKey key)
 {
-    if (m_inputs.count(id))
+    if (m_inputs.count(key))
     {
-        return m_inputs.at(id);
+        return m_inputs.at(key);
     }
 
     return std::nullopt;

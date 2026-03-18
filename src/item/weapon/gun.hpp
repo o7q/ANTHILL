@@ -16,6 +16,10 @@ class Gun : public Weapon
     };
 
   public:
+    Gun(const std::string &name, const Texture &texture) : Weapon(name, texture)
+    {
+    }
+
     virtual void pullTrigger()
     {
         if (!m_canShoot)

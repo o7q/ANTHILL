@@ -96,10 +96,15 @@ void Viewport::drawTextureRotated(const Texture &texture, Vec2<int> pos,
 
             Color color = texture.getPixel(x, y);
 
-            for (int py = 0; py <= 1; ++py)
+            for (int py = 0; py < 2; ++py)
             {
-                for (int px = 0; px <= 1; ++px)
+                for (int px = 0; px < 2; ++px)
                 {
+                    if (x + px >= textureSize.x || y + py >= textureSize.y)
+                    {
+                        continue;
+                    }
+
                     int fx = destX + px;
                     int fy = destY + py;
                     setPixel(fx, fy, color);

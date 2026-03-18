@@ -1,5 +1,6 @@
 #pragma once
 
+#include "assets.hpp"
 #include "backend/event/event_handler.hpp"
 #include "backend/window/window.hpp"
 #include "math/vec.hpp"
@@ -26,7 +27,7 @@ class Game
 
         m_window.getTimeHandler().setTargetFramerate(144);
 
-        currentScene = std::make_unique<TestScene>(m_window);
+        currentScene = std::make_unique<TestScene>(m_window, m_assets);
 
         while (!m_window.getEventHandler().didEventOccur(
             EventHandler::EventType::WINDOW_QUIT))
@@ -47,6 +48,7 @@ class Game
 
   private:
     Window m_window;
+    Assets m_assets;
     std::unique_ptr<Scene> currentScene = nullptr;
     SceneID m_currentSceneID = SceneID::Testing;
 };

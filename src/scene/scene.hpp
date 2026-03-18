@@ -1,5 +1,6 @@
 #pragma once
 
+#include "assets.hpp"
 #include "backend/input/input_handler.hpp"
 #include "backend/time/time_handler.hpp"
 #include "backend/window/window.hpp"
@@ -13,9 +14,10 @@ enum class SceneID
 class Scene
 {
   public:
-    Scene(Window &window)
+    Scene(Window &window, const Assets &assets)
         : r_window(window), r_viewport(window.getViewport()),
-          r_input(window.getInputHandler()), r_time(window.getTimeHandler())
+          r_input(window.getInputHandler()), r_time(window.getTimeHandler()),
+          r_assets(assets)
     {
     }
     Scene(const Scene &other) = delete;
@@ -33,6 +35,7 @@ class Scene
     Viewport &r_viewport;
     InputHandler &r_input;
     TimeHandler &r_time;
+    const Assets &r_assets;
 
   private:
     bool m_firstTick = true;

@@ -3,44 +3,30 @@
 
 void Game::init_binds()
 {
-    m_window.getInputHandler().addInput("left",
+    m_window.getInputHandler().addInput(InputID::Left,
                                         {{Input::ButtonType::Key, SDLK_A}});
-    m_window.getInputHandler().addInput("right",
+    m_window.getInputHandler().addInput(InputID::Right,
                                         {{Input::ButtonType::Key, SDLK_D}});
-    m_window.getInputHandler().addInput("up",
+    m_window.getInputHandler().addInput(InputID::Up,
                                         {{Input::ButtonType::Key, SDLK_W}});
-    m_window.getInputHandler().addInput("down",
+    m_window.getInputHandler().addInput(InputID::Down,
                                         {{Input::ButtonType::Key, SDLK_S}});
 
-    m_window.getInputHandler().addInput("jump",
+    m_window.getInputHandler().addInput(InputID::Jump,
                                         {{Input::ButtonType::Key, SDLK_SPACE}});
 
     m_window.getInputHandler().addInput(
-        "action1", {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});
+        InputID::Action1, {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});
     m_window.getInputHandler().addInput(
-        "action2", {{Input::ButtonType::Mouse, SDL_BUTTON_RIGHT}});
-    m_window.getInputHandler().addInput("secondaryAction1",
+        InputID::Action2, {{Input::ButtonType::Mouse, SDL_BUTTON_RIGHT}});
+    m_window.getInputHandler().addInput(InputID::SecondaryAction1,
                                         {{Input::ButtonType::Key, SDLK_1}});
-    m_window.getInputHandler().addInput("secondaryAction2",
+    m_window.getInputHandler().addInput(InputID::SecondaryAction2,
                                         {{Input::ButtonType::Key, SDLK_2}});
-    m_window.getInputHandler().addInput("secondaryAction3",
+    m_window.getInputHandler().addInput(InputID::SecondaryAction3,
                                         {{Input::ButtonType::Key, SDLK_3}});
-    m_window.getInputHandler().addInput("secondaryAction4",
+    m_window.getInputHandler().addInput(InputID::SecondaryAction4,
                                         {{Input::ButtonType::Key, SDLK_4}});
-    m_window.getInputHandler().addInput("secondaryAction5",
+    m_window.getInputHandler().addInput(InputID::SecondaryAction5,
                                         {{Input::ButtonType::Key, SDLK_5}});
-
-    m_window.getInputHandler().addInput("debug1",
-                                        {{Input::ButtonType::Key, SDLK_COMMA}});
-    m_window.getInputHandler().addInput(
-        "debug2", {{Input::ButtonType::Key, SDLK_PERIOD}});
-
-    m_window.getInputHandler().addInput("debugLeft",
-                                        {{Input::ButtonType::Key, SDLK_LEFT}});
-    m_window.getInputHandler().addInput("debugRight",
-                                        {{Input::ButtonType::Key, SDLK_RIGHT}});
-    m_window.getInputHandler().addInput("debugUp",
-                                        {{Input::ButtonType::Key, SDLK_UP}});
-    m_window.getInputHandler().addInput("debugDown",
-                                        {{Input::ButtonType::Key, SDLK_DOWN}});
 }

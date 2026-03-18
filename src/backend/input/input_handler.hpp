@@ -1,11 +1,11 @@
 #pragma once
 
+#include "identifiers.hpp"
 #include "math/vec.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keycode.h>
 #include <SDL3/SDL_mouse.h>
 #include <optional>
-#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -64,13 +64,13 @@ class InputHandler
     void poll(SDL_Event &event);
     void update();
 
-    void addInput(const std::string &id, const std::vector<Input::Bind> &binds);
-    const std::optional<Input> getInput(const std::string &id);
+    void addInput(InputIDKey key, const std::vector<Input::Bind> &binds);
+    const std::optional<Input> getInput(InputIDKey key);
 
     Vec2<float> getMousePosition() const { return m_mousePosition; }
 
   private:
-    std::unordered_map<std::string, Input> m_inputs;
+    std::unordered_map<InputIDKey, Input> m_inputs;
 
     Vec2<float> m_mousePosition;
 };

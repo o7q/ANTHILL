@@ -1,5 +1,7 @@
 #pragma once
 
+#include "assets.hpp"
+#include "backend/input/input_handler.hpp"
 #include "entities/test.hpp"
 #include "math/angle.hpp"
 #include "math/random.hpp"
@@ -13,7 +15,7 @@
 class TestScene : public Scene
 {
   public:
-    TestScene(Window &window) : Scene(window), m_testTexture("noodle.png") {}
+    TestScene(Window &window, const Assets &assets) : Scene(window, assets) {}
 
     std::optional<SceneID> update() override
     {
@@ -59,7 +61,8 @@ class TestScene : public Scene
             p.getVerlet().setMass(1);
 
             m_world.getParticleHandler().textureToParticles(
-                m_testTexture, Vec2<int>(100, 250), p);
+                *r_assets.textures().get(TextureID::Noodle),
+                Vec2<int>(100, 250), p);
         }
 
         if (tick())
@@ -72,7 +75,7 @@ class TestScene : public Scene
                 viewportMousePos.x, viewportMousePos.y, r_viewport);
 
             if (r_window.getInputHandler()
-                    .getInput("secondaryAction1")
+                    .getInput(InputID::SecondaryAction1)
                     ->isDown())
             {
 
@@ -88,7 +91,7 @@ class TestScene : public Scene
                                                   20);
             }
             if (r_window.getInputHandler()
-                    .getInput("secondaryAction2")
+                    .getInput(InputID::SecondaryAction2)
                     ->isDown())
             {
                 Particle air;
@@ -97,7 +100,7 @@ class TestScene : public Scene
                                                   10);
             }
             if (r_window.getInputHandler()
-                    .getInput("secondaryAction3")
+                    .getInput(InputID::SecondaryAction3)
                     ->isDown())
             {
                 Particle sand;
@@ -112,7 +115,7 @@ class TestScene : public Scene
                                                   4);
             }
 
-            if (r_window.getInputHandler().getInput("action1")->isDown())
+            if (r_window.getInputHandler().getInput(InputID::Action1)->isDown())
             {
                 m_world.getParticleHandler().getDynamics().applyForce(
                     worldPos.x, worldPos.y, 100, r_time.getDT());
@@ -127,13 +130,13 @@ class TestScene : public Scene
                 m_world.getCamera().update(r_time.getDT());
             }
 
-            std::cout << static_cast<int>(r_time.getFPS()) << std::endl;
+            // std::cout << static_cast<int>(r_time.getFPS()) << std::endl;
 
             float angle =
                 (viewportMousePos.x / (float)r_viewport.getSize().x) * 360;
 
             r_viewport.drawTextureRotated(
-                m_testTexture,
+                *r_assets.textures().get(TextureID::Noodle),
                 m_world.getCamera().worldToViewport(0, 0, r_viewport),
                 std::nullopt, Utils::Math::Angle::degreesToRadians(angle));
             m_world.render(r_viewport);
@@ -144,5 +147,4 @@ class TestScene : public Scene
 
   private:
     World m_world;
-    Texture m_testTexture;
 };

@@ -5,6 +5,9 @@
 class Weapon : public Item
 {
   public:
-    Weapon(const std::string &name) : Item(name) {}
+    Weapon(const std::string &name, const Texture &texture)
+        : Item(name, texture)
+    {
+    }
     virtual ~Weapon() {}
 };
