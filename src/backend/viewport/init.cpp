@@ -1,11 +1,19 @@
 #include "viewport.hpp"
 
+#include <SDL3/SDL_error.h>
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <cstddef>
 
-Viewport::Viewport(SDL_Window *window, unsigned int width, unsigned int height)
+Viewport::Viewport(SDL_Window *window, unsigned int width, unsigned int height) : m_logger("Viewport")
 {
+    if (!window)
+    {
+        m_logger.log(Logger::Severity::Fatal, "Viewport()", "SDL_Window* is null! Aborting");
+        throw std::runtime_error(SDL_GetError());
+        return;
+    }
+
     m_renderer = SDL_CreateRenderer(window, NULL);
     m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGB24,
                                   SDL_TEXTUREACCESS_STREAMING, width, height);

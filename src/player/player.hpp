@@ -1,5 +1,6 @@
 #pragma once
 
+#include "assets.hpp"
 #include "backend/input/input_handler.hpp"
 #include "backend/viewport/viewport.hpp"
 #include "entity/entity.hpp"
@@ -14,7 +15,9 @@
 class Player : public Entity, public IDirectional
 {
   public:
-    Player(InputHandler &input) : Entity(EntityType::Player), r_input(input)
+    Player(InputHandler &input, const Assets &assets)
+        : Entity(EntityType::Player), r_input(input),
+          m_sprite(*assets.textures().get(TextureID::Character))
     {
         m_interactionBox.getBoundingBox().setSize(10, 25);
         m_body.setGravity(0.4f);
@@ -68,11 +71,22 @@ class Player : public Entity, public IDirectional
 
     void render(Viewport &viewport, const Camera &camera) override
     {
-        renderDebug_boundingBox(viewport, camera, Color(79, 255, 94));
+        // viewport.drawSegment(camera.worldToViewport(m_body.getPosition().x,
+        //                                             m_body.getPosition().y,
+        //                                             viewport),
+        //                      camera.worldToViewport(m_lookPosition.x,
+        //                                             m_lookPosition.y,
+        //                                             viewport),
+        //                      Color(255, 0, 0));
+        viewport.drawTexture(
+            m_sprite, camera.worldToViewport(m_body.getPosition().x,
+                                             m_body.getPosition().y, viewport));
+        // renderDebug_boundingBox(viewport, camera, Color(79, 255, 94));
     }
 
-    void updateAimAngle(Vec2<int> aimPos)
+    void updateAimPosition(Vec2<int> aimPos)
     {
+        m_lookPosition = aimPos;
         m_lookAngle = Utils::Math::Angle::vectorsToAngle(
             m_body.getPosition().toFloat(), aimPos.toFloat());
     }
@@ -84,5 +98,5 @@ class Player : public Entity, public IDirectional
 
     Vec2<int> m_mouseWorldPos;
 
-    Weapon *weapon = nullptr;
+    const Texture &m_sprite;
 };

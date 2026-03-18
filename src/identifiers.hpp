@@ -29,6 +29,9 @@ using InputIDKey = Identifier<InputID>;
 
 enum class TextureID
 {
-    Noodle
+    Noodle,
+    Pistol,
+    PistolSmall,
+    Character
 };
 using TextureIDKey = Identifier<TextureID>;

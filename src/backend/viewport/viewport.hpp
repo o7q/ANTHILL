@@ -1,5 +1,6 @@
 #pragma once
 
+#include "backend/logger/logger.hpp"
 #include "backend/texture/texture.hpp"
 #include "math/color.hpp"
 #include "math/vec.hpp"
@@ -34,8 +35,9 @@ class Viewport
     void drawRectOutline(Vec2<int> p1, Vec2<int> p2, Color color);
     void drawRectFilled(Vec2<int> p1, Vec2<int> p2, Color color);
     void drawTexture(const Texture &texture, Vec2<int> pos);
-    void drawTextureRotated(const Texture &texture, Vec2<int> pos,
-                            std::optional<Vec2<int>> rotateOrigin, float angle);
+    void
+    drawTextureRotated(const Texture &texture, Vec2<int> pos, float angle,
+                       std::optional<Vec2<int>> rotateOrigin = std::nullopt);
 
   private:
     void update_pixel_changes();
@@ -56,4 +58,6 @@ class Viewport
     SDL_Rect m_update_rect;
     SDL_FRect m_presentRect;
     bool m_pixelChanged = false;
+
+    Logger m_logger;
 };

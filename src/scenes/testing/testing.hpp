@@ -5,6 +5,7 @@
 #include "entities/test.hpp"
 #include "math/angle.hpp"
 #include "math/random.hpp"
+#include "math/rectangle.hpp"
 #include "player/player.hpp"
 #include "scene/scene.hpp"
 #include "world/world.hpp"
@@ -22,7 +23,7 @@ class TestScene : public Scene
         if (start())
         {
             m_world.getEntityHandler().addPlayer(
-                std::make_unique<Player>(r_input));
+                std::make_unique<Player>(r_input, r_assets));
 
             for (int i = 0; i < 1; ++i)
             {
@@ -121,6 +122,8 @@ class TestScene : public Scene
                     worldPos.x, worldPos.y, 100, r_time.getDT());
             }
 
+            m_world.getEntityHandler().getCurrentPlayer()->updateAimPosition(
+                worldPos);
             m_world.update(r_time.getDT());
             if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
             {
@@ -136,9 +139,14 @@ class TestScene : public Scene
                 (viewportMousePos.x / (float)r_viewport.getSize().x) * 360;
 
             r_viewport.drawTextureRotated(
-                *r_assets.textures().get(TextureID::Noodle),
+                *r_assets.textures().get("d"),
                 m_world.getCamera().worldToViewport(0, 0, r_viewport),
-                std::nullopt, Utils::Math::Angle::degreesToRadians(angle));
+                Utils::Math::Angle::degreesToRadians(angle));
+
+            GridRectangle rect;
+            rect.setPosition(viewportMousePos.x, viewportMousePos.y);
+            rect.setSize(30, 30);
+
             m_world.render(r_viewport);
         }
 

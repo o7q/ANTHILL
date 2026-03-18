@@ -6,7 +6,6 @@
 #include "backend/viewport/viewport.hpp"
 #include "math/vec.hpp"
 #include <SDL3/SDL_video.h>
-#include <memory>
 
 class Window
 {
@@ -21,7 +20,7 @@ class Window
 
     void render();
 
-    Viewport &getViewport() { return *(m_viewport.get()); }
+    Viewport &getViewport() { return m_viewport; }
     EventHandler &getEventHandler() { return m_eventHandler; }
     InputHandler &getInputHandler() { return m_inputHandler; }
     TimeHandler &getTimeHandler() { return m_timeHandler; }
@@ -29,7 +28,7 @@ class Window
   private:
     SDL_Window *m_window = nullptr;
 
-    std::unique_ptr<Viewport> m_viewport;
+    Viewport m_viewport;
     EventHandler m_eventHandler;
     InputHandler m_inputHandler;
     TimeHandler m_timeHandler;

@@ -69,8 +69,8 @@ void Viewport::drawTexture(const Texture &texture, Vec2<int> pos)
 }
 
 void Viewport::drawTextureRotated(const Texture &texture, Vec2<int> pos,
-                                  std::optional<Vec2<int>> rotateOrigin,
-                                  float angle)
+                                  float angle,
+                                  std::optional<Vec2<int>> rotateOrigin)
 {
     Vec2<int> textureSize = texture.getSize().toInt();
     Vec2<int> halfTextureSize = textureSize / 2;

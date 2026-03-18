@@ -2,6 +2,11 @@
 
 void Camera::update(float dt)
 {
+    if (!m_goalSet)
+    {
+        return;
+    }
+
     if (std::abs(m_position.x - m_goal.x) < 0.25f)
     {
         m_position.x = m_goal.x;

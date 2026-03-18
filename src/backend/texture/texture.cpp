@@ -44,6 +44,7 @@ Texture::Texture(const std::filesystem::path &path) : m_logger("Texture")
         color.r = data[dataIndex];
         color.g = data[dataIndex + 1];
         color.b = data[dataIndex + 2];
+        color.a = data[dataIndex + 3];
         m_pixels[i] = color;
     }
 

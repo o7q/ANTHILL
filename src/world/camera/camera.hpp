@@ -1,7 +1,7 @@
 #pragma once
 
-#include "math/vec.hpp"
 #include "backend/viewport/viewport.hpp"
+#include "math/vec.hpp"
 
 class Camera
 {
@@ -15,7 +15,10 @@ class Camera
     {
         m_goal.x = x;
         m_goal.y = y;
+        m_goalSet = true;
     }
+
+    void clearGoal() { m_goalSet = false; }
 
     void move(float x, float y) { m_position += Vec2<float>(x, y); }
     void setPosition(int x, int y) { m_position = Vec2<int>(x, y).toFloat(); }
@@ -28,5 +31,6 @@ class Camera
     Vec2<float> m_position = {0.0f, 0.0f};
 
     Vec2<float> m_goal = {0.0f, 0.0f};
+    bool m_goalSet = false;
     float m_goalSpeed = 0.25f;
 };
