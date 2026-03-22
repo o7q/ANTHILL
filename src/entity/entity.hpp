@@ -54,10 +54,10 @@ class Entity
                                  Color color = Color(43, 255, 223));
 
   private:
-    void updateApplyExternalMotion(Vec2<int> currentPos,
-                                   const EntityUpdateContext &context);
-    void updateMotion_moveAndPreventWorldCollision(
-        Vec2<float> currentPos, const EntityUpdateContext &context);
+    void updateMotion_applyExternal(Vec2i currentPos,
+                                    const EntityUpdateContext &context);
+    void updateMotion_preventWorldCollision(Vec2f currentPos, Vec2f updatedPos,
+                                            const EntityUpdateContext &context);
 
   protected:
     InteractionBox m_interactionBox;

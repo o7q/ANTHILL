@@ -1,11 +1,10 @@
-#include "backend/logger/logger.hpp"
 #include "viewport.hpp"
 
+#include "backend/logger/logger.hpp"
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <cstddef>
-#include <stdexcept>
 
 Viewport::Viewport(SDL_Window *window, unsigned int width, unsigned int height)
 {
@@ -37,7 +36,7 @@ Viewport::Viewport(SDL_Window *window, unsigned int width, unsigned int height)
 
     reset_update_points();
 
-    m_size = Vec2<unsigned int>(width, height);
+    m_size = Vec2u(width, height);
     m_aspectRatio = static_cast<float>(width) / height;
 
     Logger::info("Viewport::Viewport()",

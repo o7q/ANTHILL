@@ -31,7 +31,7 @@ void PDynamicsHandler::applyForce(float x, float y, float power, float dt)
 {
     for (auto &[chunkPos, chunk] : r_particles.getChunks())
     {
-        Vec2<unsigned int> chunkSize = r_particles.getChunkSize();
+        Vec2u chunkSize = r_particles.getChunkSize();
         for (unsigned int cy = 0; cy < chunkSize.y; ++cy)
         {
             for (unsigned int cx = 0; cx < chunkSize.x; ++cx)
@@ -50,8 +50,7 @@ void PDynamicsHandler::applyForce(float x, float y, float power, float dt)
                     continue;
                 }
 
-                Vec2<float> dir =
-                    p->getVerlet().getPosition() - Vec2<float>(x, y);
+                Vec2f dir = p->getVerlet().getPosition() - Vec2f(x, y);
 
                 float distance = dir.length();
 
@@ -61,7 +60,7 @@ void PDynamicsHandler::applyForce(float x, float y, float power, float dt)
                 }
 
                 float strength = power;
-                Vec2<float> force = dir * strength;
+                Vec2f force = dir * strength;
 
                 p->getVerlet().setVelocity(force.x, force.y, dt);
             }

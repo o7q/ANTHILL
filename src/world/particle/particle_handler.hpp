@@ -17,10 +17,10 @@ class ParticleHandler
     void set(int x, int y, Particle p);
     void draw(int x, int y, Particle p, int radius = 5);
 
-    void textureToParticles(const Texture &texture, Vec2<int> pos, Particle p)
+    void textureToParticles(const Texture &texture, Vec2i pos, Particle p)
     {
-        Vec2<int> size = texture.getSize().toInt();
-        Vec2<int> halfSize = texture.getSize().toInt() / 2;
+        Vec2i size = texture.getSize().toInt();
+        Vec2i halfSize = texture.getSize().toInt() / 2;
 
         for (int y = 0; y < size.y; ++y)
         {
@@ -36,7 +36,7 @@ class ParticleHandler
     }
 
     template <typename QueryFunction>
-    void query(Vec2<int> start, Vec2<int> end, QueryFunction &&query,
+    void query(Vec2i start, Vec2i end, QueryFunction &&query,
                bool skipNull = true) const
     {
         for (int y = start.y; y <= end.y; ++y)
@@ -60,13 +60,13 @@ class ParticleHandler
 
     void render(Viewport &viewport, const Camera &camera)
     {
-        Vec2<unsigned int> viewport_size = viewport.getSize();
+        Vec2u viewport_size = viewport.getSize();
 
         for (unsigned int y = 0; y < viewport_size.y; ++y)
         {
             for (unsigned int x = 0; x < viewport_size.x; ++x)
             {
-                Vec2<int> pp = camera.viewportToWorld(x, y, viewport);
+                Vec2i pp = camera.viewportToWorld(x, y, viewport);
 
                 if (Particle *p = m_particles.get(pp.x, pp.y))
                 {

@@ -133,3 +133,8 @@ template <typename T> struct Vec2
                 Math::Numbers::clamp(y, min.y, max.y)};
     }
 };
+
+using Vec2i = Vec2<int>;
+using Vec2u = Vec2<unsigned int>;
+using Vec2f = Vec2<float>;
+using Vec2d = Vec2<double>;

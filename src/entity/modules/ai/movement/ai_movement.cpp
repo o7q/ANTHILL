@@ -3,7 +3,7 @@
 #include "entity/modules/ai/navigation/ai_navigation.hpp"
 #include "math/numbers.hpp"
 
-void AIMovement::update(Vec2<int> pos, const StaticGridRectangle &bb)
+void AIMovement::update(Vec2i pos, const StaticGridRectangle &bb)
 {
     m_shouldMove = false;
     m_shouldSetPosition = false;

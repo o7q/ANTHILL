@@ -25,15 +25,15 @@ class StaticGridRectangle
 
     void setSize(unsigned int width, unsigned int height)
     {
-        m_size = Vec2<unsigned int>(width, height);
+        m_size = Vec2u(width, height);
         m_area = width * height;
         m_halfSize = (m_size / 2.0f).toGrid().toUnsignedInt();
         recalculateAB();
     }
-    Vec2<unsigned int> getSize() const { return m_size; }
-    Vec2<unsigned int> getHalfSize() const { return m_halfSize; }
-    Vec2<int> getA() const { return m_a; }
-    Vec2<int> getB() const { return m_b; }
+    Vec2u getSize() const { return m_size; }
+    Vec2u getHalfSize() const { return m_halfSize; }
+    Vec2i getA() const { return m_a; }
+    Vec2i getB() const { return m_b; }
     int getArea() const { return m_area; }
 
     virtual bool pointInside(int x, int y) const
@@ -49,11 +49,11 @@ class StaticGridRectangle
     }
 
   protected:
-    Vec2<unsigned int> m_size = Vec2<unsigned int>(0, 0);
-    Vec2<unsigned int> m_halfSize = Vec2<unsigned int>(0, 0);
+    Vec2u m_size = Vec2u(0, 0);
+    Vec2u m_halfSize = Vec2u(0, 0);
     int m_area = 0;
-    Vec2<int> m_a = Vec2<int>(0, 0);
-    Vec2<int> m_b = Vec2<int>(0, 0);
+    Vec2i m_a = Vec2i(0, 0);
+    Vec2i m_b = Vec2i(0, 0);
 };
 
 class GridRectangle : public StaticGridRectangle
@@ -73,5 +73,5 @@ class GridRectangle : public StaticGridRectangle
         m_b = m_a + (m_size.toInt()) - 1;
     }
 
-    Vec2<int> m_position;
+    Vec2i m_position;
 };

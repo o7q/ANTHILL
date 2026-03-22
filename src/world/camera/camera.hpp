@@ -20,17 +20,17 @@ class Camera
 
     void clearGoal() { m_goalSet = false; }
 
-    void move(float x, float y) { m_position += Vec2<float>(x, y); }
-    void setPosition(int x, int y) { m_position = Vec2<int>(x, y).toFloat(); }
-    Vec2<int> getPosition() const { return m_position.toGrid(); }
+    void move(float x, float y) { m_position += Vec2f(x, y); }
+    void setPosition(int x, int y) { m_position = Vec2i(x, y).toFloat(); }
+    Vec2i getPosition() const { return m_position.toGrid(); }
 
-    Vec2<int> viewportToWorld(int x, int y, const Viewport &viewport) const;
-    Vec2<int> worldToViewport(int x, int y, const Viewport &viewport) const;
+    Vec2i viewportToWorld(int x, int y, const Viewport &viewport) const;
+    Vec2i worldToViewport(int x, int y, const Viewport &viewport) const;
 
   private:
-    Vec2<float> m_position = {0.0f, 0.0f};
+    Vec2f m_position = {0.0f, 0.0f};
 
-    Vec2<float> m_goal = {0.0f, 0.0f};
+    Vec2f m_goal = {0.0f, 0.0f};
     bool m_goalSet = false;
     float m_goalSpeed = 0.25f;
 };

@@ -67,10 +67,10 @@ class InputHandler
     void addInput(InputIDKey key, const std::vector<Input::Bind> &binds);
     const std::optional<Input> getInput(InputIDKey key);
 
-    Vec2<float> getMousePosition() const { return m_mousePosition; }
+    Vec2f getMousePosition() const { return m_mousePosition; }
 
   private:
     std::unordered_map<InputIDKey, Input> m_inputs;
 
-    Vec2<float> m_mousePosition;
+    Vec2f m_mousePosition;
 };

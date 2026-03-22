@@ -2,10 +2,10 @@
 #include "world_interaction.hpp"
 
 bool WorldInteractionHandler::againstSolidSurface(
-    Vec2<int> pos, RectangleSide side, const ParticleHandler &particles)
+    Vec2i pos, RectangleSide side, const ParticleHandler &particles)
 {
-    Vec2<unsigned int> size = r_boundingBox.getSize();
-    Vec2<int> topLeft = pos + r_boundingBox.getA();
+    Vec2u size = r_boundingBox.getSize();
+    Vec2i topLeft = pos + r_boundingBox.getA();
 
     bool collided = false;
 
@@ -23,29 +23,29 @@ bool WorldInteractionHandler::againstSolidSurface(
     {
     case RectangleSide::Top:
     {
-        Vec2<int> start = Vec2<int>(topLeft.x, topLeft.y - 1);
-        Vec2<int> end = Vec2<int>(topLeft.x + size.x - 1, topLeft.y - 1);
+        Vec2i start = Vec2i(topLeft.x, topLeft.y - 1);
+        Vec2i end = Vec2i(topLeft.x + size.x - 1, topLeft.y - 1);
         particles.query(start, end, query);
     }
     break;
     case RectangleSide::Right:
     {
-        Vec2<int> start = Vec2<int>(topLeft.x + size.x, topLeft.y);
-        Vec2<int> end = Vec2<int>(topLeft.x + size.x, topLeft.y + size.y - 1);
+        Vec2i start = Vec2i(topLeft.x + size.x, topLeft.y);
+        Vec2i end = Vec2i(topLeft.x + size.x, topLeft.y + size.y - 1);
         particles.query(start, end, query);
     }
     break;
     case RectangleSide::Bottom:
     {
-        Vec2<int> start = Vec2<int>(topLeft.x, topLeft.y + size.y);
-        Vec2<int> end = Vec2<int>(topLeft.x + size.x - 1, topLeft.y + size.y);
+        Vec2i start = Vec2i(topLeft.x, topLeft.y + size.y);
+        Vec2i end = Vec2i(topLeft.x + size.x - 1, topLeft.y + size.y);
         particles.query(start, end, query);
     }
     break;
     case RectangleSide::Left:
     {
-        Vec2<int> start = Vec2<int>(topLeft.x - 1, topLeft.y);
-        Vec2<int> end = Vec2<int>(topLeft.x - 1, topLeft.y + size.y - 1);
+        Vec2i start = Vec2i(topLeft.x - 1, topLeft.y);
+        Vec2i end = Vec2i(topLeft.x - 1, topLeft.y + size.y - 1);
         particles.query(start, end, query);
     }
     break;
@@ -55,10 +55,10 @@ bool WorldInteractionHandler::againstSolidSurface(
 }
 
 bool WorldInteractionHandler::againstSolidCorner(
-    Vec2<int> pos, RectangleCorner corner, const ParticleHandler &particles)
+    Vec2i pos, RectangleCorner corner, const ParticleHandler &particles)
 {
-    Vec2<unsigned int> size = r_boundingBox.getSize();
-    Vec2<int> topLeft = pos + r_boundingBox.getA();
+    Vec2u size = r_boundingBox.getSize();
+    Vec2i topLeft = pos + r_boundingBox.getA();
 
     bool collided = false;
     switch (corner)
@@ -118,7 +118,7 @@ bool WorldInteractionHandler::againstSolidCorner(
 
 WorldInteractionHandler::LocalWorldQuery
 WorldInteractionHandler::generateLocalWorldQuery(
-    Vec2<int> pos, const ParticleHandler &particles)
+    Vec2i pos, const ParticleHandler &particles)
 {
     LocalWorldQuery out;
 

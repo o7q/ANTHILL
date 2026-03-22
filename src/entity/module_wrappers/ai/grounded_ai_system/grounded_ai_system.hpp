@@ -9,15 +9,15 @@
 class GroundedAISystem
 {
   public:
-    void update(Vec2<int> pos, const StaticGridRectangle &bb,
+    void update(Vec2i pos, const StaticGridRectangle &bb,
                 const ChunkMap<Particle> &particles, float dt)
     {
         auto neighborCheck = [&](int x, int y)
         {
-            Vec2<int> a = bb.getA();
-            Vec2<int> b = bb.getB();
+            Vec2i a = bb.getA();
+            Vec2i b = bb.getB();
 
-            Vec2<int> corners[4] = {{x + a.x, y + a.y},
+            Vec2i corners[4] = {{x + a.x, y + a.y},
                                     {x + b.x, y + a.y},
                                     {x + a.x, y + b.y},
                                     {x + b.x, y + b.y}};

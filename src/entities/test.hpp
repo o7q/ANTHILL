@@ -38,10 +38,10 @@ class TestEntity : public Entity, public IDirectional
             }
         }
 
-        Vec2<int> pos = m_body.getPosition();
+        Vec2i pos = m_body.getPosition();
         if (player)
         {
-            Vec2<int> playerPos = player->getBody().getPosition();
+            Vec2i playerPos = player->getBody().getPosition();
 
             if (playerPos != player->getBody().getLastPosition())
             {
@@ -93,7 +93,7 @@ class TestEntity : public Entity, public IDirectional
         for (AINavigation::Checkpoint p :
              m_ai.getMovement().getMutatedCheckpoints())
         {
-            Vec2<int> ppos = camera.worldToViewport(p.pos.x, p.pos.y, viewport);
+            Vec2i ppos = camera.worldToViewport(p.pos.x, p.pos.y, viewport);
             viewport.setPixel(ppos.x, ppos.y,
                               p.axis == AINavigation::Axis::Horizontal
                                   ? Color(255, 105, 245)

@@ -15,9 +15,9 @@ float AStarSolver::dist(Index2D start, Index2D end)
     return D * (dx + dy) + (D2 - 2.0f * D) * std::min(dx, dy);
 }
 
-std::vector<Vec2<int>> AStarSolver::generatePath()
+std::vector<Vec2i> AStarSolver::generatePath()
 {
-    std::vector<Vec2<int>> path;
+    std::vector<Vec2i> path;
     AStarNode *node = &m_nodes[m_current.index];
     while (node->hasParent)
     {
@@ -30,7 +30,7 @@ std::vector<Vec2<int>> AStarSolver::generatePath()
     return path;
 }
 
-void AStarSolver::reset(Vec2<int> start, Vec2<int> end)
+void AStarSolver::reset(Vec2i start, Vec2i end)
 {
     m_nodes.clear();
     m_toSearch = std::priority_queue<AStarNode, std::vector<AStarNode>,

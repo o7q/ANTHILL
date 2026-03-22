@@ -13,7 +13,7 @@ class Texture
     Texture(unsigned int width, unsigned int height);
     Texture(const std::filesystem::path &path);
 
-    Vec2<unsigned int> getSize() const { return m_size; }
+    Vec2u getSize() const { return m_size; }
 
     Color getPixel(unsigned int x, unsigned int y) const;
 
@@ -23,6 +23,6 @@ class Texture
     void initNull();
 
   private:
-    Vec2<unsigned int> m_size;
+    Vec2u m_size;
     std::vector<Color> m_pixels;
 };

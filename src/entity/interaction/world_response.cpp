@@ -1,19 +1,19 @@
-#include "math/numbers.hpp"
 #include "world_interaction.hpp"
 
 #include "math/line.hpp"
+#include "math/numbers.hpp"
 
 WorldInteractionHandler::TrajectoryCollisionResponse
 WorldInteractionHandler::calculateCollisionFromTrajectory(
-    Vec2<int> start, Vec2<int> end, const ParticleHandler &particles)
+    Vec2i start, Vec2i end, const ParticleHandler &particles)
 {
     bool collided = false;
-    Vec2<int> previousPos = start;
+    Vec2i previousPos = start;
 
     auto check = [&](int x, int y)
     {
-        Vec2<int> a = r_boundingBox.getA() + Vec2<int>(x, y);
-        Vec2<int> b = r_boundingBox.getB() + Vec2<int>(x, y);
+        Vec2i a = r_boundingBox.getA() + Vec2i(x, y);
+        Vec2i b = r_boundingBox.getB() + Vec2i(x, y);
 
         bool collidedThisIteration = false;
         auto query = [&](const Particle *p)
@@ -44,13 +44,13 @@ WorldInteractionHandler::calculateCollisionFromTrajectory(
 
     TrajectoryCollisionResponse response;
     response.collided = collided;
-    response.resolvePos = previousPos;
+    response.resolvePosition = previousPos;
     return response;
 }
 
 WorldInteractionHandler::TrajectoryCollisionResponse
 WorldInteractionHandler::calculateCollisionFromTrajectorySlide(
-    Vec2<int> start, Vec2<int> end, const ParticleHandler &particles)
+    Vec2i start, Vec2i end, const ParticleHandler &particles)
 {
     TrajectoryCollisionResponse out;
 
@@ -61,28 +61,104 @@ WorldInteractionHandler::calculateCollisionFromTrajectorySlide(
     if (xy_response.collided)
     {
         // horizontal axis
-        Vec2<int> end_x = {end.x, xy_response.resolvePos.y};
+        Vec2i end_x = {end.x, xy_response.resolvePosition.y};
         TrajectoryCollisionResponse x_response =
-            calculateCollisionFromTrajectory(xy_response.resolvePos, end_x,
+            calculateCollisionFromTrajectory(xy_response.resolvePosition, end_x,
                                              particles);
 
         if (x_response.collided)
         {
             // vertical axis
-            Vec2<int> end_y = {xy_response.resolvePos.x, end.y};
+            Vec2i end_y = {xy_response.resolvePosition.x, end.y};
             TrajectoryCollisionResponse y_response =
-                calculateCollisionFromTrajectory(xy_response.resolvePos, end_y,
-                                                 particles);
+                calculateCollisionFromTrajectory(xy_response.resolvePosition,
+                                                 end_y, particles);
 
-            out.resolvePos = y_response.resolvePos;
+            out.resolvePosition = y_response.resolvePosition;
         }
         else
         {
-            out.resolvePos = x_response.resolvePos;
+            out.resolvePosition = x_response.resolvePosition;
         }
 
         out.collided = true;
     }
 
     return out;
+}
+
+WorldInteractionHandler::StepResponse WorldInteractionHandler::calculateStep(
+    Vec2i resolvedPosition, Vec2i originalEnd, const ParticleHandler &particles)
+{
+    StepResponse response;
+
+    int amount = originalEnd.x - resolvedPosition.x;
+    int dir = Math::Numbers::sign(amount);
+
+    int maxStepAmount = 3;
+
+    StepDirectionalData stepUpwards;
+    StepDirectionalData stepDownwards;
+
+    for (int i = 1; i <= std::abs(amount); ++i)
+    {
+        int step = i * dir;
+
+        Vec2i upwardsCheckPos = {resolvedPosition.x + step,
+                                 resolvedPosition.y + stepUpwards.sum.y};
+        Vec2i downwardsCheckPos = {resolvedPosition.x + step,
+                                   resolvedPosition.y + stepDownwards.sum.y};
+
+        MTVIntersectionResponse upwardsCheck =
+            calculateWorldIntersection_MTV(upwardsCheckPos, particles);
+
+        MTVIntersectionResponse downwardsCheck =
+            calculateWorldIntersection_MTV(downwardsCheckPos, particles);
+
+        Vec2i upwardsNextPos = upwardsCheckPos + Vec2i(0, -upwardsCheck.bottom);
+        Vec2i downwardsNextPos =
+            downwardsCheckPos + Vec2i(0, downwardsCheck.top);
+
+        if (upwardsCheck.bottom <= maxStepAmount &&
+            calculateWorldIntersection_MTV(upwardsNextPos, particles)
+                    .resolveDistance == 0)
+        {
+            stepUpwards.sum.x = step;
+            stepUpwards.sum.y -= upwardsCheck.bottom;
+            stepUpwards.distance += upwardsCheck.bottom;
+            stepUpwards.moved = true;
+        }
+
+        if (downwardsCheck.top <= maxStepAmount &&
+            calculateWorldIntersection_MTV(downwardsNextPos, particles)
+                    .resolveDistance == 0)
+        {
+            stepDownwards.sum.x = step;
+            stepDownwards.sum.y += downwardsCheck.top;
+            stepDownwards.distance += downwardsCheck.top;
+            stepDownwards.moved = true;
+        }
+    }
+
+    if (stepUpwards.moved && !stepDownwards.moved)
+    {
+        response.moveVector = stepUpwards.sum;
+    }
+    if (stepDownwards.moved && !stepUpwards.moved)
+    {
+        response.moveVector = stepDownwards.sum;
+    }
+    if (stepUpwards.moved && stepDownwards.moved)
+    {
+        if (stepUpwards.distance < stepDownwards.distance)
+        {
+            response.moveVector = stepUpwards.sum;
+        }
+        else
+        {
+            response.moveVector = stepDownwards.sum;
+        }
+    }
+
+    return response;
 }

@@ -7,7 +7,7 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
 {
     VerletBody &verlet = po.particle->getVerlet();
 
-    Vec2<float> start = verlet.getPosition();
+    Vec2f start = verlet.getPosition();
 
     Particle *left = r_particles.get(po.x - 1, po.y);
     Particle *right = r_particles.get(po.x + 1, po.y);
@@ -60,7 +60,7 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
 
     verlet.integrate(dt);
 
-    Vec2<float> end = verlet.getPosition();
+    Vec2f end = verlet.getPosition();
 
     resolve_particle_collision(po, start, end, dt);
     finalize_particle(po);

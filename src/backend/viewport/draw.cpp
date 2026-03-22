@@ -5,7 +5,7 @@
 #include <cmath>
 #include <optional>
 
-void Viewport::drawSegment(Vec2<int> p1, Vec2<int> p2, Color color)
+void Viewport::drawSegment(Vec2i p1, Vec2i p2, Color color)
 {
     Math::Line::bresenhamLine(p1, p2,
                               [this, &color](int x, int y)
@@ -15,7 +15,7 @@ void Viewport::drawSegment(Vec2<int> p1, Vec2<int> p2, Color color)
                               });
 }
 
-void Viewport::drawRectOutline(Vec2<int> p1, Vec2<int> p2, Color color)
+void Viewport::drawRectOutline(Vec2i p1, Vec2i p2, Color color)
 {
     // top
     for (int x = p1.x; x < p2.x; ++x)
@@ -42,7 +42,7 @@ void Viewport::drawRectOutline(Vec2<int> p1, Vec2<int> p2, Color color)
     }
 }
 
-void Viewport::drawRectFilled(Vec2<int> p1, Vec2<int> p2, Color color)
+void Viewport::drawRectFilled(Vec2i p1, Vec2i p2, Color color)
 {
     for (int y = p1.y; y <= p2.y; ++y)
     {
@@ -53,10 +53,10 @@ void Viewport::drawRectFilled(Vec2<int> p1, Vec2<int> p2, Color color)
     }
 }
 
-void Viewport::drawTexture(const Texture &texture, Vec2<int> pos)
+void Viewport::drawTexture(const Texture &texture, Vec2i pos)
 {
-    Vec2<int> size = texture.getSize().toInt();
-    Vec2<int> halfSize = size / 2;
+    Vec2i size = texture.getSize().toInt();
+    Vec2i halfSize = size / 2;
 
     for (int y = 0; y < size.y; ++y)
     {
@@ -68,13 +68,13 @@ void Viewport::drawTexture(const Texture &texture, Vec2<int> pos)
     }
 }
 
-void Viewport::drawTextureRotated(const Texture &texture, Vec2<int> pos,
+void Viewport::drawTextureRotated(const Texture &texture, Vec2i pos,
                                   float angle,
-                                  std::optional<Vec2<int>> rotateOrigin)
+                                  std::optional<Vec2i> rotateOrigin)
 {
-    Vec2<int> textureSize = texture.getSize().toInt();
-    Vec2<int> halfTextureSize = textureSize / 2;
-    Vec2<int> origin = rotateOrigin.value_or(halfTextureSize);
+    Vec2i textureSize = texture.getSize().toInt();
+    Vec2i halfTextureSize = textureSize / 2;
+    Vec2i origin = rotateOrigin.value_or(halfTextureSize);
 
     float cosA = std::cosf(angle);
     float sinA = std::sinf(angle);

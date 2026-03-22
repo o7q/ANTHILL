@@ -8,7 +8,7 @@
 
 void PDynamicsHandler::update(float dt)
 {
-    const Vec2<unsigned int> chunkSize = r_particles.getChunkSize();
+    const Vec2u chunkSize = r_particles.getChunkSize();
 
     for (auto &[chunkPos, chunk] : r_particles.getChunks())
     {
@@ -72,11 +72,11 @@ void PDynamicsHandler::update_particle(ParticleObject po, float dt)
 }
 
 void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
-                                                  Vec2<float> start,
-                                                  Vec2<float> end, float dt)
+                                                  Vec2f start, Vec2f end,
+                                                  float dt)
 {
-    Vec2<int> previousCheck = start.toGrid();
-    Vec2<int> hitCell{};
+    Vec2i previousCheck = start.toGrid();
+    Vec2i hitCell{};
     Particle *hitParticle = nullptr;
     bool hit = false;
 
@@ -104,13 +104,13 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
             if (!canPass && next != po.particle)
             {
                 hit = true;
-                hitCell = Vec2<int>(x, y);
+                hitCell = Vec2i(x, y);
                 hitParticle = next;
                 return true;
             }
         }
 
-        previousCheck = Vec2<int>(x, y);
+        previousCheck = Vec2i(x, y);
         return false;
     };
 
@@ -124,16 +124,16 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
     VerletBody &verletA = po.particle->getVerlet();
     VerletBody &verletB = hitParticle->getVerlet();
 
-    Vec2<float> velA = verletA.getVelocity(dt);
-    Vec2<float> velB = verletB.getVelocity(dt);
+    Vec2f velA = verletA.getVelocity(dt);
+    Vec2f velB = verletB.getVelocity(dt);
 
     float restitution =
         std::min(po.particle->getRestitution(), hitParticle->getRestitution());
 
-    Vec2<int> hitDirection = hitCell - previousCheck;
+    Vec2i hitDirection = hitCell - previousCheck;
 
-    Vec2<float> newVelA = velA;
-    Vec2<float> newVelB = velB;
+    Vec2f newVelA = velA;
+    Vec2f newVelB = velB;
 
     float mA = verletA.getMass();
     float mB = verletB.getMass();
@@ -182,7 +182,7 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
 
 void PDynamicsHandler::finalize_particle(ParticleObject po)
 {
-    Vec2<int> finalPos = po.particle->getVerlet().getPosition().toGrid();
+    Vec2i finalPos = po.particle->getVerlet().getPosition().toGrid();
 
     po.particle->setUpdateSwapID(m_updateSwapID);
     r_particles.move(po.x, po.y, finalPos.x, finalPos.y);

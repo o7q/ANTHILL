@@ -12,7 +12,7 @@
 class Game
 {
   public:
-    Game(Vec2<unsigned int> windowSize, Vec2<unsigned int> viewportSize)
+    Game(Vec2u windowSize, Vec2u viewportSize)
         : m_window("ANTHILL", windowSize, viewportSize)
     {
         start();

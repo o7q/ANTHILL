@@ -5,10 +5,10 @@
 // minimum translation vector
 WorldInteractionHandler::MTVIntersectionResponse
 WorldInteractionHandler::calculateWorldIntersection_MTV(
-    Vec2<int> pos, const ParticleHandler &particles)
+    Vec2i pos, const ParticleHandler &particles)
 {
-    const Vec2<int> size = r_boundingBox.getSize().toGrid();
-    const Vec2<int> topLeft = r_boundingBox.getA() + pos;
+    const Vec2i size = r_boundingBox.getSize().toGrid();
+    const Vec2i topLeft = r_boundingBox.getA() + pos;
 
     //    0
     // 3 [-] 1
@@ -19,7 +19,7 @@ WorldInteractionHandler::calculateWorldIntersection_MTV(
     {
         for (int x = 0; x < size.x; ++x)
         {
-            Vec2<int> worldPos = topLeft + Vec2<int>(x, y);
+            Vec2i worldPos = topLeft + Vec2i(x, y);
 
             const Particle *p =
                 particles.getParticles().get(worldPos.x, worldPos.y);
@@ -46,7 +46,7 @@ WorldInteractionHandler::calculateWorldIntersection_MTV(
     response.right = intersection[1];
     response.bottom = intersection[2];
     response.left = intersection[3];
-    response.moveVector = Vec2<int>(0, 0);
+    response.moveVector = Vec2i(0, 0);
 
     if (!collisionOccurred)
     {
@@ -68,16 +68,16 @@ WorldInteractionHandler::calculateWorldIntersection_MTV(
     switch (side)
     {
     case 0:
-        response.moveVector = Vec2<int>(0, lowest);
+        response.moveVector = Vec2i(0, lowest);
         break;
     case 1:
-        response.moveVector = Vec2<int>(-lowest, 0);
+        response.moveVector = Vec2i(-lowest, 0);
         break;
     case 2:
-        response.moveVector = Vec2<int>(0, -lowest);
+        response.moveVector = Vec2i(0, -lowest);
         break;
     case 3:
-        response.moveVector = Vec2<int>(lowest, 0);
+        response.moveVector = Vec2i(lowest, 0);
         break;
     }
 
@@ -86,21 +86,20 @@ WorldInteractionHandler::calculateWorldIntersection_MTV(
     return response;
 }
 
-Vec2<float>
-WorldInteractionHandler::calculateWorldIntersection_averageDirection(
-    Vec2<int> pos, const ParticleHandler &particles)
+Vec2f WorldInteractionHandler::calculateWorldIntersection_averageDirection(
+    Vec2i pos, const ParticleHandler &particles)
 {
-    const Vec2<unsigned int> size = r_boundingBox.getSize();
-    const Vec2<int> topLeft = pos + r_boundingBox.getA();
+    const Vec2u size = r_boundingBox.getSize();
+    const Vec2i topLeft = pos + r_boundingBox.getA();
 
-    Vec2<int> sum = Vec2<int>(0, 0);
+    Vec2i sum = Vec2i(0, 0);
     int count = 0;
 
     for (unsigned int y = 0; y < size.y; ++y)
     {
         for (unsigned int x = 0; x < size.x; ++x)
         {
-            Vec2<int> worldPos = topLeft + Vec2<int>(x, y);
+            Vec2i worldPos = topLeft + Vec2i(x, y);
 
             const Particle *p =
                 particles.getParticles().get(worldPos.x, worldPos.y);
@@ -119,7 +118,7 @@ WorldInteractionHandler::calculateWorldIntersection_averageDirection(
 
     if (count == 0)
     {
-        return Vec2<float>(0, 0);
+        return Vec2f(0, 0);
     }
 
     return (sum.toFloat() / count).normalize();

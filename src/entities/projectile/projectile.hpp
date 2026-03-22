@@ -9,7 +9,7 @@
 class Projectile : public Entity, public IDirectional
 {
   public:
-    Projectile(uint64_t id, Vec2<int> pos, float angle) : Entity(id)
+    Projectile(uint64_t id, Vec2i pos, float angle) : Entity(id)
     {
         m_body.setPosition(pos.x, pos.y);
         m_lookAngle = angle;
@@ -34,26 +34,6 @@ class Projectile : public Entity, public IDirectional
             m_eventEmitter.emit(std::move(event));
 
             kill();
-        }
-
-        for (auto &e : context.nearbyEntities)
-        {
-            if (e == this)
-            {
-                continue;
-            }
-
-            if (e->getInteractionBox().pointInside(e->getBody().getPosition(),
-                                                   m_body.getPosition().x,
-                                                   m_body.getPosition().y))
-            {
-                // auto event = std::make_unique<EntityDamageEvent>(this);
-
-                // event->damage = 25;
-                // // event->target = e;
-
-                // m_eventEmitter.emit(std::move(event));
-            }
         }
 
         m_body.applyGravity();

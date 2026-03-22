@@ -96,7 +96,7 @@ class Player : public Entity, public IDirectional
         renderDebug_boundingBox(viewport, camera, Color(79, 255, 94));
     }
 
-    void updateAimPosition(Vec2<int> aimPos)
+    void updateAimPosition(Vec2i aimPos)
     {
         m_lookPosition = aimPos;
         m_lookAngle = Math::Angle::vectorsToAngle(
@@ -108,7 +108,7 @@ class Player : public Entity, public IDirectional
     JumpHandler m_jumpHandler;
     Inventory m_inventory;
 
-    Vec2<int> m_mouseWorldPos;
+    Vec2i m_mouseWorldPos;
 
     const Texture &m_sprite;
 };

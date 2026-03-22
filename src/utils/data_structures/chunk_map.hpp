@@ -42,26 +42,26 @@ template <typename T> class ChunkMap
   public:
     ChunkMap(unsigned int chunkWidth, unsigned int chunkHeight)
     {
-        m_chunkSize = Vec2<unsigned int>(chunkWidth, chunkHeight);
+        m_chunkSize = Vec2u(chunkWidth, chunkHeight);
     }
     ChunkMap(const ChunkMap &other) = delete;
     ChunkMap &operator=(const ChunkMap &other) = delete;
 
     void set(int x, int y, T v)
     {
-        Vec2<int> chunk_index = get_chunk_index(x, y);
+        Vec2i chunk_index = get_chunk_index(x, y);
         Index2D chunk_key(chunk_index.x, chunk_index.y);
 
         auto [it, _] =
             m_chunks.try_emplace(chunk_key, m_chunkSize.x, m_chunkSize.y);
 
-        Vec2<unsigned int> inner_index = get_inner_index(x, y, chunk_index);
+        Vec2u inner_index = get_inner_index(x, y, chunk_index);
         it->second.set(inner_index.x, inner_index.y, v, m_chunkSize.x);
     }
 
     const T *get(int x, int y) const
     {
-        Vec2<int> chunk_index = get_chunk_index(x, y);
+        Vec2i chunk_index = get_chunk_index(x, y);
         Index2D chunk_key(chunk_index.x, chunk_index.y);
 
         auto it = m_chunks.find(chunk_key);
@@ -70,7 +70,7 @@ template <typename T> class ChunkMap
             return nullptr;
         }
 
-        Vec2<unsigned int> inner_index = get_inner_index(x, y, chunk_index);
+        Vec2u inner_index = get_inner_index(x, y, chunk_index);
         return it->second.get(inner_index.x, inner_index.y, m_chunkSize.x);
     }
 
@@ -82,7 +82,7 @@ template <typename T> class ChunkMap
 
     bool hasValue(int x, int y)
     {
-        Vec2<int> chunk_index = get_chunk_index(x, y);
+        Vec2i chunk_index = get_chunk_index(x, y);
         Index2D chunk_key(chunk_index.x, chunk_index.y);
 
         auto it = m_chunks.find(chunk_key);
@@ -119,32 +119,31 @@ template <typename T> class ChunkMap
         return m_chunks;
     }
 
-    Vec2<unsigned int> getChunkSize() const { return m_chunkSize; }
+    Vec2u getChunkSize() const { return m_chunkSize; }
 
   private:
-    Vec2<int> get_chunk_index(int x, int y) const
+    Vec2i get_chunk_index(int x, int y) const
     {
         int cw = static_cast<int>(m_chunkSize.x);
         int ch = static_cast<int>(m_chunkSize.y);
 
         int chunk_x = x / cw - (x % cw < 0);
         int chunk_y = y / ch - (y % ch < 0);
-        return Vec2<int>(chunk_x, chunk_y);
+        return Vec2i(chunk_x, chunk_y);
     }
 
-    Vec2<unsigned int> get_inner_index(int x, int y,
-                                       Vec2<int> chunk_index) const
+    Vec2u get_inner_index(int x, int y, Vec2i chunk_index) const
     {
         int cw = static_cast<int>(m_chunkSize.x);
         int ch = static_cast<int>(m_chunkSize.y);
 
         unsigned int inner_x = x - chunk_index.x * cw;
         unsigned int inner_y = y - chunk_index.y * ch;
-        return Vec2<unsigned int>(inner_x, inner_y);
+        return Vec2u(inner_x, inner_y);
     }
 
   private:
-    Vec2<unsigned int> m_chunkSize;
+    Vec2u m_chunkSize;
 
     std::unordered_map<Index2D, Chunk, Index2DHash> m_chunks;
 };

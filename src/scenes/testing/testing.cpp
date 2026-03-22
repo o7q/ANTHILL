@@ -45,15 +45,15 @@ void TestScene::onStart()
     p.getVerlet().setMass(1);
 
     m_world.getParticleHandler().textureToParticles(
-        *r_assets.textures().get(TextureID::Noodle), Vec2<int>(100, 250), p);
+        *r_assets.textures().get(TextureID::Noodle), Vec2i(100, 250), p);
 }
 
 void TestScene::onTick()
 {
-    Vec2<float> mousePos = r_input.getMousePosition();
-    Vec2<int> viewportMousePos = r_viewport.windowToViewportPosition(mousePos);
+    Vec2f mousePos = r_input.getMousePosition();
+    Vec2i viewportMousePos = r_viewport.windowToViewportPosition(mousePos);
 
-    Vec2<int> worldPos = m_world.getCamera().viewportToWorld(
+    Vec2i worldPos = m_world.getCamera().viewportToWorld(
         viewportMousePos.x, viewportMousePos.y, r_viewport);
 
     if (r_window.getInputHandler()

@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-void Viewport::recalculatePresentRect(Vec2<unsigned int> windowSize,
+void Viewport::recalculatePresentRect(Vec2u windowSize,
                                       float windowAspect)
 {
     if (windowAspect > m_aspectRatio)
@@ -19,7 +19,7 @@ void Viewport::recalculatePresentRect(Vec2<unsigned int> windowSize,
     m_presentRect.y = windowSize.y / 2.0f - m_presentRect.h / 2.0f;
 }
 
-Vec2<int> Viewport::windowToViewportPosition(Vec2<float> windowPosition)
+Vec2i Viewport::windowToViewportPosition(Vec2f windowPosition)
 {
     windowPosition.x -= m_presentRect.x;
     windowPosition.y -= m_presentRect.y;
@@ -33,5 +33,5 @@ Vec2<int> Viewport::windowToViewportPosition(Vec2<float> windowPosition)
     windowPosition.y =
         std::clamp(windowPosition.y, 0.0f, static_cast<float>(m_size.y) - 1);
 
-    return Vec2<int>(windowPosition.x, windowPosition.y);
+    return Vec2i(windowPosition.x, windowPosition.y);
 }

@@ -63,7 +63,7 @@ struct EntityWorldModifyDrawEvent : public EntityEvent
     {
     }
 
-    Vec2<int> pos;
+    Vec2i pos;
     Particle particle;
     int radius = 5;
 };

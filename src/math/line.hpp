@@ -9,8 +9,7 @@ namespace Line
 {
 // https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 template <typename Function>
-inline void bresenhamLine(Vec2<int> p1, const Vec2<int> &p2,
-                          Function &&function)
+inline void bresenhamLine(Vec2i p1, const Vec2i &p2, Function &&function)
 {
     int dx = std::abs(p2.x - p1.x);
     int dy = -std::abs(p2.y - p1.y);
@@ -50,12 +49,12 @@ inline void bresenhamLine(Vec2<int> p1, const Vec2<int> &p2,
 }
 
 template <typename HitCheckFunction>
-inline void bresenhamRaycast(const Vec2<int> &start, float angle,
+inline void bresenhamRaycast(const Vec2i &start, float angle,
                              HitCheckFunction &&function, int maxDistance = 100)
 {
     int endX = start.x + std::cosf(angle) * maxDistance;
     int endY = start.y + std::sinf(angle) * maxDistance;
-    Vec2<int> end = Vec2<int>(endX, endY).toGrid();
+    Vec2i end = Vec2i(endX, endY).toGrid();
     bresenhamLine(start, end, function);
 }
 } // namespace Line

@@ -16,15 +16,14 @@ inline float radiansToDegrees(float radians)
 {
     return static_cast<float>(Constants::RAD_TO_DEG) * radians;
 }
-inline float vectorsToAngle(Vec2<float> a, Vec2<float> b)
+inline float vectorsToAngle(Vec2f a, Vec2f b)
 {
-    Vec2<float> d = b - a;
+    Vec2f d = b - a;
     return std::atan2(d.y, d.x);
 }
-inline Vec2<float> rotatePoint(Vec2<float> origin, Vec2<float> point,
-                               float angle)
+inline Vec2f rotatePoint(Vec2f origin, Vec2f point, float angle)
 {
-    Vec2<float> out;
+    Vec2f out;
 
     point -= origin;
 

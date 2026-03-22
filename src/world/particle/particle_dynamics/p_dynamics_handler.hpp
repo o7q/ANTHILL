@@ -22,7 +22,7 @@ class PDynamicsHandler
     float getGravity() const { return m_gravity; }
     void setUpdateInfo(int originX, int originY, int chunk_radius_to_update)
     {
-        m_updateChunksOrigin = Vec2<int>(originX, originY);
+        m_updateChunksOrigin = Vec2i(originX, originY);
         m_updateChunksRadius = chunk_radius_to_update;
     }
 
@@ -30,8 +30,8 @@ class PDynamicsHandler
 
   private:
     void update_particle(ParticleObject po, float dt);
-    void resolve_particle_collision(ParticleObject po, Vec2<float> start,
-                                    Vec2<float> end, float dt);
+    void resolve_particle_collision(ParticleObject po, Vec2f start, Vec2f end,
+                                    float dt);
     void finalize_particle(ParticleObject po);
 
     bool can_solid_occupy(Particle *p);
@@ -47,6 +47,6 @@ class PDynamicsHandler
     bool m_updateSwapID = 0;
 
     float m_gravity = 0.1f;
-    Vec2<int> m_updateChunksOrigin;
+    Vec2i m_updateChunksOrigin;
     int m_updateChunksRadius = 4;
 };

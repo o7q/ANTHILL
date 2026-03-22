@@ -20,7 +20,7 @@ class AINavigation
 
     struct Checkpoint
     {
-        Vec2<int> pos;
+        Vec2i pos;
         Axis axis;
     };
 
@@ -38,10 +38,10 @@ class AINavigation
 
         if (m_astar.endReached() && m_pathState == PathState::Iterating)
         {
-            std::vector<Vec2<int>> positions = m_astar.generatePath();
+            std::vector<Vec2i> positions = m_astar.generatePath();
 
-            Vec2<int> last;
-            for (Vec2<int> pos : positions)
+            Vec2i last;
+            for (Vec2i pos : positions)
             {
                 int dx = std::abs(pos.x - last.x);
                 int dy = std::abs(pos.y - last.y);
@@ -63,7 +63,7 @@ class AINavigation
         }
     }
 
-    void setGoal(Vec2<int> start, Vec2<int> end)
+    void setGoal(Vec2i start, Vec2i end)
     {
         m_startPos = start;
         m_endPos = end;
@@ -104,6 +104,6 @@ class AINavigation
 
     std::vector<Checkpoint> m_checkpoints;
 
-    Vec2<int> m_startPos;
-    Vec2<int> m_endPos;
+    Vec2i m_startPos;
+    Vec2i m_endPos;
 };

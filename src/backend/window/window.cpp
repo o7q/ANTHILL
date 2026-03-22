@@ -1,12 +1,12 @@
 #include "window.hpp"
 
+#include "backend/logger/logger.hpp"
 #include "backend/viewport/viewport.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_video.h>
 
-Window::Window(const std::string &name, Vec2<unsigned int> windowSize,
-               Vec2<unsigned int> viewportSize)
+Window::Window(const std::string &name, Vec2u windowSize, Vec2u viewportSize)
     : m_window(SDL_CreateWindow(name.c_str(), windowSize.x, windowSize.y,
                                 SDL_WINDOW_RESIZABLE)),
       m_viewport(m_window, viewportSize.x, viewportSize.y)

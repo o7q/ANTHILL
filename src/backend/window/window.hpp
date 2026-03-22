@@ -10,8 +10,7 @@
 class Window
 {
   public:
-    Window(const std::string &name, Vec2<unsigned int> windowSize,
-           Vec2<unsigned int> viewportSize);
+    Window(const std::string &name, Vec2u windowSize, Vec2u viewportSize);
     Window(const Window &other) = delete;
     Window &operator=(const Window &other) = delete;
     ~Window();
@@ -34,6 +33,6 @@ class Window
     InputHandler m_inputHandler;
     TimeHandler m_timeHandler;
 
-    Vec2<unsigned int> m_size;
+    Vec2u m_size;
     float m_aspectRatio = 1.0f;
 };

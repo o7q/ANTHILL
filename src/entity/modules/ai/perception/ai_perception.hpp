@@ -11,7 +11,7 @@ class AIPerception
     virtual ~AIPerception() = default;
 
     template <typename CheckFunction>
-    void checkForInterestsInSight(Vec2<int> headPos, float headAngle,
+    void checkForInterestsInSight(Vec2i headPos, float headAngle,
                                   CheckFunction &&function)
     {
         m_sightPoints.clear();
@@ -35,7 +35,7 @@ class AIPerception
                         return true;
                     }
 
-                    m_sightPoints.push_back(Vec2<int>(x, y));
+                    m_sightPoints.push_back(Vec2i(x, y));
 
                     return false;
                 },
@@ -49,7 +49,7 @@ class AIPerception
     void setSightRayAmount(int amount) { m_sightRayAmount = amount; }
 
   private:
-    std::vector<Vec2<int>> m_sightPoints;
+    std::vector<Vec2i> m_sightPoints;
 
     float m_detectionRadius = 0.0f;
     float m_sightFOV = 90.0f;

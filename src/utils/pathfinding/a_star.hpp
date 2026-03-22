@@ -45,10 +45,10 @@ class AStarSolver
     };
 
   public:
-    AStarSolver() { reset(Vec2<int>(0, 0), Vec2<int>(0, 0)); }
+    AStarSolver() { reset(Vec2i(0, 0), Vec2i(0, 0)); }
     virtual ~AStarSolver() = default;
 
-    void reset(Vec2<int> start, Vec2<int> end);
+    void reset(Vec2i start, Vec2i end);
 
     template <typename NeighborCheckFunction>
     void iteratePath(int amount, NeighborCheckFunction &&checkFunction)
@@ -126,7 +126,7 @@ class AStarSolver
             ++m_iterationCount;
         }
     }
-    std::vector<Vec2<int>> generatePath();
+    std::vector<Vec2i> generatePath();
 
     bool endReached() const { return m_endReached; }
     void setMaxIterations(int maxIterations)
@@ -150,7 +150,7 @@ class AStarSolver
 
     AStarNode m_current;
 
-    Vec2<int> m_start, m_end;
+    Vec2i m_start, m_end;
 
     int m_maxIterations = 50000;
     int m_iterationCount = 0;

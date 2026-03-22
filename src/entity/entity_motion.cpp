@@ -2,8 +2,8 @@
 #include "entity/interaction/world_interaction.hpp"
 #include "math/rectangle.hpp"
 
-void Entity::updateApplyExternalMotion(Vec2<int> currentPos,
-                                       const EntityUpdateContext &context)
+void Entity::updateMotion_applyExternal(Vec2i currentPos,
+                                        const EntityUpdateContext &context)
 {
     if (m_interactionBox.getWorldHandler().againstSolidSurface(
             currentPos, RectangleSide::Bottom, context.particles))
@@ -24,18 +24,17 @@ void Entity::updateApplyExternalMotion(Vec2<int> currentPos,
 
 void Entity::updateMotion(const EntityUpdateContext &context)
 {
-    Vec2<float> currentPos = m_body.getPositionFloat();
-    updateApplyExternalMotion(currentPos.toGrid(), context);
+    Vec2f currentPos = m_body.getPositionFloat();
+    updateMotion_applyExternal(currentPos.toGrid(), context);
+    m_body.update(context.dt);
+    Vec2f updatedPos = m_body.getPositionFloat();
 
-    updateMotion_moveAndPreventWorldCollision(currentPos, context);
+    updateMotion_preventWorldCollision(currentPos, updatedPos, context);
 }
 
-void Entity::updateMotion_moveAndPreventWorldCollision(
-    Vec2<float> currentPos, const EntityUpdateContext &context)
+void Entity::updateMotion_preventWorldCollision(
+    Vec2f currentPos, Vec2f updatedPos, const EntityUpdateContext &context)
 {
-    m_body.update(context.dt);
-    Vec2<float> updatedPos = m_body.getPositionFloat();
-
     WorldInteractionHandler::TrajectoryCollisionResponse response =
         m_interactionBox.getWorldHandler()
             .calculateCollisionFromTrajectorySlide(
@@ -46,11 +45,15 @@ void Entity::updateMotion_moveAndPreventWorldCollision(
         float remainderX = updatedPos.x - std::floor(updatedPos.x);
         float remainderY = updatedPos.y - std::floor(updatedPos.y);
 
-        Vec2<int> step = m_interactionBox.getWorldHandler().calculateStep(
-            response.resolvePos, updatedPos.toGrid(), context.particles);
+        WorldInteractionHandler::StepResponse step =
+            m_interactionBox.getWorldHandler().calculateStep(
+                response.resolvePosition, updatedPos.toGrid(),
+                context.particles);
 
-        float finalX = response.resolvePos.x + step.x + remainderX;
-        float finalY = response.resolvePos.y + step.y + remainderY;
+        float finalX =
+            response.resolvePosition.x + step.moveVector.x + remainderX;
+        float finalY =
+            response.resolvePosition.y + step.moveVector.y + remainderY;
 
         m_body.setPositionFloat(finalX, finalY);
     }

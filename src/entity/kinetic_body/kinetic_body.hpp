@@ -1,6 +1,5 @@
 #pragma once
 
-#include "math/physics/semi_implicit_euler.hpp"
 #include "math/vec.hpp"
 
 class KineticBody
@@ -9,36 +8,42 @@ class KineticBody
     KineticBody() = default;
     virtual ~KineticBody() = default;
 
-    void applyGravity() { m_body.addForce(0.0f, m_gravity); }
+    void applyGravity() { addForce(0.0f, m_gravity); }
     void setGravity(float gravity) { m_gravity = gravity; }
 
-    void update(float dt);
-
-    void setPosition(int x, int y)
+    void update(float dt)
     {
-        return m_body.setPosition(static_cast<float>(x), static_cast<float>(y));
+        Vec2f acceleration = m_force / m_mass;
+
+        m_velocity += acceleration * dt;
+        m_position += m_velocity * dt;
+
+        m_force = Vec2f(0.0f, 0.0f);
     }
-    void setPositionFloat(float x, float y) { m_body.setPosition(x, y); }
-    Vec2<int> getPosition() const { return m_body.getPosition().toGrid(); }
-    Vec2<float> getPositionFloat() const { return m_body.getPosition(); }
-    Vec2<int> getLastPosition() const { return m_lastPos.toGrid(); }
-    Vec2<float> getLastPositionFloat() const { return m_lastPos; }
 
-    void setVelocityX(float x) { m_body.setVelocityX(x); }
-    void setVelocityY(float y) { m_body.setVelocityY(y); }
-    void setVelocity(float x, float y) { m_body.setVelocity(x, y); }
+    void setPosition(int x, int y) { m_position = Vec2i(x, y).toFloat(); }
+    void setPositionFloat(float x, float y) { m_position = Vec2f(x, y); }
+    Vec2i getPosition() const { return m_position.toGrid(); }
+    Vec2f getPositionFloat() const { return m_position; }
+    Vec2i getLastPosition() const { return m_lastPosition.toGrid(); }
+    Vec2f getLastPositionFloat() const { return m_lastPosition; }
 
-    Vec2<float> getVelocity() const { return m_body.getVelocity(); }
+    void setVelocityX(float x) { m_velocity.x = x; }
+    void setVelocityY(float y) { m_velocity.y = y; }
+    void setVelocity(float x, float y) { m_velocity = Vec2f(x, y); }
 
-    void addForce(float x, float y) { m_body.addForce(x, y); }
+    Vec2f getVelocity() const { return m_velocity; }
+
+    void addForce(float x, float y) { m_force += Vec2f(x, y); }
 
     void haltMotionInDirection(int dirX, int dirY);
 
   protected:
-    SemiImplicitEulerBody m_body;
-
+    Vec2f m_position;
+    Vec2f m_lastPosition;
+    Vec2f m_velocity;
+    Vec2f m_force;
+    Vec2f m_maxVelocity = {10, 10};
+    float m_mass = 1.0f;
     float m_gravity = 0.0f;
-    Vec2<float> m_lastPos = {0, 0};
-
-    Vec2<float> m_maxVelocity = {10, 10};
 };
