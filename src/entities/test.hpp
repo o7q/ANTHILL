@@ -26,7 +26,7 @@ class TestEntity : public Entity, public IDirectional
         m_jumpHandler.setHoldDuration(0.0f);
     }
 
-    void update(EntityUpdateContext &context) override
+    void update(const EntityUpdateContext &context) override
     {
         const Entity *player = nullptr;
         for (const Entity *entity : context.nearbyEntities)

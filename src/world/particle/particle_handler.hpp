@@ -71,10 +71,8 @@ class ParticleHandler
                 if (Particle *p = m_particles.get(pp.x, pp.y))
                 {
                     Color pixel = p->getColor();
-
                     if (!p->isAir())
                     {
-                        // pixel = Color(50, 0, 0);
                         viewport.setPixel(x, y, pixel);
                     }
                 }

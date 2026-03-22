@@ -46,7 +46,7 @@ WorldInteractionHandler::calculateWorldIntersection_MTV(
     response.right = intersection[1];
     response.bottom = intersection[2];
     response.left = intersection[3];
-    response.resolve = Vec2<int>(0, 0);
+    response.moveVector = Vec2<int>(0, 0);
 
     if (!collisionOccurred)
     {
@@ -68,16 +68,16 @@ WorldInteractionHandler::calculateWorldIntersection_MTV(
     switch (side)
     {
     case 0:
-        response.resolve = Vec2<int>(0, lowest);
+        response.moveVector = Vec2<int>(0, lowest);
         break;
     case 1:
-        response.resolve = Vec2<int>(-lowest, 0);
+        response.moveVector = Vec2<int>(-lowest, 0);
         break;
     case 2:
-        response.resolve = Vec2<int>(0, -lowest);
+        response.moveVector = Vec2<int>(0, -lowest);
         break;
     case 3:
-        response.resolve = Vec2<int>(lowest, 0);
+        response.moveVector = Vec2<int>(lowest, 0);
         break;
     }
 

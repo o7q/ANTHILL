@@ -9,6 +9,8 @@ class SemiImplicitEulerBody : public PhysicsBody
     SemiImplicitEulerBody() = default;
 
     void setPosition(float x, float y) { m_position = Vec2<float>(x, y); }
+    void setPositionX(float x) { m_position.x = x; }
+    void setPositionY(float y) { m_position.y = y; }
     Vec2<float> getPosition() const { return m_position; }
 
     void integrate(float dt) override;

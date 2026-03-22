@@ -26,6 +26,7 @@ class Game
         init_binds();
 
         m_window.getTimeHandler().setTargetFramerate(144);
+        // m_window.getTimeHandler().setSpeedMultiplier(0.3f);
 
         m_scene = std::make_unique<TestScene>(m_window, m_assets);
 

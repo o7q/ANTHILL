@@ -18,7 +18,7 @@ class Projectile : public Entity, public IDirectional
         m_body.setGravity(0.1f);
     }
 
-    void update(EntityUpdateContext &context) override
+    void update(const EntityUpdateContext &context) override
     {
         const Particle *p = context.particles.getParticles().get(
             m_body.getPosition().x, m_body.getPosition().y);
@@ -28,7 +28,7 @@ class Projectile : public Entity, public IDirectional
             auto event = std::make_unique<EntityWorldModifyDrawEvent>(this);
 
             event->pos = m_body.getPosition();
-            event->radius = 5;
+            event->radius = 30;
             event->particle = Particle();
 
             m_eventEmitter.emit(std::move(event));

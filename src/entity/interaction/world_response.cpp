@@ -66,7 +66,7 @@ WorldInteractionHandler::calculateCollisionFromTrajectorySlide(
             calculateCollisionFromTrajectory(xy_response.resolvePos, end_x,
                                              particles);
 
-        if (xy_response.resolvePos == x_response.resolvePos)
+        if (x_response.collided)
         {
             // vertical axis
             Vec2<int> end_y = {xy_response.resolvePos.x, end.y};
@@ -79,51 +79,6 @@ WorldInteractionHandler::calculateCollisionFromTrajectorySlide(
         else
         {
             out.resolvePos = x_response.resolvePos;
-        }
-
-        int amount = end.x - out.resolvePos.x;
-        int dir = Math::Numbers::sign(amount);
-
-        int maxStepHeight = 5;
-
-        bool moved = false;
-
-        int xSum = 0;
-        int ySum = 0;
-
-        for (int i = 1; i <= std::abs(amount); ++i)
-        {
-            int xStep = i * dir;
-
-            Vec2<int> checkPos = {out.resolvePos.x + xStep,
-                                  out.resolvePos.y - ySum};
-
-            MTVIntersectionResponse r =
-                calculateWorldIntersection_MTV(checkPos, particles);
-
-            MTVIntersectionResponse pass2 =
-                calculateWorldIntersection_MTV(checkPos + Vec2<int>(0, -r.bottom), particles);
-
-            if (r.bottom > maxStepHeight || pass2.resolveDistance != 0)
-            {
-                break;
-            }
-
-            xSum = xStep;
-            ySum += r.bottom;
-            moved = true;
-        }
-
-        if (moved)
-        {
-            out.resolvePos.x += xSum;
-            out.resolvePos.y -= ySum;
-        }
-
-        int aaa = end.x - out.resolvePos.x;
-        if (aaa != 0)
-        {
-            std::cout << aaa << std::endl;
         }
 
         out.collided = true;

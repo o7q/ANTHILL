@@ -16,10 +16,13 @@ class KineticBody
 
     void setPosition(int x, int y)
     {
-        m_body.setPosition(static_cast<float>(x), static_cast<float>(y));
+        return m_body.setPosition(static_cast<float>(x), static_cast<float>(y));
     }
+    void setPositionFloat(float x, float y) { m_body.setPosition(x, y); }
     Vec2<int> getPosition() const { return m_body.getPosition().toGrid(); }
-    Vec2<int> getLastPosition() const { return m_lastPos; }
+    Vec2<float> getPositionFloat() const { return m_body.getPosition(); }
+    Vec2<int> getLastPosition() const { return m_lastPos.toGrid(); }
+    Vec2<float> getLastPositionFloat() const { return m_lastPos; }
 
     void setVelocityX(float x) { m_body.setVelocityX(x); }
     void setVelocityY(float y) { m_body.setVelocityY(y); }
@@ -35,7 +38,7 @@ class KineticBody
     SemiImplicitEulerBody m_body;
 
     float m_gravity = 0.0f;
-    Vec2<int> m_lastPos = {0, 0};
+    Vec2<float> m_lastPos = {0, 0};
 
     Vec2<float> m_maxVelocity = {10, 10};
 };

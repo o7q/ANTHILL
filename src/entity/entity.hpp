@@ -17,7 +17,7 @@ class Entity
     }
     virtual ~Entity() = default;
 
-    virtual void update(EntityUpdateContext &context) = 0;
+    virtual void update(const EntityUpdateContext &context) = 0;
     virtual void render(Viewport &viewport, const Camera &camera) = 0;
 
     void kill() { m_dead = true; }
@@ -38,10 +38,10 @@ class Entity
 
     EntityEventEmitter &getEventEmitter() { return m_eventEmitter; }
 
-    uint64_t getID() { return m_id; }
+    uint64_t getID() const { return m_id; }
 
   protected:
-    virtual void updateMotion(EntityUpdateContext &context);
+    virtual void updateMotion(const EntityUpdateContext &context);
     virtual void updateHealth()
     {
         if (m_health <= 0.0f)
@@ -54,10 +54,10 @@ class Entity
                                  Color color = Color(43, 255, 223));
 
   private:
-    void updateApplyExternalMotion(EntityUpdateContext &context);
-    void
-    updateMotion_moveAndPreventWorldCollision(Vec2<int> currentPos,
-                                              EntityUpdateContext &context);
+    void updateApplyExternalMotion(Vec2<int> currentPos,
+                                   const EntityUpdateContext &context);
+    void updateMotion_moveAndPreventWorldCollision(
+        Vec2<float> currentPos, const EntityUpdateContext &context);
 
   protected:
     InteractionBox m_interactionBox;

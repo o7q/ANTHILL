@@ -27,7 +27,7 @@ class Player : public Entity, public IDirectional
 
     Inventory &getInventory() { return m_inventory; }
 
-    virtual void update(EntityUpdateContext &context) override
+    virtual void update(const EntityUpdateContext &context) override
     {
         if (r_input.getInput(InputID::Left)->isDown())
         {
@@ -60,7 +60,7 @@ class Player : public Entity, public IDirectional
         if (r_input.getInput(InputID::Action1)->wasPressed())
         {
             auto event = std::make_unique<EntitySpawnEvent>(this);
-            
+
             event->entityFactory =
                 [pos = m_body.getPosition(), angle = m_lookAngle](uint64_t id)
             { return std::make_unique<Projectile>(id, pos, angle); };

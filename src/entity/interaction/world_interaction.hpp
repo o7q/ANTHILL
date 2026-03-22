@@ -1,8 +1,10 @@
 #pragma once
 
+#include "math/numbers.hpp"
 #include "math/rectangle.hpp"
 #include "math/vec.hpp"
 #include "world/particle/particle_handler.hpp"
+#include <limits>
 
 class WorldInteractionHandler
 {
@@ -22,13 +24,12 @@ class WorldInteractionHandler
 
         int resolveDistance = 0;
 
-        Vec2<int> resolve;
+        Vec2<int> moveVector;
     };
 
     struct StepResponse
     {
-        bool canStep = false;
-        Vec2<int> stepPosition = Vec2<int>(0, 0);
+        Vec2<int> moveVector = Vec2<int>(0, 0);
     };
 
     struct LocalWorldQuery
@@ -68,6 +69,92 @@ class WorldInteractionHandler
 
     LocalWorldQuery generateLocalWorldQuery(Vec2<int> pos,
                                             const ParticleHandler &particles);
+
+    struct StepDirectionalData
+    {
+        Vec2<int> sum{};
+        int distance = 0;
+        bool moved = false;
+    };
+
+    Vec2<int> calculateStep(Vec2<int> resolvedPosition, Vec2<int> originalEnd,
+                            const ParticleHandler &particles)
+    {
+        Vec2<int> out;
+
+        int amount = originalEnd.x - resolvedPosition.x;
+        int dir = Math::Numbers::sign(amount);
+
+        int maxStepAmount = 3;
+
+        StepDirectionalData stepUpwards;
+        StepDirectionalData stepDownwards;
+
+        for (int i = 1; i <= std::abs(amount); ++i)
+        {
+            int step = i * dir;
+
+            Vec2<int> upwardsCheckPos = {resolvedPosition.x + step,
+                                         resolvedPosition.y +
+                                             stepUpwards.sum.y};
+            Vec2<int> downwardsCheckPos = {resolvedPosition.x + step,
+                                           resolvedPosition.y +
+                                               stepDownwards.sum.y};
+
+            MTVIntersectionResponse upwardsCheck =
+                calculateWorldIntersection_MTV(upwardsCheckPos, particles);
+
+            MTVIntersectionResponse downwardsCheck =
+                calculateWorldIntersection_MTV(downwardsCheckPos, particles);
+
+            Vec2<int> upwardsNextPos =
+                upwardsCheckPos + Vec2<int>(0, -upwardsCheck.bottom);
+            Vec2<int> downwardsNextPos =
+                downwardsCheckPos + Vec2<int>(0, downwardsCheck.top);
+
+            if (upwardsCheck.bottom <= maxStepAmount &&
+                calculateWorldIntersection_MTV(upwardsNextPos, particles)
+                        .resolveDistance == 0)
+            {
+                stepUpwards.sum.x = step;
+                stepUpwards.sum.y -= upwardsCheck.bottom;
+                stepUpwards.distance += upwardsCheck.bottom;
+                stepUpwards.moved = true;
+            }
+
+            if (downwardsCheck.top <= maxStepAmount &&
+                calculateWorldIntersection_MTV(downwardsNextPos, particles)
+                        .resolveDistance == 0)
+            {
+                stepDownwards.sum.x = step;
+                stepDownwards.sum.y += downwardsCheck.top;
+                stepDownwards.distance += downwardsCheck.top;
+                stepDownwards.moved = true;
+            }
+        }
+
+        if (stepUpwards.moved && !stepDownwards.moved)
+        {
+            out = stepUpwards.sum;
+        }
+        if (stepDownwards.moved && !stepUpwards.moved)
+        {
+            out = stepDownwards.sum;
+        }
+        if (stepUpwards.moved && stepDownwards.moved)
+        {
+            if (stepUpwards.distance < stepDownwards.distance)
+            {
+                out = stepUpwards.sum;
+            }
+            else
+            {
+                out = stepDownwards.sum;
+            }
+        }
+
+        return out;
+    }
 
   private:
     const StaticGridRectangle &r_boundingBox;

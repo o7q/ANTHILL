@@ -29,16 +29,16 @@ void KineticBody::haltMotionInDirection(int dirX, int dirY)
 
 void KineticBody::update(float dt)
 {
-    m_lastPos = getPosition();
+    m_lastPos = getPositionFloat();
 
-    if (std::abs(m_body.getVelocity().x) < 0.01f)
-    {
-        m_body.setVelocityX(0);
-    }
-    if (std::abs(m_body.getVelocity().y) < 0.01f)
-    {
-        m_body.setVelocityY(0);
-    }
+    // if (std::abs(m_body.getVelocity().x) < 0.01f)
+    // {
+    //     m_body.setVelocityX(0);
+    // }
+    // if (std::abs(m_body.getVelocity().y) < 0.01f)
+    // {
+    //     m_body.setVelocityY(0);
+    // }
 
     // Vec2<float> vel =
     //     m_body.getVelocity().clamp(Vec2<float>(0, 0), m_maxVelocity);

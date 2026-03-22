@@ -8,15 +8,15 @@ void TestScene::onStart()
         m_world.getEntityHandler().getIDHandler().getNext(), r_input,
         r_assets));
 
-    for (int i = 0; i < 1; ++i)
-    {
-        std::unique_ptr<TestEntity> test = std::make_unique<TestEntity>(
-            m_world.getEntityHandler().getIDHandler().getNext());
+    // for (int i = 0; i < 1; ++i)
+    // {
+    //     std::unique_ptr<TestEntity> test = std::make_unique<TestEntity>(
+    //         m_world.getEntityHandler().getIDHandler().getNext());
 
-        test->getBody().setPosition(5 * i, 0);
+    //     test->getBody().setPosition(5 * i, 0);
 
-        m_world.getEntityHandler().addEntity(std::move(test));
-    }
+    //     m_world.getEntityHandler().addEntity(std::move(test));
+    // }
 
     Particle stone;
     stone.setColor(Color(200, 205, 200));

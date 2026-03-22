@@ -1,10 +1,12 @@
 #include "entity.hpp"
+#include "entity/interaction/world_interaction.hpp"
 #include "math/rectangle.hpp"
 
-void Entity::updateApplyExternalMotion(EntityUpdateContext &context)
+void Entity::updateApplyExternalMotion(Vec2<int> currentPos,
+                                       const EntityUpdateContext &context)
 {
     if (m_interactionBox.getWorldHandler().againstSolidSurface(
-            m_body.getPosition(), RectangleSide::Bottom, context.particles))
+            currentPos, RectangleSide::Bottom, context.particles))
     {
         m_body.haltMotionInDirection(0, 1);
     }
@@ -14,55 +16,42 @@ void Entity::updateApplyExternalMotion(EntityUpdateContext &context)
     }
 
     if (m_interactionBox.getWorldHandler().againstSolidSurface(
-            m_body.getPosition(), RectangleSide::Top, context.particles))
+            currentPos, RectangleSide::Top, context.particles))
     {
         m_body.haltMotionInDirection(0, -1);
     }
 }
 
-void Entity::updateMotion(EntityUpdateContext &context)
+void Entity::updateMotion(const EntityUpdateContext &context)
 {
-    updateApplyExternalMotion(context);
+    Vec2<float> currentPos = m_body.getPositionFloat();
+    updateApplyExternalMotion(currentPos.toGrid(), context);
 
-    Vec2<int> currentPos = m_body.getPosition();
-    WorldInteractionHandler::LocalWorldQuery worldQuery =
-        m_interactionBox.getWorldHandler().generateLocalWorldQuery(
-            currentPos, context.particles);
-
-    if (worldQuery.staticSolidCount == 0)
-    {
-        updateMotion_moveAndPreventWorldCollision(currentPos, context);
-    }
-    else
-    {
-        WorldInteractionHandler::MTVIntersectionResponse response =
-            m_interactionBox.getWorldHandler().calculateWorldIntersection_MTV(
-                currentPos, context.particles);
-
-        if (response.resolveDistance <= 2)
-        {
-            m_body.setPosition(response.resolve.x + currentPos.x,
-                               response.resolve.y + currentPos.y);
-        }
-        else
-        {
-        }
-    }
+    updateMotion_moveAndPreventWorldCollision(currentPos, context);
 }
 
 void Entity::updateMotion_moveAndPreventWorldCollision(
-    Vec2<int> currentPos, EntityUpdateContext &context)
+    Vec2<float> currentPos, const EntityUpdateContext &context)
 {
     m_body.update(context.dt);
-    Vec2<int> updatedPos = m_body.getPosition();
+    Vec2<float> updatedPos = m_body.getPositionFloat();
 
     WorldInteractionHandler::TrajectoryCollisionResponse response =
         m_interactionBox.getWorldHandler()
-            .calculateCollisionFromTrajectorySlide(currentPos, updatedPos,
-                                                   context.particles);
+            .calculateCollisionFromTrajectorySlide(
+                currentPos.toGrid(), updatedPos.toGrid(), context.particles);
 
     if (response.collided)
     {
-        m_body.setPosition(response.resolvePos.x, response.resolvePos.y);
+        float remainderX = updatedPos.x - std::floor(updatedPos.x);
+        float remainderY = updatedPos.y - std::floor(updatedPos.y);
+
+        Vec2<int> step = m_interactionBox.getWorldHandler().calculateStep(
+            response.resolvePos, updatedPos.toGrid(), context.particles);
+
+        float finalX = response.resolvePos.x + step.x + remainderX;
+        float finalY = response.resolvePos.y + step.y + remainderY;
+
+        m_body.setPositionFloat(finalX, finalY);
     }
 }
