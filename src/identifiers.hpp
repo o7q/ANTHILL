@@ -5,6 +5,11 @@
 
 template <typename TypeID> using Identifier = std::variant<TypeID, std::string>;
 
+enum class SceneID
+{
+    Testing
+};
+
 enum class InputID
 {
     Left,

@@ -26,7 +26,7 @@ class TimeHandler
   private:
     std::chrono::steady_clock::time_point m_frame_start;
 
-    const float m_max_dt = 3.0f;
+    const float m_max_dt = 5.0f;
     float m_target_fps = 60.0f;
     float m_fps = 60.0f;
     float m_dt = 1.0f;

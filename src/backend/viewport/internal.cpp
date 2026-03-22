@@ -30,5 +30,5 @@ void Viewport::reset_update_points()
 
 unsigned int Viewport::get_pixel_index(unsigned int x, unsigned int y)
 {
-    return Utils::Index::index_2dto1d(x, y, m_size.x) * 3u;
+    return Math::Index::index_2dto1d(x, y, m_size.x) * 3u;
 }

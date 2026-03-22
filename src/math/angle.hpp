@@ -4,8 +4,6 @@
 #include "math/vec.hpp"
 #include <cmath>
 
-namespace Utils
-{
 namespace Math
 {
 namespace Angle
@@ -42,4 +40,3 @@ inline Vec2<float> rotatePoint(Vec2<float> origin, Vec2<float> point,
 }
 } // namespace Angle
 } // namespace Math
-} // namespace Utils

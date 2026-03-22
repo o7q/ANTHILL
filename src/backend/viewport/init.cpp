@@ -1,22 +1,33 @@
+#include "backend/logger/logger.hpp"
 #include "viewport.hpp"
 
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <cstddef>
+#include <stdexcept>
 
-Viewport::Viewport(SDL_Window *window, unsigned int width, unsigned int height) : m_logger("Viewport")
+Viewport::Viewport(SDL_Window *window, unsigned int width, unsigned int height)
 {
     if (!window)
     {
-        m_logger.log(Logger::Severity::Fatal, "Viewport()", "SDL_Window* is null! Aborting");
-        throw std::runtime_error(SDL_GetError());
-        return;
+        Logger::fatal("Viewport::Viewport()", "SDL_Window* is null!");
     }
 
     m_renderer = SDL_CreateRenderer(window, NULL);
+
+    if (!m_renderer)
+    {
+        Logger::fatal("Viewport::Viewport()", "SDL_Renderer* is null!");
+    }
+
     m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGB24,
                                   SDL_TEXTUREACCESS_STREAMING, width, height);
+
+    if (!m_texture)
+    {
+        Logger::fatal("Viewport::Viewport()", "SDL_Texture* is null!");
+    }
 
     m_pixels = new Uint8[width * height * 3];
     memset(m_pixels, 0, width * height * 3 * sizeof(Uint8));
@@ -28,6 +39,9 @@ Viewport::Viewport(SDL_Window *window, unsigned int width, unsigned int height) 
 
     m_size = Vec2<unsigned int>(width, height);
     m_aspectRatio = static_cast<float>(width) / height;
+
+    Logger::info("Viewport::Viewport()",
+                 "Successfully initialized the viewport!");
 }
 
 Viewport::~Viewport()
@@ -35,19 +49,16 @@ Viewport::~Viewport()
     if (m_texture)
     {
         SDL_DestroyTexture(m_texture);
-        m_texture = nullptr;
     }
 
     if (m_pixels)
     {
         delete[] m_pixels;
-        m_pixels = nullptr;
     }
 
     if (m_renderer)
     {
         SDL_DestroyRenderer(m_renderer);
-        m_renderer = nullptr;
     }
 }
 

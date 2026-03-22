@@ -1,6 +1,7 @@
 #pragma once
 
 #include "world/particle/particle.hpp"
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -9,7 +10,7 @@ class Entity;
 enum class EntityEventType
 {
     EntityDamage,
-    WorldModify,
+    EntitySpawn,
     WorldModifyDraw
 };
 
@@ -55,25 +56,24 @@ struct EntityDamageEvent : public EntityEvent
     int damage = 0;
 };
 
-struct EntityWorldModifyEvent : public EntityEvent
-{
-    EntityWorldModifyEvent(Entity *const caller,
-                           EntityEventType type = EntityEventType::WorldModify)
-        : EntityEvent(caller, type)
-    {
-    }
-    virtual ~EntityWorldModifyEvent() = default;
-
-    Vec2<int> pos;
-};
-
-struct EntityWorldModifyDrawEvent : public EntityWorldModifyEvent
+struct EntityWorldModifyDrawEvent : public EntityEvent
 {
     EntityWorldModifyDrawEvent(Entity *const caller)
-        : EntityWorldModifyEvent(caller, EntityEventType::WorldModifyDraw)
+        : EntityEvent(caller, EntityEventType::WorldModifyDraw)
     {
     }
 
+    Vec2<int> pos;
     Particle particle;
-    int radius = 0;
+    int radius = 5;
+};
+
+struct EntitySpawnEvent : public EntityEvent
+{
+    EntitySpawnEvent(Entity *const caller)
+        : EntityEvent(caller, EntityEventType::EntitySpawn)
+    {
+    }
+
+    std::function<std::unique_ptr<Entity>(uint64_t id)> entityFactory;
 };

@@ -1,5 +1,7 @@
+#include "math/numbers.hpp"
 #include "math/rectangle.hpp"
 #include "world_interaction.hpp"
+#include <iostream>
 
 bool WorldInteractionHandler::againstSolidSurface(
     Vec2<int> pos, RectangleSide side, const ParticleHandler &particles)
@@ -121,44 +123,69 @@ WorldInteractionHandler::calculateStepResponse(Vec2<int> pos,
                                                Vec2<float> velocity,
                                                const ParticleHandler &particles)
 {
-    StepResponse out;
-    out.stepPosition = pos;
-    bool blockedLeft = againstSolidSurface(pos, RectangleSide::Left, particles);
-    bool blockedRight =
-        againstSolidSurface(pos, RectangleSide::Right, particles);
-
-    if ((blockedLeft && velocity.x < 0.0f) ||
-        (blockedRight && velocity.x > 0.0f))
+    int dir = Math::Numbers::sign(velocity.x);
+    int currentX = 0;
+    int stepY = 0;
+    for (int i = 0; i < std::abs(velocity.x); ++i)
     {
-        for (int step = 1; step <= 3; ++step)
+        currentX = pos.x + i * dir;
+        stepY = calculateWorldIntersection_MTV(Vec2<int>(currentX, pos.y),
+                                               particles)
+                    .bottom;
+
+        if (stepY >= 10)
         {
-            Vec2<int> steppedPos = {pos.x, pos.y - step};
-
-            bool stillBlockedRight =
-                blockedRight &&
-                againstSolidSurface(steppedPos, RectangleSide::Right,
-                                    particles);
-            bool stillBlockedLeft =
-                blockedLeft &&
-                againstSolidSurface(steppedPos, RectangleSide::Left, particles);
-
-            if (!stillBlockedRight && !stillBlockedLeft)
-            {
-                WorldInteractionHandler::TrajectoryCollisionResponse
-                    collisionCheck = calculateCollisionFromTrajectory(
-                        pos, steppedPos, particles);
-                if (collisionCheck.collided)
-                {
-                    break;
-                }
-                out.stepPosition = steppedPos;
-                out.canStep = true;
-                blockedRight = false;
-                blockedLeft = false;
-                break;
-            }
+            break;
         }
     }
+
+    std::cout << stepY << std::endl;
+
+    StepResponse out;
+    if (stepY > 0)
+    {
+        out.canStep = true;
+        out.stepPosition = Vec2<int>(currentX, pos.y - stepY);
+    }
+
+    // out.stepPosition = pos;
+    // bool blockedLeft = againstSolidSurface(pos, RectangleSide::Left,
+    // particles); bool blockedRight =
+    //     againstSolidSurface(pos, RectangleSide::Right, particles);
+
+    // if ((blockedLeft && velocity.x < 0.0f) ||
+    //     (blockedRight && velocity.x > 0.0f))
+    // {
+    //     for (int step = 1; step <= 3; ++step)
+    //     {
+    //         Vec2<int> steppedPos = {pos.x, pos.y - step};
+
+    //         bool stillBlockedRight =
+    //             blockedRight &&
+    //             againstSolidSurface(steppedPos, RectangleSide::Right,
+    //                                 particles);
+    //         bool stillBlockedLeft =
+    //             blockedLeft &&
+    //             againstSolidSurface(steppedPos, RectangleSide::Left,
+    //             particles);
+
+    //         if (!stillBlockedRight && !stillBlockedLeft)
+    //         {
+    //             WorldInteractionHandler::TrajectoryCollisionResponse
+    //                 collisionCheck = calculateCollisionFromTrajectory(
+    //                     pos, steppedPos, particles);
+    //             if (collisionCheck.collided)
+    //             {
+    //                 break;
+    //             }
+    //             out.stepPosition = steppedPos;
+    //             out.canStep = true;
+    //             blockedRight = false;
+    //             blockedLeft = false;
+    //             break;
+    //         }
+    //     }
+    // }
 
     return out;
 }

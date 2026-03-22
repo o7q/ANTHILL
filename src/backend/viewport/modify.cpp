@@ -1,4 +1,3 @@
-#include "math/interpolation.hpp"
 #include "viewport.hpp"
 
 void Viewport::setPixel(unsigned int x, unsigned int y, Color color)

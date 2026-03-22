@@ -21,12 +21,12 @@ template <typename T> class ChunkMap
 
         void set(unsigned int x, unsigned int y, T v, unsigned int width)
         {
-            m_values[Utils::Index::index_2dto1d(x, y, width)] = v;
+            m_values[Math::Index::index_2dto1d(x, y, width)] = v;
         }
 
         const T *get(unsigned int x, unsigned int y, unsigned int width) const
         {
-            return &m_values[Utils::Index::index_2dto1d(x, y, width)];
+            return &m_values[Math::Index::index_2dto1d(x, y, width)];
         }
 
         T *get(unsigned int x, unsigned int y, unsigned int width)

@@ -17,10 +17,10 @@ class AIPerception
         m_sightPoints.clear();
 
         float angleTop =
-            Utils::Math::Angle::degreesToRadians(headAngle - m_sightFOV / 2.0f);
+            Math::Angle::degreesToRadians(headAngle - m_sightFOV / 2.0f);
 
-        float increment = Utils::Math::Angle::degreesToRadians(m_sightFOV) /
-                          (m_sightRayAmount - 1);
+        float increment =
+            Math::Angle::degreesToRadians(m_sightFOV) / (m_sightRayAmount - 1);
 
         for (int i = 0; i < m_sightRayAmount; ++i)
         {

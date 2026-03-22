@@ -25,14 +25,12 @@ void Entity::updateMotion(EntityUpdateContext &context)
     updateApplyExternalMotion(context);
 
     Vec2<int> currentPos = m_body.getPosition();
-    Vec2<float> velocity = m_body.getVelocity();
     WorldInteractionHandler::LocalWorldQuery worldQuery =
         m_interactionBox.getWorldHandler().generateLocalWorldQuery(
             currentPos, context.particles);
 
     if (worldQuery.staticSolidCount == 0)
     {
-        currentPos = updateMotion_step(currentPos, velocity, context);
         updateMotion_moveAndPreventWorldCollision(currentPos, context);
     }
     else
@@ -52,32 +50,15 @@ void Entity::updateMotion(EntityUpdateContext &context)
     }
 }
 
-Vec2<int> Entity::updateMotion_step(Vec2<int> currentPos, Vec2<float> velocity,
-                                    EntityUpdateContext &context)
-{
-    WorldInteractionHandler::StepResponse stepResponse =
-        m_interactionBox.getWorldHandler().calculateStepResponse(
-            currentPos, velocity, context.particles);
-
-    if (stepResponse.canStep)
-    {
-        m_body.setPosition(stepResponse.stepPosition.x,
-                           stepResponse.stepPosition.y);
-        currentPos = stepResponse.stepPosition;
-    }
-
-    return currentPos;
-}
-
 void Entity::updateMotion_moveAndPreventWorldCollision(
     Vec2<int> currentPos, EntityUpdateContext &context)
 {
     m_body.update(context.dt);
-    Vec2<int> endPos = m_body.getPosition();
+    Vec2<int> updatedPos = m_body.getPosition();
 
     WorldInteractionHandler::TrajectoryCollisionResponse response =
         m_interactionBox.getWorldHandler()
-            .calculateCollisionFromTrajectorySlide(currentPos, endPos,
+            .calculateCollisionFromTrajectorySlide(currentPos, updatedPos,
                                                    context.particles);
 
     if (response.collided)

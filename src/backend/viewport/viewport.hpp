@@ -58,6 +58,4 @@ class Viewport
     SDL_Rect m_update_rect;
     SDL_FRect m_presentRect;
     bool m_pixelChanged = false;
-
-    Logger m_logger;
 };

@@ -4,15 +4,17 @@
 #include "backend/input/input_handler.hpp"
 #include "backend/time/time_handler.hpp"
 #include "backend/window/window.hpp"
-#include <optional>
-
-enum class SceneID
-{
-    Testing
-};
+#include "identifiers.hpp"
 
 class Scene
 {
+  public:
+    struct Result
+    {
+        SceneID sceneLoadID;
+        bool shouldLoadScene = false;
+    };
+
   public:
     Scene(Window &window, const Assets &assets)
         : r_window(window), r_viewport(window.getViewport()),
@@ -22,13 +24,21 @@ class Scene
     }
     Scene(const Scene &other) = delete;
     Scene &operator=(const Scene &other) = delete;
-    virtual ~Scene() {}
+    virtual ~Scene() = default;
 
-    virtual std::optional<SceneID> update() { return std::nullopt; }
+    void update();
+
+    Result getResult() { return m_result; }
 
   protected:
-    bool start();
-    bool tick();
+    virtual void onStart() = 0;
+    virtual void onTick() = 0;
+
+    void loadScene(SceneID id)
+    {
+        m_result.sceneLoadID = id;
+        m_result.shouldLoadScene = true;
+    }
 
   protected:
     Window &r_window;
@@ -39,5 +49,5 @@ class Scene
 
   private:
     bool m_firstTick = true;
-    std::optional<SceneID> m_selfID;
+    Result m_result;
 };

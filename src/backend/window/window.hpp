@@ -10,7 +10,8 @@
 class Window
 {
   public:
-    Window(Vec2<unsigned int> windowSize, Vec2<unsigned int> viewportSize);
+    Window(const std::string &name, Vec2<unsigned int> windowSize,
+           Vec2<unsigned int> viewportSize);
     Window(const Window &other) = delete;
     Window &operator=(const Window &other) = delete;
     ~Window();

@@ -2,7 +2,7 @@
 
 #include "math/vec.hpp"
 
-namespace Utils
+namespace Math
 {
 namespace Index
 {
@@ -20,4 +20,4 @@ inline Vec2<unsigned int> index_1dTo2d(unsigned int index, unsigned int width)
     return Vec2<unsigned int>(x, y);
 }
 } // namespace Index
-} // namespace Utils
+} // namespace Math

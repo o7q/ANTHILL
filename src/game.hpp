@@ -13,7 +13,7 @@ class Game
 {
   public:
     Game(Vec2<unsigned int> windowSize, Vec2<unsigned int> viewportSize)
-        : m_window(windowSize, viewportSize)
+        : m_window("ANTHILL", windowSize, viewportSize)
     {
         start();
     }
@@ -27,7 +27,7 @@ class Game
 
         m_window.getTimeHandler().setTargetFramerate(144);
 
-        currentScene = std::make_unique<TestScene>(m_window, m_assets);
+        m_scene = std::make_unique<TestScene>(m_window, m_assets);
 
         while (!m_window.getEventHandler().didEventOccur(
             EventHandler::EventType::WINDOW_QUIT))
@@ -49,6 +49,5 @@ class Game
   private:
     Window m_window;
     Assets m_assets;
-    std::unique_ptr<Scene> currentScene = nullptr;
-    SceneID m_currentSceneID = SceneID::Testing;
+    std::unique_ptr<Scene> m_scene = nullptr;
 };

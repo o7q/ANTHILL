@@ -1,6 +1,5 @@
 #pragma once
 
-#include "backend/logger/logger.hpp"
 #include "math/color.hpp"
 #include "math/vec.hpp"
 #include <filesystem>
@@ -26,6 +25,4 @@ class Texture
   private:
     Vec2<unsigned int> m_size;
     std::vector<Color> m_pixels;
-
-    Logger m_logger;
 };

@@ -7,7 +7,7 @@ class Entity;
 
 struct EntityUpdateContext
 {
-    float dt;
+    const float dt = 0.0f;
     const ParticleHandler &particles;
     const std::vector<const Entity *> &nearbyEntities;
 };

@@ -3,20 +3,21 @@
 #include "assets.hpp"
 #include "backend/input/input_handler.hpp"
 #include "backend/viewport/viewport.hpp"
+#include "entities/projectile/projectile.hpp"
 #include "entity/entity.hpp"
+#include "entity/events.hpp"
 #include "entity/interfaces/directional.hpp"
 #include "entity/modules/inventory/inventory.hpp"
 #include "entity/modules/jump_handler/jump_handler.hpp"
-#include "item/weapon/weapon.hpp"
 #include "math/angle.hpp"
-#include "math/rectangle.hpp"
 #include "world/camera/camera.hpp"
+#include <memory>
 
 class Player : public Entity, public IDirectional
 {
   public:
-    Player(InputHandler &input, const Assets &assets)
-        : Entity(EntityType::Player), r_input(input),
+    Player(uint64_t id, InputHandler &input, const Assets &assets)
+        : Entity(id, EntityType::Player), r_input(input),
           m_sprite(*assets.textures().get(TextureID::Character))
     {
         m_interactionBox.getBoundingBox().setSize(10, 25);
@@ -56,6 +57,17 @@ class Player : public Entity, public IDirectional
             // m_jumpModule.cancelJump();
         }
 
+        if (r_input.getInput(InputID::Action1)->wasPressed())
+        {
+            auto event = std::make_unique<EntitySpawnEvent>(this);
+            
+            event->entityFactory =
+                [pos = m_body.getPosition(), angle = m_lookAngle](uint64_t id)
+            { return std::make_unique<Projectile>(id, pos, angle); };
+
+            m_eventEmitter.emit(std::move(event));
+        }
+
         bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
             m_body.getPosition(), RectangleSide::Bottom, context.particles);
         m_jumpHandler.update(context.dt, onGround);
@@ -81,13 +93,13 @@ class Player : public Entity, public IDirectional
         viewport.drawTexture(
             m_sprite, camera.worldToViewport(m_body.getPosition().x,
                                              m_body.getPosition().y, viewport));
-        // renderDebug_boundingBox(viewport, camera, Color(79, 255, 94));
+        renderDebug_boundingBox(viewport, camera, Color(79, 255, 94));
     }
 
     void updateAimPosition(Vec2<int> aimPos)
     {
         m_lookPosition = aimPos;
-        m_lookAngle = Utils::Math::Angle::vectorsToAngle(
+        m_lookAngle = Math::Angle::vectorsToAngle(
             m_body.getPosition().toFloat(), aimPos.toFloat());
     }
 

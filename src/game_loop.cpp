@@ -1,35 +1,27 @@
 #include "game.hpp"
 
 #include "scenes/testing/testing.hpp"
-#include <optional>
 
 void Game::update_loop()
 {
-    if (!currentScene)
+    if (!m_scene)
     {
         return;
     }
 
-    std::optional<SceneID> resultID = currentScene->update();
+    m_scene->update();
 
-    if (!resultID.has_value())
+    Scene::Result result = m_scene->getResult();
+
+    if (!result.shouldLoadScene)
     {
         return;
     }
 
-    SceneID id = resultID.value();
-
-    if (id == m_currentSceneID)
-    {
-        return;
-    }
-
-    switch (id)
+    switch (result.sceneLoadID)
     {
     case SceneID::Testing:
-        currentScene = std::make_unique<TestScene>(m_window, m_assets);
+        m_scene = std::make_unique<TestScene>(m_window, m_assets);
         break;
     }
-
-    m_currentSceneID = id;
 }

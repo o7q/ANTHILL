@@ -1,3 +1,4 @@
+#include "math/numbers.hpp"
 #include "world_interaction.hpp"
 
 #include "math/line.hpp"
@@ -78,6 +79,44 @@ WorldInteractionHandler::calculateCollisionFromTrajectorySlide(
         else
         {
             out.resolvePos = x_response.resolvePos;
+        }
+
+        int amount = end.x - out.resolvePos.x;
+        int dir = Math::Numbers::sign(amount);
+
+        int maxStepHeight = 3;
+
+        int yStep = 0;
+
+        int lastValidX = 0;
+        int lastValidY = 0;
+        bool moved = false;
+
+        for (int i = 1; i <= std::abs(amount); ++i)
+        {
+            int xStep = i * dir;
+
+            Vec2<int> checkPos = {out.resolvePos.x + xStep,
+                                  out.resolvePos.y - yStep};
+
+            MTVIntersectionResponse r =
+                calculateWorldIntersection_MTV(checkPos, particles);
+
+            yStep += r.bottom;
+            if (yStep > maxStepHeight)
+            {
+                break;
+            }
+
+            lastValidX = xStep;
+            lastValidY = yStep;
+            moved = true;
+        }
+
+        if (moved)
+        {
+            out.resolvePos.x += lastValidX;
+            out.resolvePos.y -= lastValidY;
         }
 
         out.collided = true;

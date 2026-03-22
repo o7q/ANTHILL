@@ -1,26 +1,37 @@
 #pragma once
 
+#include <cstdlib>
+#include <iostream>
 #include <string>
 
-class Logger
+namespace Logger
 {
-  public:
-    enum class Severity
-    {
-        Info,
-        Warn,
-        Error,
-        Fatal
-    };
+inline void log(const std::string &level, const std::string &location,
+                const std::string &message)
+{
+    std::cout << '[' + level + ']' + " (" + location + ") -> " + message
+              << std::endl;
+}
 
-  public:
-    Logger(const std::string &id) : m_id(id) {}
-    Logger(const Logger &other) = delete;
-    Logger &operator=(const Logger &other) = delete;
+inline void info(const std::string &location, const std::string &message)
+{
+    log("INFO", location, message);
+}
 
-    void log(Severity severity, const std::string &location,
-             const std::string &message);
+inline void warn(const std::string &location, const std::string &message)
+{
+    log("WARN", location, message);
+}
 
-  private:
-    const std::string m_id;
-};
+inline void error(const std::string &location, const std::string &message)
+{
+    log("ERROR", location, message);
+}
+
+// log and crash program
+inline void fatal(const std::string &location, const std::string &message)
+{
+    log("FATAL", location, message);
+    std::abort();
+}
+}; // namespace Logger

@@ -5,11 +5,13 @@
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_video.h>
 
-Window::Window(Vec2<unsigned int> windowSize, Vec2<unsigned int> viewportSize)
-    : m_window(SDL_CreateWindow("ANTHILL", windowSize.x, windowSize.y,
+Window::Window(const std::string &name, Vec2<unsigned int> windowSize,
+               Vec2<unsigned int> viewportSize)
+    : m_window(SDL_CreateWindow(name.c_str(), windowSize.x, windowSize.y,
                                 SDL_WINDOW_RESIZABLE)),
-      m_viewport(nullptr, viewportSize.x, viewportSize.y)
+      m_viewport(m_window, viewportSize.x, viewportSize.y)
 {
+    Logger::info("Window::Window()", "Successfully initialized the window!");
 }
 
 Window::~Window() { SDL_DestroyWindow(m_window); }

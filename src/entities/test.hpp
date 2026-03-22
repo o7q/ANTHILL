@@ -1,18 +1,18 @@
 #pragma once
 
 #include "backend/viewport/viewport.hpp"
-#include "entities/module_wrappers/ai/grounded_ai_system/grounded_ai_system.hpp"
 #include "entity/entity.hpp"
 #include "entity/interfaces/directional.hpp"
+#include "entity/module_wrappers/ai/grounded_ai_system/grounded_ai_system.hpp"
 #include "entity/modules/jump_handler/jump_handler.hpp"
 #include "world/camera/camera.hpp"
 
 class TestEntity : public Entity, public IDirectional
 {
   public:
-    TestEntity()
+    TestEntity(uint64_t id) : Entity(id)
     {
-        m_interactionBox.getBoundingBox().setSize(21, 30);
+        m_interactionBox.getBoundingBox().setSize(5, 5);
         m_body.setGravity(0.4f);
 
         m_ai.getPerception().setSightFOV(100);
@@ -55,7 +55,7 @@ class TestEntity : public Entity, public IDirectional
         if (m_ai.getMovement().shouldMove())
         {
             m_body.setVelocityX(m_ai.getMovement().getMoveDirection().x * 4);
-
+            // m_body.setVelocityY(m_ai.getMovement().getMoveDirection().y * 4);
             if (m_ai.getMovement().getMoveDirection().y < 0)
             {
                 m_jumpHandler.requestJump();
@@ -81,6 +81,7 @@ class TestEntity : public Entity, public IDirectional
             m_body.setVelocityY(-m_jumpHandler.getJumpPower());
         }
         updateMotion(context);
+        updateHealth();
     }
 
     void render(Viewport &viewport, const Camera &camera) override

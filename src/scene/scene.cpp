@@ -1,13 +1,12 @@
 #include "scene.hpp"
 
-bool Scene::start()
+void Scene::update()
 {
     if (m_firstTick)
     {
+        onStart();
         m_firstTick = false;
-        return true;
     }
 
-    return false;
+    onTick();
 }
-bool Scene::tick() { return true; }

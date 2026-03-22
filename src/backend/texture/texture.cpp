@@ -1,20 +1,21 @@
 #include "texture.hpp"
 
+#include "backend/logger/logger.hpp"
 #include "math/index.hpp"
 
-Texture::Texture() : m_logger("Texture") { initNull(); }
-Texture::Texture(unsigned int width, unsigned int height) : m_logger("Texture")
+Texture::Texture() { initNull(); }
+Texture::Texture(unsigned int width, unsigned int height)
 {
     m_size.x = static_cast<unsigned int>(width);
     m_size.y = static_cast<unsigned int>(height);
 
     m_pixels.resize(width * height);
 
-    m_logger.log(Logger::Severity::Info, "Texture()",
+    Logger::info("Texture::Texture()",
                  "Successfully created a blank texture of size: " +
                      std::to_string(width) + "x" + std::to_string(height));
 }
-Texture::Texture(const std::filesystem::path &path) : m_logger("Texture")
+Texture::Texture(const std::filesystem::path &path)
 {
     const std::string pathStr = path.string();
 
@@ -24,8 +25,7 @@ Texture::Texture(const std::filesystem::path &path) : m_logger("Texture")
 
     if (!data)
     {
-        m_logger.log(Logger::Severity::Error, "Texture()",
-                     "Failed to load: " + pathStr);
+        Logger::error("Texture::Texture()", "Failed to load: " + pathStr);
 
         initNull();
         return;
@@ -50,8 +50,7 @@ Texture::Texture(const std::filesystem::path &path) : m_logger("Texture")
 
     stbi_image_free(data);
 
-    m_logger.log(Logger::Severity::Info, "Texture()",
-                 "Successfully loaded: " + pathStr);
+    Logger::info("Texture::Texture()", "Successfully loaded: " + pathStr);
 }
 
 Color Texture::getPixel(unsigned int x, unsigned int y) const
@@ -61,7 +60,7 @@ Color Texture::getPixel(unsigned int x, unsigned int y) const
         return Color();
     }
 
-    return m_pixels[Utils::Index::index_2dto1d(x, y, m_size.x)];
+    return m_pixels[Math::Index::index_2dto1d(x, y, m_size.x)];
 }
 
 void Texture::initNull()
