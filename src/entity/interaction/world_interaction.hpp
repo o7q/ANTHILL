@@ -62,9 +62,6 @@ class WorldInteractionHandler
     bool againstSolidCorner(Vec2<int> pos, RectangleCorner corner,
                             const ParticleHandler &particles);
 
-    StepResponse calculateStepResponse(Vec2<int> pos, Vec2<float> velocity,
-                                       const ParticleHandler &particles);
-
     TrajectoryCollisionResponse
     calculateCollisionFromTrajectorySlide(Vec2<int> start, Vec2<int> end,
                                           const ParticleHandler &particles);

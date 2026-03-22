@@ -84,39 +84,46 @@ WorldInteractionHandler::calculateCollisionFromTrajectorySlide(
         int amount = end.x - out.resolvePos.x;
         int dir = Math::Numbers::sign(amount);
 
-        int maxStepHeight = 3;
+        int maxStepHeight = 5;
 
-        int yStep = 0;
-
-        int lastValidX = 0;
-        int lastValidY = 0;
         bool moved = false;
+
+        int xSum = 0;
+        int ySum = 0;
 
         for (int i = 1; i <= std::abs(amount); ++i)
         {
             int xStep = i * dir;
 
             Vec2<int> checkPos = {out.resolvePos.x + xStep,
-                                  out.resolvePos.y - yStep};
+                                  out.resolvePos.y - ySum};
 
             MTVIntersectionResponse r =
                 calculateWorldIntersection_MTV(checkPos, particles);
 
-            yStep += r.bottom;
-            if (yStep > maxStepHeight)
+            MTVIntersectionResponse pass2 =
+                calculateWorldIntersection_MTV(checkPos + Vec2<int>(0, -r.bottom), particles);
+
+            if (r.bottom > maxStepHeight || pass2.resolveDistance != 0)
             {
                 break;
             }
 
-            lastValidX = xStep;
-            lastValidY = yStep;
+            xSum = xStep;
+            ySum += r.bottom;
             moved = true;
         }
 
         if (moved)
         {
-            out.resolvePos.x += lastValidX;
-            out.resolvePos.y -= lastValidY;
+            out.resolvePos.x += xSum;
+            out.resolvePos.y -= ySum;
+        }
+
+        int aaa = end.x - out.resolvePos.x;
+        if (aaa != 0)
+        {
+            std::cout << aaa << std::endl;
         }
 
         out.collided = true;
