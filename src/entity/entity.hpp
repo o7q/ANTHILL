@@ -21,10 +21,7 @@ class Entity
     virtual void render(Viewport &viewport, const Camera &camera) = 0;
 
     void kill() { m_dead = true; }
-    void damage(float amount, const Entity *afflictor = nullptr)
-    {
-        m_health -= amount;
-    }
+    void damage(float amount, uint64_t afflictor = 0) { m_health -= amount; }
     bool isDead() const { return m_dead; }
 
     KineticBody &getBody() { return m_body; }
@@ -42,7 +39,7 @@ class Entity
 
   protected:
     virtual void updateMotion(const EntityUpdateContext &context);
-    virtual void updateHealth()
+    void updateHealth()
     {
         if (m_health <= 0.0f)
         {

@@ -4,6 +4,7 @@
 #include "entity/entity.hpp"
 #include "entity/events.hpp"
 #include "entity/interfaces/directional.hpp"
+#include <iostream>
 #include <memory>
 
 class Projectile : public Entity, public IDirectional
@@ -25,7 +26,7 @@ class Projectile : public Entity, public IDirectional
 
         if (p && p->isSolid())
         {
-            auto event = std::make_unique<EntityWorldModifyDrawEvent>(this);
+            auto event = std::make_unique<EntityWorldModifyDrawEvent>(getID());
 
             event->pos = m_body.getPosition();
             event->radius = 30;
@@ -34,6 +35,40 @@ class Projectile : public Entity, public IDirectional
             m_eventEmitter.emit(std::move(event));
 
             kill();
+        }
+
+        for (const Entity *e : context.nearbyEntities)
+        {
+            if (e->getID() == getID() || e->getID() == getParent())
+            {
+                continue;
+            }
+
+            if (e->getInteractionBox().pointInside(e->getBody().getPosition(),
+                                                   m_body.getPosition()))
+            {
+                std::cout << e->getMetadata().name << std::endl;
+
+                auto event = std::make_unique<EntityDamageEvent>(getID());
+                event->target = e->getID();
+                event->damage = 5;
+
+                auto event2 =
+                    std::make_unique<EntityWorldModifyDrawEvent>(getID());
+                Particle p;
+                p.setMatterType(Particle::MatterType::Liquid);
+                p.setPhysicsType(Particle::PhysicsType::Water);
+                p.setColor(Color(220, 10, 10));
+                p.setRestitution(0.1f);
+                event2->particle = p;
+                event2->pos = e->getBody().getPosition();
+                event2->radius = 10;
+
+                m_eventEmitter.emit(std::move(event));
+                m_eventEmitter.emit(std::move(event2));
+
+                kill();
+            }
         }
 
         m_body.applyGravity();

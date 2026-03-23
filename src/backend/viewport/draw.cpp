@@ -70,7 +70,8 @@ void Viewport::drawTexture(const Texture &texture, Vec2i pos)
 
 void Viewport::drawTextureRotated(const Texture &texture, Vec2i pos,
                                   float angle,
-                                  std::optional<Vec2i> rotateOrigin)
+                                  std::optional<Vec2i> rotateOrigin,
+                                  int overdraw)
 {
     Vec2i textureSize = texture.getSize().toInt();
     Vec2i halfTextureSize = textureSize / 2;
@@ -96,9 +97,9 @@ void Viewport::drawTextureRotated(const Texture &texture, Vec2i pos,
 
             Color color = texture.getPixel(x, y);
 
-            for (int py = 0; py < 2; ++py)
+            for (int py = 0; py < overdraw + 1; ++py)
             {
-                for (int px = 0; px < 2; ++px)
+                for (int px = 0; px < overdraw + 1; ++px)
                 {
                     if (x + px >= textureSize.x || y + py >= textureSize.y)
                     {

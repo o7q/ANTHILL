@@ -34,7 +34,8 @@ class Viewport
     void drawRectFilled(Vec2i p1, Vec2i p2, Color color);
     void drawTexture(const Texture &texture, Vec2i pos);
     void drawTextureRotated(const Texture &texture, Vec2i pos, float angle,
-                            std::optional<Vec2i> rotateOrigin = std::nullopt);
+                            std::optional<Vec2i> rotateOrigin = std::nullopt,
+                            int overdraw = 1);
 
   private:
     void update_pixel_changes();

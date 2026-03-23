@@ -13,10 +13,10 @@ void EntityHandler::handleEvents(Entity *entity)
             EntityDamageEvent *event =
                 static_cast<EntityDamageEvent *>(e.get());
 
-            Entity *target = event->target;
+            uint64_t target = event->target;
             if (target)
             {
-                target->damage(std::move(event->damage));
+                m_entities[target]->damage(event->damage);
             }
         }
         break;

@@ -1,9 +1,9 @@
 #pragma once
 
+#include "entities/player/player.hpp"
 #include "entity/entity.hpp"
 #include "entity/events.hpp"
 #include "entity/update_context.hpp"
-#include "player/player.hpp"
 #include "world/entity/id.hpp"
 #include "world/particle/particle_handler.hpp"
 #include <cstdint>

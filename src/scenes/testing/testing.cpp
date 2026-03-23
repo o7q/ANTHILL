@@ -8,15 +8,15 @@ void TestScene::onStart()
         m_world.getEntityHandler().getIDHandler().getNext(), r_input,
         r_assets));
 
-    // for (int i = 0; i < 1; ++i)
-    // {
-    //     std::unique_ptr<TestEntity> test = std::make_unique<TestEntity>(
-    //         m_world.getEntityHandler().getIDHandler().getNext());
+    for (int i = 0; i < 10; ++i)
+    {
+        std::unique_ptr<TestEntity> test = std::make_unique<TestEntity>(
+            m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
 
-    //     test->getBody().setPosition(5 * i, 0);
+        test->getBody().setPosition(5 * i, 0);
 
-    //     m_world.getEntityHandler().addEntity(std::move(test));
-    // }
+        m_world.getEntityHandler().addEntity(std::move(test));
+    }
 
     Particle stone;
     stone.setColor(Color(200, 205, 200));
@@ -45,7 +45,7 @@ void TestScene::onStart()
     p.getVerlet().setMass(1);
 
     m_world.getParticleHandler().textureToParticles(
-        *r_assets.textures().get(TextureID::Noodle), Vec2i(100, 250), p);
+        *r_assets.textures().get(TextureID::Carter), Vec2i(100, 250), p);
 }
 
 void TestScene::onTick()
@@ -117,18 +117,18 @@ void TestScene::onTick()
         m_world.getCamera().update(r_time.getDT());
     }
 
-    // std::cout << static_cast<int>(r_time.getFPS()) << std::endl;
-
-    float angle = (viewportMousePos.x / (float)r_viewport.getSize().x) * 360;
-
-    r_viewport.drawTextureRotated(
-        *r_assets.textures().get(TextureID::Pistol),
-        m_world.getCamera().worldToViewport(0, 0, r_viewport),
-        Math::Angle::degreesToRadians(angle));
-
-    GridRectangle rect;
-    rect.setPosition(viewportMousePos.x, viewportMousePos.y);
-    rect.setSize(30, 30);
-
     m_world.render(r_viewport);
+
+    if (fpsC > 144)
+    {
+        fps = r_time.getFPS();
+        fpsC = 0;
+    }
+    fpsC++;
+
+    Texture test = r_assets.fonts()
+                       .get(FontID::Test)
+                       ->generateStringTexture(std::to_string((int)fps),
+                                               Color(0, 255, 0), 5, 1, 8);
+    r_viewport.drawTexture(test, {20, 5});
 }

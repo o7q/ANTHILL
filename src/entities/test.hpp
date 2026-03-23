@@ -1,18 +1,23 @@
 #pragma once
 
+#include "assets.hpp"
 #include "backend/viewport/viewport.hpp"
 #include "entity/entity.hpp"
 #include "entity/interfaces/directional.hpp"
 #include "entity/module_wrappers/ai/grounded_ai_system/grounded_ai_system.hpp"
 #include "entity/modules/jump_handler/jump_handler.hpp"
+#include "identifiers.hpp"
+#include "math/random.hpp"
 #include "world/camera/camera.hpp"
 
 class TestEntity : public Entity, public IDirectional
 {
   public:
-    TestEntity(uint64_t id) : Entity(id)
+    TestEntity(uint64_t id, const Assets &assets) : Entity(id), r_assets(assets)
     {
-        m_interactionBox.getBoundingBox().setSize(5, 5);
+        int width = Math::Random::weakRandInt(10, 20);
+        int height = Math::Random::weakRandInt(10, 20);
+        m_interactionBox.getBoundingBox().setSize(width, height);
         m_body.setGravity(0.4f);
 
         m_ai.getPerception().setSightFOV(100);
@@ -24,6 +29,8 @@ class TestEntity : public Entity, public IDirectional
 
         m_jumpHandler.setJumpPower(5);
         m_jumpHandler.setHoldDuration(0.0f);
+
+        m_metadata.name = "bartholemule";
     }
 
     void update(const EntityUpdateContext &context) override
@@ -55,7 +62,7 @@ class TestEntity : public Entity, public IDirectional
         if (m_ai.getMovement().shouldMove())
         {
             m_body.setVelocityX(m_ai.getMovement().getMoveDirection().x * 4);
-            // m_body.setVelocityY(m_ai.getMovement().getMoveDirection().y * 4);
+            m_body.setVelocityY(m_ai.getMovement().getMoveDirection().y * 4);
             if (m_ai.getMovement().getMoveDirection().y < 0)
             {
                 m_jumpHandler.requestJump();
@@ -99,9 +106,25 @@ class TestEntity : public Entity, public IDirectional
                                   ? Color(255, 105, 245)
                                   : Color(255, 245, 105));
         }
+
+        Vec2i pos = m_body.getPosition();
+
+        Texture text = r_assets.fonts()
+                           .get(FontID::Test)
+                           ->generateStringTexture(m_metadata.name,
+                                                   Color(255, 255, 0), 5, 1, 8);
+
+        viewport.drawTexture(
+            text, camera.worldToViewport(pos.x, pos.y - 20, viewport));
+
+            Texture carter = *r_assets.textures().get(TextureID::Carter);
+
+            viewport.drawTexture(carter, camera.worldToViewport(pos.x, pos.y, viewport));
     }
 
   private:
     JumpHandler m_jumpHandler;
     GroundedAISystem m_ai;
+
+    const Assets &r_assets;
 };

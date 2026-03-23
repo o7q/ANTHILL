@@ -11,6 +11,12 @@ class InteractionBox
     WorldInteractionHandler &getWorldHandler() { return m_worldHandler; }
     StaticGridRectangle &getBoundingBox() { return m_boundingBox; }
 
+    bool pointInside(Vec2i interactionBoxPos, Vec2i checkPos) const
+    {
+        return m_boundingBox.pointInside(checkPos.x - interactionBoxPos.x,
+                                         checkPos.y - interactionBoxPos.y);
+    }
+
   private:
     StaticGridRectangle m_boundingBox;
     WorldInteractionHandler m_worldHandler;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 enum class EntityType
 {
     Generic,
@@ -9,5 +10,6 @@ enum class EntityType
 
 struct EntityMetadata
 {
-    EntityType type;
+    EntityType type = EntityType::Generic;
+    std::string name = "";
 };

@@ -37,6 +37,13 @@ enum class TextureID
     Noodle,
     Pistol,
     PistolSmall,
-    Character
+    Character,
+    Carter
 };
 using TextureIDKey = Identifier<TextureID>;
+
+enum class FontID
+{
+    Test
+};
+using FontIDKey = Identifier<FontID>;

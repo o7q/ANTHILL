@@ -59,11 +59,15 @@ class Player : public Entity, public IDirectional
 
         if (r_input.getInput(InputID::Action1)->wasPressed())
         {
-            auto event = std::make_unique<EntitySpawnEvent>(this);
+            auto event = std::make_unique<EntitySpawnEvent>(getID());
 
-            event->entityFactory =
-                [pos = m_body.getPosition(), angle = m_lookAngle](uint64_t id)
-            { return std::make_unique<Projectile>(id, pos, angle); };
+            event->entityFactory = [&](uint64_t id)
+            {
+                auto proj = std::make_unique<Projectile>(
+                    id, m_body.getPosition(), m_lookAngle);
+                proj->setParent(getID());
+                return proj;
+            };
 
             m_eventEmitter.emit(std::move(event));
         }

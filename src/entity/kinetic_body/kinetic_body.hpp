@@ -11,15 +11,7 @@ class KineticBody
     void applyGravity() { addForce(0.0f, m_gravity); }
     void setGravity(float gravity) { m_gravity = gravity; }
 
-    void update(float dt)
-    {
-        Vec2f acceleration = m_force / m_mass;
-
-        m_velocity += acceleration * dt;
-        m_position += m_velocity * dt;
-
-        m_force = Vec2f(0.0f, 0.0f);
-    }
+    void update(float dt);
 
     void setPosition(int x, int y) { m_position = Vec2i(x, y).toFloat(); }
     void setPositionFloat(float x, float y) { m_position = Vec2f(x, y); }
