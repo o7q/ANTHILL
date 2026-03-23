@@ -16,6 +16,7 @@ class EventHandler
     EventHandler() = default;
     EventHandler(const EventHandler &other) = delete;
     EventHandler &operator=(const EventHandler &other) = delete;
+    ~EventHandler() = default;
 
     void resetEvents();
     void poll(SDL_Event &event);

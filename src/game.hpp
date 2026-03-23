@@ -1,6 +1,6 @@
 #pragma once
 
-#include "assets.hpp"
+#include "assets/assets.hpp"
 #include "backend/event/event_handler.hpp"
 #include "backend/window/window.hpp"
 #include "math/vec.hpp"

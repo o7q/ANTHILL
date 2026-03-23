@@ -1,6 +1,6 @@
 #pragma once
 
-#include "assets.hpp"
+#include "assets/assets.hpp"
 #include "backend/input/input_handler.hpp"
 #include "backend/viewport/viewport.hpp"
 #include "entities/projectile/projectile.hpp"

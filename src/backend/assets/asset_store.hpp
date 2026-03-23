@@ -6,6 +6,11 @@
 template <typename KeyType, typename Type> class AssetStore
 {
   public:
+    AssetStore() = default;
+    AssetStore(const AssetStore &other) = delete;
+    AssetStore &operator=(const AssetStore &other) = delete;
+    ~AssetStore() = default;
+
     void add(KeyType key, std::unique_ptr<Type> asset)
     {
         m_assets[key] = std::move(asset);

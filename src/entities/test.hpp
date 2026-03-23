@@ -1,12 +1,11 @@
 #pragma once
 
-#include "assets.hpp"
+#include "assets/assets.hpp"
 #include "backend/viewport/viewport.hpp"
 #include "entity/entity.hpp"
 #include "entity/interfaces/directional.hpp"
 #include "entity/module_wrappers/ai/grounded_ai_system/grounded_ai_system.hpp"
 #include "entity/modules/jump_handler/jump_handler.hpp"
-#include "identifiers.hpp"
 #include "math/random.hpp"
 #include "world/camera/camera.hpp"
 
@@ -117,9 +116,10 @@ class TestEntity : public Entity, public IDirectional
         viewport.drawTexture(
             text, camera.worldToViewport(pos.x, pos.y - 20, viewport));
 
-            Texture carter = *r_assets.textures().get(TextureID::Carter);
+        Texture carter = *r_assets.textures().get(TextureID::Carter);
 
-            viewport.drawTexture(carter, camera.worldToViewport(pos.x, pos.y, viewport));
+        viewport.drawTexture(carter,
+                             camera.worldToViewport(pos.x, pos.y, viewport));
     }
 
   private:

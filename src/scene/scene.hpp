@@ -1,10 +1,10 @@
 #pragma once
 
-#include "assets.hpp"
+#include "assets/assets.hpp"
 #include "backend/input/input_handler.hpp"
 #include "backend/time/time_handler.hpp"
 #include "backend/window/window.hpp"
-#include "identifiers.hpp"
+#include "identifiers/scene.hpp"
 
 class Scene
 {

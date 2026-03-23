@@ -1,5 +1,7 @@
 #pragma once
 
+#include "assets/sound_ids.hpp"
+#include "backend/sound/sound_handler.hpp"
 #include "world/particle/particle.hpp"
 #include <functional>
 #include <memory>
@@ -11,7 +13,8 @@ enum class EntityEventType
 {
     EntityDamage,
     EntitySpawn,
-    WorldModifyDraw
+    WorldModifyDraw,
+    PlaySound
 };
 
 struct EntityEvent
@@ -76,4 +79,15 @@ struct EntitySpawnEvent : public EntityEvent
     }
 
     std::function<std::unique_ptr<Entity>(uint64_t id)> entityFactory;
+};
+
+struct EntityPlaySoundEvent : public EntityEvent
+{
+    EntityPlaySoundEvent(const uint64_t caller)
+        : EntityEvent(caller, EntityEventType::PlaySound)
+    {
+    }
+
+    SoundIDKey soundID;
+    SoundPlaySettings settings;
 };

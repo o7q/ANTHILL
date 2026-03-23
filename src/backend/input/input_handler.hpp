@@ -1,6 +1,6 @@
 #pragma once
 
-#include "identifiers.hpp"
+#include "identifiers/input.hpp"
 #include "math/vec.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keycode.h>
@@ -60,6 +60,7 @@ class InputHandler
     InputHandler() = default;
     InputHandler(const InputHandler &other) = delete;
     InputHandler &operator=(const InputHandler &other) = delete;
+    ~InputHandler() = default;
 
     void poll(SDL_Event &event);
     void update();

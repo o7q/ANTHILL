@@ -9,6 +9,7 @@ class TimeHandler
     TimeHandler() = default;
     TimeHandler(const TimeHandler &other) = delete;
     TimeHandler &operator=(const TimeHandler &other) = delete;
+    ~TimeHandler() = default;
 
     void frameStart();
     void frameEnd();

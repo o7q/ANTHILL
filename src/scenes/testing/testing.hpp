@@ -1,7 +1,6 @@
 #pragma once
 
-#include "assets.hpp"
-#include "backend/font/font.hpp"
+#include "assets/assets.hpp"
 #include "scene/scene.hpp"
 #include "world/world.hpp"
 

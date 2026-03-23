@@ -2,6 +2,7 @@
 
 #include "backend/event/event_handler.hpp"
 #include "backend/input/input_handler.hpp"
+#include "backend/sound/sound_handler.hpp"
 #include "backend/time/time_handler.hpp"
 #include "backend/viewport/viewport.hpp"
 #include "math/vec.hpp"
@@ -21,6 +22,7 @@ class Window
     void render();
 
     Viewport &getViewport() { return m_viewport; }
+    SoundHandler &getSound() { return m_soundHandler; }
     EventHandler &getEventHandler() { return m_eventHandler; }
     InputHandler &getInputHandler() { return m_inputHandler; }
     TimeHandler &getTimeHandler() { return m_timeHandler; }
@@ -29,6 +31,7 @@ class Window
     SDL_Window *m_window = nullptr;
 
     Viewport m_viewport;
+    SoundHandler m_soundHandler;
     EventHandler m_eventHandler;
     InputHandler m_inputHandler;
     TimeHandler m_timeHandler;
