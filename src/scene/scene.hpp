@@ -2,8 +2,12 @@
 
 #include "assets/assets.hpp"
 #include "backend/input/input_handler.hpp"
+#include "backend/sound/sound.hpp"
+#include "backend/sound/sound_handler.hpp"
 #include "backend/time/time_handler.hpp"
 #include "backend/window/window.hpp"
+#include "event/event_emitter.hpp"
+#include "events/backend.hpp"
 #include "identifiers/scene.hpp"
 
 class Scene
@@ -16,10 +20,10 @@ class Scene
     };
 
   public:
-    Scene(Window &window, const Assets &assets)
-        : r_window(window), r_viewport(window.getViewport()),
-          r_input(window.getInputHandler()), r_time(window.getTimeHandler()),
-          r_assets(assets)
+    Scene(const Assets &assets, Window &window)
+        : r_assets(assets), r_window(window), r_viewport(window.getViewport()),
+          r_sound(window.getSoundHandler()), r_input(window.getInputHandler()),
+          r_time(window.getTimeHandler())
     {
     }
     Scene(const Scene &other) = delete;
@@ -41,11 +45,14 @@ class Scene
     }
 
   protected:
+    const Assets &r_assets;
     Window &r_window;
     Viewport &r_viewport;
+    SoundHandler &r_sound;
     InputHandler &r_input;
     TimeHandler &r_time;
-    const Assets &r_assets;
+
+    EventEmitter<BackendEvent> m_backendEvents;
 
   private:
     bool m_firstTick = true;

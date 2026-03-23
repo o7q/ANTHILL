@@ -5,12 +5,14 @@
 #include "backend/viewport/viewport.hpp"
 #include "entities/projectile/projectile.hpp"
 #include "entity/entity.hpp"
-#include "entity/events.hpp"
 #include "entity/interfaces/directional.hpp"
 #include "entity/modules/inventory/inventory.hpp"
 #include "entity/modules/jump_handler/jump_handler.hpp"
 #include "math/angle.hpp"
+#include "math/random.hpp"
 #include "world/camera/camera.hpp"
+#include "world/entity/events/backend.hpp"
+#include "world/entity/events/entity.hpp"
 #include <memory>
 
 class Player : public Entity, public IDirectional
@@ -70,6 +72,16 @@ class Player : public Entity, public IDirectional
             };
 
             m_eventEmitter.emit(std::move(event));
+
+            auto soundEvent =
+                std::make_unique<EntityBackendPlaySoundEvent>(getID());
+
+            soundEvent->backendEvent.soundID = SoundID::Gunshot;
+            soundEvent->backendEvent.settings = {
+                0.2f, (float)Math::Random::weakRandInt(4, 10) / 10.0f};
+
+            m_eventEmitter.emit(std::move(soundEvent));
+
         }
 
         bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(

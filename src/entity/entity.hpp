@@ -1,12 +1,13 @@
 #pragma once
 
 #include "backend/viewport/viewport.hpp"
-#include "entity/events.hpp"
 #include "entity/interaction/interaction_box.hpp"
 #include "entity/kinetic_body/kinetic_body.hpp"
 #include "entity/metadata.hpp"
 #include "entity/update_context.hpp"
+#include "event/event_emitter.hpp"
 #include "world/camera/camera.hpp"
+#include "world/entity/events/event.hpp"
 
 class Entity
 {
@@ -33,7 +34,7 @@ class Entity
     void setParent(uint64_t id) { m_parentID = id; }
     void clearParent() { m_parentID = 0; }
 
-    EntityEventEmitter &getEventEmitter() { return m_eventEmitter; }
+    EventEmitter<EntityEvent> &getEventEmitter() { return m_eventEmitter; }
 
     uint64_t getID() const { return m_id; }
 
@@ -61,7 +62,7 @@ class Entity
     KineticBody m_body;
 
     EntityMetadata m_metadata;
-    EntityEventEmitter m_eventEmitter;
+    EventEmitter<EntityEvent> m_eventEmitter;
 
   private:
     const uint64_t m_id = 0;

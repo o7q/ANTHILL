@@ -8,10 +8,10 @@ void TestScene::onStart()
         m_world.getEntityHandler().getIDHandler().getNext(), r_input,
         r_assets));
 
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < 1; ++i)
     {
         std::unique_ptr<TestEntity> test = std::make_unique<TestEntity>(
-            m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
+            m_world.getEntityHandler().getIDHandler().getNext());
 
         test->getBody().setPosition(5 * i, 0);
 
@@ -60,7 +60,6 @@ void TestScene::onTick()
             .getInput(InputID::SecondaryAction1)
             ->isDown())
     {
-
         Particle stone;
         float mult = Math::Random::weakRandInt(80, 100) / 100.0f;
         stone.setColor(Color(200 * mult, 205 * mult, 200 * mult));

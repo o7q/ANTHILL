@@ -2,8 +2,10 @@
 
 #include "backend/viewport/viewport.hpp"
 #include "entity/entity.hpp"
-#include "entity/events.hpp"
 #include "entity/interfaces/directional.hpp"
+#include "event/event_emitter.hpp"
+#include "world/entity/events/entity.hpp"
+#include "world/entity/events/particle.hpp"
 #include <iostream>
 #include <memory>
 
@@ -26,11 +28,11 @@ class Projectile : public Entity, public IDirectional
 
         if (p && p->isSolid())
         {
-            auto event = std::make_unique<EntityWorldModifyDrawEvent>(getID());
+            auto event = std::make_unique<EntityParticleDrawEvent>(getID());
 
-            event->pos = m_body.getPosition();
-            event->radius = 30;
-            event->particle = Particle();
+            event->particleEvent.position = m_body.getPosition();
+            event->particleEvent.radius = 30;
+            event->particleEvent.particle = Particle();
 
             m_eventEmitter.emit(std::move(event));
 
@@ -54,15 +56,15 @@ class Projectile : public Entity, public IDirectional
                 event->damage = 5;
 
                 auto event2 =
-                    std::make_unique<EntityWorldModifyDrawEvent>(getID());
+                    std::make_unique<EntityParticleDrawEvent>(getID());
                 Particle p;
                 p.setMatterType(Particle::MatterType::Liquid);
                 p.setPhysicsType(Particle::PhysicsType::Water);
                 p.setColor(Color(220, 10, 10));
                 p.setRestitution(0.1f);
-                event2->particle = p;
-                event2->pos = e->getBody().getPosition();
-                event2->radius = 10;
+                event2->particleEvent.particle = p;
+                event2->particleEvent.position = e->getBody().getPosition();
+                event2->particleEvent.radius = 10;
 
                 m_eventEmitter.emit(std::move(event));
                 m_eventEmitter.emit(std::move(event2));

@@ -2,10 +2,11 @@
 
 #include "entities/player/player.hpp"
 #include "entity/entity.hpp"
-#include "entity/events.hpp"
 #include "entity/update_context.hpp"
+#include "event/event_emitter.hpp"
+#include "events/backend.hpp"
 #include "world/entity/id.hpp"
-#include "world/particle/particle_handler.hpp"
+#include "world/particle/events/event.hpp"
 #include <cstdint>
 #include <memory>
 #include <unordered_map>
@@ -14,14 +15,15 @@
 class EntityHandler
 {
   public:
-    EntityHandler(ParticleHandler &particleHandler)
-        : r_particleHandler(particleHandler)
+    EntityHandler(EventEmitter<BackendEvent> &backendEvents,
+                  EventEmitter<ParticleEvent> &particleEvents)
+        : r_backendEvents(backendEvents), r_particleEvents(particleEvents)
     {
     }
     EntityHandler(const EntityHandler &other) = delete;
     EntityHandler &operator=(const EntityHandler &other) = delete;
 
-    void update(float dt);
+    void update(const ParticleHandler &particleHandler, float dt);
     void handleEvents(Entity *entity);
 
     void render(Viewport &viewport, const Camera &camera);
@@ -54,7 +56,9 @@ class EntityHandler
     EntityIDHandler &getIDHandler() { return m_idHandler; }
 
   private:
-    ParticleHandler &r_particleHandler;
+    EventEmitter<BackendEvent> &r_backendEvents;
+    EventEmitter<ParticleEvent> &r_particleEvents;
+
     EntityIDHandler m_idHandler;
 
     Player *m_currentPlayer = nullptr;

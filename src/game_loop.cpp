@@ -21,7 +21,7 @@ void Game::update_loop()
     switch (result.sceneLoadID)
     {
     case SceneID::Testing:
-        m_scene = std::make_unique<TestScene>(m_window, m_assets);
+        m_scene = std::make_unique<TestScene>(m_assets, m_window);
         break;
     }
 }

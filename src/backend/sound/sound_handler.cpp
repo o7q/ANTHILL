@@ -1,6 +1,8 @@
 #include "sound_handler.hpp"
 
 #include "backend/logger/logger.hpp"
+#include "backend/sound/sound.hpp"
+#include <iostream>
 
 SoundHandler::SoundHandler()
 {
@@ -15,32 +17,65 @@ SoundHandler::SoundHandler()
 }
 SoundHandler::~SoundHandler()
 {
-    ma_engine_uninit(&m_engine);
     stopAllSounds();
+    if (m_initialized)
+    {
+        ma_engine_uninit(&m_engine);
+    }
 }
 
-void SoundHandler::playSound(const Sound &s, const SoundPlaySettings &settings)
+void SoundHandler::update()
+{
+    for (auto it = m_instancePool.begin(); it != m_instancePool.end();)
+    {
+        if (!it->buffer || !it->sound || ma_sound_at_end(it->sound))
+        {
+            destroy_instance(*it);
+            it = m_instancePool.erase(it);
+            std::cout << m_instancePool.size() << std::endl;
+        }
+        else
+        {
+            it++;
+        }
+    }
+}
+
+void SoundHandler::playSound(const Sound &s, const SoundPlaySettings settings)
 {
     if (!m_initialized || s.getData() == nullptr)
     {
         return;
     }
 
-    ma_audio_buffer_config bufferConfig = ma_audio_buffer_config_init(
-        s.getFormat(), s.getChannels(), s.getFrameCount(), s.getData(), NULL);
-
     SoundInstance instance;
     instance.buffer = (ma_audio_buffer *)malloc(sizeof(ma_audio_buffer));
     instance.sound = (ma_sound *)malloc(sizeof(ma_sound));
-    m_instancePool.push_back(instance);
 
-    ma_audio_buffer_init(&bufferConfig, instance.buffer);
+    ma_audio_buffer_config bufferConfig = ma_audio_buffer_config_init(
+        s.getFormat(), s.getChannels(), s.getFrameCount(), s.getData(), NULL);
 
-    ma_sound_init_from_data_source(&m_engine, instance.buffer, 0, NULL,
-                                   instance.sound);
+    if (ma_audio_buffer_init(&bufferConfig, instance.buffer) != MA_SUCCESS)
+    {
+        free(instance.buffer);
+        free(instance.sound);
+        return;
+    }
 
+    if (ma_sound_init_from_data_source(&m_engine, instance.buffer, 0, NULL,
+                                       instance.sound) != MA_SUCCESS)
+    {
+        ma_audio_buffer_uninit(instance.buffer);
+        free(instance.buffer);
+        free(instance.sound);
+        return;
+    }
+
+    ma_sound_set_volume(instance.sound, settings.volume);
     ma_sound_set_pitch(instance.sound, settings.pitch);
     ma_sound_start(instance.sound);
+
+    m_instancePool.push_back(instance);
 }
 
 void SoundHandler::stopAllSounds()

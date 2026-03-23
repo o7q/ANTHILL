@@ -12,7 +12,7 @@
 class TestEntity : public Entity, public IDirectional
 {
   public:
-    TestEntity(uint64_t id, const Assets &assets) : Entity(id), r_assets(assets)
+    TestEntity(uint64_t id) : Entity(id)
     {
         int width = Math::Random::weakRandInt(10, 20);
         int height = Math::Random::weakRandInt(10, 20);
@@ -61,7 +61,7 @@ class TestEntity : public Entity, public IDirectional
         if (m_ai.getMovement().shouldMove())
         {
             m_body.setVelocityX(m_ai.getMovement().getMoveDirection().x * 4);
-            m_body.setVelocityY(m_ai.getMovement().getMoveDirection().y * 4);
+            // m_body.setVelocityY(m_ai.getMovement().getMoveDirection().y * 4);
             if (m_ai.getMovement().getMoveDirection().y < 0)
             {
                 m_jumpHandler.requestJump();
@@ -94,8 +94,6 @@ class TestEntity : public Entity, public IDirectional
     {
         renderDebug_boundingBox(viewport, camera);
 
-        // m_aiPerception.renderDebug(viewport, camera);
-
         for (AINavigation::Checkpoint p :
              m_ai.getMovement().getMutatedCheckpoints())
         {
@@ -105,26 +103,9 @@ class TestEntity : public Entity, public IDirectional
                                   ? Color(255, 105, 245)
                                   : Color(255, 245, 105));
         }
-
-        Vec2i pos = m_body.getPosition();
-
-        Texture text = r_assets.fonts()
-                           .get(FontID::Test)
-                           ->generateStringTexture(m_metadata.name,
-                                                   Color(255, 255, 0), 5, 1, 8);
-
-        viewport.drawTexture(
-            text, camera.worldToViewport(pos.x, pos.y - 20, viewport));
-
-        Texture carter = *r_assets.textures().get(TextureID::Carter);
-
-        viewport.drawTexture(carter,
-                             camera.worldToViewport(pos.x, pos.y, viewport));
     }
 
   private:
     JumpHandler m_jumpHandler;
     GroundedAISystem m_ai;
-
-    const Assets &r_assets;
 };

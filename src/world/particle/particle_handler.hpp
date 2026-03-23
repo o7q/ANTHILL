@@ -2,8 +2,10 @@
 
 #include "backend/texture/texture.hpp"
 #include "backend/viewport/viewport.hpp"
+#include "event/event_emitter.hpp"
 #include "utils/data_structures/chunk_map.hpp"
 #include "world/camera/camera.hpp"
+#include "world/particle/events/event.hpp"
 #include "world/particle/particle.hpp"
 #include "world/particle/particle_dynamics/p_dynamics_handler.hpp"
 
@@ -12,7 +14,23 @@ class ParticleHandler
   public:
     ParticleHandler() : m_particles(32, 32), m_pDynamicsHandler(m_particles) {}
 
-    void update(float dt) { m_pDynamicsHandler.update(dt); }
+    void update(float dt)
+    {
+        for (auto &event : m_events.getEmittedEvents())
+        {
+            switch (event->type)
+            {
+            case ParticleEventType::Draw:
+            {
+                auto e = static_cast<ParticleDrawEvent *>(event.get());
+                draw(e->position.x, e->position.y, e->particle, e->radius);
+            }
+            break;
+            }
+        }
+        m_events.purge();
+        m_pDynamicsHandler.update(dt);
+    }
 
     void set(int x, int y, Particle p);
     void draw(int x, int y, Particle p, int radius = 5);
@@ -58,33 +76,17 @@ class ParticleHandler
         }
     }
 
-    void render(Viewport &viewport, const Camera &camera)
-    {
-        Vec2u viewport_size = viewport.getSize();
-
-        for (unsigned int y = 0; y < viewport_size.y; ++y)
-        {
-            for (unsigned int x = 0; x < viewport_size.x; ++x)
-            {
-                Vec2i pp = camera.viewportToWorld(x, y, viewport);
-
-                if (Particle *p = m_particles.get(pp.x, pp.y))
-                {
-                    Color pixel = p->getColor();
-                    if (!p->isAir())
-                    {
-                        viewport.setPixel(x, y, pixel);
-                    }
-                }
-            }
-        }
-    }
+    void render(Viewport &viewport, const Camera &camera);
 
     ChunkMap<Particle> &getParticles() { return m_particles; }
     const ChunkMap<Particle> &getParticles() const { return m_particles; }
     PDynamicsHandler &getDynamics() { return m_pDynamicsHandler; }
 
+    EventEmitter<ParticleEvent> &getEvents() { return m_events; }
+
   private:
     ChunkMap<Particle> m_particles;
     PDynamicsHandler m_pDynamicsHandler;
+
+    EventEmitter<ParticleEvent> m_events;
 };

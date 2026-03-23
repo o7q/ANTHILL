@@ -21,12 +21,16 @@ void Window::frameStart()
     m_timeHandler.frameStart();
 
     m_viewport.clear();
-    m_eventHandler.resetEvents();
+    m_soundHandler.update();
 
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        m_eventHandler.poll(event);
+        if (event.type == SDL_EVENT_QUIT)
+        {
+            m_running = false;
+        }
+
         m_inputHandler.poll(event);
     }
 

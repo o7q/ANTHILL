@@ -1,40 +1,49 @@
 #include "entity_handler.hpp"
 
+#include "event/event_emitter.hpp"
+#include "events/backend.hpp"
+#include "world/entity/events/entity.hpp"
+#include "world/entity/events/particle.hpp"
+#include "world/particle/events/event.hpp"
+#include <memory>
+
 void EntityHandler::handleEvents(Entity *entity)
 {
-    EntityEventEmitter &currentEmitter = entity->getEventEmitter();
+    EventEmitter<EntityEvent> &currentEmitter = entity->getEventEmitter();
 
-    for (auto &e : currentEmitter.getEmittedEvents())
+    for (auto &event : currentEmitter.getEmittedEvents())
     {
-        switch (e->type)
+        switch (event->type)
         {
         case EntityEventType::EntityDamage:
         {
-            EntityDamageEvent *event =
-                static_cast<EntityDamageEvent *>(e.get());
+            auto e = static_cast<EntityDamageEvent *>(event.get());
 
-            uint64_t target = event->target;
-            if (target)
+            uint64_t target = e->target;
+            if (target != 0)
             {
-                m_entities[target]->damage(event->damage);
+                m_entities[target]->damage(e->damage);
             }
         }
         break;
         case EntityEventType::EntitySpawn:
         {
-            EntitySpawnEvent *event = static_cast<EntitySpawnEvent *>(e.get());
-
-            m_entitiesToAdd.push_back(
-                event->entityFactory(m_idHandler.getNext()));
+            auto e = static_cast<EntitySpawnEvent *>(event.get());
+            m_entitiesToAdd.push_back(e->entityFactory(m_idHandler.getNext()));
         }
         break;
-        case EntityEventType::WorldModifyDraw:
+        case EntityEventType::ParticleDraw:
         {
-            EntityWorldModifyDrawEvent *event =
-                static_cast<EntityWorldModifyDrawEvent *>(e.get());
-
-            r_particleHandler.draw(event->pos.x, event->pos.y, event->particle,
-                                   event->radius);
+            auto e = static_cast<EntityParticleDrawEvent *>(event.get());
+            r_particleEvents.emit(
+                std::make_unique<ParticleDrawEvent>(e->particleEvent));
+        }
+        break;
+        case EntityEventType::BackendPlaySound:
+        {
+            auto e = static_cast<EntityBackendPlaySoundEvent *>(event.get());
+            r_backendEvents.emit(
+                std::make_unique<BackendPlaySoundEvent>(e->backendEvent));
         }
         break;
         }

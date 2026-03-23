@@ -1,7 +1,6 @@
 #pragma once
 
 #include "assets/assets.hpp"
-#include "backend/event/event_handler.hpp"
 #include "backend/window/window.hpp"
 #include "math/vec.hpp"
 #include "scene/scene.hpp"
@@ -28,10 +27,9 @@ class Game
         m_window.getTimeHandler().setTargetFramerate(144);
         // m_window.getTimeHandler().setSpeedMultiplier(0.3f);
 
-        m_scene = std::make_unique<TestScene>(m_window, m_assets);
+        m_scene = std::make_unique<TestScene>(m_assets, m_window);
 
-        while (!m_window.getEventHandler().didEventOccur(
-            EventHandler::EventType::WINDOW_QUIT))
+        while (m_window.isRunning())
         {
             m_window.frameStart();
             m_window.getViewport().clear();
@@ -48,7 +46,7 @@ class Game
     void init_binds();
 
   private:
-    Window m_window;
     Assets m_assets;
+    Window m_window;
     std::unique_ptr<Scene> m_scene = nullptr;
 };

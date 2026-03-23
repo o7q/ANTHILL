@@ -3,5 +3,6 @@
 Assets::Assets()
 {
     initTextures();
+    initSounds();
     initFonts();
 }

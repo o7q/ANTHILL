@@ -1,4 +1,5 @@
 #include "scene.hpp"
+#include "events/backend.hpp"
 
 void Scene::update()
 {
@@ -9,4 +10,20 @@ void Scene::update()
     }
 
     onTick();
+
+    for (auto &e : m_backendEvents.getEmittedEvents())
+    {
+        switch (e->type)
+        {
+        case BackendEventType::PlaySound:
+        {
+            auto event = static_cast<BackendPlaySoundEvent *>(e.get());
+            r_sound.playSound(*r_assets.sounds().get(event->soundID),
+                              event->settings);
+        }
+        break;
+        }
+    }
+
+    m_backendEvents.purge();
 }

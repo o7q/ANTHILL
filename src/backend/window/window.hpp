@@ -1,6 +1,5 @@
 #pragma once
 
-#include "backend/event/event_handler.hpp"
 #include "backend/input/input_handler.hpp"
 #include "backend/sound/sound_handler.hpp"
 #include "backend/time/time_handler.hpp"
@@ -22,20 +21,22 @@ class Window
     void render();
 
     Viewport &getViewport() { return m_viewport; }
-    SoundHandler &getSound() { return m_soundHandler; }
-    EventHandler &getEventHandler() { return m_eventHandler; }
+    SoundHandler &getSoundHandler() { return m_soundHandler; }
     InputHandler &getInputHandler() { return m_inputHandler; }
     TimeHandler &getTimeHandler() { return m_timeHandler; }
+
+    bool isRunning() const { return m_running; }
 
   private:
     SDL_Window *m_window = nullptr;
 
     Viewport m_viewport;
     SoundHandler m_soundHandler;
-    EventHandler m_eventHandler;
     InputHandler m_inputHandler;
     TimeHandler m_timeHandler;
 
     Vec2u m_size;
     float m_aspectRatio = 1.0f;
+
+    bool m_running = true;
 };

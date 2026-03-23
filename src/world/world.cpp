@@ -6,7 +6,7 @@ void World::update(float dt)
     m_particleHandler.getDynamics().setUpdateInfo(cameraPos.x, cameraPos.y, 8);
 
     m_particleHandler.update(dt);
-    m_entityHandler.update(dt);
+    m_entityHandler.update(m_particleHandler, dt);
 }
 
 void World::render(Viewport &viewport)
