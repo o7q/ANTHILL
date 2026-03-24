@@ -1,2 +1,3 @@
-rm -rf ./build
-rm -f ./ANTHILL
+rm -rf "./build"
+rm -rf "./package"
+rm -f "./ANTHILL"

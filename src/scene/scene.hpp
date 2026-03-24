@@ -2,7 +2,6 @@
 
 #include "assets/assets.hpp"
 #include "backend/input/input_handler.hpp"
-#include "backend/sound/sound.hpp"
 #include "backend/sound/sound_handler.hpp"
 #include "backend/time/time_handler.hpp"
 #include "backend/window/window.hpp"

@@ -2,7 +2,6 @@
 
 #include "backend/logger/logger.hpp"
 #include "backend/sound/sound.hpp"
-#include <iostream>
 
 SoundHandler::SoundHandler()
 {
@@ -32,7 +31,6 @@ void SoundHandler::update()
         {
             destroy_instance(*it);
             it = m_instancePool.erase(it);
-            std::cout << m_instancePool.size() << std::endl;
         }
         else
         {

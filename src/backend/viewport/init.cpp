@@ -28,7 +28,7 @@ Viewport::Viewport(SDL_Window *window, unsigned int width, unsigned int height)
         Logger::fatal("Viewport::Viewport()", "SDL_Texture* is null!");
     }
 
-    m_pixels = new Uint8[width * height * 3];
+    m_pixels = (Uint8 *)malloc(width * height * 3 * sizeof(Uint8));
     memset(m_pixels, 0, width * height * 3 * sizeof(Uint8));
 
     SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
@@ -52,7 +52,7 @@ Viewport::~Viewport()
 
     if (m_pixels)
     {
-        delete[] m_pixels;
+        free(m_pixels);
     }
 
     if (m_renderer)
