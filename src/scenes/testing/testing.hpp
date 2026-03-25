@@ -18,7 +18,4 @@ class TestScene : public Scene
 
   private:
     World m_world;
-
-    float fps = 0;
-    int fpsC = 0;
 };

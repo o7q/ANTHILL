@@ -32,8 +32,8 @@ inline Vec2f randomGradient(Vec2i index, uint32_t seed)
 
 inline float sample(float x, float y, uint32_t seed)
 {
-    int x_int = static_cast<int>(x);
-    int y_int = static_cast<int>(y);
+    int x_int = static_cast<int>(std::floor(x));
+    int y_int = static_cast<int>(std::floor(y));
 
     Vec2i corner0 = Vec2i(x_int, y_int);
     Vec2i corner1 = Vec2i(x_int + 1, y_int);

@@ -2,6 +2,7 @@
 
 #include "assets/assets.hpp"
 #include "backend/input/input_handler.hpp"
+#include "backend/sound/sound.hpp"
 #include "backend/viewport/viewport.hpp"
 #include "entities/projectile/projectile.hpp"
 #include "entity/entity.hpp"
@@ -73,15 +74,12 @@ class Player : public Entity, public IDirectional
 
             m_eventEmitter.emit(std::move(event));
 
-            auto soundEvent =
-                std::make_unique<EntityBackendPlaySoundEvent>(getID());
+            auto soundEvent = std::make_unique<EntityBackendPlaySoundEvent>(getID());
 
             soundEvent->backendEvent.soundID = SoundID::Gunshot;
-            soundEvent->backendEvent.settings = {
-                0.2f, (float)Math::Random::weakRandInt(4, 10) / 10.0f};
+            soundEvent->backendEvent.settings = {0.1f, Math::Random::weakRandInt(2, 10) / 10.0f};
 
             m_eventEmitter.emit(std::move(soundEvent));
-
         }
 
         bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(

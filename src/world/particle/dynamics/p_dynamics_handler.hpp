@@ -15,18 +15,13 @@ class PDynamicsHandler
   public:
     PDynamicsHandler(ChunkMap<Particle> &particles) : r_particles(particles) {}
 
-    void update(float dt);
+    void update(float dt, Vec2i origin, Vec2i size);
 
     void setGravity(float gravity) { m_gravity = gravity; }
     void addGravity(float gravity) { m_gravity += gravity; }
     float getGravity() const { return m_gravity; }
-    void setUpdateInfo(int originX, int originY, int chunk_radius_to_update)
-    {
-        m_updateChunksOrigin = Vec2i(originX, originY);
-        m_updateChunksRadius = chunk_radius_to_update;
-    }
 
-    void applyForce(float x, float y, float power, float dt);
+    void applyForce(int x, int y, float power, float dt);
 
   private:
     void update_particle(ParticleObject po, float dt);
@@ -47,6 +42,4 @@ class PDynamicsHandler
     bool m_updateSwapID = 0;
 
     float m_gravity = 0.1f;
-    Vec2i m_updateChunksOrigin;
-    int m_updateChunksRadius = 4;
 };

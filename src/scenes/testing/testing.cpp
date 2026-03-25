@@ -46,6 +46,8 @@ void TestScene::onStart()
 
     m_world.getParticleHandler().textureToParticles(
         *r_assets.textures().get(TextureID::Carter), Vec2i(100, 250), p);
+
+    r_sound.playSound(*r_assets.sounds().get(SoundID::BBW), {0.1f,1.0f});
 }
 
 void TestScene::onTick()
@@ -67,7 +69,8 @@ void TestScene::onTick()
         stone.getVerlet().setMass(200000000);
         stone.setImmovable(true);
 
-        m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y, stone, 20);
+        m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y,
+                                          stone, 20);
     }
     if (r_window.getInputHandler()
             .getInput(InputID::SecondaryAction2)
@@ -75,7 +78,8 @@ void TestScene::onTick()
     {
         Particle air;
 
-        m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y, air, 10);
+        m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y, air,
+                                          10);
     }
     if (r_window.getInputHandler()
             .getInput(InputID::SecondaryAction3)
@@ -89,35 +93,42 @@ void TestScene::onTick()
         sand.setRestitution(0.1f);
         sand.getVerlet().setMass(1);
 
-        m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y, sand, 4);
+        m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y,
+                                          sand, 4);
     }
 
-    if (r_window.getInputHandler()
-            .getInput(InputID::SecondaryAction5)
-            ->wasPressed())
+    if (r_input.getInput(InputID::Action2)->wasPressed())
     {
-        loadScene(SceneID::Testing);
+        m_world.getGenerator().generateInRadius(worldMousePos.x,
+                                                worldMousePos.y, 10);
     }
 
-    m_world.getEntityHandler().getCurrentPlayer()->updateAimPosition(worldMousePos);
+    m_world.getEntityHandler().getCurrentPlayer()->updateAimPosition(
+        worldMousePos);
     if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
     {
-        m_world.getCamera().setGoal(player->getBody().getPosition().x,
-                                    player->getBody().getPosition().y);
+        Vec2f playerPos = player->getBody().getPositionFloat();
+        m_world.getCamera().setGoal(playerPos.x, playerPos.y);
     }
     m_world.update(r_time.getDT());
     m_world.render(r_viewport);
 
-    fps = r_time.getFPS();
-    if (fpsC > 144)
-    {
-        // fpsC = 0;
-    }
-    // fpsC++;
+    Texture fpsText =
+        r_assets.fonts()
+            .get(FontID::Test)
+            ->generateStringTexture(std::to_string((int)r_time.getFPS()),
+                                    Color(0, 255, 0), 5, 1, 8);
+    r_viewport.drawTexture(fpsText, {10, 5});
 
-    Texture test = r_assets.fonts()
-                       .get(FontID::Test)
-                       ->generateStringTexture(std::to_string((int)fps),
-                                               Color(0, 255, 0), 5, 1, 8);
-    r_viewport.drawTexture(test, {10, 5});
+    if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
+    {
+        Vec2f playerPos = player->getBody().getPositionFloat();
+        Texture posTest =
+            r_assets.fonts()
+                .get(FontID::Test)
+                ->generateStringTexture(std::to_string((int)playerPos.x) + " " +
+                                            std::to_string((int)playerPos.y),
+                                        Color(255, 255, 0), 5, 1, 8);
+        r_viewport.drawTexture(posTest, {50, 5});
+    }
 }

@@ -6,45 +6,41 @@
 #include "world/particle/particle.hpp"
 #include <algorithm>
 
-void PDynamicsHandler::update(float dt)
+void PDynamicsHandler::update(float dt, Vec2i origin, Vec2i size)
 {
+    Index2D chunkIndex = r_particles.getChunkIndex(origin.x, origin.y);
     const Vec2u chunkSize = r_particles.getChunkSize();
 
-    for (auto &[chunkPos, chunk] : r_particles.getChunks())
+    for (int y = -size.y; y <= size.y; ++y)
     {
-        int originChunkX = static_cast<int>(std::floor(
-            m_updateChunksOrigin.x / static_cast<float>(chunkSize.x)));
-        int originChunkY = static_cast<int>(std::floor(
-            m_updateChunksOrigin.y / static_cast<float>(chunkSize.y)));
-
-        int chunkXDist = chunkPos.x - originChunkX;
-        int chunkYDist = chunkPos.y - originChunkY;
-
-        if (chunkXDist * chunkXDist + chunkYDist * chunkYDist >=
-            m_updateChunksRadius * m_updateChunksRadius)
+        for (int x = -size.x; x <= size.x; ++x)
         {
-            continue;
-        }
+            int cx = chunkIndex.x + x;
+            int cy = chunkIndex.y + y;
 
-        int innerBaseX = chunkPos.x * chunkSize.x;
-        int innerBaseY = chunkPos.y * chunkSize.y;
-        for (int y = chunkSize.y - 1; y >= 0; --y)
-        {
-            for (int x = chunkSize.x - 1; x >= 0; --x)
+            if (!r_particles.hasChunk(Index2D(cx, cy)))
             {
-                int px = innerBaseX + x;
-                int py = innerBaseY + y;
+                continue;
+            }
 
-                if (Particle *p = r_particles.get(px, py))
+            for (int y = chunkSize.y - 1; y >= 0; --y)
+            {
+                for (int x = chunkSize.x - 1; x >= 0; --x)
                 {
-                    if (p->getUpdateSwapID() == m_updateSwapID || p->isAir() ||
-                        p->isImmovable())
-                    {
-                        continue;
-                    }
+                    int ax = cx * chunkSize.x + x;
+                    int ay = cy * chunkSize.y + y;
 
-                    ParticleObject po{p, px, py};
-                    update_particle(po, dt);
+                    if (Particle *p = r_particles.get(ax, ay))
+                    {
+                        if (p->getUpdateSwapID() == m_updateSwapID ||
+                            p->isAir() || p->isImmovable())
+                        {
+                            continue;
+                        }
+
+                        ParticleObject po{p, ax, ay};
+                        update_particle(po, dt);
+                    }
                 }
             }
         }

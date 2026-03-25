@@ -17,6 +17,10 @@ void ParticleHandler::render(Viewport &viewport, const Camera &camera)
                 {
                     viewport.setPixel(x, y, pixel);
                 }
+                else
+                {
+                    viewport.setPixel(x, y, Color(100, 0, 0));
+                }
             }
         }
     }

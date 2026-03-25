@@ -27,7 +27,7 @@ bool PDynamicsHandler::can_gas_occupy(Particle *p)
     return p->isAir();
 }
 
-void PDynamicsHandler::applyForce(float x, float y, float power, float dt)
+void PDynamicsHandler::applyForce(int x, int y, float power, float dt)
 {
     for (auto &[chunkPos, chunk] : r_particles.getChunks())
     {
