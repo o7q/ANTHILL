@@ -53,6 +53,16 @@ Texture::Texture(const std::filesystem::path &path)
     Logger::info("Texture::Texture()", "Successfully loaded: " + pathStr);
 }
 
+void Texture::setPixel(unsigned int x, unsigned int y, Color color)
+{
+    if (x >= m_size.x || y >= m_size.y)
+    {
+        return;
+    }
+
+    m_pixels[Math::Index::index_2dto1d(x, y, m_size.x)] = color;
+}
+
 Color Texture::getPixel(unsigned int x, unsigned int y) const
 {
     if (x >= m_size.x || y >= m_size.y)

@@ -50,10 +50,9 @@ void TestScene::onStart()
 
 void TestScene::onTick()
 {
-    Vec2f mousePos = r_input.getMousePosition();
-    Vec2i viewportMousePos = r_viewport.windowToViewportPosition(mousePos);
-
-    Vec2i worldPos = m_world.getCamera().viewportToWorld(
+    Vec2i viewportMousePos =
+        r_viewport.windowToViewportPosition(r_input.getMousePosition());
+    Vec2i worldMousePos = m_world.getCamera().viewportToWorld(
         viewportMousePos.x, viewportMousePos.y, r_viewport);
 
     if (r_window.getInputHandler()
@@ -68,7 +67,7 @@ void TestScene::onTick()
         stone.getVerlet().setMass(200000000);
         stone.setImmovable(true);
 
-        m_world.getParticleHandler().draw(worldPos.x, worldPos.y, stone, 20);
+        m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y, stone, 20);
     }
     if (r_window.getInputHandler()
             .getInput(InputID::SecondaryAction2)
@@ -76,7 +75,7 @@ void TestScene::onTick()
     {
         Particle air;
 
-        m_world.getParticleHandler().draw(worldPos.x, worldPos.y, air, 10);
+        m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y, air, 10);
     }
     if (r_window.getInputHandler()
             .getInput(InputID::SecondaryAction3)
@@ -90,13 +89,7 @@ void TestScene::onTick()
         sand.setRestitution(0.1f);
         sand.getVerlet().setMass(1);
 
-        m_world.getParticleHandler().draw(worldPos.x, worldPos.y, sand, 4);
-    }
-
-    if (r_window.getInputHandler().getInput(InputID::Action1)->isDown())
-    {
-        // m_world.getParticleHandler().getDynamics().applyForce(
-        //     worldPos.x, worldPos.y, 100, r_time.getDT());
+        m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y, sand, 4);
     }
 
     if (r_window.getInputHandler()
@@ -106,28 +99,25 @@ void TestScene::onTick()
         loadScene(SceneID::Testing);
     }
 
-    m_world.getEntityHandler().getCurrentPlayer()->updateAimPosition(worldPos);
-    m_world.update(r_time.getDT());
+    m_world.getEntityHandler().getCurrentPlayer()->updateAimPosition(worldMousePos);
     if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
     {
         m_world.getCamera().setGoal(player->getBody().getPosition().x,
                                     player->getBody().getPosition().y);
-
-        m_world.getCamera().update(r_time.getDT());
     }
-
+    m_world.update(r_time.getDT());
     m_world.render(r_viewport);
 
+    fps = r_time.getFPS();
     if (fpsC > 144)
     {
-        fps = r_time.getFPS();
-        fpsC = 0;
+        // fpsC = 0;
     }
-    fpsC++;
+    // fpsC++;
 
     Texture test = r_assets.fonts()
                        .get(FontID::Test)
                        ->generateStringTexture(std::to_string((int)fps),
                                                Color(0, 255, 0), 5, 1, 8);
-    r_viewport.drawTexture(test, {20, 5});
+    r_viewport.drawTexture(test, {10, 5});
 }

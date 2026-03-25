@@ -7,6 +7,7 @@ void World::update(float dt)
 
     m_particleHandler.update(dt);
     m_entityHandler.update(m_particleHandler, dt);
+    m_camera.update(dt);
 }
 
 void World::render(Viewport &viewport)

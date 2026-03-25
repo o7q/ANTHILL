@@ -1,0 +1,81 @@
+#pragma once
+
+#include "math/interpolation.hpp"
+#include "math/vec.hpp"
+#include <cstdint>
+
+namespace Math
+{
+namespace Perlin
+{
+inline const Vec2f gradients[16] = {
+    {1.0000, 0.0000},   {0.9239, 0.3827},   {0.7071, 0.7071},
+    {0.3827, 0.9239},   {-0.0000, 1.0000},  {-0.3827, 0.9239},
+    {-0.7071, 0.7071},  {-0.9239, 0.3827},  {-1.0000, -0.0000},
+    {-0.9239, -0.3827}, {-0.7071, -0.7071}, {-0.3827, -0.9239},
+    {0.0000, -1.0000},  {0.3827, -0.9239},  {0.7071, -0.7071},
+    {0.9239, -0.3827},
+};
+
+// https://en.wikipedia.org/wiki/MurmurHash
+inline Vec2f randomGradient(Vec2i index, uint32_t seed)
+{
+    uint32_t h = (uint32_t)index.x ^ ((uint32_t)index.y << 16);
+    h *= seed | 1;
+    h ^= h >> 16;
+    h *= 0x85ebca6b;
+    h ^= h >> 13;
+    h *= 0xc2b2ae35;
+    h ^= h >> 16;
+    return gradients[h >> 28];
+}
+
+inline float sample(float x, float y, uint32_t seed)
+{
+    int x_int = static_cast<int>(x);
+    int y_int = static_cast<int>(y);
+
+    Vec2i corner0 = Vec2i(x_int, y_int);
+    Vec2i corner1 = Vec2i(x_int + 1, y_int);
+    Vec2i corner2 = Vec2i(x_int, y_int + 1);
+    Vec2i corner3 = Vec2i(x_int + 1, y_int + 1);
+
+    Vec2f localPos = Vec2f(x, y) - corner0.toFloat();
+
+    Vec2f gradient0 = randomGradient(corner0, seed);
+    Vec2f gradient1 = randomGradient(corner1, seed);
+    Vec2f gradient2 = randomGradient(corner2, seed);
+    Vec2f gradient3 = randomGradient(corner3, seed);
+
+    Vec2f inwardsGradient0 = localPos;
+    Vec2f inwardsGradient1 = localPos - Vec2f(1.0f, 0.0f);
+    Vec2f inwardsGradient2 = localPos - Vec2f(0.0f, 1.0f);
+    Vec2f inwardsGradient3 = localPos - Vec2f(1.0f, 1.0f);
+
+    float dot0 = gradient0.dot(inwardsGradient0);
+    float dot1 = gradient1.dot(inwardsGradient1);
+    float dot2 = gradient2.dot(inwardsGradient2);
+    float dot3 = gradient3.dot(inwardsGradient3);
+
+    float interp0 = Math::Interpolation::smoothStep(dot0, dot1, localPos.x);
+    float interp1 = Math::Interpolation::smoothStep(dot2, dot3, localPos.x);
+    return Math::Interpolation::smoothStep(interp0, interp1, localPos.y);
+}
+
+inline float sampleEx(float x, float y, float gridSize, int iterations,
+                      uint32_t seed)
+{
+    float v = 0.0f;
+    float f = 1.0f;
+    float a = 1.0f;
+    for (int i = 0; i < iterations; ++i)
+    {
+        v += sample(x * f / gridSize, y * f / gridSize, seed) * a;
+        f *= 2.0f;
+        a /= 2.0f;
+    }
+
+    return v;
+}
+} // namespace Perlin
+} // namespace Math

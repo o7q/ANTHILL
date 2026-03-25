@@ -19,5 +19,12 @@ inline float easeOutCubic(float a, float b, float t)
     t = 1.0f - std::pow(1.0f - t, t);
     return lerp(a, b, t);
 }
+
+inline float smoothStep(float a, float b, float t)
+{
+    t = t * t * (3.0f - 2.0f * t);
+    return lerp(a, b, t);
+}
+
 } // namespace Interpolation
 } // namespace Math

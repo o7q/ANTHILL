@@ -29,6 +29,7 @@ class Texture
 
     Vec2u getSize() const { return m_size; }
 
+    void setPixel(unsigned int x, unsigned int y, Color color);
     Color getPixel(unsigned int x, unsigned int y) const;
 
     const std::vector<Color> &getPixels() const { return m_pixels; }
