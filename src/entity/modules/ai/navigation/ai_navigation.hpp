@@ -1,10 +1,24 @@
 #pragma once
 
+#include "entity/update_context.hpp"
+#include "utils/data_structures/index_2d.hpp"
 #include "utils/pathfinding/a_star.hpp"
+#include <functional>
 
 class AINavigation
 {
   public:
+    struct Config
+    {
+        int astarMaxIterations = 50000;
+        int astarTerminationDistance = 0;
+        int astarIterationsPerFrame = 100;
+        int checkpointEatRadius = 4;
+        int stuckTemper = 100;
+        std::function<bool(const EntityUpdateContext &, Index2D)>
+            astarNeighborCheckFunction;
+    };
+
     enum class PathState
     {
         Idle,
@@ -22,88 +36,53 @@ class AINavigation
     {
         Vec2i pos;
         Axis axis;
+
+        bool operator==(const Checkpoint &other)
+        {
+            return pos == other.pos && axis == other.axis;
+        }
     };
 
   public:
     AINavigation() = default;
     virtual ~AINavigation() = default;
 
-    template <typename NeighborCheckFunction>
-    void update(float dt, NeighborCheckFunction &&checkFunction)
+    void update(Vec2i currentPos, const EntityUpdateContext &context);
+    void setGoal(Vec2i end) { m_astarGoalPosition = end; }
+
+    void setConfig(Config config)
     {
-        if (!m_astar.endReached() && m_pathState == PathState::Iterating)
-        {
-            m_astar.iteratePath(m_astarSubIterateAmount, checkFunction);
-        }
-
-        if (m_astar.endReached() && m_pathState == PathState::Iterating)
-        {
-            std::vector<Vec2i> positions = m_astar.generatePath();
-
-            Vec2i last;
-            for (Vec2i pos : positions)
-            {
-                int dx = std::abs(pos.x - last.x);
-                int dy = std::abs(pos.y - last.y);
-
-                bool xChanged = dx != 0;
-                bool yChanged = dy != 0;
-
-                Axis axis = Axis::Horizontal;
-                if (yChanged && !xChanged)
-                {
-                    axis = Axis::Vertical;
-                }
-
-                m_checkpoints.push_back({pos, axis});
-                last = pos;
-            }
-
-            m_pathState = PathState::Ready;
-        }
+        m_config = config;
+        m_astar.setMaxIterations(config.astarMaxIterations);
+        m_astar.setTerminateDistance(config.astarTerminationDistance);
     }
 
-    void setGoal(Vec2i start, Vec2i end)
-    {
-        m_startPos = start;
-        m_endPos = end;
-        m_astar.reset(start, end);
-        m_checkpoints.clear();
-        m_pathState = PathState::Iterating;
-    }
-
-    void sleep() { m_pathState = PathState::Idle; }
-
-    void setAStarMaxIterations(int maxIterations)
-    {
-        m_astar.setMaxIterations(maxIterations);
-    }
-
-    void setAStarTerminationDistance(int distance)
-    {
-        m_astar.setTerminateDistance(distance);
-    }
-
-    void setAStarSubIterateAmount(int subIterateAmount)
-    {
-        m_astarSubIterateAmount = subIterateAmount;
-    }
+    std::optional<Vec2i> getMoveVector() const { return m_moveVector; }
 
     const std::vector<Checkpoint> &getCheckpoints() const
     {
         return m_checkpoints;
     }
 
-    PathState getPathState() const { return m_pathState; }
+    std::vector<Vec2i> generatePath() { return m_astar.generatePath(); }
 
   private:
+    void update_path(Vec2i currentPos, const EntityUpdateContext &context);
+
+    std::optional<Checkpoint> get_next_movement_checkpoint(Vec2i currentPos);
+    void update_movement(Vec2i currentPos);
+
+  private:
+    Config m_config;
+
     AStarSolver m_astar;
-    int m_astarSubIterateAmount = 1000;
-
-    PathState m_pathState = PathState::Idle;
-
+    PathState m_astarPathState = PathState::Idle;
+    Vec2i m_astarGoalPosition;
     std::vector<Checkpoint> m_checkpoints;
 
-    Vec2i m_startPos;
-    Vec2i m_endPos;
+    Checkpoint m_previousCheckpoint;
+    int m_stuckCounter = 0;
+    int m_stuckRetryCounter = 0;
+    bool m_isStuck = false;
+    std::optional<Vec2i> m_moveVector;
 };

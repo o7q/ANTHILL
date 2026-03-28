@@ -1,7 +1,7 @@
 #pragma once
 
-#include "event.hpp"
-#include "world/particle/events/event.hpp"
+#include "events/entity/base.hpp"
+#include "events/particle/base.hpp"
 
 struct EntityParticleDrawEvent : public EntityEvent
 {

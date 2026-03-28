@@ -1,14 +1,10 @@
 #pragma once
 
-#include "math/vec.hpp"
-
 class IDirectional
 {
   public:
-    float getLookAngle() const { return m_lookAngle; }
-    Vec2i getLookPosition() const { return m_lookPosition; }
+    float getAngle() const { return m_angle; }
 
   protected:
-    float m_lookAngle = 0.0f;
-    Vec2i m_lookPosition;
+    float m_angle = 0.0f;
 };

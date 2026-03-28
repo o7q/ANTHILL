@@ -2,6 +2,7 @@
 
 #include "math/vec.hpp"
 #include "world/particle/particle.hpp"
+
 enum class ParticleEventType
 {
     Draw

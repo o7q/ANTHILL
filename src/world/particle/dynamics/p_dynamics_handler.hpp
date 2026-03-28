@@ -1,6 +1,7 @@
 #pragma once
 
 #include "utils/data_structures/chunk_map.hpp"
+#include "world/particle/navmesh.hpp"
 #include "world/particle/particle.hpp"
 
 class PDynamicsHandler
@@ -13,7 +14,10 @@ class PDynamicsHandler
     };
 
   public:
-    PDynamicsHandler(ChunkMap<Particle> &particles) : r_particles(particles) {}
+    PDynamicsHandler(ChunkMap<Particle> &particles, Navmesh &navmesh)
+        : r_particles(particles), r_navmesh(navmesh)
+    {
+    }
 
     void update(float dt, Vec2i origin, Vec2i size);
 
@@ -39,6 +43,7 @@ class PDynamicsHandler
 
   private:
     ChunkMap<Particle> &r_particles;
+    Navmesh &r_navmesh;
     bool m_updateSwapID = 0;
 
     float m_gravity = 0.1f;

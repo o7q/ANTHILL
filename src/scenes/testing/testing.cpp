@@ -1,5 +1,5 @@
 #include "testing.hpp"
-#include "entities/test.hpp"
+#include "entities/droid.hpp"
 #include "math/random.hpp"
 
 void TestScene::onStart()
@@ -10,12 +10,12 @@ void TestScene::onStart()
 
     for (int i = 0; i < 1; ++i)
     {
-        std::unique_ptr<TestEntity> test = std::make_unique<TestEntity>(
+        auto droid = std::make_unique<Droid>(
             m_world.getEntityHandler().getIDHandler().getNext());
 
-        test->getBody().setPosition(5 * i, 0);
+        droid->getBody().setPosition(5 * i, 0);
 
-        m_world.getEntityHandler().addEntity(std::move(test));
+        m_world.getEntityHandler().addEntity(std::move(droid));
     }
 
     Particle stone;
@@ -46,8 +46,6 @@ void TestScene::onStart()
 
     m_world.getParticleHandler().textureToParticles(
         *r_assets.textures().get(TextureID::Carter), Vec2i(100, 250), p);
-
-    r_sound.playSound(*r_assets.sounds().get(SoundID::BBW), {0.1f,1.0f});
 }
 
 void TestScene::onTick()
@@ -97,17 +95,12 @@ void TestScene::onTick()
                                           sand, 4);
     }
 
-    if (r_input.getInput(InputID::Action2)->wasPressed())
-    {
-        m_world.getGenerator().generateInRadius(worldMousePos.x,
-                                                worldMousePos.y, 10);
-    }
-
     m_world.getEntityHandler().getCurrentPlayer()->updateAimPosition(
         worldMousePos);
     if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
     {
         Vec2f playerPos = player->getBody().getPositionFloat();
+        m_world.getGenerator().generateInRadius(playerPos.toInt(), {20, 20});
         m_world.getCamera().setGoal(playerPos.x, playerPos.y);
     }
     m_world.update(r_time.getDT());

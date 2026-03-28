@@ -2,17 +2,22 @@
 
 #include "backend/texture/texture.hpp"
 #include "backend/viewport/viewport.hpp"
-#include "event/event_emitter.hpp"
+#include "events/event_emitter.hpp"
+#include "events/particle/base.hpp"
 #include "utils/data_structures/chunk_map.hpp"
 #include "world/camera/camera.hpp"
 #include "world/particle/dynamics/p_dynamics_handler.hpp"
-#include "world/particle/events/event.hpp"
+#include "world/particle/navmesh.hpp"
 #include "world/particle/particle.hpp"
 
 class ParticleHandler
 {
   public:
-    ParticleHandler() : m_particles(32, 32), m_pDynamicsHandler(m_particles) {}
+    ParticleHandler()
+        : m_particles(32, 32), m_navmesh(Vec2u(8, 8)),
+          m_pDynamicsHandler(m_particles, m_navmesh)
+    {
+    }
 
     void update(float dt, Vec2i origin, Vec2i size);
 
@@ -47,6 +52,8 @@ class ParticleHandler
 
     void render(Viewport &viewport, const Camera &camera);
 
+    const Navmesh &getNavmesh() const { return m_navmesh; }
+
     ChunkMap<Particle> &getParticles() { return m_particles; }
     const ChunkMap<Particle> &getParticles() const { return m_particles; }
     PDynamicsHandler &getDynamics() { return m_pDynamicsHandler; }
@@ -55,6 +62,7 @@ class ParticleHandler
 
   private:
     ChunkMap<Particle> m_particles;
+    Navmesh m_navmesh;
     PDynamicsHandler m_pDynamicsHandler;
 
     EventEmitter<ParticleEvent> m_events;

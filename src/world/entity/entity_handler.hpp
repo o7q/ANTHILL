@@ -3,10 +3,9 @@
 #include "entities/player/player.hpp"
 #include "entity/entity.hpp"
 #include "entity/update_context.hpp"
-#include "event/event_emitter.hpp"
-#include "events/backend.hpp"
+#include "events/backend/base.hpp"
+#include "events/event_emitter.hpp"
 #include "world/entity/id.hpp"
-#include "world/particle/events/event.hpp"
 #include <cstdint>
 #include <memory>
 #include <unordered_map>

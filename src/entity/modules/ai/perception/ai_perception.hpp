@@ -48,6 +48,8 @@ class AIPerception
     void setSightDistance(int distance) { m_sightDistance = distance; }
     void setSightRayAmount(int amount) { m_sightRayAmount = amount; }
 
+    const std::vector<Vec2i> &getSightPoints() const { return m_sightPoints; }
+
   private:
     std::vector<Vec2i> m_sightPoints;
 

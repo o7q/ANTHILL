@@ -8,41 +8,30 @@
 
 void PDynamicsHandler::update(float dt, Vec2i origin, Vec2i size)
 {
-    Index2D chunkIndex = r_particles.getChunkIndex(origin.x, origin.y);
-    const Vec2u chunkSize = r_particles.getChunkSize();
+    r_navmesh.destroy();
 
-    for (int y = -size.y; y <= size.y; ++y)
+    Vec2i halfSize = size / 2;
+    for (int y = origin.y + halfSize.y; y >= origin.y - halfSize.y; --y)
     {
-        for (int x = -size.x; x <= size.x; ++x)
+        for (int x = origin.x + halfSize.x; x >= origin.x - halfSize.x; --x)
         {
-            int cx = chunkIndex.x + x;
-            int cy = chunkIndex.y + y;
+            Particle *p = r_particles.get(x, y);
 
-            if (!r_particles.hasChunk(Index2D(cx, cy)))
+            if (!p)
             {
                 continue;
             }
 
-            for (int y = chunkSize.y - 1; y >= 0; --y)
+            r_navmesh.update(*p, x, y);
+
+            if (p->getUpdateSwapID() == m_updateSwapID || p->isAir() ||
+                p->isImmovable())
             {
-                for (int x = chunkSize.x - 1; x >= 0; --x)
-                {
-                    int ax = cx * chunkSize.x + x;
-                    int ay = cy * chunkSize.y + y;
-
-                    if (Particle *p = r_particles.get(ax, ay))
-                    {
-                        if (p->getUpdateSwapID() == m_updateSwapID ||
-                            p->isAir() || p->isImmovable())
-                        {
-                            continue;
-                        }
-
-                        ParticleObject po{p, ax, ay};
-                        update_particle(po, dt);
-                    }
-                }
+                continue;
             }
+
+            ParticleObject po{p, x, y};
+            update_particle(po, dt);
         }
     }
 

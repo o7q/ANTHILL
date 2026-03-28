@@ -1,6 +1,6 @@
 #pragma once
 
-#include "event.hpp"
+#include "events/entity/base.hpp"
 #include <functional>
 #include <memory>
 

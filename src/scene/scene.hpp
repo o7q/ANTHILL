@@ -5,8 +5,8 @@
 #include "backend/sound/sound_handler.hpp"
 #include "backend/time/time_handler.hpp"
 #include "backend/window/window.hpp"
-#include "event/event_emitter.hpp"
-#include "events/backend.hpp"
+#include "events/backend/base.hpp"
+#include "events/event_emitter.hpp"
 #include "identifiers/scene.hpp"
 
 class Scene

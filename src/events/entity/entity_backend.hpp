@@ -1,7 +1,7 @@
 #pragma once
 
-#include "event.hpp"
-#include "events/backend.hpp"
+#include "events/backend/base.hpp"
+#include "events/entity/base.hpp"
 
 struct EntityBackendPlaySoundEvent : public EntityEvent
 {

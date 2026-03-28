@@ -4,7 +4,7 @@ void World::update(float dt)
 {
     Vec2i cameraPos = m_camera.getPosition();
 
-    m_particleHandler.update(dt, cameraPos, {10, 2});
+    m_particleHandler.update(dt, cameraPos, {500, 300});
     m_entityHandler.update(m_particleHandler, dt);
     m_camera.update(dt);
 }

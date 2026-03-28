@@ -137,6 +137,9 @@ class AStarSolver
     void setTerminateDistance(int distance) { m_terminateDistance = distance; }
     void removeTerminateDistance() { m_terminateDistance = std::nullopt; }
 
+    Vec2i getStart() const { return m_start; }
+    Vec2i getEnd() const { return m_end; }
+
   private:
     float dist(Index2D start, Index2D end);
 

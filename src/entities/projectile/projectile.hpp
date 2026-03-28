@@ -3,25 +3,26 @@
 #include "backend/viewport/viewport.hpp"
 #include "entity/entity.hpp"
 #include "entity/interfaces/directional.hpp"
-#include "event/event_emitter.hpp"
-#include "world/entity/events/entity.hpp"
-#include "world/entity/events/particle.hpp"
+#include "events/entity/entity_entity.hpp"
+#include "events/entity/entity_particle.hpp"
+#include "events/event_emitter.hpp"
 #include <iostream>
 #include <memory>
 
 class Projectile : public Entity, public IDirectional
 {
   public:
-    Projectile(uint64_t id, Vec2i pos, float angle) : Entity(id)
+    Projectile(uint64_t id, uint16_t parent, Vec2i pos, float angle)
+        : Entity(id, parent)
     {
         m_body.setPosition(pos.x, pos.y);
-        m_lookAngle = angle;
+        m_angle = angle;
         m_body.setVelocity(std::cosf(angle) * 10, std::sinf(angle) * 10);
         m_interactionBox.getBoundingBox().setSize(3, 3);
         m_body.setGravity(0.1f);
     }
 
-    void update(const EntityUpdateContext &context) override
+    virtual void update(const EntityUpdateContext &context) override
     {
         const Particle *p = context.particles.getParticles().get(
             m_body.getPosition().x, m_body.getPosition().y);

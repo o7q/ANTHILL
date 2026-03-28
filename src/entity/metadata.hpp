@@ -1,15 +1,15 @@
 #pragma once
 
 #include <string>
-enum class EntityType
+
+enum class EntityFaction
 {
     Generic,
-    Player,
-    Projectile
+    Player
 };
 
 struct EntityMetadata
 {
-    EntityType type = EntityType::Generic;
+    EntityFaction faction = EntityFaction::Generic;
     std::string name = "";
 };

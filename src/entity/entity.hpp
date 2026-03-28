@@ -5,16 +5,14 @@
 #include "entity/kinetic_body/kinetic_body.hpp"
 #include "entity/metadata.hpp"
 #include "entity/update_context.hpp"
-#include "event/event_emitter.hpp"
+#include "events/entity/base.hpp"
 #include "world/camera/camera.hpp"
-#include "world/entity/events/event.hpp"
 
 class Entity
 {
   public:
-    Entity(uint64_t id, EntityType type = EntityType::Generic) : m_id(id)
+    Entity(uint64_t id, uint64_t parentID = 0) : m_id(id), m_parentID(parentID)
     {
-        m_metadata.type = type;
     }
     virtual ~Entity() = default;
 
@@ -30,16 +28,13 @@ class Entity
     const InteractionBox &getInteractionBox() const { return m_interactionBox; }
     EntityMetadata getMetadata() const { return m_metadata; }
 
+    const uint64_t getID() const { return m_id; }
     const uint64_t getParent() const { return m_parentID; }
-    void setParent(uint64_t id) { m_parentID = id; }
-    void clearParent() { m_parentID = 0; }
 
     EventEmitter<EntityEvent> &getEventEmitter() { return m_eventEmitter; }
 
-    uint64_t getID() const { return m_id; }
-
   protected:
-    virtual void updateMotion(const EntityUpdateContext &context);
+    void updateMotion(const EntityUpdateContext &context);
     void updateHealth()
     {
         if (m_health <= 0.0f)

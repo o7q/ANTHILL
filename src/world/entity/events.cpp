@@ -1,10 +1,9 @@
 #include "entity_handler.hpp"
 
-#include "event/event_emitter.hpp"
-#include "events/backend.hpp"
-#include "world/entity/events/entity.hpp"
-#include "world/entity/events/particle.hpp"
-#include "world/particle/events/event.hpp"
+#include "events/entity/entity_backend.hpp"
+#include "events/entity/entity_entity.hpp"
+#include "events/entity/entity_particle.hpp"
+#include "events/event_emitter.hpp"
 #include <memory>
 
 void EntityHandler::handleEvents(Entity *entity)
@@ -20,10 +19,11 @@ void EntityHandler::handleEvents(Entity *entity)
             auto e = static_cast<EntityDamageEvent *>(event.get());
 
             uint64_t target = e->target;
-            if (target != 0)
+            if (target == 0)
             {
-                m_entities[target]->damage(e->damage);
+                break;
             }
+            m_entities[target]->damage(e->damage);
         }
         break;
         case EntityEventType::EntitySpawn:
