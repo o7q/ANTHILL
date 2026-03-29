@@ -1,6 +1,5 @@
 #pragma once
 
-#include "backend/texture/texture.hpp"
 #include <string>
 
 enum class ItemType
@@ -11,15 +10,14 @@ enum class ItemType
 class Item
 {
   public:
-    Item(const std::string &name, const Texture &texture)
-        : m_name(name), m_texture(texture)
-    {
-    }
+    Item(const std::string &name) : m_name(name) {}
     virtual ~Item() {}
 
     std::string getName() { return m_name; }
 
+    virtual void actionHold() {}
+    virtual void actionRelease() {}
+
   protected:
     const std::string m_name = "";
-    const Texture &m_texture;
 };

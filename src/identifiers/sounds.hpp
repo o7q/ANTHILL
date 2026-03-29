@@ -5,6 +5,7 @@
 enum class SoundID
 {
     BBW,
-    Gunshot
+    Gunshot,
+    Bite
 };
 using SoundIDKey = Identifier<SoundID>;

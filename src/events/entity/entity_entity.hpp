@@ -24,5 +24,5 @@ struct EntityDamageEvent : public EntityEvent
     }
 
     uint64_t target = 0;
-    int damage = 0;
+    float damage = 0.0f;
 };

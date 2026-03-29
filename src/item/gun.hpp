@@ -1,11 +1,11 @@
 #pragma once
 
 #include "entities/projectile/projectile.hpp"
-#include "item/weapon/weapon.hpp"
+#include "item/item.hpp"
 #include <memory>
 #include <vector>
 
-class Gun : public Weapon
+class Gun : public Item
 {
   public:
     enum class FireMode
@@ -16,11 +16,9 @@ class Gun : public Weapon
     };
 
   public:
-    Gun(const std::string &name, const Texture &texture) : Weapon(name, texture)
-    {
-    }
+    Gun(const std::string &name) : Item(name) {}
 
-    virtual void pullTrigger()
+    virtual void actionHold() override
     {
         if (!m_canShoot)
         {
@@ -39,7 +37,7 @@ class Gun : public Weapon
             m_canShoot = false;
         }
     }
-    virtual void releaseTrigger() { m_canShoot = true; }
+    virtual void actionRelease() override { m_canShoot = true; }
     virtual void reload()
     {
         int refillAmount = m_magazineSize - m_ammoInMagazine;

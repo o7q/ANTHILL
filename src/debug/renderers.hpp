@@ -24,7 +24,7 @@ inline void DEBUG_renderAINavigationInProgress(Viewport &viewport,
 {
     for (Vec2i p : navigation.generatePath())
     {
-        Vec2i ppos = camera.worldToViewport(p.x * 8, p.y * 8, viewport);
+        Vec2i ppos = camera.worldToViewport(p.x, p.y, viewport);
         viewport.setPixel(ppos.x, ppos.y, Color(255, 0, 0));
     }
 }

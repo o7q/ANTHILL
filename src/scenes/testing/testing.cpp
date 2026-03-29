@@ -124,4 +124,18 @@ void TestScene::onTick()
                                         Color(255, 255, 0), 5, 1, 8);
         r_viewport.drawTexture(posTest, {50, 5});
     }
+
+    r_viewport.drawTexture(
+        *m_animTex.getCurrentFrame(),
+        m_world.getCamera().worldToViewport(0, 0, r_viewport));
+    r_viewport.drawTexture(
+        *m_animTex.getCurrentFrame(),
+        m_world.getCamera().worldToViewport(20, 0, r_viewport));
+    r_viewport.drawTexture(
+        *m_animTex.getCurrentFrame(),
+        m_world.getCamera().worldToViewport(40, 0, r_viewport));
+    r_viewport.drawTexture(
+        *m_animTex.getCurrentFrame(),
+        m_world.getCamera().worldToViewport(60, 0, r_viewport));
+    m_animTex.animate(r_time.getFPS());
 }

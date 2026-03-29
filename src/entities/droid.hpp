@@ -10,11 +10,15 @@
 #include "entity/modules/ai/perception/ai_perception.hpp"
 #include "entity/modules/jump_handler/jump_handler.hpp"
 #include "entity/update_context.hpp"
+#include "events/entity/entity_backend.hpp"
+#include "events/entity/entity_entity.hpp"
+#include "events/entity/entity_particle.hpp"
 #include "math/numbers.hpp"
 #include "utils/data_structures/index_2d.hpp"
 #include "world/camera/camera.hpp"
 #include "world/particle/navmesh.hpp"
 #include <iostream>
+#include <memory>
 
 class Droid : public Entity, public IHead
 {
@@ -100,10 +104,35 @@ class Droid : public Entity, public IHead
             }
         }
 
-        if (player->getBody().getPosition() !=
-            player->getBody().getLastPosition())
+        if (!player)
+        {
+            return;
+        }
+
+        Vec2i playerPos = player->getBody().getPosition();
+
+        if (playerPos != player->getBody().getLastPosition())
         {
             m_aiNavigation.setGoal(player->getBody().getPosition());
+        }
+
+        int dx = std::abs(playerPos.x - m_body.getPosition().x);
+        int dy = std::abs(playerPos.y - m_body.getPosition().y);
+
+        if (dx + dy < 50)
+        {
+            auto particleEvent =
+                std::make_unique<EntityParticleDrawEvent>(getID());
+            Particle p;
+            p.setMatterType(Particle::MatterType::Liquid);
+            p.setPhysicsType(Particle::PhysicsType::Water);
+            p.setColor(Color(220, 10, 10));
+            p.setRestitution(0.1f);
+            particleEvent->particleEvent.particle = p;
+            particleEvent->particleEvent.position = playerPos;
+            particleEvent->particleEvent.radius = 10;
+
+            m_eventEmitter.emit(std::move(particleEvent));
         }
 
         m_aiNavigation.update(m_body.getPosition(), context);
@@ -141,6 +170,10 @@ class Droid : public Entity, public IHead
     void render(Viewport &viewport, const Camera &camera) override
     {
         renderDebug_boundingBox(viewport, camera);
+        viewport.drawTexture(*r_assets.textures().get(TextureID::TheMan2),
+                             camera.worldToViewport(m_body.getPosition().x,
+                                                    m_body.getPosition().y,
+                                                    viewport));
     }
 
   private:

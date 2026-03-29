@@ -5,13 +5,12 @@
 #include "math/physics/verlet.hpp"
 #include "world/particle/particle.hpp"
 #include <algorithm>
-#include <optional>
 
 void PDynamicsHandler::update(float dt, Vec2i origin, Vec2i size)
 {
     Vec2i halfSize = size / 2;
 
-    Index2D lastNavmeshChunkIndex(1000000,100000);
+    Index2D lastNavmeshChunkIndex(1000000000, 1000000000);
 
     for (int y = origin.y + halfSize.y; y >= origin.y - halfSize.y; --y)
     {

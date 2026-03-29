@@ -9,6 +9,7 @@ enum class TextureID
     PistolSmall,
     Character,
     Carter,
-    TheMan
+    TheMan,
+    TheMan2
 };
 using TextureIDKey = Identifier<TextureID>;
