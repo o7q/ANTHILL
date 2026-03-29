@@ -1,5 +1,6 @@
 #pragma once
 
+#include "assets/assets.hpp"
 #include "backend/viewport/viewport.hpp"
 #include "debug/renderers.hpp"
 #include "entity/entity.hpp"
@@ -13,12 +14,12 @@
 #include "utils/data_structures/index_2d.hpp"
 #include "world/camera/camera.hpp"
 #include "world/particle/navmesh.hpp"
-#include "world/particle/particle.hpp"
+#include <iostream>
 
 class Droid : public Entity, public IHead
 {
   public:
-    Droid(uint64_t id) : Entity(id)
+    Droid(uint64_t id, const Assets &assets) : Entity(id), r_assets(assets)
     {
         m_interactionBox.getBoundingBox().setSize(10, 20);
         m_body.setGravity(0.4f);
@@ -30,15 +31,49 @@ class Droid : public Entity, public IHead
         AINavigation::Config cfg;
         cfg.astarIterationsPerFrame = 100;
         cfg.stuckTemper = 100;
-        cfg.astarTerminationDistance = 0;
+        cfg.astarTerminationDistance = 2;
         cfg.astarMaxIterations = 10000000;
-        cfg.checkpointEatRadius = 4;
+        cfg.checkpointEatRadius = 10;
         cfg.astarNeighborCheckFunction =
             [&](const EntityUpdateContext &context, Index2D index)
         {
-            auto data = context.particles.getNavmesh().getChunk(index);
+            auto data = context.particles.getNavmesh().getChunkFromIndex(index);
 
-            if (!data.has_value())
+            Vec2i pos = Vec2i(index.x, index.y) *
+                        context.particles.getNavmesh().getResolution().toInt();
+
+            Vec2i a = m_interactionBox.getBoundingBox().getA();
+            Vec2i b = m_interactionBox.getBoundingBox().getB();
+
+            Vec2i topLeft = pos + Vec2i(a.x, a.y);
+            Vec2i topRight = pos + Vec2i(b.x, a.y);
+            Vec2i bottomLeft = pos + Vec2i(a.x, b.y);
+            Vec2i bottomRight = pos + Vec2i(b.x, b.y);
+
+            bool solid = false;
+
+            auto test = [&](const Particle *p)
+            {
+                if (p->isSolid())
+                {
+                    solid = true;
+                    return true;
+                }
+
+                return false;
+            };
+
+            context.particles.query(topLeft, topRight, test);
+            context.particles.query(topLeft, bottomLeft, test);
+            context.particles.query(bottomLeft, bottomRight, test);
+            context.particles.query(topRight, bottomRight, test);
+
+            if (solid)
+            {
+                return false;
+            }
+
+            if (!data)
             {
                 return true;
             }
@@ -79,6 +114,7 @@ class Droid : public Entity, public IHead
         {
             if (result->y < -4)
             {
+                m_body.setVelocityY(-5);
                 m_jumpHandler.requestJump();
             }
             m_body.setVelocityX(Math::Numbers::sign(result->x) * 5);
@@ -93,10 +129,10 @@ class Droid : public Entity, public IHead
                             m_body.getPosition(), RectangleSide::Bottom,
                             context.particles));
 
-        if (m_jumpHandler.canJump())
-        {
-            m_body.setVelocityY(-5);
-        }
+        // if (m_jumpHandler.canJump())
+        // {
+        //     m_body.setVelocityY(-5);
+        // }
 
         updateMotion(context);
         updateHealth();
@@ -105,11 +141,10 @@ class Droid : public Entity, public IHead
     void render(Viewport &viewport, const Camera &camera) override
     {
         renderDebug_boundingBox(viewport, camera);
-        DEBUG_renderAINavigationInProgress(viewport, camera, m_aiNavigation);
-        DEBUG_renderAINavigation(viewport, camera, m_aiNavigation);
     }
 
   private:
+    const Assets &r_assets;
     JumpHandler m_jumpHandler;
     AIPerception m_aiPerception;
     AINavigation m_aiNavigation;

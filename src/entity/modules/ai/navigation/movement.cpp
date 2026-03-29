@@ -3,8 +3,6 @@
 std::optional<AINavigation::Checkpoint>
 AINavigation::get_next_movement_checkpoint(Vec2i currentPos)
 {
-    return std::nullopt;
-
     Checkpoint current;
     bool eatNext = true;
     while (eatNext)
@@ -15,6 +13,7 @@ AINavigation::get_next_movement_checkpoint(Vec2i currentPos)
         }
 
         current = m_checkpoints[0];
+
         switch (current.axis)
         {
         case Axis::Horizontal:

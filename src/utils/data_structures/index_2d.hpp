@@ -13,6 +13,11 @@ struct Index2D
     {
         return x == other.x && y == other.y;
     }
+
+    bool operator!=(const Index2D &other) const
+    {
+        return x != other.x || y != other.y;
+    }
 };
 
 // https://stackoverflow.com/a/20602159

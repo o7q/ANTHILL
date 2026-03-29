@@ -14,7 +14,7 @@ class ParticleHandler
 {
   public:
     ParticleHandler()
-        : m_particles(32, 32), m_navmesh(Vec2u(8, 8)),
+        : m_particles(32, 32), m_navmesh({8, 8}),
           m_pDynamicsHandler(m_particles, m_navmesh)
     {
     }

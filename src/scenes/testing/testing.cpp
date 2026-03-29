@@ -11,7 +11,7 @@ void TestScene::onStart()
     for (int i = 0; i < 1; ++i)
     {
         auto droid = std::make_unique<Droid>(
-            m_world.getEntityHandler().getIDHandler().getNext());
+            m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
 
         droid->getBody().setPosition(5 * i, 0);
 

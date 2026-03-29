@@ -5,12 +5,14 @@
 #include "math/physics/verlet.hpp"
 #include "world/particle/particle.hpp"
 #include <algorithm>
+#include <optional>
 
 void PDynamicsHandler::update(float dt, Vec2i origin, Vec2i size)
 {
-    r_navmesh.destroy();
-
     Vec2i halfSize = size / 2;
+
+    Index2D lastNavmeshChunkIndex(1000000,100000);
+
     for (int y = origin.y + halfSize.y; y >= origin.y - halfSize.y; --y)
     {
         for (int x = origin.x + halfSize.x; x >= origin.x - halfSize.x; --x)
@@ -22,8 +24,13 @@ void PDynamicsHandler::update(float dt, Vec2i origin, Vec2i size)
                 continue;
             }
 
-            r_navmesh.update(*p, x, y);
-
+            Index2D chunkIndex = r_navmesh.getIndexFromWorldPosition({x, y});
+            if (chunkIndex != lastNavmeshChunkIndex)
+            {
+                r_navmesh.resetChunk(chunkIndex);
+            }
+            r_navmesh.update(p, chunkIndex);
+            lastNavmeshChunkIndex = chunkIndex;
             if (p->getUpdateSwapID() == m_updateSwapID || p->isAir() ||
                 p->isImmovable())
             {

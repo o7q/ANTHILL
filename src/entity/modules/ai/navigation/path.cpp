@@ -3,12 +3,13 @@
 void AINavigation::update_path(Vec2i currentPos,
                                const EntityUpdateContext &context)
 {
-    Index2D end = context.particles.getNavmesh().getChunkIndex(
-        m_astarGoalPosition.x, m_astarGoalPosition.y);
+    Index2D end = context.particles.getNavmesh().getIndexFromWorldPosition(
+        m_astarGoalPosition);
     if (Vec2i(end.x, end.y) != m_astar.getEnd() || m_isStuck)
     {
-        Index2D start = context.particles.getNavmesh().getChunkIndex(
-            currentPos.x, currentPos.y);
+        Index2D start =
+            context.particles.getNavmesh().getIndexFromWorldPosition(
+                currentPos);
         m_astar.reset(Vec2i(start.x, start.y), {end.x, end.y});
         m_checkpoints.clear();
         m_astarPathState = PathState::Iterating;
@@ -47,7 +48,9 @@ void AINavigation::update_path(Vec2i currentPos,
                 axis = Axis::Vertical;
             }
 
-            m_checkpoints.push_back({pos, axis});
+            m_checkpoints.push_back(
+                {pos * context.particles.getNavmesh().getResolution().toInt(),
+                 axis});
             last = pos;
         }
 

@@ -36,7 +36,7 @@ class Particle
     void setMatterType(MatterType matterType) { m_matterType = matterType; }
     MatterType getMatterType() const { return m_matterType; }
 
-    bool isAir()
+    bool isAir() const
     {
         return m_physicsType == PhysicsType::None &&
                m_matterType == MatterType::Gas;

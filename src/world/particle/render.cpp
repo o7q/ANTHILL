@@ -1,4 +1,7 @@
+#include "math/perlin.hpp"
 #include "particle_handler.hpp"
+#include "world/particle/navmesh.hpp"
+#include <iostream>
 
 void ParticleHandler::render(Viewport &viewport, const Camera &camera)
 {
@@ -12,6 +15,10 @@ void ParticleHandler::render(Viewport &viewport, const Camera &camera)
 
             Particle *p = m_particles.get(worldPos.x, worldPos.y);
 
+            // float test = Math::Perlin::sampleEx(x, y, 10, 1, 14);
+            // viewport.setPixel(x, y, Color(255*test, 255*test, 255*test));
+
+
             if (!p)
             {
                 continue;
@@ -22,22 +29,6 @@ void ParticleHandler::render(Viewport &viewport, const Camera &camera)
             {
                 viewport.setPixel(x, y, pixel);
             }
-            else
-            {
-                viewport.setPixel(x, y, Color(100, 0, 0));
-            }
-        }
-    }
-
-    for (auto &[index, data] : m_navmesh.getMesh())
-    {
-        if (data.containsSolid)
-        {
-            Vec2u res = m_navmesh.getResolution();
-            Vec2i pos = camera.worldToViewport(index.x * res.x, index.y * res.y,
-                                               viewport);
-
-            viewport.setPixel(pos.x, pos.y, Color(100, 0, 255));
         }
     }
 }

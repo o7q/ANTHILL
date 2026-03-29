@@ -12,4 +12,6 @@ void Assets::initTextures()
                    std::make_unique<Texture>("assets/images/pistol_small.png"));
     m_textures.add(TextureID::Character,
                    std::make_unique<Texture>("assets/images/character.png"));
+    m_textures.add(TextureID::TheMan,
+                   std::make_unique<Texture>("assets/images/the_man.png"));
 }

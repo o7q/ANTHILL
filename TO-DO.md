@@ -1,1 +1,0 @@
-- Cache chunks to update instead of updating chunks as they are, because particles can generate new chunks and I don't wanna cause undefined behavior when looping
