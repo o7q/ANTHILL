@@ -2,25 +2,15 @@
 
 #include "backend/sound/sound_handler.hpp"
 #include "identifiers/sounds.hpp"
+#include <variant>
 
-enum class BackendEventType
+struct BackendPlaySoundEvent
 {
-    PlaySound
-};
-
-struct BackendEvent
-{
-    BackendEvent(BackendEventType type) : type(type) {}
-    virtual ~BackendEvent() = default;
-
-    BackendEventType type;
-};
-
-struct BackendPlaySoundEvent : public BackendEvent
-{
-    BackendPlaySoundEvent() : BackendEvent(BackendEventType::PlaySound) {}
+    BackendPlaySoundEvent() = default;
     virtual ~BackendPlaySoundEvent() = default;
 
     SoundIDKey soundID;
     SoundPlaySettings settings;
 };
+
+using BackendEvent = std::variant<BackendPlaySoundEvent>;

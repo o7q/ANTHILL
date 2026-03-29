@@ -1,14 +1,11 @@
 #pragma once
 
 #include "events/backend/base.hpp"
-#include "events/entity/base.hpp"
 
-struct EntityBackendPlaySoundEvent : public EntityEvent
+struct EntityBackendPlaySoundEvent
 {
-    EntityBackendPlaySoundEvent(const uint64_t caller)
-        : EntityEvent(caller, EntityEventType::BackendPlaySound)
-    {
-    }
+    EntityBackendPlaySoundEvent(const uint64_t caller) : caller(caller) {}
 
+    const uint64_t caller;
     BackendPlaySoundEvent backendEvent;
 };

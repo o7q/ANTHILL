@@ -1,5 +1,6 @@
 #include "scene.hpp"
 #include "events/backend/base.hpp"
+#include "events/event_emitter.hpp"
 
 void Scene::update()
 {
@@ -11,18 +12,15 @@ void Scene::update()
 
     onTick();
 
-    for (auto &e : m_backendEvents.getEmittedEvents())
+    for (auto &event : m_backendEvents.getEmittedEvents())
     {
-        switch (e->type)
-        {
-        case BackendEventType::PlaySound:
-        {
-            auto event = static_cast<BackendPlaySoundEvent *>(e.get());
-            r_sound.playSound(*r_assets.sounds().get(event->soundID),
-                              event->settings);
-        }
-        break;
-        }
+        std::visit(overloaded{[&](const BackendPlaySoundEvent &e)
+                              {
+                                  r_sound.playSound(
+                                      *r_assets.sounds().get(e.soundID),
+                                      e.settings);
+                              }},
+                   event);
     }
 
     m_backendEvents.purge();

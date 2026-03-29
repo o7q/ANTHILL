@@ -29,13 +29,13 @@ class Projectile : public Entity, public IDirectional
 
         if (p && p->isSolid())
         {
-            auto event = std::make_unique<EntityParticleDrawEvent>(getID());
+            auto event = EntityParticleDrawEvent(getID());
 
-            event->particleEvent.position = m_body.getPosition();
-            event->particleEvent.radius = 30;
-            event->particleEvent.particle = Particle();
+            event.particleEvent.position = m_body.getPosition();
+            event.particleEvent.radius = 30;
+            event.particleEvent.particle = Particle();
 
-            m_eventEmitter.emit(std::move(event));
+            m_eventEmitter.emit(event);
 
             kill();
         }
@@ -52,23 +52,22 @@ class Projectile : public Entity, public IDirectional
             {
                 std::cout << e->getMetadata().name << std::endl;
 
-                auto event = std::make_unique<EntityDamageEvent>(getID());
-                event->target = e->getID();
-                event->damage = 5;
+                auto event = EntityDamageEvent(getID());
+                event.target = e->getID();
+                event.damage = 5;
 
-                auto event2 =
-                    std::make_unique<EntityParticleDrawEvent>(getID());
+                auto event2 = EntityParticleDrawEvent(getID());
                 Particle p;
                 p.setMatterType(Particle::MatterType::Liquid);
                 p.setPhysicsType(Particle::PhysicsType::Water);
                 p.setColor(Color(220, 10, 10));
                 p.setRestitution(0.1f);
-                event2->particleEvent.particle = p;
-                event2->particleEvent.position = e->getBody().getPosition();
-                event2->particleEvent.radius = 10;
+                event2.particleEvent.particle = p;
+                event2.particleEvent.position = e->getBody().getPosition();
+                event2.particleEvent.radius = 10;
 
-                m_eventEmitter.emit(std::move(event));
-                m_eventEmitter.emit(std::move(event2));
+                m_eventEmitter.emit(event);
+                m_eventEmitter.emit(event2);
 
                 kill();
             }

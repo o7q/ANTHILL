@@ -12,41 +12,25 @@ void EntityHandler::handleEvents(Entity *entity)
 
     for (auto &event : currentEmitter.getEmittedEvents())
     {
-        switch (event->type)
-        {
-        case EntityEventType::EntityDamage:
-        {
-            auto e = static_cast<EntityDamageEvent *>(event.get());
-
-            uint64_t target = e->target;
-            if (target == 0)
-            {
-                break;
-            }
-            m_entities[target]->damage(e->damage);
-        }
-        break;
-        case EntityEventType::EntitySpawn:
-        {
-            auto e = static_cast<EntitySpawnEvent *>(event.get());
-            m_entitiesToAdd.push_back(e->entityFactory(m_idHandler.getNext()));
-        }
-        break;
-        case EntityEventType::ParticleDraw:
-        {
-            auto e = static_cast<EntityParticleDrawEvent *>(event.get());
-            r_particleEvents.emit(
-                std::make_unique<ParticleDrawEvent>(e->particleEvent));
-        }
-        break;
-        case EntityEventType::BackendPlaySound:
-        {
-            auto e = static_cast<EntityBackendPlaySoundEvent *>(event.get());
-            r_backendEvents.emit(
-                std::make_unique<BackendPlaySoundEvent>(e->backendEvent));
-        }
-        break;
-        }
+        std::visit(overloaded{[&](const EntityDamageEvent &e)
+                              {
+                                  uint64_t target = e.target;
+                                  if (target == 0)
+                                  {
+                                      return;
+                                  }
+                                  m_entities[target]->damage(e.damage);
+                              },
+                              [&](const EntitySpawnEvent &e)
+                              {
+                                  m_entitiesToAdd.push_back(
+                                      e.entityFactory(m_idHandler.getNext()));
+                              },
+                              [&](const EntityParticleDrawEvent &e)
+                              { r_particleEvents.emit(e.particleEvent); },
+                              [&](const EntityBackendPlaySoundEvent &e)
+                              { r_backendEvents.emit(e.backendEvent); }},
+                   event);
     }
 
     currentEmitter.purge();

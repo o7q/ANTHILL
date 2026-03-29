@@ -55,16 +55,16 @@ class Player : public Entity, public IHead
 
         if (r_input.getInput(InputID::Action1)->wasPressed())
         {
-            auto event = std::make_unique<EntitySpawnEvent>(getID());
+            auto event = EntitySpawnEvent(getID());
 
-            event->entityFactory = [&](uint64_t id)
+            event.entityFactory = [&](uint64_t id)
             {
                 auto proj = std::make_unique<Projectile>(
                     id, getID(), m_body.getPosition(), m_angle);
                 return proj;
             };
 
-            m_eventEmitter.emit(std::move(event));
+            m_eventEmitter.emit(event);
         }
 
         bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(

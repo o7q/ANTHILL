@@ -2,26 +2,16 @@
 
 #include "math/vec.hpp"
 #include "world/particle/particle.hpp"
+#include <variant>
 
-enum class ParticleEventType
+struct ParticleDrawEvent
 {
-    Draw
-};
-
-struct ParticleEvent
-{
-    ParticleEvent(const ParticleEventType type) : type(type) {}
-    virtual ~ParticleEvent() = default;
-
-    const ParticleEventType type;
-    Vec2i position;
-};
-
-struct ParticleDrawEvent : public ParticleEvent
-{
-    ParticleDrawEvent() : ParticleEvent(ParticleEventType::Draw) {}
+    ParticleDrawEvent() = default;
     virtual ~ParticleDrawEvent() = default;
 
+    Vec2i position;
     Particle particle;
     unsigned int radius = 5;
 };
+
+using ParticleEvent = std::variant<ParticleDrawEvent>;

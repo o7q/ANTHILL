@@ -121,18 +121,17 @@ class Droid : public Entity, public IHead
 
         if (dx + dy < 50)
         {
-            auto particleEvent =
-                std::make_unique<EntityParticleDrawEvent>(getID());
+            auto particleEvent = EntityParticleDrawEvent(getID());
             Particle p;
             p.setMatterType(Particle::MatterType::Liquid);
             p.setPhysicsType(Particle::PhysicsType::Water);
             p.setColor(Color(220, 10, 10));
             p.setRestitution(0.1f);
-            particleEvent->particleEvent.particle = p;
-            particleEvent->particleEvent.position = playerPos;
-            particleEvent->particleEvent.radius = 10;
+            particleEvent.particleEvent.particle = p;
+            particleEvent.particleEvent.position = playerPos;
+            particleEvent.particleEvent.radius = 10;
 
-            m_eventEmitter.emit(std::move(particleEvent));
+            m_eventEmitter.emit(particleEvent);
         }
 
         m_aiNavigation.update(m_body.getPosition(), context);

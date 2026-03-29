@@ -1,14 +1,11 @@
 #pragma once
 
-#include "events/entity/base.hpp"
 #include "events/particle/base.hpp"
 
-struct EntityParticleDrawEvent : public EntityEvent
+struct EntityParticleDrawEvent
 {
-    EntityParticleDrawEvent(const uint64_t caller)
-        : EntityEvent(caller, EntityEventType::ParticleDraw)
-    {
-    }
+    EntityParticleDrawEvent(const uint64_t caller) : caller(caller) {}
 
     ParticleDrawEvent particleEvent;
+    const uint64_t caller;
 };
