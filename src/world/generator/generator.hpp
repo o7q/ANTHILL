@@ -17,12 +17,6 @@ class Generator
     void generateInRadius(Vec2i origin, Vec2i size)
     {
         Index2D chunkOrigin = r_world.getParticles().getChunkIndex(origin);
-        if (Utils::Data::doesVectorContain(m_origins, chunkOrigin))
-        {
-            return;
-        }
-
-        m_origins.push_back(chunkOrigin);
         Vec2i halfSize = size / 2;
         Vec2u chunkSize = r_world.getParticles().getChunkSize();
 
@@ -32,10 +26,13 @@ class Generator
             for (int cx = chunkOrigin.x - halfSize.x;
                  cx <= chunkOrigin.x + halfSize.x; ++cx)
             {
-                if (r_world.getParticles().hasChunk(Index2D(cx, cy)))
+                if (Utils::Data::doesVectorContain(m_generatedMarkers,
+                                                   Index2D(cx, cy)))
                 {
                     continue;
                 }
+
+                m_generatedMarkers.push_back(Index2D(cx, cy));
 
                 for (unsigned int y = 0; y < chunkSize.y; ++y)
                 {
@@ -95,7 +92,7 @@ class Generator
 
   private:
     ParticleWorld &r_world;
-    std::vector<Index2D> m_origins;
+    std::vector<Index2D> m_generatedMarkers;
 
     int m_seed = 0;
 };

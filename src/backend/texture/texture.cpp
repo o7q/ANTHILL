@@ -52,16 +52,6 @@ Texture::Texture(const std::filesystem::path &path)
     Logger::info("Texture::Texture()", "Successfully loaded: " + pathStr);
 }
 
-void Texture::setPixel(Vec2u pos, Color color)
-{
-    if (pos.x >= m_size.x || pos.y >= m_size.y)
-    {
-        return;
-    }
-
-    m_pixels[Math::Index::index_2dto1d(pos, m_size.x)] = color;
-}
-
 Color Texture::getPixel(Vec2u pos) const
 {
     if (pos.x >= m_size.x || pos.y >= m_size.y)

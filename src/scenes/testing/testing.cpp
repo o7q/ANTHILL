@@ -1,6 +1,8 @@
 #include "testing.hpp"
 #include "entities/droid.hpp"
+#include "identifiers/spritesheet.hpp"
 #include "math/random.hpp"
+#include "sprite/sprite_animator.hpp"
 
 void TestScene::onStart()
 {
@@ -8,15 +10,15 @@ void TestScene::onStart()
         m_world.getEntityHandler().getIDHandler().getNext(), r_input,
         r_assets));
 
-    for (int i = 0; i < 1; ++i)
-    {
-        auto droid = std::make_unique<Droid>(
-            m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
+    // for (int i = 0; i < 1; ++i)
+    // {
+    //     auto droid = std::make_unique<Droid>(
+    //         m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
 
-        droid->getBody().setPosition({5 * i, 0});
+    //     droid->getBody().setPosition({5 * i, 0});
 
-        m_world.getEntityHandler().addEntity(std::move(droid));
-    }
+    //     m_world.getEntityHandler().addEntity(std::move(droid));
+    // }
 
     Particle stone;
     stone.setColor(Color(200, 205, 200));
@@ -47,6 +49,12 @@ void TestScene::onStart()
 
     m_world.getParticleWorld().getEditor().textureToParticles(
         *r_assets.textures().get(TextureID::Carter), Vec2i(100, 250), p);
+
+    m_animator.add(
+        SpriteAnimator(*r_assets.spriteSheets().get(SpriteSheetID::CatBoinga)),
+        "boinga1");
+
+    m_animator.switchAnimation("boinga1");
 }
 
 void TestScene::onTick()
@@ -117,17 +125,18 @@ void TestScene::onTick()
         r_viewport.drawTexture(posTest, {50, 5});
     }
 
-    r_viewport.drawTexture(
-        *m_animTex.getCurrentFrame(),
-        m_world.getCamera().worldToViewport({0, 0}, r_viewport));
-    r_viewport.drawTexture(
-        *m_animTex.getCurrentFrame(),
-        m_world.getCamera().worldToViewport({20, 0}, r_viewport));
-    r_viewport.drawTexture(
-        *m_animTex.getCurrentFrame(),
-        m_world.getCamera().worldToViewport({40, 0}, r_viewport));
-    r_viewport.drawTexture(
-        *m_animTex.getCurrentFrame(),
-        m_world.getCamera().worldToViewport({60, 0}, r_viewport));
-    m_animTex.animate(r_time.getDT());
+    if (SpriteAnimator *a = m_animator.getCurrentAnimator())
+    {
+        a->setFPS(20);
+        a->update(r_time.getDT());
+        for (int y = 0; y < 10; ++y)
+        {
+            for (int x = 0; x < 10; ++x)
+            {
+                r_viewport.drawTexture(*a->getCurrentFrame(),
+                                       m_world.getCamera().worldToViewport(
+                                           {x * 20, y * 20}, r_viewport));
+            }
+        }
+    }
 }

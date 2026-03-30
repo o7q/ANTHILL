@@ -1,6 +1,9 @@
-You play as (SÆRLIG-UDGRAVNING MK-IV)
+ANTILL - A power-packed retro-roguelike about digging to the center of the Earth.
 
-You crash land on a remote alien planet, 
+You play as an excavation robot: SÆRLIG-UDGRAVNING MK-IV.
+
+You crash land on a remote alien planet, you have no recollection of who you are or where you came from.
+Your goal: become powerful.
 
 Tutorial explained on the walls of ship while its crashing.
 
