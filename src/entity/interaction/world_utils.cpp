@@ -65,8 +65,8 @@ bool WorldInteractionHandler::againstSolidCorner(
     {
     case RectangleCorner::TopLeft:
     {
-        if (const Particle *p =
-                particles.getParticles().get(topLeft.x + size.x, topLeft.y - 1))
+        if (const Particle *p = particles.getRawParticles().get(
+                topLeft.x + size.x, topLeft.y - 1))
         {
             if (p->isSolid() && !p->isMoving())
             {
@@ -78,7 +78,7 @@ bool WorldInteractionHandler::againstSolidCorner(
     case RectangleCorner::TopRight:
     {
         if (const Particle *p =
-                particles.getParticles().get(topLeft.x - 1, topLeft.y - 1))
+                particles.getRawParticles().get(topLeft.x - 1, topLeft.y - 1))
         {
             if (p->isSolid() && !p->isMoving())
             {
@@ -89,8 +89,8 @@ bool WorldInteractionHandler::againstSolidCorner(
     break;
     case RectangleCorner::BottomLeft:
     {
-        if (const Particle *p =
-                particles.getParticles().get(topLeft.x - 1, topLeft.y + size.y))
+        if (const Particle *p = particles.getRawParticles().get(
+                topLeft.x - 1, topLeft.y + size.y))
         {
             if (p->isSolid() && !p->isMoving())
             {
@@ -101,7 +101,7 @@ bool WorldInteractionHandler::againstSolidCorner(
     break;
     case RectangleCorner::BottomRight:
     {
-        if (const Particle *p = particles.getParticles().get(
+        if (const Particle *p = particles.getRawParticles().get(
                 topLeft.x + size.x, topLeft.y + size.y))
         {
             if (p->isSolid() && !p->isMoving())

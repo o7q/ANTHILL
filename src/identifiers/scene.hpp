@@ -2,5 +2,6 @@
 
 enum class SceneID
 {
+    None,
     Testing
 };

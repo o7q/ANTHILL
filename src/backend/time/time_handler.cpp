@@ -19,7 +19,7 @@ void TimeHandler::frameEnd()
                                                                  m_frame_start)
             .count();
 
-    const float target_frame_seconds = 1.0f / m_target_fps;
+    const float target_frame_seconds = 1.0f / m_max_fps;
     if (frame_seconds < target_frame_seconds)
     {
         const float frame_delay =

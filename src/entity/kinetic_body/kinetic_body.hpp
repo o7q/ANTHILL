@@ -30,7 +30,19 @@ class KineticBody
 
     void haltMotionInDirection(int dirX, int dirY);
 
+    void move(float x, float y)
+    {
+        if (!m_movementRequested)
+        {
+            m_force += Vec2f(x, y);
+        }
+
+        m_movementRequested = true;
+    }
+
   protected:
+    bool m_movementRequested = false;
+
     Vec2f m_position;
     Vec2f m_lastPosition;
     Vec2f m_velocity;

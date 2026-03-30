@@ -3,6 +3,7 @@
 #include "backend/viewport/viewport.hpp"
 #include "entity/entity.hpp"
 #include "entity/interfaces/directional.hpp"
+#include "events/entity/base.hpp"
 #include "events/entity/entity_entity.hpp"
 #include "events/entity/entity_particle.hpp"
 #include "events/event_emitter.hpp"
@@ -12,7 +13,7 @@
 class Projectile : public Entity, public IDirectional
 {
   public:
-    Projectile(uint64_t id, uint16_t parent, Vec2i pos, float angle)
+    Projectile(uint64_t id, uint64_t parent, Vec2i pos, float angle)
         : Entity(id, parent)
     {
         m_body.setPosition(pos.x, pos.y);
@@ -20,28 +21,34 @@ class Projectile : public Entity, public IDirectional
         m_body.setVelocity(std::cosf(angle) * 10, std::sinf(angle) * 10);
         m_interactionBox.getBoundingBox().setSize(3, 3);
         m_body.setGravity(0.1f);
+
+        m_metadata.name = "Projectile";
     }
 
     virtual void update(const EntityUpdateContext &context) override
     {
-        const Particle *p = context.particles.getParticles().get(
+        const Particle *p = context.particles.getRawParticles().get(
             m_body.getPosition().x, m_body.getPosition().y);
 
         if (p && p->isSolid())
         {
-            auto event = EntityParticleDrawEvent(getID());
+            auto event = std::make_unique<EntityParticleDrawEvent>(getID());
+            event->particleEvent.position = m_body.getPosition();
+            event->particleEvent.radius = 30;
+            event->particleEvent.particle = Particle();
 
-            event.particleEvent.position = m_body.getPosition();
-            event.particleEvent.radius = 30;
-            event.particleEvent.particle = Particle();
-
-            m_eventEmitter.emit(event);
+            m_eventEmitter.emit(std::move(event));
 
             kill();
         }
 
         for (const Entity *e : context.nearbyEntities)
         {
+            // std::cout << e->getMetadata().name << std::endl;
+            // std::cout << e->getID() << std::endl;
+            // std::cout << getParent() << std::endl;
+            // std::cout << std::endl;
+
             if (e->getID() == getID() || e->getID() == getParent())
             {
                 continue;
@@ -50,24 +57,11 @@ class Projectile : public Entity, public IDirectional
             if (e->getInteractionBox().pointInside(e->getBody().getPosition(),
                                                    m_body.getPosition()))
             {
-                std::cout << e->getMetadata().name << std::endl;
+                auto event = std::make_unique<EntityDamageEvent>(getID());
+                event->target = e->getID();
+                event->damage = 5;
 
-                auto event = EntityDamageEvent(getID());
-                event.target = e->getID();
-                event.damage = 5;
-
-                auto event2 = EntityParticleDrawEvent(getID());
-                Particle p;
-                p.setMatterType(Particle::MatterType::Liquid);
-                p.setPhysicsType(Particle::PhysicsType::Water);
-                p.setColor(Color(220, 10, 10));
-                p.setRestitution(0.1f);
-                event2.particleEvent.particle = p;
-                event2.particleEvent.position = e->getBody().getPosition();
-                event2.particleEvent.radius = 10;
-
-                m_eventEmitter.emit(event);
-                m_eventEmitter.emit(event2);
+                m_eventEmitter.emit(std::move(event));
 
                 kill();
             }

@@ -9,7 +9,7 @@ class WorldInteractionHandler
   public:
     struct TrajectoryCollisionResponse
     {
-        Vec2i resolvePosition = Vec2i(0, 0);
+        Vec2i resolvePosition;
         bool collided = false;
     };
 
@@ -27,7 +27,7 @@ class WorldInteractionHandler
 
     struct StepResponse
     {
-        Vec2i moveVector = Vec2i(0, 0);
+        Vec2i moveVector;
     };
 
     struct LocalWorldQuery

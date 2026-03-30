@@ -23,5 +23,7 @@ void Game::update_loop()
     case SceneID::Testing:
         m_scene = std::make_unique<TestScene>(m_assets, m_window);
         break;
+    default:
+        break;
     }
 }

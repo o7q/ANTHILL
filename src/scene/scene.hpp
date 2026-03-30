@@ -14,7 +14,7 @@ class Scene
   public:
     struct Result
     {
-        SceneID sceneLoadID;
+        SceneID sceneLoadID = SceneID::None;
         bool shouldLoadScene = false;
     };
 

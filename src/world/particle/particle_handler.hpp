@@ -54,8 +54,7 @@ class ParticleHandler
 
     const Navmesh &getNavmesh() const { return m_navmesh; }
 
-    ChunkMap<Particle> &getParticles() { return m_particles; }
-    const ChunkMap<Particle> &getParticles() const { return m_particles; }
+    const ChunkMap<Particle> &getRawParticles() const { return m_particles; }
     PDynamicsHandler &getDynamics() { return m_pDynamicsHandler; }
 
     EventEmitter<ParticleEvent> &getEvents() { return m_events; }

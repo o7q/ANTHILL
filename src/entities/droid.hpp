@@ -2,7 +2,6 @@
 
 #include "assets/assets.hpp"
 #include "backend/viewport/viewport.hpp"
-#include "debug/renderers.hpp"
 #include "entity/entity.hpp"
 #include "entity/interfaces/head.hpp"
 #include "entity/metadata.hpp"
@@ -10,15 +9,12 @@
 #include "entity/modules/ai/perception/ai_perception.hpp"
 #include "entity/modules/jump_handler/jump_handler.hpp"
 #include "entity/update_context.hpp"
-#include "events/entity/entity_backend.hpp"
 #include "events/entity/entity_entity.hpp"
 #include "events/entity/entity_particle.hpp"
 #include "math/numbers.hpp"
 #include "utils/data_structures/index_2d.hpp"
 #include "world/camera/camera.hpp"
 #include "world/particle/navmesh.hpp"
-#include <iostream>
-#include <memory>
 
 class Droid : public Entity, public IHead
 {
@@ -121,17 +117,18 @@ class Droid : public Entity, public IHead
 
         if (dx + dy < 50)
         {
-            auto particleEvent = EntityParticleDrawEvent(getID());
+            auto particleEvent =
+                std::make_unique<EntityParticleDrawEvent>(getID());
             Particle p;
             p.setMatterType(Particle::MatterType::Liquid);
             p.setPhysicsType(Particle::PhysicsType::Water);
             p.setColor(Color(220, 10, 10));
             p.setRestitution(0.1f);
-            particleEvent.particleEvent.particle = p;
-            particleEvent.particleEvent.position = playerPos;
-            particleEvent.particleEvent.radius = 10;
+            particleEvent->particleEvent.particle = p;
+            particleEvent->particleEvent.position = playerPos;
+            particleEvent->particleEvent.radius = 10;
 
-            m_eventEmitter.emit(particleEvent);
+            m_eventEmitter.emit(std::move(particleEvent));
         }
 
         m_aiNavigation.update(m_body.getPosition(), context);

@@ -5,7 +5,7 @@
 #include "entity/update_context.hpp"
 #include "events/backend/base.hpp"
 #include "events/event_emitter.hpp"
-#include "world/entity/id.hpp"
+#include "world/entity_handler/id.hpp"
 #include <cstdint>
 #include <memory>
 #include <unordered_map>
@@ -23,34 +23,17 @@ class EntityHandler
     EntityHandler &operator=(const EntityHandler &other) = delete;
 
     void update(const ParticleHandler &particleHandler, float dt);
-    void handleEvents(Entity *entity);
+    void handleEvents(EventEmitter<EntityEvent> &emitter);
 
     void render(Viewport &viewport, const Camera &camera);
 
-    void addEntity(std::unique_ptr<Entity> entity)
-    {
-        m_latestEntity = entity.get();
-        m_entities[entity->getID()] = std::move(entity);
-    }
-
-    void addPlayer(std::unique_ptr<Player> player)
-    {
-        m_currentPlayer = player.get();
-        addEntity(std::move(player));
-    }
+    void addEntity(std::unique_ptr<Entity> entity);
+    void addPlayer(std::unique_ptr<Player> player);
 
     Player *getCurrentPlayer() { return m_currentPlayer; }
     Entity *getLatestEntity() { return m_latestEntity; }
 
-    const std::vector<const Entity *> getNearbyEntities(const Entity *entity)
-    {
-        std::vector<const Entity *> nearby;
-        for (auto &entity : m_entities)
-        {
-            nearby.push_back(entity.second.get());
-        }
-        return nearby;
-    }
+    const std::vector<const Entity *> getNearbyEntities(const Entity *entity);
 
     EntityIDHandler &getIDHandler() { return m_idHandler; }
 

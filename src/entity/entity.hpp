@@ -61,7 +61,7 @@ class Entity
 
   private:
     const uint64_t m_id = 0;
-    uint64_t m_parentID = 0;
+    const uint64_t m_parentID = 0;
 
     float m_health = 100.0f;
     bool m_dead = false;

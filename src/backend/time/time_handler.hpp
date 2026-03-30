@@ -19,7 +19,7 @@ class TimeHandler
         m_speed_multiplier = speed_multiplier;
     }
 
-    void setTargetFramerate(float target_fps) { m_target_fps = target_fps; }
+    void setMaxFPS(float max_fps) { m_max_fps = max_fps; }
 
     float getFPS() const { return m_fps; }
     float getDT() const { return m_dt; }
@@ -28,7 +28,7 @@ class TimeHandler
     std::chrono::steady_clock::time_point m_frame_start;
 
     const float m_max_dt = 5.0f;
-    float m_target_fps = 60.0f;
+    float m_max_fps = 60.0f;
     float m_fps = 60.0f;
     float m_dt = 1.0f;
 

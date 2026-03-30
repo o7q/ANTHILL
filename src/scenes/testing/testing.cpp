@@ -8,15 +8,15 @@ void TestScene::onStart()
         m_world.getEntityHandler().getIDHandler().getNext(), r_input,
         r_assets));
 
-    for (int i = 0; i < 1; ++i)
-    {
-        auto droid = std::make_unique<Droid>(
-            m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
+    // for (int i = 0; i < 1; ++i)
+    // {
+    //     auto droid = std::make_unique<Droid>(
+    //         m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
 
-        droid->getBody().setPosition(5 * i, 0);
+    //     droid->getBody().setPosition(5 * i, 0);
 
-        m_world.getEntityHandler().addEntity(std::move(droid));
-    }
+    //     m_world.getEntityHandler().addEntity(std::move(droid));
+    // }
 
     Particle stone;
     stone.setColor(Color(200, 205, 200));
@@ -55,9 +55,7 @@ void TestScene::onTick()
     Vec2i worldMousePos = m_world.getCamera().viewportToWorld(
         viewportMousePos.x, viewportMousePos.y, r_viewport);
 
-    if (r_window.getInputHandler()
-            .getInput(InputID::SecondaryAction1)
-            ->isDown())
+    if (r_window.getInputHandler().getInput(InputID::AltAction1)->isDown())
     {
         Particle stone;
         float mult = Math::Random::weakRandInt(80, 100) / 100.0f;
@@ -70,18 +68,14 @@ void TestScene::onTick()
         m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y,
                                           stone, 20);
     }
-    if (r_window.getInputHandler()
-            .getInput(InputID::SecondaryAction2)
-            ->isDown())
+    if (r_window.getInputHandler().getInput(InputID::AltAction2)->isDown())
     {
         Particle air;
 
         m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y, air,
                                           10);
     }
-    if (r_window.getInputHandler()
-            .getInput(InputID::SecondaryAction3)
-            ->isDown())
+    if (r_window.getInputHandler().getInput(InputID::AltAction3)->isDown())
     {
         Particle sand;
         float mult = Math::Random::weakRandInt(80, 100) / 100.0f;
@@ -137,5 +131,5 @@ void TestScene::onTick()
     r_viewport.drawTexture(
         *m_animTex.getCurrentFrame(),
         m_world.getCamera().worldToViewport(60, 0, r_viewport));
-    m_animTex.animate(r_time.getFPS());
+    m_animTex.animate(r_time.getDT());
 }

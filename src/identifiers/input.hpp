@@ -14,12 +14,17 @@ enum class InputID
     Action1,
     Action2,
 
-    SecondaryAction1,
-    SecondaryAction2,
-    SecondaryAction3,
-    SecondaryAction4,
-    SecondaryAction5,
+    AltAction1,
+    AltAction2,
+    AltAction3,
+    AltAction4,
+    AltAction5,
+    AltAction6,
+    AltAction7,
+    AltAction8,
+    AltAction9,
+    AltAction10,
 
-    Debug1
+    Reload
 };
 using InputIDKey = Identifier<InputID>;

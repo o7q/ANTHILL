@@ -1,11 +1,23 @@
 #pragma once
 
-#include <variant>
+#include <cstdint>
 
-#include "events/entity/entity_backend.hpp"
-#include "events/entity/entity_entity.hpp"
-#include "events/entity/entity_particle.hpp"
+enum class EntityEventType
+{
+    EntityDamage,
+    EntitySpawn,
+    ParticleDraw,
+    BackendPlaySound
+};
 
-using EntityEvent =
-    std::variant<EntitySpawnEvent, EntityDamageEvent, EntityParticleDrawEvent,
-                 EntityBackendPlaySoundEvent>;
+struct EntityEvent
+{
+    EntityEvent(const uint64_t caller, EntityEventType type)
+        : caller(caller), type(type)
+    {
+    }
+    virtual ~EntityEvent() = default;
+
+    const uint64_t caller;
+    const EntityEventType type;
+};

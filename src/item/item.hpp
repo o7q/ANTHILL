@@ -1,11 +1,8 @@
 #pragma once
 
+#include "entity/update_context.hpp"
+#include "item/owner_context.hpp"
 #include <string>
-
-enum class ItemType
-{
-    Weapon
-};
 
 class Item
 {
@@ -15,8 +12,10 @@ class Item
 
     std::string getName() { return m_name; }
 
-    virtual void actionHold() {}
-    virtual void actionRelease() {}
+    virtual void update(const EntityUpdateContext &context,
+                        const ItemOwnerContext &ownerContext) = 0;
+    virtual void startUsing() = 0;
+    virtual void stopUsing() = 0;
 
   protected:
     const std::string m_name = "";

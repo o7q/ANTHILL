@@ -10,14 +10,9 @@ class Inventory
     Inventory() = default;
     virtual ~Inventory() = default;
 
-    void addItem(std::unique_ptr<Item> item, int slot)
+    void addItem(std::unique_ptr<Item> item, unsigned int slot)
     {
-        if (slot < 0 || slot >= m_inventorySlots)
-        {
-            return;
-        }
-        if (m_items.count(slot) ||
-            m_items.size() >= static_cast<size_t>(m_inventorySlots))
+        if (slot >= m_inventorySlots || m_items.count(slot))
         {
             return;
         }
@@ -25,9 +20,9 @@ class Inventory
         m_items[slot] = std::move(item);
     }
 
-    void removeItem(int slot)
+    void removeItem(unsigned int slot)
     {
-        if (slot < 0 || slot >= m_inventorySlots)
+        if (slot >= m_inventorySlots)
         {
             return;
         }
@@ -35,10 +30,10 @@ class Inventory
         m_items.erase(slot);
     }
 
-    void swapItem(int slot1, int slot2)
+    void swapItem(unsigned int slot1, unsigned int slot2)
     {
-        if (slot1 < 0 || slot1 >= m_inventorySlots || slot2 < 0 ||
-            slot2 >= m_inventorySlots || slot1 == slot2)
+        if (slot1 >= m_inventorySlots || slot2 >= m_inventorySlots ||
+            slot1 == slot2)
         {
             return;
         }
@@ -46,21 +41,23 @@ class Inventory
         auto it1 = m_items.find(slot1);
         auto it2 = m_items.find(slot2);
 
-        if (it1 == m_items.end() && it2 == m_items.end())
+        if (it1 == m_items.end() || it2 == m_items.end())
         {
             return;
         }
-
         std::swap(m_items[slot1], m_items[slot2]);
     }
 
-    const Item *getTime(int slot) const
+    Item *getItem(int slot)
     {
         auto it = m_items.find(slot);
         return it != m_items.end() ? it->second.get() : nullptr;
     }
 
+    Item *getSelectedItem() { return getItem(m_selectedSlot); }
+
   private:
     std::unordered_map<int, std::unique_ptr<Item>> m_items;
-    int m_inventorySlots = 10;
+    unsigned int m_inventorySlots = 10;
+    unsigned int m_selectedSlot = 0;
 };

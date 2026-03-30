@@ -17,7 +17,7 @@ class Generator
     void generateInRadius(Vec2i origin, Vec2i size)
     {
         Index2D chunkOrigin =
-            r_particles.getParticles().getChunkIndex(origin.x, origin.y);
+            r_particles.getRawParticles().getChunkIndex(origin.x, origin.y);
         if (Utils::Data::doesVectorContain(m_origins, chunkOrigin))
         {
             return;
@@ -25,7 +25,7 @@ class Generator
 
         m_origins.push_back(chunkOrigin);
         Vec2i halfSize = size / 2;
-        Vec2u chunkSize = r_particles.getParticles().getChunkSize();
+        Vec2u chunkSize = r_particles.getRawParticles().getChunkSize();
 
         for (int cy = chunkOrigin.y - halfSize.y;
              cy <= chunkOrigin.y + halfSize.y; ++cy)
@@ -33,7 +33,7 @@ class Generator
             for (int cx = chunkOrigin.x - halfSize.x;
                  cx <= chunkOrigin.x + halfSize.x; ++cx)
             {
-                if (r_particles.getParticles().hasChunk(Index2D(cx, cy)))
+                if (r_particles.getRawParticles().hasChunk(Index2D(cx, cy)))
                 {
                     continue;
                 }

@@ -11,7 +11,7 @@ void EntityHandler::update(const ParticleHandler &particleHandler, float dt)
         EntityUpdateContext context{dt, particleHandler, nearby};
         entity->update(context);
 
-        handleEvents(entity);
+        handleEvents(entity->getEventEmitter());
 
         if (entity->isDead())
         {

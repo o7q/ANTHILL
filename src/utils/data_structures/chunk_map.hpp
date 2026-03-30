@@ -78,7 +78,7 @@ template <typename T> class ChunkMap
         return const_cast<T *>(v);
     }
 
-    bool hasChunk(Index2D index)
+    bool hasChunk(Index2D index) const
     {
         auto it = m_chunks.find(index);
         return it != m_chunks.end();

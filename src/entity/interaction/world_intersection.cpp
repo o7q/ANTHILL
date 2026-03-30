@@ -22,7 +22,7 @@ WorldInteractionHandler::calculateWorldIntersection_MTV(
             Vec2i worldPos = topLeft + Vec2i(x, y);
 
             const Particle *p =
-                particles.getParticles().get(worldPos.x, worldPos.y);
+                particles.getRawParticles().get(worldPos.x, worldPos.y);
 
             if (!p)
             {
@@ -102,7 +102,7 @@ Vec2f WorldInteractionHandler::calculateWorldIntersection_averageDirection(
             Vec2i worldPos = topLeft + Vec2i(x, y);
 
             const Particle *p =
-                particles.getParticles().get(worldPos.x, worldPos.y);
+                particles.getRawParticles().get(worldPos.x, worldPos.y);
             if (!p)
             {
                 continue;

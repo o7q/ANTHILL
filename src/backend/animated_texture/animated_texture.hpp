@@ -35,10 +35,9 @@ class AnimatedTexture
     AnimatedTexture &operator=(const AnimatedTexture &other) = default;
     ~AnimatedTexture() = default;
 
-    void animate(int currentFPS)
+    void animate(float dt)
     {
-        float v = m_fps / (float)currentFPS;
-        m_frameCounter += v;
+        m_frameCounter += (m_fps * dt) / 60.0f;
 
         if (m_frameCounter >= 1.0f)
         {
@@ -73,6 +72,6 @@ class AnimatedTexture
     bool m_playing = false;
     float m_frameCounter = 0;
     unsigned int m_currentFrame = 0;
-    unsigned int m_fps = 30;
+    unsigned int m_fps = 20;
     std::vector<Texture> m_frames;
 };

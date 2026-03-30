@@ -41,6 +41,11 @@ class AINavigation
         {
             return pos == other.pos && axis == other.axis;
         }
+
+        bool operator!=(const Checkpoint &other)
+        {
+            return pos != other.pos || axis != other.axis;
+        }
     };
 
   public:

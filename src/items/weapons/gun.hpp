@@ -1,31 +1,31 @@
 #pragma once
 
-#include "entities/projectile/projectile.hpp"
+#include "entity/update_context.hpp"
 #include "item/item.hpp"
-#include <memory>
-#include <vector>
+#include "item/owner_context.hpp"
+#include "item/reloadable.hpp"
 
-class Gun : public Item
+class Gun : public Item, public IReloadable
 {
   public:
     enum class FireMode
     {
         FullAuto,
-        SemiAuto,
-        Burst
+        SemiAuto
     };
 
   public:
     Gun(const std::string &name) : Item(name) {}
 
-    virtual void actionHold() override
+    virtual void update(const EntityUpdateContext &entityContext,
+                        const ItemOwnerContext &ownerContext) override
     {
         if (!m_canShoot)
         {
             return;
         }
 
-        fire();
+        fire(ownerContext);
 
         if (m_ammoInMagazine > 0)
         {
@@ -37,8 +37,10 @@ class Gun : public Item
             m_canShoot = false;
         }
     }
-    virtual void actionRelease() override { m_canShoot = true; }
-    virtual void reload()
+
+    virtual void startUsing() override { m_canShoot = true; }
+    virtual void stopUsing() override { m_canShoot = false; }
+    virtual void reload() override
     {
         int refillAmount = m_magazineSize - m_ammoInMagazine;
 
@@ -52,24 +54,17 @@ class Gun : public Item
     }
 
     void addAmmo(int amount) { m_ammoReserve += amount; }
-    void setFireMode(FireMode mode) { m_fireMode = mode; }
-
-    std::vector<std::unique_ptr<Projectile>> getEmittedProjectiles()
-    {
-        return m_emittedProjectiles;
-    }
 
   protected:
-    virtual void fire() = 0;
+    virtual void fire(const ItemOwnerContext &ownerContext) = 0;
 
+    FireMode m_fireMode = FireMode::SemiAuto;
   private:
     int m_ammoReserve = 0;
     int m_ammoInMagazine = 0;
     int m_magazineSize = 0;
 
-    bool m_canShoot = true;
+    bool m_canShoot = false;
 
-    FireMode m_fireMode = FireMode::SemiAuto;
-
-    std::vector<std::unique_ptr<Projectile>> m_emittedProjectiles;
+    float m_fireRate = 1.0f;
 };

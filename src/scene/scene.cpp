@@ -12,15 +12,18 @@ void Scene::update()
 
     onTick();
 
-    for (auto &event : m_backendEvents.getEmittedEvents())
+    for (auto &e : m_backendEvents.getEmittedEvents())
     {
-        std::visit(overloaded{[&](const BackendPlaySoundEvent &e)
-                              {
-                                  r_sound.playSound(
-                                      *r_assets.sounds().get(e.soundID),
-                                      e.settings);
-                              }},
-                   event);
+        switch (e->type)
+        {
+        case BackendEventType::PlaySound:
+        {
+            auto event = static_cast<BackendPlaySoundEvent *>(e.get());
+            r_sound.playSound(*r_assets.sounds().get(event->soundID),
+                              event->settings);
+        }
+        break;
+        }
     }
 
     m_backendEvents.purge();

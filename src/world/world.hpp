@@ -4,7 +4,7 @@
 #include "events/backend/base.hpp"
 #include "events/event_emitter.hpp"
 #include "world/camera/camera.hpp"
-#include "world/entity/entity_handler.hpp"
+#include "world/entity_handler/entity_handler.hpp"
 #include "world/generator/generator.hpp"
 #include "world/particle/particle_handler.hpp"
 
@@ -35,6 +35,5 @@ class World
     ParticleHandler m_particleHandler;
     Generator m_generator;
     EntityHandler m_entityHandler;
-
     Camera m_camera;
 };
