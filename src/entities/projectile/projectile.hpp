@@ -3,11 +3,9 @@
 #include "backend/viewport/viewport.hpp"
 #include "entity/entity.hpp"
 #include "entity/interfaces/directional.hpp"
-#include "events/entity/base.hpp"
 #include "events/entity/entity_entity.hpp"
 #include "events/entity/entity_particle.hpp"
 #include "events/event_emitter.hpp"
-#include <iostream>
 #include <memory>
 
 class Projectile : public Entity, public IDirectional
@@ -16,10 +14,10 @@ class Projectile : public Entity, public IDirectional
     Projectile(uint64_t id, uint64_t parent, Vec2i pos, float angle)
         : Entity(id, parent)
     {
-        m_body.setPosition(pos.x, pos.y);
+        m_body.setPosition(pos);
         m_angle = angle;
-        m_body.setVelocity(std::cosf(angle) * 10, std::sinf(angle) * 10);
-        m_interactionBox.getBoundingBox().setSize(3, 3);
+        m_body.setVelocity({std::cosf(angle) * 10, std::sinf(angle) * 10});
+        m_interactionBox.getBoundingBox().setSize({3, 3});
         m_body.setGravity(0.1f);
 
         m_metadata.name = "Projectile";
@@ -27,8 +25,8 @@ class Projectile : public Entity, public IDirectional
 
     virtual void update(const EntityUpdateContext &context) override
     {
-        const Particle *p = context.particles.getRawParticles().get(
-            m_body.getPosition().x, m_body.getPosition().y);
+        const Particle *p =
+            context.world.getParticles().get(m_body.getPosition());
 
         if (p && p->isSolid())
         {
@@ -44,11 +42,6 @@ class Projectile : public Entity, public IDirectional
 
         for (const Entity *e : context.nearbyEntities)
         {
-            // std::cout << e->getMetadata().name << std::endl;
-            // std::cout << e->getID() << std::endl;
-            // std::cout << getParent() << std::endl;
-            // std::cout << std::endl;
-
             if (e->getID() == getID() || e->getID() == getParent())
             {
                 continue;

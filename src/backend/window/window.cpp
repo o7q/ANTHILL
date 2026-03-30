@@ -9,7 +9,7 @@
 Window::Window(const std::string &name, Vec2u windowSize, Vec2u viewportSize)
     : m_window(SDL_CreateWindow(name.c_str(), windowSize.x, windowSize.y,
                                 SDL_WINDOW_RESIZABLE)),
-      m_viewport(m_window, viewportSize.x, viewportSize.y)
+      m_viewport(m_window, viewportSize)
 {
     Logger::info("Window::Window()", "Successfully initialized the window!");
 }

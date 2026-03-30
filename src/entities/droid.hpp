@@ -14,14 +14,14 @@
 #include "math/numbers.hpp"
 #include "utils/data_structures/index_2d.hpp"
 #include "world/camera/camera.hpp"
-#include "world/particle/navmesh.hpp"
+#include <memory>
 
 class Droid : public Entity, public IHead
 {
   public:
     Droid(uint64_t id, const Assets &assets) : Entity(id), r_assets(assets)
     {
-        m_interactionBox.getBoundingBox().setSize(10, 20);
+        m_interactionBox.getBoundingBox().setSize({10, 20});
         m_body.setGravity(0.4f);
 
         m_aiPerception.setSightFOV(120);
@@ -37,10 +37,10 @@ class Droid : public Entity, public IHead
         cfg.astarNeighborCheckFunction =
             [&](const EntityUpdateContext &context, Index2D index)
         {
-            auto data = context.particles.getNavmesh().getChunkFromIndex(index);
+            auto data = context.world.getNavmesh().getChunkFromIndex(index);
 
             Vec2i pos = Vec2i(index.x, index.y) *
-                        context.particles.getNavmesh().getResolution().toInt();
+                        context.world.getNavmesh().getResolution().toInt();
 
             Vec2i a = m_interactionBox.getBoundingBox().getA();
             Vec2i b = m_interactionBox.getBoundingBox().getB();
@@ -63,10 +63,10 @@ class Droid : public Entity, public IHead
                 return false;
             };
 
-            context.particles.query(topLeft, topRight, test);
-            context.particles.query(topLeft, bottomLeft, test);
-            context.particles.query(bottomLeft, bottomRight, test);
-            context.particles.query(topRight, bottomRight, test);
+            context.world.query(topLeft, topRight, test);
+            context.world.query(topLeft, bottomLeft, test);
+            context.world.query(bottomLeft, bottomRight, test);
+            context.world.query(topRight, bottomRight, test);
 
             if (solid)
             {
@@ -129,6 +129,11 @@ class Droid : public Entity, public IHead
             particleEvent->particleEvent.radius = 10;
 
             m_eventEmitter.emit(std::move(particleEvent));
+
+            auto damageEvent = std::make_unique<EntityDamageEvent>(getID());
+            damageEvent->target = player->getID();
+            damageEvent->damage = 1;
+            m_eventEmitter.emit(std::move(damageEvent));
         }
 
         m_aiNavigation.update(m_body.getPosition(), context);
@@ -140,7 +145,7 @@ class Droid : public Entity, public IHead
             if (result->y < -4)
             {
                 m_body.setVelocityY(-5);
-                m_jumpHandler.requestJump();
+                // m_jumpHandler.requestJump();
             }
             m_body.setVelocityX(Math::Numbers::sign(result->x) * 5);
         }
@@ -150,9 +155,9 @@ class Droid : public Entity, public IHead
         }
 
         m_jumpHandler.update(
-            context.dt, m_interactionBox.getWorldHandler().againstSolidSurface(
-                            m_body.getPosition(), RectangleSide::Bottom,
-                            context.particles));
+            context.dt,
+            m_interactionBox.getWorldHandler().againstSolidSurface(
+                m_body.getPosition(), RectangleSide::Bottom, context.world));
 
         // if (m_jumpHandler.canJump())
         // {
@@ -166,10 +171,9 @@ class Droid : public Entity, public IHead
     void render(Viewport &viewport, const Camera &camera) override
     {
         renderDebug_boundingBox(viewport, camera);
-        viewport.drawTexture(*r_assets.textures().get(TextureID::TheMan2),
-                             camera.worldToViewport(m_body.getPosition().x,
-                                                    m_body.getPosition().y,
-                                                    viewport));
+        viewport.drawTexture(
+            *r_assets.textures().get(TextureID::TheMan2),
+            camera.worldToViewport(m_body.getPosition(), viewport));
     }
 
   private:

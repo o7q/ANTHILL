@@ -20,7 +20,7 @@ class Player : public Entity, public IHead
     Player(uint64_t id, InputHandler &input, const Assets &assets)
         : Entity(id), r_input(input), r_assets(assets)
     {
-        m_interactionBox.getBoundingBox().setSize(10, 25);
+        m_interactionBox.getBoundingBox().setSize({10, 25});
         m_body.setGravity(0.4f);
         m_metadata.faction = EntityFaction::Player;
 
@@ -37,10 +37,9 @@ class Player : public Entity, public IHead
 
     void render(Viewport &viewport, const Camera &camera) override
     {
-        viewport.drawTexture(*r_assets.textures().get(TextureID::Character),
-                             camera.worldToViewport(m_body.getPosition().x,
-                                                    m_body.getPosition().y,
-                                                    viewport));
+        viewport.drawTexture(
+            *r_assets.textures().get(TextureID::Character),
+            camera.worldToViewport(m_body.getPosition(), viewport));
         renderDebug_boundingBox(viewport, camera, Color(79, 255, 94));
     }
 

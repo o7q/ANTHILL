@@ -22,13 +22,13 @@ class AnimatedTexture
             {
                 for (unsigned int x = 0; x < frameSize.x; ++x)
                 {
-                    Color sheetPx = sheet.getPixel(x + frameSize.x * f, y);
-                    pixels[Math::Index::index_2dto1d(x, y, frameSize.x)] =
+                    Color sheetPx = sheet.getPixel({x + frameSize.x * f, y});
+                    pixels[Math::Index::index_2dto1d({x, y}, frameSize.x)] =
                         sheetPx;
                 }
             }
 
-            m_frames.push_back(Texture(pixels, frameSize.x, frameSize.y));
+            m_frames.push_back(Texture(pixels, frameSize));
         }
     }
     AnimatedTexture(const AnimatedTexture &other) = default;

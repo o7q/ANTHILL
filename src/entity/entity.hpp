@@ -6,6 +6,7 @@
 #include "entity/metadata.hpp"
 #include "entity/update_context.hpp"
 #include "events/entity/base.hpp"
+#include "events/event_emitter.hpp"
 #include "world/camera/camera.hpp"
 
 class Entity

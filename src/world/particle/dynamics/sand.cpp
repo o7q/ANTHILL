@@ -9,9 +9,9 @@ void PDynamicsHandler::update_sand_particle(ParticleObject po, float dt)
 
     Vec2f start = verlet.getPosition();
 
-    Particle *leftDown = r_particles.get(po.x - 1, po.y + 1);
-    Particle *rightDown = r_particles.get(po.x + 1, po.y + 1);
-    Particle *down = r_particles.get(po.x, po.y + 1);
+    Particle *leftDown = r_particles.get({po.pos.x - 1, po.pos.y + 1});
+    Particle *rightDown = r_particles.get({po.pos.x + 1, po.pos.y + 1});
+    Particle *down = r_particles.get({po.pos.x, po.pos.y + 1});
 
     bool canDown = false, canLeft = false, canRight = false;
 
@@ -32,7 +32,7 @@ void PDynamicsHandler::update_sand_particle(ParticleObject po, float dt)
 
     if (canDown)
     {
-        verlet.addForce(0.0f, m_gravity);
+        verlet.addForce({0.0f, m_gravity});
     }
 
     if (canLeft && canRight)
@@ -40,10 +40,10 @@ void PDynamicsHandler::update_sand_particle(ParticleObject po, float dt)
         switch (Math::Random::weakRandInt(0, 2))
         {
         case 0:
-            verlet.addForce(-0.1f, 0);
+            verlet.addForce({-0.1f, 0.0f});
             break;
         case 1:
-            verlet.addForce(0.1f, 0);
+            verlet.addForce({0.1f, 0.0f});
             break;
         default:
             break;
@@ -51,11 +51,11 @@ void PDynamicsHandler::update_sand_particle(ParticleObject po, float dt)
     }
     else if (canLeft)
     {
-        verlet.addForce(-0.3f, 0);
+        verlet.addForce({-0.3f, 0.0f});
     }
     else if (canRight)
     {
-        verlet.addForce(0.3f, 0);
+        verlet.addForce({0.3f, 0.0f});
     }
 
     verlet.integrate(dt);

@@ -1,14 +1,15 @@
 #include "entity_handler.hpp"
+#include "world/particle/particle_world.hpp"
 #include <memory>
 
-void EntityHandler::update(const ParticleHandler &particleHandler, float dt)
+void EntityHandler::update(const ParticleWorld &world, float dt)
 {
     for (auto &entityPair : m_entities)
     {
         Entity *entity = entityPair.second.get();
 
         std::vector<const Entity *> nearby = getNearbyEntities(entity);
-        EntityUpdateContext context{dt, particleHandler, nearby};
+        EntityUpdateContext context{dt, world, nearby};
         entity->update(context);
 
         handleEvents(entity->getEventEmitter());

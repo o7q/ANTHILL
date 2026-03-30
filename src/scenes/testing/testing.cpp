@@ -8,15 +8,15 @@ void TestScene::onStart()
         m_world.getEntityHandler().getIDHandler().getNext(), r_input,
         r_assets));
 
-    // for (int i = 0; i < 1; ++i)
-    // {
-    //     auto droid = std::make_unique<Droid>(
-    //         m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
+    for (int i = 0; i < 1; ++i)
+    {
+        auto droid = std::make_unique<Droid>(
+            m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
 
-    //     droid->getBody().setPosition(5 * i, 0);
+        droid->getBody().setPosition({5 * i, 0});
 
-    //     m_world.getEntityHandler().addEntity(std::move(droid));
-    // }
+        m_world.getEntityHandler().addEntity(std::move(droid));
+    }
 
     Particle stone;
     stone.setColor(Color(200, 205, 200));
@@ -25,15 +25,16 @@ void TestScene::onStart()
     stone.getVerlet().setMass(200000000);
     stone.setImmovable(true);
 
-    m_world.getParticleHandler().draw(0, 300, stone, 150);
+    m_world.getParticleWorld().getEditor().draw({0, 300}, stone, 150);
 
     for (int i = 0; i < 1000; ++i)
     {
         int sign = Math::Random::weakRandInt(0, 2) == 0 ? -1 : 1;
 
-        m_world.getParticleHandler().draw(
-            sign * Math::Random::weakRandInt(50, 1000),
-            Math::Random::weakRandInt(300, 400), stone, 30);
+        m_world.getParticleWorld().getEditor().draw(
+            {sign * Math::Random::weakRandInt(50, 1000),
+             Math::Random::weakRandInt(300, 400)},
+            stone, 30);
     }
 
     Particle p;
@@ -44,7 +45,7 @@ void TestScene::onStart()
     p.setRestitution(0.8);
     p.getVerlet().setMass(1);
 
-    m_world.getParticleHandler().textureToParticles(
+    m_world.getParticleWorld().getEditor().textureToParticles(
         *r_assets.textures().get(TextureID::Carter), Vec2i(100, 250), p);
 }
 
@@ -52,8 +53,8 @@ void TestScene::onTick()
 {
     Vec2i viewportMousePos =
         r_viewport.windowToViewportPosition(r_input.getMousePosition());
-    Vec2i worldMousePos = m_world.getCamera().viewportToWorld(
-        viewportMousePos.x, viewportMousePos.y, r_viewport);
+    Vec2i worldMousePos =
+        m_world.getCamera().viewportToWorld(viewportMousePos, r_viewport);
 
     if (r_window.getInputHandler().getInput(InputID::AltAction1)->isDown())
     {
@@ -65,15 +66,13 @@ void TestScene::onTick()
         stone.getVerlet().setMass(200000000);
         stone.setImmovable(true);
 
-        m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y,
-                                          stone, 20);
+        m_world.getParticleWorld().getEditor().draw(worldMousePos, stone, 20);
     }
     if (r_window.getInputHandler().getInput(InputID::AltAction2)->isDown())
     {
         Particle air;
 
-        m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y, air,
-                                          10);
+        m_world.getParticleWorld().getEditor().draw(worldMousePos, air, 10);
     }
     if (r_window.getInputHandler().getInput(InputID::AltAction3)->isDown())
     {
@@ -85,17 +84,16 @@ void TestScene::onTick()
         sand.setRestitution(0.1f);
         sand.getVerlet().setMass(1);
 
-        m_world.getParticleHandler().draw(worldMousePos.x, worldMousePos.y,
-                                          sand, 4);
+        m_world.getParticleWorld().getEditor().draw(worldMousePos, sand, 4);
     }
 
     m_world.getEntityHandler().getCurrentPlayer()->updateAimPosition(
         worldMousePos);
     if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
     {
-        Vec2f playerPos = player->getBody().getPositionFloat();
+        Vec2i playerPos = player->getBody().getPosition();
         m_world.getGenerator().generateInRadius(playerPos.toInt(), {20, 20});
-        m_world.getCamera().setGoal(playerPos.x, playerPos.y);
+        m_world.getCamera().setGoal(playerPos);
     }
     m_world.update(r_time.getDT());
     m_world.render(r_viewport);
@@ -121,15 +119,15 @@ void TestScene::onTick()
 
     r_viewport.drawTexture(
         *m_animTex.getCurrentFrame(),
-        m_world.getCamera().worldToViewport(0, 0, r_viewport));
+        m_world.getCamera().worldToViewport({0, 0}, r_viewport));
     r_viewport.drawTexture(
         *m_animTex.getCurrentFrame(),
-        m_world.getCamera().worldToViewport(20, 0, r_viewport));
+        m_world.getCamera().worldToViewport({20, 0}, r_viewport));
     r_viewport.drawTexture(
         *m_animTex.getCurrentFrame(),
-        m_world.getCamera().worldToViewport(40, 0, r_viewport));
+        m_world.getCamera().worldToViewport({40, 0}, r_viewport));
     r_viewport.drawTexture(
         *m_animTex.getCurrentFrame(),
-        m_world.getCamera().worldToViewport(60, 0, r_viewport));
+        m_world.getCamera().worldToViewport({60, 0}, r_viewport));
     m_animTex.animate(r_time.getDT());
 }

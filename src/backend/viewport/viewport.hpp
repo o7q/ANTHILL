@@ -10,7 +10,7 @@
 class Viewport
 {
   public:
-    Viewport(SDL_Window *window, unsigned int width, unsigned int height);
+    Viewport(SDL_Window *window, Vec2u size);
     Viewport(const Viewport &other) = delete;
     Viewport &operator=(const Viewport &other) = delete;
     ~Viewport();
@@ -18,8 +18,8 @@ class Viewport
     void render();
     void clear();
 
-    void setPixel(unsigned int x, unsigned int y, Color color);
-    Color getPixel(unsigned int x, unsigned int y);
+    void setPixel(Vec2u pos, Color color);
+    Color getPixel(Vec2u pos);
 
     Vec2u getSize() const { return m_size; }
     float getAspectRatio() const { return m_aspectRatio; }
@@ -40,7 +40,7 @@ class Viewport
   private:
     void update_pixel_changes();
     void reset_update_points();
-    unsigned int get_pixel_index(unsigned int x, unsigned int y);
+    unsigned int get_pixel_index(Vec2u pos);
 
   private:
     Vec2u m_size;

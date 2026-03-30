@@ -4,20 +4,19 @@
 #include "math/random.hpp"
 #include "utils/data.hpp"
 #include "utils/data_structures/index_2d.hpp"
-#include "world/particle/particle_handler.hpp"
+#include "world/particle/particle_world.hpp"
 
 class Generator
 {
   public:
-    Generator(ParticleHandler &particles) : r_particles(particles)
+    Generator(ParticleWorld &world) : r_world(world)
     {
         m_seed = Math::Random::weakRandInt(0, 10000);
     }
 
     void generateInRadius(Vec2i origin, Vec2i size)
     {
-        Index2D chunkOrigin =
-            r_particles.getRawParticles().getChunkIndex(origin.x, origin.y);
+        Index2D chunkOrigin = r_world.getParticles().getChunkIndex(origin);
         if (Utils::Data::doesVectorContain(m_origins, chunkOrigin))
         {
             return;
@@ -25,7 +24,7 @@ class Generator
 
         m_origins.push_back(chunkOrigin);
         Vec2i halfSize = size / 2;
-        Vec2u chunkSize = r_particles.getRawParticles().getChunkSize();
+        Vec2u chunkSize = r_world.getParticles().getChunkSize();
 
         for (int cy = chunkOrigin.y - halfSize.y;
              cy <= chunkOrigin.y + halfSize.y; ++cy)
@@ -33,7 +32,7 @@ class Generator
             for (int cx = chunkOrigin.x - halfSize.x;
                  cx <= chunkOrigin.x + halfSize.x; ++cx)
             {
-                if (r_particles.getRawParticles().hasChunk(Index2D(cx, cy)))
+                if (r_world.getParticles().hasChunk(Index2D(cx, cy)))
                 {
                     continue;
                 }
@@ -45,18 +44,18 @@ class Generator
                         int ax = cx * chunkSize.x + x;
                         int ay = cy * chunkSize.y + y;
 
-                        float v =
-                            Math::Perlin::sampleEx(ax, ay, 200, 5, m_seed);
+                        float v = Math::Perlin::sampleEx(Vec2f(ax, ay),
+                                                         {300, 200}, 5, m_seed);
 
-                        if (v > 0.01f)
+                        if (v > 0.1f)
                         {
-                            float v2 =
-                                Math::Perlin::sampleEx(ax, ay, 500, 10, m_seed);
+                            float v2 = Math::Perlin::sampleEx(
+                                Vec2f(ax, ay), {500, 500}, 10, m_seed);
                             Particle p;
                             if (v2 >= 0.2f)
                             {
-                                float v3 = Math::Perlin::sampleEx(ax, ay, 50,
-                                                                  10, m_seed);
+                                float v3 = Math::Perlin::sampleEx(
+                                    Vec2f(ax, ay), {50, 50}, 10, m_seed);
 
                                 if (v3 >= 0.4f)
                                 {
@@ -86,7 +85,7 @@ class Generator
                                 p.getVerlet().setMass(200000000);
                                 p.setImmovable(true);
                             }
-                            r_particles.set(ax, ay, p);
+                            r_world.getEditor().set({ax, ay}, p);
                         }
                     }
                 }
@@ -95,7 +94,7 @@ class Generator
     }
 
   private:
-    ParticleHandler &r_particles;
+    ParticleWorld &r_world;
     std::vector<Index2D> m_origins;
 
     int m_seed = 0;

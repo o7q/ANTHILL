@@ -9,9 +9,9 @@ void PDynamicsHandler::update_smoke_particle(ParticleObject po, float dt)
 
     Vec2f start = verlet.getPosition();
 
-    Particle *left = r_particles.get(po.x - 1, po.y);
-    Particle *right = r_particles.get(po.x + 1, po.y);
-    Particle *up = r_particles.get(po.x, po.y - 1);
+    Particle *left = r_particles.get({po.pos.x - 1, po.pos.y});
+    Particle *right = r_particles.get({po.pos.x + 1, po.pos.y});
+    Particle *up = r_particles.get({po.pos.x, po.pos.y - 1});
 
     bool canUp = false, canLeft = false, canRight = false;
 
@@ -32,7 +32,7 @@ void PDynamicsHandler::update_smoke_particle(ParticleObject po, float dt)
 
     if (canUp)
     {
-        verlet.addVelocity(0.0f, m_gravity - 0.11f, dt);
+        verlet.addVelocity({0.0f, m_gravity - 0.11f}, dt);
     }
 
     if (canLeft && canRight)
@@ -40,10 +40,10 @@ void PDynamicsHandler::update_smoke_particle(ParticleObject po, float dt)
         switch (Math::Random::weakRandInt(0, 2))
         {
         case 0:
-            verlet.addForce(-0.03f, 0);
+            verlet.addForce({-0.03f, 0.0f});
             break;
         case 1:
-            verlet.addForce(0.03f, 0);
+            verlet.addForce({0.03f, 0.0f});
             break;
         default:
             break;
@@ -51,11 +51,11 @@ void PDynamicsHandler::update_smoke_particle(ParticleObject po, float dt)
     }
     else if (canLeft)
     {
-        verlet.addForce(-0.03f, 0);
+        verlet.addForce({-0.03f, 0.0f});
     }
     else if (canRight)
     {
-        verlet.addForce(0.03f, 0);
+        verlet.addForce({0.03f, 0.0f});
     }
 
     verlet.integrate(dt);

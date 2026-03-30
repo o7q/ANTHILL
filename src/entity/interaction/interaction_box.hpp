@@ -13,8 +13,7 @@ class InteractionBox
 
     bool pointInside(Vec2i interactionBoxPos, Vec2i checkPos) const
     {
-        return m_boundingBox.pointInside(checkPos.x - interactionBoxPos.x,
-                                         checkPos.y - interactionBoxPos.y);
+        return m_boundingBox.pointInside(checkPos - interactionBoxPos);
     }
 
   private:

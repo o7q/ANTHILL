@@ -20,7 +20,7 @@ inline void bresenhamLine(Vec2i p1, const Vec2i &p2, Function &&function)
 
     while (true)
     {
-        if (function(p1.x, p1.y))
+        if (function(p1))
         {
             break;
         }

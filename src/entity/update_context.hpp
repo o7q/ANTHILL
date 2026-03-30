@@ -1,6 +1,6 @@
 #pragma once
 
-#include "world/particle/particle_handler.hpp"
+#include "world/particle/particle_world.hpp"
 #include <vector>
 
 class Entity;
@@ -8,6 +8,6 @@ class Entity;
 struct EntityUpdateContext
 {
     const float dt = 0.0f;
-    const ParticleHandler &particles;
+    const ParticleWorld &world;
     const std::vector<const Entity *> &nearbyEntities;
 };

@@ -30,17 +30,17 @@ inline Vec2f randomGradient(Vec2i index, uint32_t seed)
     return gradients[h >> 28];
 }
 
-inline float sample(float x, float y, uint32_t seed)
+inline float sample(Vec2f pos, uint32_t seed)
 {
-    int x_int = static_cast<int>(std::floor(x));
-    int y_int = static_cast<int>(std::floor(y));
+    int x_int = static_cast<int>(std::floor(pos.x));
+    int y_int = static_cast<int>(std::floor(pos.y));
 
     Vec2i corner0 = Vec2i(x_int, y_int);
     Vec2i corner1 = Vec2i(x_int + 1, y_int);
     Vec2i corner2 = Vec2i(x_int, y_int + 1);
     Vec2i corner3 = Vec2i(x_int + 1, y_int + 1);
 
-    Vec2f localPos = Vec2f(x, y) - corner0.toFloat();
+    Vec2f localPos = pos - corner0.toFloat();
 
     Vec2f gradient0 = randomGradient(corner0, seed);
     Vec2f gradient1 = randomGradient(corner1, seed);
@@ -62,15 +62,14 @@ inline float sample(float x, float y, uint32_t seed)
     return Math::Interpolation::smoothStep(interp0, interp1, localPos.y);
 }
 
-inline float sampleEx(float x, float y, float gridSize, int iterations,
-                      uint32_t seed)
+inline float sampleEx(Vec2f pos, Vec2f gridSize, int iterations, uint32_t seed)
 {
     float v = 0.0f;
     float f = 1.0f;
     float a = 1.0f;
     for (int i = 0; i < iterations; ++i)
     {
-        v += sample(x * f / gridSize, y * f / gridSize, seed) * a;
+        v += sample(pos * f / gridSize, seed) * a;
         f *= 2.0f;
         a /= 2.0f;
     }

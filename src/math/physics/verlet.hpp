@@ -9,33 +9,32 @@ class VerletBody
 
     void integrate(float dt);
 
-    void setPosition(float x, float y)
+    void setPosition(Vec2f pos)
     {
-        m_position = Vec2f(x, y);
-        m_positionPrev = Vec2f(x, y);
+        m_position = pos;
+        m_positionPrev = pos;
     }
     Vec2f getPosition() const { return m_position; }
     Vec2f getPreviousPosition() const { return m_positionPrev; }
 
-    void setVelocity(float x, float y, float dt)
+    void setVelocity(Vec2f vel, float dt)
     {
-        m_positionPrev = m_position - Vec2f(x, y) * dt;
+        m_positionPrev = m_position - vel * dt;
     }
-    void addVelocity(float x, float y, float dt)
+    void addVelocity(Vec2f vel, float dt)
     {
-        Vec2f currentVelocity = getVelocity(dt);
-        setVelocity(currentVelocity.x + x, currentVelocity.y + y, dt);
+        setVelocity(getVelocity(dt) + vel, dt);
     }
     Vec2f getVelocity(float dt) const
     {
         return (m_position - m_positionPrev) / dt;
     }
 
-    void setForce(float x, float y) { m_force = Vec2f(x, y); }
-    void addForce(float x, float y) { m_force += Vec2f(x, y); }
+    void setForce(Vec2f force) { m_force = force; }
+    void addForce(Vec2f force) { m_force += force; }
     void clearForces() { m_force = Vec2f(0.0f, 0.0f); }
 
-    void setDamping(float x, float y) { m_damping = Vec2f(x, y); }
+    void setDamping(Vec2f damping) { m_damping = damping; }
     Vec2f getDamping() const { return m_damping; }
 
     void setMass(float mass) { m_mass = mass; }

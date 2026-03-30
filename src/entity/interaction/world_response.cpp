@@ -5,15 +5,15 @@
 
 WorldInteractionHandler::TrajectoryCollisionResponse
 WorldInteractionHandler::calculateCollisionFromTrajectory(
-    Vec2i start, Vec2i end, const ParticleHandler &particles)
+    Vec2i start, Vec2i end, const ParticleWorld &world)
 {
     bool collided = false;
     Vec2i previousPos = start;
 
-    auto check = [&](int x, int y)
+    auto check = [&](Vec2i pos)
     {
-        Vec2i a = r_boundingBox.getA() + Vec2i(x, y);
-        Vec2i b = r_boundingBox.getB() + Vec2i(x, y);
+        Vec2i a = r_boundingBox.getA() + pos;
+        Vec2i b = r_boundingBox.getB() + pos;
 
         bool collidedThisIteration = false;
         auto query = [&](const Particle *p)
@@ -26,7 +26,7 @@ WorldInteractionHandler::calculateCollisionFromTrajectory(
 
             return false;
         };
-        particles.query(a, b, query);
+        world.query(a, b, query);
 
         if (collidedThisIteration)
         {
@@ -34,8 +34,7 @@ WorldInteractionHandler::calculateCollisionFromTrajectory(
             return true;
         }
 
-        previousPos.x = x;
-        previousPos.y = y;
+        previousPos = pos;
 
         return false;
     };
@@ -50,12 +49,12 @@ WorldInteractionHandler::calculateCollisionFromTrajectory(
 
 WorldInteractionHandler::TrajectoryCollisionResponse
 WorldInteractionHandler::calculateCollisionFromTrajectorySlide(
-    Vec2i start, Vec2i end, const ParticleHandler &particles)
+    Vec2i start, Vec2i end, const ParticleWorld &world)
 {
     TrajectoryCollisionResponse out;
 
     TrajectoryCollisionResponse xy_response =
-        calculateCollisionFromTrajectory(start, end, particles);
+        calculateCollisionFromTrajectory(start, end, world);
 
     // all axis
     if (xy_response.collided)
@@ -64,7 +63,7 @@ WorldInteractionHandler::calculateCollisionFromTrajectorySlide(
         Vec2i end_x = {end.x, xy_response.resolvePosition.y};
         TrajectoryCollisionResponse x_response =
             calculateCollisionFromTrajectory(xy_response.resolvePosition, end_x,
-                                             particles);
+                                             world);
 
         if (x_response.collided)
         {
@@ -72,7 +71,7 @@ WorldInteractionHandler::calculateCollisionFromTrajectorySlide(
             Vec2i end_y = {xy_response.resolvePosition.x, end.y};
             TrajectoryCollisionResponse y_response =
                 calculateCollisionFromTrajectory(xy_response.resolvePosition,
-                                                 end_y, particles);
+                                                 end_y, world);
 
             out.resolvePosition = y_response.resolvePosition;
         }
@@ -88,7 +87,7 @@ WorldInteractionHandler::calculateCollisionFromTrajectorySlide(
 }
 
 WorldInteractionHandler::StepResponse WorldInteractionHandler::calculateStep(
-    Vec2i resolvedPosition, Vec2i originalEnd, const ParticleHandler &particles)
+    Vec2i resolvedPosition, Vec2i originalEnd, const ParticleWorld &world)
 {
     StepResponse response;
 
@@ -110,17 +109,17 @@ WorldInteractionHandler::StepResponse WorldInteractionHandler::calculateStep(
                                    resolvedPosition.y + stepDownwards.sum.y};
 
         MTVIntersectionResponse upwardsCheck =
-            calculateWorldIntersection_MTV(upwardsCheckPos, particles);
+            calculateWorldIntersection_MTV(upwardsCheckPos, world);
 
         MTVIntersectionResponse downwardsCheck =
-            calculateWorldIntersection_MTV(downwardsCheckPos, particles);
+            calculateWorldIntersection_MTV(downwardsCheckPos, world);
 
         Vec2i upwardsNextPos = upwardsCheckPos + Vec2i(0, -upwardsCheck.bottom);
         Vec2i downwardsNextPos =
             downwardsCheckPos + Vec2i(0, downwardsCheck.top);
 
         if (upwardsCheck.bottom <= maxStepAmount &&
-            calculateWorldIntersection_MTV(upwardsNextPos, particles)
+            calculateWorldIntersection_MTV(upwardsNextPos, world)
                     .resolveDistance == 0)
         {
             stepUpwards.sum.x = step;
@@ -130,7 +129,7 @@ WorldInteractionHandler::StepResponse WorldInteractionHandler::calculateStep(
         }
 
         if (downwardsCheck.top <= maxStepAmount &&
-            calculateWorldIntersection_MTV(downwardsNextPos, particles)
+            calculateWorldIntersection_MTV(downwardsNextPos, world)
                     .resolveDistance == 0)
         {
             stepDownwards.sum.x = step;

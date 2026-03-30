@@ -8,13 +8,13 @@ class KineticBody
     KineticBody() = default;
     virtual ~KineticBody() = default;
 
-    void applyGravity() { addForce(0.0f, m_gravity); }
+    void applyGravity() { addForce({0.0f, m_gravity}); }
     void setGravity(float gravity) { m_gravity = gravity; }
 
     void update(float dt);
 
-    void setPosition(int x, int y) { m_position = Vec2i(x, y).toFloat(); }
-    void setPositionFloat(float x, float y) { m_position = Vec2f(x, y); }
+    void setPosition(Vec2i pos) { m_position = pos.toFloat(); }
+    void setPositionFloat(Vec2f pos) { m_position = pos; }
     Vec2i getPosition() const { return m_position.toGrid(); }
     Vec2f getPositionFloat() const { return m_position; }
     Vec2i getLastPosition() const { return m_lastPosition.toGrid(); }
@@ -22,11 +22,11 @@ class KineticBody
 
     void setVelocityX(float x) { m_velocity.x = x; }
     void setVelocityY(float y) { m_velocity.y = y; }
-    void setVelocity(float x, float y) { m_velocity = Vec2f(x, y); }
+    void setVelocity(Vec2f vel) { m_velocity = vel; }
 
     Vec2f getVelocity() const { return m_velocity; }
 
-    void addForce(float x, float y) { m_force += Vec2f(x, y); }
+    void addForce(Vec2f force) { m_force += force; }
 
     void haltMotionInDirection(int dirX, int dirY);
 

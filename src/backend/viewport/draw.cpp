@@ -8,9 +8,9 @@
 void Viewport::drawSegment(Vec2i p1, Vec2i p2, Color color)
 {
     Math::Line::bresenhamLine(p1, p2,
-                              [this, &color](int x, int y)
+                              [this, &color](Vec2i pos)
                               {
-                                  this->setPixel(x, y, color);
+                                  this->setPixel(pos.toUnsignedInt(), color);
                                   return false;
                               });
 }
@@ -20,25 +20,25 @@ void Viewport::drawRectOutline(Vec2i p1, Vec2i p2, Color color)
     // top
     for (int x = p1.x; x < p2.x; ++x)
     {
-        setPixel(x, p1.y, color);
+        setPixel(Vec2u(x, p1.y), color);
     }
 
     // right
     for (int y = p1.y; y < p2.y; ++y)
     {
-        setPixel(p2.x, y, color);
+        setPixel(Vec2u(p2.x, y), color);
     }
 
     // bottom
     for (int x = p2.x; x > p1.x; --x)
     {
-        setPixel(x, p2.y, color);
+        setPixel(Vec2u(x, p2.y), color);
     }
 
     // left
     for (int y = p2.y; y > p1.y; --y)
     {
-        setPixel(p1.x, y, color);
+        setPixel(Vec2u(p1.x, y), color);
     }
 }
 
@@ -48,7 +48,7 @@ void Viewport::drawRectFilled(Vec2i p1, Vec2i p2, Color color)
     {
         for (int x = p1.x; x <= p2.x; ++x)
         {
-            setPixel(x, y, color);
+            setPixel(Vec2u(x, y), color);
         }
     }
 }
@@ -62,8 +62,8 @@ void Viewport::drawTexture(const Texture &texture, Vec2i pos)
     {
         for (int x = 0; x < size.x; ++x)
         {
-            Color color = texture.getPixel(x, y);
-            setPixel(pos.x - halfSize.x + x, pos.y - halfSize.y + y, color);
+            Color color = texture.getPixel(Vec2u(x, y));
+            setPixel((pos - halfSize + Vec2i(x, y)).toUnsignedInt(), color);
         }
     }
 }
@@ -95,7 +95,7 @@ void Viewport::drawTextureRotated(const Texture &texture, Vec2i pos,
             int destY = static_cast<int>(
                 std::roundf(pos.y + rotatedY + origin.y - halfTextureSize.y));
 
-            Color color = texture.getPixel(x, y);
+            Color color = texture.getPixel(Vec2u(x, y));
 
             for (int py = 0; py < overdraw + 1; ++py)
             {
@@ -108,7 +108,7 @@ void Viewport::drawTextureRotated(const Texture &texture, Vec2i pos,
 
                     int fx = destX + px;
                     int fy = destY + py;
-                    setPixel(fx, fy, color);
+                    setPixel(Vec2u(fx, fy), color);
                 }
             }
         }

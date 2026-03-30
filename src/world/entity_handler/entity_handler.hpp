@@ -6,6 +6,7 @@
 #include "events/backend/base.hpp"
 #include "events/event_emitter.hpp"
 #include "world/entity_handler/id.hpp"
+#include "world/particle/particle_world.hpp"
 #include <cstdint>
 #include <memory>
 #include <unordered_map>
@@ -22,7 +23,7 @@ class EntityHandler
     EntityHandler(const EntityHandler &other) = delete;
     EntityHandler &operator=(const EntityHandler &other) = delete;
 
-    void update(const ParticleHandler &particleHandler, float dt);
+    void update(const ParticleWorld &world, float dt);
     void handleEvents(EventEmitter<EntityEvent> &emitter);
 
     void render(Viewport &viewport, const Camera &camera);

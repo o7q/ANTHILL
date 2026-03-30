@@ -1,7 +1,7 @@
 #pragma once
 
 #include "utils/data_structures/chunk_map.hpp"
-#include "world/particle/navmesh.hpp"
+#include "world/particle/navmesh/navmesh.hpp"
 #include "world/particle/particle.hpp"
 
 class PDynamicsHandler
@@ -10,7 +10,7 @@ class PDynamicsHandler
     struct ParticleObject
     {
         Particle *particle = nullptr;
-        int x = 0, y = 0;
+        Vec2i pos;
     };
 
   public:

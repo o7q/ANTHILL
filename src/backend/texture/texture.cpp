@@ -4,16 +4,15 @@
 #include "math/index.hpp"
 
 Texture::Texture() { initNull(); }
-Texture::Texture(unsigned int width, unsigned int height)
+Texture::Texture(Vec2u size)
 {
-    m_size.x = static_cast<unsigned int>(width);
-    m_size.y = static_cast<unsigned int>(height);
+    m_size = size;
 
-    m_pixels.resize(width * height);
+    m_pixels.resize(size.x * size.y);
 
     Logger::info("Texture::Texture()",
                  "Successfully created a blank texture of size: " +
-                     std::to_string(width) + "x" + std::to_string(height));
+                     std::to_string(size.x) + "x" + std::to_string(size.y));
 }
 Texture::Texture(const std::filesystem::path &path)
 {
@@ -53,24 +52,24 @@ Texture::Texture(const std::filesystem::path &path)
     Logger::info("Texture::Texture()", "Successfully loaded: " + pathStr);
 }
 
-void Texture::setPixel(unsigned int x, unsigned int y, Color color)
+void Texture::setPixel(Vec2u pos, Color color)
 {
-    if (x >= m_size.x || y >= m_size.y)
+    if (pos.x >= m_size.x || pos.y >= m_size.y)
     {
         return;
     }
 
-    m_pixels[Math::Index::index_2dto1d(x, y, m_size.x)] = color;
+    m_pixels[Math::Index::index_2dto1d(pos, m_size.x)] = color;
 }
 
-Color Texture::getPixel(unsigned int x, unsigned int y) const
+Color Texture::getPixel(Vec2u pos) const
 {
-    if (x >= m_size.x || y >= m_size.y)
+    if (pos.x >= m_size.x || pos.y >= m_size.y)
     {
         return Color();
     }
 
-    return m_pixels[Math::Index::index_2dto1d(x, y, m_size.x)];
+    return m_pixels[Math::Index::index_2dto1d(pos, m_size.x)];
 }
 
 void Texture::initNull()

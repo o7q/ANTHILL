@@ -2,7 +2,7 @@
 
 #include "math/rectangle.hpp"
 #include "math/vec.hpp"
-#include "world/particle/particle_handler.hpp"
+#include "world/particle/particle_world.hpp"
 
 class WorldInteractionHandler
 {
@@ -47,28 +47,29 @@ class WorldInteractionHandler
     }
 
     MTVIntersectionResponse
-    calculateWorldIntersection_MTV(Vec2i pos, const ParticleHandler &particles);
-    Vec2f calculateWorldIntersection_averageDirection(
-        Vec2i pos, const ParticleHandler &particles);
+    calculateWorldIntersection_MTV(Vec2i pos, const ParticleWorld &world);
+    Vec2f
+    calculateWorldIntersection_averageDirection(Vec2i pos,
+                                                const ParticleWorld &world);
 
     TrajectoryCollisionResponse
     calculateCollisionFromTrajectory(Vec2i start, Vec2i end,
-                                     const ParticleHandler &particles);
+                                     const ParticleWorld &world);
 
     bool againstSolidSurface(Vec2i pos, RectangleSide side,
-                             const ParticleHandler &particles);
+                             const ParticleWorld &world);
     bool againstSolidCorner(Vec2i pos, RectangleCorner corner,
-                            const ParticleHandler &particles);
+                            const ParticleWorld &world);
 
     TrajectoryCollisionResponse
     calculateCollisionFromTrajectorySlide(Vec2i start, Vec2i end,
-                                          const ParticleHandler &particles);
+                                          const ParticleWorld &world);
 
     LocalWorldQuery generateLocalWorldQuery(Vec2i pos,
-                                            const ParticleHandler &particles);
+                                            const ParticleWorld &world);
 
     StepResponse calculateStep(Vec2i resolvedPosition, Vec2i originalEnd,
-                               const ParticleHandler &particles);
+                               const ParticleWorld &world);
 
   private:
     struct StepDirectionalData

@@ -47,7 +47,7 @@ void Player::update(const EntityUpdateContext &context)
     }
 
     bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
-        m_body.getPosition(), RectangleSide::Bottom, context.particles);
+        m_body.getPosition(), RectangleSide::Bottom, context.world);
     m_jumpHandler.update(context.dt, onGround);
 
     updateMotion(context);

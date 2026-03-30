@@ -53,7 +53,7 @@ Texture Font::generateStringTexture(const std::string &text, Color color,
         {
             for (unsigned int x = 0; x < info.size.x; ++x)
             {
-                bool on = m_atlas.getPixel(x + info.xIndex + 1, y + 1).a != 0;
+                bool on = m_atlas.getPixel({x + info.xIndex + 1, y + 1}).a != 0;
 
                 if (on)
                 {
@@ -86,12 +86,12 @@ Texture Font::generateStringTexture(const std::string &text, Color color,
 
     for (Vec2i i : sparseRaster)
     {
-        int x = i.x - a.x;
-        int y = i.y - a.y;
+        unsigned int x = i.x - a.x;
+        unsigned int y = i.y - a.y;
 
-        pixels[Math::Index::index_2dto1d(x, y, size.x)] = color;
+        pixels[Math::Index::index_2dto1d({x, y}, size.x)] = color;
     }
 
-    Texture texture(pixels, size.x, size.y);
+    Texture texture(pixels, size);
     return texture;
 }

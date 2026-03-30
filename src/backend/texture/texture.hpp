@@ -10,9 +10,8 @@ class Texture
 {
   public:
     Texture();
-    Texture(unsigned int width, unsigned int height);
-    Texture(const std::vector<Color> &pixels, unsigned int width,
-            unsigned int height)
+    Texture(Vec2u size);
+    Texture(const std::vector<Color> &pixels, Vec2u size)
     {
         m_pixels.resize(pixels.size());
         for (unsigned int i = 0; i < pixels.size(); ++i)
@@ -20,7 +19,7 @@ class Texture
             m_pixels[i] = pixels[i];
         }
 
-        m_size = Vec2u(width, height);
+        m_size = size;
     }
     Texture(const std::filesystem::path &path);
     Texture(const Texture &other) = default;
@@ -29,8 +28,8 @@ class Texture
 
     Vec2u getSize() const { return m_size; }
 
-    void setPixel(unsigned int x, unsigned int y, Color color);
-    Color getPixel(unsigned int x, unsigned int y) const;
+    void setPixel(Vec2u pos, Color color);
+    Color getPixel(Vec2u pos) const;
 
     const std::vector<Color> &getPixels() const { return m_pixels; }
 

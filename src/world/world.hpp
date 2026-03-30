@@ -6,14 +6,14 @@
 #include "world/camera/camera.hpp"
 #include "world/entity_handler/entity_handler.hpp"
 #include "world/generator/generator.hpp"
-#include "world/particle/particle_handler.hpp"
+#include "world/particle/particle_world.hpp"
 
 class World
 {
   public:
     World(EventEmitter<BackendEvent> &backendEvents)
-        : r_backendEvents(backendEvents), m_generator(m_particleHandler),
-          m_entityHandler(r_backendEvents, m_particleHandler.getEvents())
+        : r_backendEvents(backendEvents), m_generator(m_particleWorld),
+          m_entityHandler(r_backendEvents, m_particleWorld.getEvents())
     {
     }
     World(const World &other) = delete;
@@ -22,17 +22,15 @@ class World
     void update(float dt);
     void render(Viewport &viewport);
 
-    ParticleHandler &getParticleHandler() { return m_particleHandler; }
-    EntityHandler &getEntityHandler() { return m_entityHandler; }
-
-    Camera &getCamera() { return m_camera; }
-
+    ParticleWorld &getParticleWorld() { return m_particleWorld; }
     Generator &getGenerator() { return m_generator; }
+    EntityHandler &getEntityHandler() { return m_entityHandler; }
+    Camera &getCamera() { return m_camera; }
 
   private:
     EventEmitter<BackendEvent> &r_backendEvents;
 
-    ParticleHandler m_particleHandler;
+    ParticleWorld m_particleWorld;
     Generator m_generator;
     EntityHandler m_entityHandler;
     Camera m_camera;

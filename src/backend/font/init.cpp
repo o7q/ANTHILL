@@ -6,7 +6,7 @@ Font::Font(const std::filesystem::path &path) : m_atlas(path)
     unsigned int charIndex = 0;
     while (true)
     {
-        Color color = m_atlas.getPixel(atlasXIndex, 0);
+        Color color = m_atlas.getPixel({atlasXIndex, 0});
         if (color.r == 255)
         {
             GlyphInfo info = createGlyphIndex(atlasXIndex);
@@ -47,7 +47,7 @@ Font::GlyphInfo Font::createGlyphIndex(unsigned int atlasXIndex)
             break;
         }
 
-        Color c = m_atlas.getPixel(atlasXIndex, yIndex);
+        Color c = m_atlas.getPixel({atlasXIndex, yIndex});
 
         if (c.g == 255)
         {
@@ -71,7 +71,7 @@ Font::GlyphInfo Font::createGlyphIndex(unsigned int atlasXIndex)
             break;
         }
 
-        Color c = m_atlas.getPixel(atlasXIndex + xIndex, yIndex);
+        Color c = m_atlas.getPixel({atlasXIndex + xIndex, yIndex});
 
         if (c.r == 255)
         {

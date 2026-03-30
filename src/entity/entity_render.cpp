@@ -8,8 +8,8 @@ void Entity::renderDebug_boundingBox(Viewport &viewport, const Camera &camera,
     Vec2i a = m_interactionBox.getBoundingBox().getA() + pos;
     Vec2i b = m_interactionBox.getBoundingBox().getB() + pos;
 
-    a = camera.worldToViewport(a.x, a.y, viewport);
-    b = camera.worldToViewport(b.x, b.y, viewport);
+    a = camera.worldToViewport(a, viewport);
+    b = camera.worldToViewport(b, viewport);
 
     viewport.drawRectOutline(a, b, color);
 }

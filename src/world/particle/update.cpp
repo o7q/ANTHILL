@@ -1,20 +1,18 @@
-#include "events/event_emitter.hpp"
-#include "particle_handler.hpp"
+#include "particle_world.hpp"
 
-void ParticleHandler::update(float dt, Vec2i origin, Vec2i size)
+void ParticleWorld::update(float dt, Vec2i origin, Vec2i size)
 {
     for (auto &event : m_events.getEmittedEvents())
     {
         switch (event->type)
         {
-        case ParticleEventType::Draw:
-        {
+            case ParticleEventType::Draw:
             auto e = static_cast<ParticleDrawEvent *>(event.get());
-            draw(e->position.x, e->position.y, e->particle, e->radius);
-        }
-        break;
+            m_editor.draw(e->position, e->particle, e->radius);
+            break;
         }
     }
     m_events.purge();
-    m_pDynamicsHandler.update(dt, origin, size);
+    
+    m_dynamicsHandler.update(dt, origin, size);
 }

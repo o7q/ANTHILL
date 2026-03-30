@@ -16,7 +16,7 @@ void PDynamicsHandler::update(float dt, Vec2i origin, Vec2i size)
     {
         for (int x = origin.x + halfSize.x; x >= origin.x - halfSize.x; --x)
         {
-            Particle *p = r_particles.get(x, y);
+            Particle *p = r_particles.get({x, y});
 
             if (!p)
             {
@@ -36,7 +36,7 @@ void PDynamicsHandler::update(float dt, Vec2i origin, Vec2i size)
                 continue;
             }
 
-            ParticleObject po{p, x, y};
+            ParticleObject po{p, {x, y}};
             update_particle(po, dt);
         }
     }
@@ -71,9 +71,9 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
     Particle *hitParticle = nullptr;
     bool hit = false;
 
-    auto function = [&](int x, int y)
+    auto function = [&](Vec2i pos)
     {
-        if (Particle *next = r_particles.get(x, y))
+        if (Particle *next = r_particles.get(pos))
         {
             bool canPass = false;
 
@@ -95,13 +95,13 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
             if (!canPass && next != po.particle)
             {
                 hit = true;
-                hitCell = Vec2i(x, y);
+                hitCell = pos;
                 hitParticle = next;
                 return true;
             }
         }
 
-        previousCheck = Vec2i(x, y);
+        previousCheck = pos;
         return false;
     };
 
@@ -166,9 +166,9 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
         newVelB.y = 0;
     }
 
-    verletA.setPosition(previousCheck.x, previousCheck.y);
-    verletA.setVelocity(newVelA.x, newVelA.y, dt);
-    verletB.setVelocity(newVelB.x, newVelB.y, dt);
+    verletA.setPosition(previousCheck.toFloat());
+    verletA.setVelocity(newVelA, dt);
+    verletB.setVelocity(newVelB, dt);
 }
 
 void PDynamicsHandler::finalize_particle(ParticleObject po)
@@ -176,5 +176,5 @@ void PDynamicsHandler::finalize_particle(ParticleObject po)
     Vec2i finalPos = po.particle->getVerlet().getPosition().toGrid();
 
     po.particle->setUpdateSwapID(m_updateSwapID);
-    r_particles.move(po.x, po.y, finalPos.x, finalPos.y);
+    r_particles.move(po.pos, finalPos);
 }

@@ -6,7 +6,7 @@ void Entity::updateMotion_applyExternal(Vec2i currentPos,
                                         const EntityUpdateContext &context)
 {
     if (m_interactionBox.getWorldHandler().againstSolidSurface(
-            currentPos, RectangleSide::Bottom, context.particles))
+            currentPos, RectangleSide::Bottom, context.world))
     {
         m_body.haltMotionInDirection(0, 1);
     }
@@ -16,7 +16,7 @@ void Entity::updateMotion_applyExternal(Vec2i currentPos,
     }
 
     if (m_interactionBox.getWorldHandler().againstSolidSurface(
-            currentPos, RectangleSide::Top, context.particles))
+            currentPos, RectangleSide::Top, context.world))
     {
         m_body.haltMotionInDirection(0, -1);
     }
@@ -38,7 +38,7 @@ void Entity::updateMotion_preventWorldCollision(
     WorldInteractionHandler::TrajectoryCollisionResponse response =
         m_interactionBox.getWorldHandler()
             .calculateCollisionFromTrajectorySlide(
-                currentPos.toGrid(), updatedPos.toGrid(), context.particles);
+                currentPos.toGrid(), updatedPos.toGrid(), context.world);
 
     if (response.collided)
     {
@@ -47,14 +47,13 @@ void Entity::updateMotion_preventWorldCollision(
 
         WorldInteractionHandler::StepResponse step =
             m_interactionBox.getWorldHandler().calculateStep(
-                response.resolvePosition, updatedPos.toGrid(),
-                context.particles);
+                response.resolvePosition, updatedPos.toGrid(), context.world);
 
         float finalX =
             response.resolvePosition.x + step.moveVector.x + remainderX;
         float finalY =
             response.resolvePosition.y + step.moveVector.y + remainderY;
 
-        m_body.setPositionFloat(finalX, finalY);
+        m_body.setPositionFloat({finalX, finalY});
     }
 }
