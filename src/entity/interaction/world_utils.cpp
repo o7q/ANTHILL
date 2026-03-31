@@ -130,22 +130,8 @@ WorldInteractionHandler::generateLocalWorldQuery(Vec2i pos,
             out.staticSolidCount++;
         }
 
-        if (p->isImmovable())
-        {
-            out.immovableCount++;
-        }
-
-        out.relativeDensity += p->getDensity();
-
         return false;
     };
-
-    int area = r_boundingBox.getArea();
-    out.relativeDensity /= area;
-    out.relativeToxicity /= area;
-    out.relativeHeat /= area;
-    out.staticSolidPercentage = static_cast<float>(out.staticSolidCount) / area;
-    out.immovablePercentage = static_cast<float>(out.immovableCount) / area;
 
     world.query(r_boundingBox.getA() + pos, r_boundingBox.getB() + pos, query);
 

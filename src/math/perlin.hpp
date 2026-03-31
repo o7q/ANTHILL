@@ -2,6 +2,7 @@
 
 #include "math/interpolation.hpp"
 #include "math/vec.hpp"
+#include <algorithm>
 #include <cstdint>
 
 namespace Math
@@ -21,7 +22,7 @@ inline const Vec2f gradients[16] = {
 inline Vec2f randomGradient(Vec2i index, uint32_t seed)
 {
     uint32_t h = (uint32_t)index.x ^ ((uint32_t)index.y << 16);
-    h *= seed | 1;
+    h ^= seed;
     h ^= h >> 16;
     h *= 0x85ebca6b;
     h ^= h >> 13;
@@ -74,7 +75,7 @@ inline float sampleEx(Vec2f pos, Vec2f gridSize, int iterations, uint32_t seed)
         a /= 2.0f;
     }
 
-    return v;
+    return std::clamp(v + 0.5f, 0.0f, 1.0f);
 }
 } // namespace Perlin
 } // namespace Math

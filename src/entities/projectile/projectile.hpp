@@ -65,6 +65,6 @@ class Projectile : public Entity, public IDirectional
     }
     void render(Viewport &viewport, const Camera &camera) override
     {
-        renderDebug_boundingBox(viewport, camera);
+        DEBUG_renderBoundingBox(viewport, camera);
     }
 };

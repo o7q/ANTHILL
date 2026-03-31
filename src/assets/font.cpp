@@ -2,6 +2,6 @@
 
 void Assets::initFonts()
 {
-    m_fonts.add(FontID::Test,
-                std::make_unique<Font>("assets/images/fonts/test.png"));
+    m_fonts.add(FontID::Default,
+                std::make_unique<Font>("assets/fonts/default.png"));
 }

@@ -33,12 +33,6 @@ class WorldInteractionHandler
     struct LocalWorldQuery
     {
         int staticSolidCount = 0;
-        float staticSolidPercentage = 0.0f;
-        int immovableCount = 0;
-        float immovablePercentage = 0.0f;
-        float relativeDensity = 0.0f;
-        float relativeToxicity = 0.0f;
-        float relativeHeat = 0.0f;
     };
 
   public:

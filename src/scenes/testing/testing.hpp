@@ -2,7 +2,6 @@
 
 #include "assets/assets.hpp"
 #include "scene/scene.hpp"
-#include "sprite/multi_sprite_animator.hpp"
 #include "world/world.hpp"
 
 class TestScene : public Scene
@@ -19,5 +18,4 @@ class TestScene : public Scene
 
   private:
     World m_world;
-    MultiSpriteAnimator m_animator;
 };

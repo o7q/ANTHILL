@@ -58,11 +58,8 @@ class Particle
         return m_verletBody.getPosition() != m_verletBody.getPreviousPosition();
     }
 
-    void setImmovable(bool immovable) { m_immovable = immovable; }
-    bool isImmovable() const { return m_immovable; }
-
-    void setDensity(float density) { m_density = density; }
-    float getDensity() const { return m_density; }
+    void setMass(float mass) { m_mass = mass; }
+    float getMass() const { return m_mass; }
 
   private:
     Color m_color;
@@ -71,9 +68,7 @@ class Particle
 
     VerletBody m_verletBody;
     float m_restitution = 1.0f;
-    float m_density = 0.0f;
-
-    bool m_immovable = false;
+    float m_mass = 1.0f;
 
     bool m_updateSwapID = 0;
 };

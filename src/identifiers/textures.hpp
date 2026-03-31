@@ -4,12 +4,6 @@
 
 enum class TextureID
 {
-    Noodle,
-    Pistol,
-    PistolSmall,
-    Character,
-    Carter,
-    TheMan,
-    TheMan2
+    SandBackground
 };
 using TextureIDKey = Identifier<TextureID>;

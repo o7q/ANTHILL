@@ -28,6 +28,6 @@ class Font
 
   private:
     Texture m_atlas;
-    const std::string m_charmap = "abcdefghijklmnopqrstuvwxyz1234567890-";
+    const std::string m_charmap = "abcdefghijklmnopqrstuvwxyz1234567890";
     std::unordered_map<char, GlyphInfo> m_glyphInfos;
 };

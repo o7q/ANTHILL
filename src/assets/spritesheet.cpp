@@ -4,7 +4,8 @@
 
 void Assets::initSpriteSheets()
 {
-    m_spriteSheets.add(SpriteSheetID::CatBoinga,
-                       std::make_unique<SpriteSheet>(
-                           "assets/images/cat_boinga.png", Vec2u(15, 25)));
+    m_spriteSheets.add(
+        SpriteSheetID::Wuskkogel,
+        std::make_unique<SpriteSheet>(
+            "assets/spritesheets/wuskkogel/wuskkogel.png", Vec2u(23, 22)));
 }

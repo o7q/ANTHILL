@@ -34,16 +34,8 @@ class VerletBody
     void addForce(Vec2f force) { m_force += force; }
     void clearForces() { m_force = Vec2f(0.0f, 0.0f); }
 
-    void setDamping(Vec2f damping) { m_damping = damping; }
-    Vec2f getDamping() const { return m_damping; }
-
-    void setMass(float mass) { m_mass = mass; }
-    float getMass() const { return m_mass; }
-
   private:
     Vec2f m_position = {0.0f, 0.0f};
     Vec2f m_positionPrev = {0.0f, 0.0f};
     Vec2f m_force = {0.0f, 0.0f};
-    Vec2f m_damping = {0.0f, 0.0f};
-    float m_mass = 1.0f;
 };

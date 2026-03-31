@@ -37,10 +37,7 @@ class Player : public Entity, public IHead
 
     void render(Viewport &viewport, const Camera &camera) override
     {
-        viewport.drawTexture(
-            *r_assets.textures().get(TextureID::Character),
-            camera.worldToViewport(m_body.getPosition(), viewport));
-        renderDebug_boundingBox(viewport, camera, Color(79, 255, 94));
+        DEBUG_renderBoundingBox(viewport, camera, Color(79, 255, 94));
     }
 
     void updateAimPosition(Vec2i aimPos)

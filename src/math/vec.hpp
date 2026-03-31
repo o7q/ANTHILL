@@ -14,11 +14,13 @@ template <typename T> struct Vec2
     Vec2 operator-(const Vec2 &v) const { return {x - v.x, y - v.y}; }
     Vec2 operator*(const Vec2 &v) const { return {x * v.x, y * v.y}; }
     Vec2 operator/(const Vec2 &v) const { return {x / v.x, y / v.y}; }
+    Vec2 operator%(const Vec2 &v) const { return {x % v.x, y % v.y}; }
 
     Vec2 operator+(T s) const { return {x + s, y + s}; }
     Vec2 operator-(T s) const { return {x - s, y - s}; }
     Vec2 operator*(T s) const { return {x * s, y * s}; }
     Vec2 operator/(T s) const { return {x / s, y / s}; }
+    Vec2 operator%(T s) const { return {x % s, y % s}; }
 
     Vec2 &operator+=(const Vec2 &v)
     {
@@ -44,6 +46,12 @@ template <typename T> struct Vec2
         y /= v.y;
         return *this;
     }
+    Vec2 &operator%=(const Vec2 &v)
+    {
+        x %= v.x;
+        y %= v.y;
+        return *this;
+    }
 
     Vec2 &operator+=(T s)
     {
@@ -67,6 +75,12 @@ template <typename T> struct Vec2
     {
         x /= s;
         y /= s;
+        return *this;
+    }
+    Vec2 &operator%=(T s)
+    {
+        x %= s;
+        y %= s;
         return *this;
     }
 

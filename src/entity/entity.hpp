@@ -44,7 +44,7 @@ class Entity
         }
     }
 
-    void renderDebug_boundingBox(Viewport &viewport, const Camera &camera,
+    void DEBUG_renderBoundingBox(Viewport &viewport, const Camera &camera,
                                  Color color = Color(43, 255, 223));
 
   private:

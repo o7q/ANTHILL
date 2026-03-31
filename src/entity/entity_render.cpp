@@ -1,6 +1,6 @@
 #include "entity.hpp"
 
-void Entity::renderDebug_boundingBox(Viewport &viewport, const Camera &camera,
+void Entity::DEBUG_renderBoundingBox(Viewport &viewport, const Camera &camera,
                                      Color color)
 {
     Vec2i pos = m_body.getPosition().toGrid();

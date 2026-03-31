@@ -21,7 +21,7 @@ class ParticleWorld
     }
 
     void update(float dt, Vec2i origin, Vec2i size);
-    void render(Viewport &viewport, const Camera &camera);
+    void render(Viewport &viewport, const Camera &camera, const Assets &assets);
 
     const ChunkMap<Particle> &getParticles() const { return m_particles; }
     ChunkMap<Particle> &getParticles() { return m_particles; }

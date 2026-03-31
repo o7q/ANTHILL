@@ -45,7 +45,8 @@ void PDynamicsHandler::applyForce(int x, int y, float power, float dt)
                     continue;
                 }
 
-                if (p->isAir() || p->isImmovable())
+                if (p->isAir() ||
+                    p->getPhysicsType() == Particle::PhysicsType::None)
                 {
                     continue;
                 }

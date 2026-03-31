@@ -4,6 +4,6 @@
 
 enum class FontID
 {
-    Test
+    Default
 };
 using FontIDKey = Identifier<FontID>;

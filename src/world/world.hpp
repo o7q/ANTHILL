@@ -20,7 +20,7 @@ class World
     World &operator=(const World &other) = delete;
 
     void update(float dt);
-    void render(Viewport &viewport);
+    void render(Viewport &viewport, const Assets& assets);
 
     ParticleWorld &getParticleWorld() { return m_particleWorld; }
     Generator &getGenerator() { return m_generator; }

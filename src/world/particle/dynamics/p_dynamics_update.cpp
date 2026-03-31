@@ -31,7 +31,7 @@ void PDynamicsHandler::update(float dt, Vec2i origin, Vec2i size)
             r_navmesh.update(p, chunkIndex);
             lastNavmeshChunkIndex = chunkIndex;
             if (p->getUpdateSwapID() == m_updateSwapID || p->isAir() ||
-                p->isImmovable())
+                p->getPhysicsType() == Particle::PhysicsType::None)
             {
                 continue;
             }
@@ -126,8 +126,8 @@ void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
     Vec2f newVelA = velA;
     Vec2f newVelB = velB;
 
-    float mA = verletA.getMass();
-    float mB = verletB.getMass();
+    float mA = po.particle->getMass();
+    float mB = hitParticle->getMass();
 
     if (hitDirection.x != 0)
     {
