@@ -30,12 +30,8 @@ void Wuskkogel::update(const EntityUpdateContext &context)
 
     if (result.has_value())
     {
-        m_body.setVelocityY(Math::Numbers::sign(result->y));
-        m_body.setVelocityX(Math::Numbers::sign(result->x) * 1);
-    }
-    else
-    {
-        m_body.setVelocityX(0);
+        m_body.setVelocityTargetX(Math::Numbers::sign(result->x) * 1.5f);
+        m_body.setVelocityTargetY(Math::Numbers::sign(result->y) * 1);
     }
 
     updateMotion(context);

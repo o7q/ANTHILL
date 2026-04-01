@@ -4,19 +4,11 @@ void Player::update(const EntityUpdateContext &context)
 {
     if (r_input.getInput(InputID::Left)->isDown())
     {
-        m_body.setVelocityX(-7);
+        m_body.setVelocityTargetX(-5.0f);
     }
     if (r_input.getInput(InputID::Right)->isDown())
     {
-        m_body.setVelocityX(7);
-    }
-    if (r_input.getInput(InputID::Left)->wasUnpressed())
-    {
-        m_body.setVelocityX(0);
-    }
-    if (r_input.getInput(InputID::Right)->wasUnpressed())
-    {
-        m_body.setVelocityX(0);
+        m_body.setVelocityTargetX(5.0f);
     }
     if (r_input.getInput(InputID::Jump)->wasPressed())
     {

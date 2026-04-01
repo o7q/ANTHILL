@@ -53,32 +53,42 @@ void Viewport::drawRectFilled(Vec2i p1, Vec2i p2, Color color)
     }
 }
 
-void Viewport::drawTexture(const Texture &texture, Vec2i pos)
+void Viewport::drawTexture(const Texture &texture, TextureDrawSettings s)
 {
-    Vec2i size = texture.getSize().toInt();
-    Vec2i halfSize = size / 2;
-
-    for (int y = 0; y < size.y; ++y)
+    if (s.rotateSettings.has_value())
     {
-        for (int x = 0; x < size.x; ++x)
+        draw_texture_rotated(texture, s);
+        return;
+    }
+
+    Vec2i textureSize = texture.getSize().toInt();
+    Vec2i halfTextureSize = textureSize / 2;
+
+    for (int y = 0; y < textureSize.y; ++y)
+    {
+        for (int x = 0; x < textureSize.x; ++x)
         {
-            Color color = texture.getPixel(Vec2u(x, y));
-            setPixel((pos - halfSize + Vec2i(x, y)).toUnsignedInt(), color);
+            unsigned readX = s.flipX ? textureSize.x - x - 1 : x;
+            unsigned readY = s.flipY ? textureSize.y - y - 1 : y;
+
+            Color color = texture.getPixel(Vec2u(readX, readY));
+            setPixel((s.pos - halfTextureSize + Vec2i(x, y)).toUnsignedInt(),
+                     color);
         }
     }
 }
 
-void Viewport::drawTextureRotated(const Texture &texture, Vec2i pos,
-                                  float angle,
-                                  std::optional<Vec2i> rotateOrigin,
-                                  int overdraw)
+void Viewport::draw_texture_rotated(const Texture &texture,
+                                    TextureDrawSettings s)
 {
+    TextureRotateSettings rs = s.rotateSettings.value();
+
     Vec2i textureSize = texture.getSize().toInt();
     Vec2i halfTextureSize = textureSize / 2;
-    Vec2i origin = rotateOrigin.value_or(halfTextureSize);
+    Vec2i origin = rs.origin.value_or(halfTextureSize);
 
-    float cosA = std::cosf(angle);
-    float sinA = std::sinf(angle);
+    float cosA = std::cosf(rs.angle);
+    float sinA = std::sinf(rs.angle);
 
     for (int y = 0; y < textureSize.y; ++y)
     {
@@ -91,15 +101,18 @@ void Viewport::drawTextureRotated(const Texture &texture, Vec2i pos,
             float rotatedY = sinA * dx + cosA * dy;
 
             int destX = static_cast<int>(
-                std::roundf(pos.x + rotatedX + origin.x - halfTextureSize.x));
+                std::roundf(s.pos.x + rotatedX + origin.x - halfTextureSize.x));
             int destY = static_cast<int>(
-                std::roundf(pos.y + rotatedY + origin.y - halfTextureSize.y));
+                std::roundf(s.pos.y + rotatedY + origin.y - halfTextureSize.y));
 
-            Color color = texture.getPixel(Vec2u(x, y));
+            unsigned readX = s.flipX ? textureSize.x - x - 1 : x;
+            unsigned readY = s.flipY ? textureSize.y - y - 1 : y;
 
-            for (int py = 0; py < overdraw + 1; ++py)
+            Color color = texture.getPixel(Vec2u(readX, readY));
+
+            for (int py = 0; py < rs.overdraw + 1; ++py)
             {
-                for (int px = 0; px < overdraw + 1; ++px)
+                for (int px = 0; px < rs.overdraw + 1; ++px)
                 {
                     if (x + px >= textureSize.x || y + py >= textureSize.y)
                     {

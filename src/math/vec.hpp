@@ -114,37 +114,36 @@ template <typename T> struct Vec2
     {
         return {std::pow(x, other.x), std::pow(y, other.y)};
     }
+    Vec2 clamp(const Vec2 &min, const Vec2 &max)
+    {
+        return {Math::Numbers::clamp(x, min.x, max.x),
+                Math::Numbers::clamp(y, min.y, max.y)};
+    }
+    Vec2<int> direction()
+    {
+        return {Math::Numbers::sign(x), Math::Numbers::sign(y)};
+    }
 
     Vec2<int> toGrid() const
     {
         return {static_cast<int>(std::floor(x)),
                 static_cast<int>(std::floor(y))};
     }
-
     Vec2<float> toFloat() const
     {
         return {static_cast<float>(x), static_cast<float>(y)};
     }
-
     Vec2<double> toDouble() const
     {
         return {static_cast<double>(x), static_cast<double>(y)};
     }
-
     Vec2<int> toInt() const
     {
         return {static_cast<int>(x), static_cast<int>(y)};
     }
-
     Vec2<unsigned int> toUnsignedInt() const
     {
         return {static_cast<unsigned int>(x), static_cast<unsigned int>(y)};
-    }
-
-    Vec2 clamp(const Vec2 &min, const Vec2 &max)
-    {
-        return {Math::Numbers::clamp(x, min.x, max.x),
-                Math::Numbers::clamp(y, min.y, max.y)};
     }
 };
 

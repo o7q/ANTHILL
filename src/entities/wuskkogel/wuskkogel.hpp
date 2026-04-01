@@ -5,13 +5,12 @@
 #include "assets/assets.hpp"
 #include "backend/viewport/viewport.hpp"
 #include "entity/entity.hpp"
-#include "entity/interfaces/head.hpp"
 #include "entity/update_context.hpp"
 #include "events/entity/entity_entity.hpp"
 #include "sprite/sprite_animator.hpp"
 #include "world/camera/camera.hpp"
 
-class Wuskkogel : public Entity, public IHead
+class Wuskkogel : public Entity
 {
   public:
     Wuskkogel(uint64_t id, const Assets &assets);
@@ -20,9 +19,15 @@ class Wuskkogel : public Entity, public IHead
 
     void render(Viewport &viewport, const Camera &camera) override
     {
-        viewport.drawTexture(
-            *m_animator.getCurrentFrame(),
-            camera.worldToViewport(m_body.getPosition(), viewport));
+        Viewport::TextureDrawSettings settings;
+        settings.pos = camera.worldToViewport(m_body.getPosition(), viewport);
+
+        if (m_body.getVelocity().x < 0)
+        {
+            settings.flipX = true;
+        }
+
+        viewport.drawTexture(*m_animator.getCurrentFrame(), settings);
     }
 
   private:

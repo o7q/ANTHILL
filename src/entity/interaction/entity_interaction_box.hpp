@@ -3,10 +3,10 @@
 #include "math/rectangle.hpp"
 #include "world_interaction.hpp"
 
-class InteractionBox
+class EntityInteractionBox
 {
   public:
-    InteractionBox() : m_worldHandler(m_boundingBox) {}
+    EntityInteractionBox() : m_worldHandler(m_boundingBox) {}
 
     WorldInteractionHandler &getWorldHandler() { return m_worldHandler; }
     StaticGridRectangle &getBoundingBox() { return m_boundingBox; }

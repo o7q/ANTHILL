@@ -1,8 +1,8 @@
 #pragma once
 
 #include "backend/viewport/viewport.hpp"
-#include "entity/interaction/interaction_box.hpp"
-#include "entity/kinetic_body/kinetic_body.hpp"
+#include "entity/body/entity_body.hpp"
+#include "entity/interaction/entity_interaction_box.hpp"
 #include "entity/metadata.hpp"
 #include "entity/update_context.hpp"
 #include "events/entity/base.hpp"
@@ -24,9 +24,12 @@ class Entity
     void damage(float amount, uint64_t afflictor = 0) { m_health -= amount; }
     bool isDead() const { return m_dead; }
 
-    KineticBody &getBody() { return m_body; }
-    const KineticBody &getBody() const { return m_body; }
-    const InteractionBox &getInteractionBox() const { return m_interactionBox; }
+    EntityBody &getBody() { return m_body; }
+    const EntityBody &getBody() const { return m_body; }
+    const EntityInteractionBox &getInteractionBox() const
+    {
+        return m_interactionBox;
+    }
     EntityMetadata getMetadata() const { return m_metadata; }
 
     const uint64_t getID() const { return m_id; }
@@ -54,8 +57,8 @@ class Entity
                                             const EntityUpdateContext &context);
 
   protected:
-    InteractionBox m_interactionBox;
-    KineticBody m_body;
+    EntityInteractionBox m_interactionBox;
+    EntityBody m_body;
 
     EntityMetadata m_metadata;
     EventEmitter<EntityEvent> m_eventEmitter;

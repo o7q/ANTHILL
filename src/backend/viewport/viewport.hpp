@@ -10,6 +10,22 @@
 class Viewport
 {
   public:
+    struct TextureRotateSettings
+    {
+        float angle = 0.0f;
+        std::optional<Vec2i> origin;
+        int overdraw = 1;
+    };
+
+    struct TextureDrawSettings
+    {
+        Vec2i pos;
+        bool flipX = false;
+        bool flipY = false;
+        std::optional<TextureRotateSettings> rotateSettings;
+    };
+
+  public:
     Viewport(SDL_Window *window, Vec2u size);
     Viewport(const Viewport &other) = delete;
     Viewport &operator=(const Viewport &other) = delete;
@@ -32,10 +48,11 @@ class Viewport
     void drawSegment(Vec2i p1, Vec2i p2, Color color);
     void drawRectOutline(Vec2i p1, Vec2i p2, Color color);
     void drawRectFilled(Vec2i p1, Vec2i p2, Color color);
-    void drawTexture(const Texture &texture, Vec2i pos);
-    void drawTextureRotated(const Texture &texture, Vec2i pos, float angle,
-                            std::optional<Vec2i> rotateOrigin = std::nullopt,
-                            int overdraw = 1);
+    void drawTexture(const Texture &texture, TextureDrawSettings settings);
+
+  private:
+    void draw_texture_rotated(const Texture &texture,
+                              TextureDrawSettings settings);
 
   private:
     void update_pixel_changes();

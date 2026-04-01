@@ -14,6 +14,7 @@ void TestScene::onStart()
 
     auto wuskkogel = std::make_unique<Wuskkogel>(
         m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
+    wuskkogel->getBody().setPosition({0, -20});
     m_world.getEntityHandler().addEntity(std::move(wuskkogel));
 }
 
@@ -26,6 +27,11 @@ void TestScene::onTick()
 
     if (r_window.getInputHandler().getInput(InputID::AltAction1)->isDown())
     {
+        // Player *player = m_world.getEntityHandler().getCurrentPlayer();
+
+        // player->getBody().addForce(player->getBody().getPositionFloat() -
+        //                            worldMousePos.toFloat());
+
         Particle stone;
         float mult = Math::Random::weakRandInt(80, 100) / 100.0f;
         stone.setColor(Color(200 * mult, 205 * mult, 200 * mult));
@@ -52,16 +58,25 @@ void TestScene::onTick()
 
         m_world.getParticleWorld().getEditor().draw(worldMousePos, sand, 4);
     }
+    if (r_window.getInputHandler().getInput(InputID::AltAction4)->wasPressed())
+    {
+        r_time.setSpeedMultiplier(0.1f);
+    }
+    if (r_window.getInputHandler().getInput(InputID::AltAction5)->wasPressed())
+    {
+        r_time.setSpeedMultiplier(1.0f);
+    }
 
     m_world.getEntityHandler().getCurrentPlayer()->updateAimPosition(
         worldMousePos);
+    m_world.update(r_time.getDT());
     if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
     {
         Vec2i playerPos = player->getBody().getPosition();
         m_world.getGenerator().generateInRadius(playerPos.toInt(), {20, 20});
         m_world.getCamera().setGoal(playerPos);
+        m_world.getCamera().update(r_time.getDT());
     }
-    m_world.update(r_time.getDT());
     m_world.render(r_viewport, r_assets);
 
     Texture fpsText =
@@ -69,7 +84,7 @@ void TestScene::onTick()
             .get(FontID::Default)
             ->generateStringTexture(std::to_string((int)r_time.getFPS()),
                                     Color(0, 255, 0), 5, 1, 8);
-    r_viewport.drawTexture(fpsText, {10, 5});
+    r_viewport.drawTexture(fpsText, {{10, 5}});
 
     if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
     {
@@ -80,6 +95,6 @@ void TestScene::onTick()
                 ->generateStringTexture(std::to_string((int)playerPos.x) + " " +
                                             std::to_string((int)playerPos.y),
                                         Color(255, 255, 0), 5, 1, 8);
-        r_viewport.drawTexture(posTest, {50, 5});
+        r_viewport.drawTexture(posTest, {{50, 5}});
     }
 }

@@ -20,7 +20,7 @@ class JumpHandler
     void setHoldDuration(float duration) { m_jumpHoldDuration = duration; }
 
   private:
-    float m_jumpPower = 5.0f;
+    float m_jumpPower = 8.0f;
 
     bool m_jumpRequested = false;
     bool m_canJump = false;

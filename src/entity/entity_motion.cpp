@@ -8,7 +8,7 @@ void Entity::updateMotion_applyExternal(Vec2i currentPos,
     if (m_interactionBox.getWorldHandler().againstSolidSurface(
             currentPos, RectangleSide::Bottom, context.world))
     {
-        m_body.haltMotionInDirection(0, 1);
+        m_body.haltMotionInDirection({0, 1});
     }
     else
     {
@@ -18,7 +18,7 @@ void Entity::updateMotion_applyExternal(Vec2i currentPos,
     if (m_interactionBox.getWorldHandler().againstSolidSurface(
             currentPos, RectangleSide::Top, context.world))
     {
-        m_body.haltMotionInDirection(0, -1);
+        m_body.haltMotionInDirection({0, -1});
     }
 }
 
@@ -42,18 +42,15 @@ void Entity::updateMotion_preventWorldCollision(
 
     if (response.collided)
     {
-        float remainderX = updatedPos.x - std::floor(updatedPos.x);
-        float remainderY = updatedPos.y - std::floor(updatedPos.y);
+        Vec2f remainder = updatedPos - updatedPos.floor();
 
         WorldInteractionHandler::StepResponse step =
             m_interactionBox.getWorldHandler().calculateStep(
                 response.resolvePosition, updatedPos.toGrid(), context.world);
 
-        float finalX =
-            response.resolvePosition.x + step.moveVector.x + remainderX;
-        float finalY =
-            response.resolvePosition.y + step.moveVector.y + remainderY;
+        Vec2f finalPos = response.resolvePosition.toFloat() +
+                         step.moveVector.toFloat() + remainder;
 
-        m_body.setPositionFloat({finalX, finalY});
+        m_body.setPositionFloat(finalPos);
     }
 }

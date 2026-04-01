@@ -19,7 +19,7 @@ class Camera
 
     void clearGoal() { m_goalSet = false; }
 
-    void setPosition(int x, int y) { m_position = Vec2i(x, y).toFloat(); }
+    void setPosition(Vec2i pos) { m_position = pos.toFloat(); }
     Vec2i getPosition() const { return m_position.toGrid(); }
 
     Vec2i viewportToWorld(Vec2i pos, const Viewport &viewport) const;
@@ -30,5 +30,5 @@ class Camera
 
     Vec2i m_goal;
     bool m_goalSet = false;
-    float m_goalSpeed = 0.25f;
+    float m_goalSpeed = 0.15f;
 };

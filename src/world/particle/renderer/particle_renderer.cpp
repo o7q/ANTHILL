@@ -48,9 +48,9 @@ void ParticleRenderer::render_background(Viewport &viewport,
 
     Color c = sand->getPixel(parallax);
 
-    c.r *= 0.7f;
-    c.g *= 0.66f;
-    c.b *= 0.6f;
+    c.r *= 0.3f;
+    c.g *= 0.26f;
+    c.b *= 0.16f;
 
     viewport.setPixel(settings.viewportDrawPos, c);
 }
