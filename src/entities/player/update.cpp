@@ -12,7 +12,11 @@ void Player::update(const EntityUpdateContext &context)
     }
     if (r_input.getInput(InputID::Jump)->wasPressed())
     {
-        m_body.setVelocityY(-m_jumpHandler.getJumpPower());
+        m_jumpHandler.requestJump();
+    }
+    if (m_jumpHandler.canJump())
+    {
+        m_body.setVelocityY(m_jumpHandler.getJumpVelocity());
     }
 
     Item *current = m_inventory.getSelectedItem();
@@ -40,8 +44,8 @@ void Player::update(const EntityUpdateContext &context)
 
     bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
         m_body.getPosition(), RectangleSide::Bottom, context.world);
-    m_jumpHandler.update(context.dt, onGround);
 
+    m_jumpHandler.update(context.dt, onGround);
     updateMotion(context);
     updateHealth();
 }

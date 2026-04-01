@@ -1,32 +1,19 @@
 #include "jump_handler.hpp"
+#include <iostream>
 
 void JumpHandler::update(float dt, bool onGround)
 {
     m_canJump = false;
-    // if (m_jumpHoldTimer >= m_jumpHoldDuration)
-    // {
-    //     m_canJump = false;
-    // }
 
-    // if (m_canJump)
-    // {
-    //     m_jumpHoldTimer += dt;
-    // }
-
-    // if (onGround)
-    // {
-    //     m_jumpHoldTimer = 0.0f;
-    // }
-
-    if (!onGround)
+    if (onGround)
     {
-        m_jumpCoyoteTimerEnable = true;
+        m_coyoteTimer.restart();
     }
 
-    if (m_jumpRequested && !onGround)
+    if (!onGround && m_coyoteTimer.active() && m_jumpRequested)
     {
-        m_jumpBufferTimerEnable = true;
-        m_jumpBufferTimer = 0.0f;
+        m_canJump = true;
+        m_coyoteTimer.stop();
     }
 
     if (onGround && m_jumpRequested)
@@ -34,42 +21,6 @@ void JumpHandler::update(float dt, bool onGround)
         m_canJump = true;
     }
 
-    if (m_jumpBufferTimerEnable)
-    {
-        if (onGround && m_jumpBufferTimer < m_jumpBufferDuration)
-        {
-            m_canJump = true;
-            m_jumpBufferTimerEnable = false;
-            m_jumpBufferTimer = 0.0f;
-        }
-        else
-        {
-            m_jumpBufferTimer += dt;
-        }
-    }
-
-    // if (m_jumpCoyoteTimerEnable)
-    // {
-    //     if (!onGround && m_jumpCoyoteTimer < m_jumpCoyoteDuration &&
-    //         m_jumpRequested)
-    //     {
-    //         m_canJump = true;
-    //         m_jumpCoyoteTimerEnable = false;
-    //         m_jumpCoyoteTimer = 0.0f;
-    //     }
-    //     else
-    //     {
-    //         m_jumpCoyoteTimer += dt;
-    //     }
-    // }
-
-    if (onGround)
-    {
-        m_jumpBufferTimerEnable = false;
-        m_jumpBufferTimer = 0.0f;
-        m_jumpCoyoteTimerEnable = false;
-        m_jumpCoyoteTimer = 0.0f;
-    }
-
+    m_coyoteTimer.update(dt);
     m_jumpRequested = false;
 }

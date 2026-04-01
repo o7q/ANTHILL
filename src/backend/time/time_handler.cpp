@@ -33,6 +33,6 @@ void TimeHandler::frameEnd()
         std::chrono::duration<float>(delayed_frame_end - m_frame_start).count();
 
     m_fps = 1.0f / total_frame_seconds;
-    m_dt = 60.0f / m_fps * m_speed_multiplier;
+    m_dt = m_dt_base_fps / m_fps * m_speed_multiplier;
     m_dt = std::clamp(m_dt, 0.0f, m_max_dt);
 }

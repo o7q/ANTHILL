@@ -32,5 +32,7 @@ class TimeHandler
     float m_fps = 60.0f;
     float m_dt = 1.0f;
 
+    const float m_dt_base_fps = 60.0f;
+
     float m_speed_multiplier = 1.0f;
 };

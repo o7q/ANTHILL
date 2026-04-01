@@ -27,11 +27,6 @@ void TestScene::onTick()
 
     if (r_window.getInputHandler().getInput(InputID::AltAction1)->isDown())
     {
-        // Player *player = m_world.getEntityHandler().getCurrentPlayer();
-
-        // player->getBody().addForce(player->getBody().getPositionFloat() -
-        //                            worldMousePos.toFloat());
-
         Particle stone;
         float mult = Math::Random::weakRandInt(80, 100) / 100.0f;
         stone.setColor(Color(200 * mult, 205 * mult, 200 * mult));

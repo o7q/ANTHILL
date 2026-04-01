@@ -10,6 +10,7 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
 
     m_interactionBox.getBoundingBox().setSize({12, 16});
     m_body.setGravity(0.0f);
+    m_body.setTargetDamping({0.92f, 0.92f});
 
     m_aiPerception.setSightFOV(120);
     m_aiPerception.setSightRayAmount(20);

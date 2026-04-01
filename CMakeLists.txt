@@ -12,7 +12,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE "./src")
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 
-target_compile_options(${PROJECT_NAME} PRIVATE -O3 -Wall)
+target_compile_options(${PROJECT_NAME} PRIVATE -O2 -Wall)
 
 # PATHS "./3rd_party/SDL3" NO_DEFAULT_PATH
 find_package(SDL3 REQUIRED)
