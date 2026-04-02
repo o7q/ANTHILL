@@ -1,26 +1,38 @@
 #include "jump_handler.hpp"
-#include <iostream>
 
 void JumpHandler::update(float dt, bool onGround)
 {
-    m_canJump = false;
-
     if (onGround)
     {
         m_coyoteTimer.restart();
-    }
-
-    if (!onGround && m_coyoteTimer.active() && m_jumpRequested)
-    {
-        m_canJump = true;
-        m_coyoteTimer.stop();
+        m_allowCoyoteJump = true;
+        m_doubleJumpCounter = 0;
     }
 
     if (onGround && m_jumpRequested)
     {
-        m_canJump = true;
+        m_holdJumpTimer.restart();
+        m_allowCoyoteJump = false;
+    }
+
+    if (!onGround && m_jumpRequested)
+    {
+        bool coyoteJumped = false;
+        if (m_allowCoyoteJump && m_coyoteTimer.active())
+        {
+            m_holdJumpTimer.restart();
+            m_coyoteTimer.stop();
+            coyoteJumped = true;
+        }
+
+        if (m_doubleJumpCounter < m_doubleJumpAmount && !coyoteJumped)
+        {
+            m_holdJumpTimer.restart();
+            m_doubleJumpCounter++;
+        }
     }
 
     m_coyoteTimer.update(dt);
+    m_holdJumpTimer.update(dt);
     m_jumpRequested = false;
 }

@@ -11,12 +11,10 @@ void EntityBody::update(float dt)
 
     m_velocity =
         m_velocityTarget + (m_velocity - m_velocityTarget) * targetDamping;
-    m_velocity += m_additionalVelocity;
 
     m_position += m_velocity * dt;
 
     m_velocityTarget = {0.0f, 0.0f};
-    m_additionalVelocity = {0.0f, 0.0f};
 }
 
 void EntityBody::haltMotionInDirection(Vec2i dir)

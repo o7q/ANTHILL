@@ -28,7 +28,6 @@ class EntityBody
         m_velocity.y = y;
         m_velocityTarget.y = y;
     }
-    void addVelocity(Vec2f vel) { m_additionalVelocity += vel; }
     void setVelocityTarget(Vec2f target) { m_velocityTarget = target; }
     void setVelocityTargetX(float x) { m_velocityTarget.x = x; }
     void setVelocityTargetY(float y) { m_velocityTarget.y = y; }
@@ -51,7 +50,6 @@ class EntityBody
 
     Vec2f m_velocity;
     Vec2f m_velocityTarget;
-    Vec2f m_additionalVelocity;
     Vec2f m_targetDamping = {0.5f, 0.97f};
 
     float m_gravity = 15.0f;
