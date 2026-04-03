@@ -3,12 +3,14 @@
 #include "assets/assets.hpp"
 #include "backend/input/input_handler.hpp"
 #include "backend/viewport/viewport.hpp"
+#include "debug/renderers.hpp"
+#include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
 #include "entity/jump_handler/jump_handler.hpp"
 #include "entity/metadata.hpp"
 #include "events/entity/entity_entity.hpp"
 #include "item/inventory.hpp"
-#include "items/weapons/pistol.hpp"
+#include "items/weapons/shotgun.hpp"
 #include "math/angle.hpp"
 #include "world/camera/camera.hpp"
 #include <memory>
@@ -17,13 +19,14 @@ class Player : public Entity
 {
   public:
     Player(uint64_t id, InputHandler &input, const Assets &assets)
-        : Entity(id), r_input(input), r_assets(assets)
+        : Entity(id), r_input(input), r_assets(assets),
+          m_bodyHandler(m_body, m_boundingBox)
     {
-        m_interactionBox.getBoundingBox().setSize({10, 25});
+        m_boundingBox.setSize({10, 25});
         m_metadata.faction = EntityFaction::Player;
 
-        auto pistol = std::make_unique<Pistol>();
-        m_inventory.addItem(std::move(pistol), 0);
+        auto shotgun = std::make_unique<Shotgun>();
+        m_inventory.addItem(std::move(shotgun), 0);
 
         m_metadata.name = "Player";
     }
@@ -35,7 +38,8 @@ class Player : public Entity
 
     void render(Viewport &viewport, const Camera &camera) override
     {
-        DEBUG_renderBoundingBox(viewport, camera, Color(79, 255, 94));
+        DEBUG_renderBoundingBox(viewport, camera, m_body.getPosition(),
+                                m_boundingBox);
     }
 
     void updateAimPosition(Vec2i aimPos)
@@ -47,6 +51,7 @@ class Player : public Entity
   private:
     InputHandler &r_input;
     const Assets &r_assets;
+    BodyUpdateHandler m_bodyHandler;
     JumpHandler m_jumpHandler;
     Inventory m_inventory;
 

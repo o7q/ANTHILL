@@ -1,14 +1,12 @@
-#include "world_interaction.hpp"
+#include "intersection.hpp"
 
-#include <array>
-
-// minimum translation vector
-WorldInteractionHandler::MTVIntersectionResponse
-WorldInteractionHandler::calculateWorldIntersection_MTV(
-    Vec2i pos, const ParticleWorld &world)
+EntityWorldInteraction::MTVIntersectionResponse
+EntityWorldInteraction::calculateWorldIntersection_MTV(
+    Vec2i pos, const StaticGridRectangle &boundingBox,
+    const ParticleWorld &world)
 {
-    const Vec2i size = r_boundingBox.getSize().toGrid();
-    const Vec2i topLeft = r_boundingBox.getA() + pos;
+    const Vec2i size = boundingBox.getSize().toGrid();
+    const Vec2i topLeft = boundingBox.getA() + pos;
 
     //    0
     // 3 [-] 1
@@ -85,11 +83,12 @@ WorldInteractionHandler::calculateWorldIntersection_MTV(
     return response;
 }
 
-Vec2f WorldInteractionHandler::calculateWorldIntersection_averageDirection(
-    Vec2i pos, const ParticleWorld &world)
+Vec2f EntityWorldInteraction::calculateWorldIntersection_averageDirection(
+    Vec2i pos, const StaticGridRectangle &boundingBox,
+    const ParticleWorld &world)
 {
-    const Vec2u size = r_boundingBox.getSize();
-    const Vec2i topLeft = pos + r_boundingBox.getA();
+    const Vec2u size = boundingBox.getSize();
+    const Vec2i topLeft = pos + boundingBox.getA();
 
     Vec2i sum = Vec2i(0, 0);
     int count = 0;

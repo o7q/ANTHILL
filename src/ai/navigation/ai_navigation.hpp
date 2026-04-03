@@ -10,7 +10,7 @@ class AINavigation
   public:
     struct Config
     {
-        int astarMaxIterations = 50000;
+        int astarMaxIterations = 100000;
         int astarTerminationDistance = 0;
         int astarIterationsPerFrame = 100;
         int checkpointEatRadius = 4;

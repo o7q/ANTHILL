@@ -17,6 +17,11 @@ void JumpHandler::update(float dt, bool onGround)
 
     if (!onGround && m_jumpRequested)
     {
+        m_jumpBufferTimer.restart();
+    }
+
+    if (!onGround && m_jumpRequested)
+    {
         bool coyoteJumped = false;
         if (m_allowCoyoteJump && m_coyoteTimer.active())
         {
@@ -32,7 +37,13 @@ void JumpHandler::update(float dt, bool onGround)
         }
     }
 
+    if (onGround && m_jumpBufferTimer.active())
+    {
+        m_holdJumpTimer.restart();
+    }
+
     m_coyoteTimer.update(dt);
     m_holdJumpTimer.update(dt);
+    m_jumpBufferTimer.update(dt);
     m_jumpRequested = false;
 }

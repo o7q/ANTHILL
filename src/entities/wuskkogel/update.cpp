@@ -34,8 +34,6 @@ void Wuskkogel::update(const EntityUpdateContext &context)
         m_body.setVelocityTargetY(Math::Numbers::sign(result->y) * 1);
     }
 
-    updateMotion(context);
-    updateHealth();
-
+    m_bodyHandler.update(context);
     m_animator.update(context.dt);
 }

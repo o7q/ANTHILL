@@ -7,8 +7,9 @@ class JumpHandler
   public:
     JumpHandler()
     {
-        m_coyoteTimer.setDurationInSeconds(0.15f);
+        m_coyoteTimer.setDurationInSeconds(0.1f);
         m_holdJumpTimer.setDurationInSeconds(0.15f);
+        m_jumpBufferTimer.setDurationInSeconds(0.1f);
     }
     virtual ~JumpHandler() = default;
 
@@ -33,6 +34,7 @@ class JumpHandler
     bool m_jumpRequested = false;
 
     Timer m_holdJumpTimer;
+    Timer m_jumpBufferTimer;
 
     Timer m_coyoteTimer;
     bool m_allowCoyoteJump = false;

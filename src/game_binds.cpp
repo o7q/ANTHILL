@@ -15,6 +15,9 @@ void Game::init_binds()
     m_window.getInputHandler().addInput(InputID::Jump,
                                         {{Input::ButtonType::Key, SDLK_SPACE}});
 
+    m_window.getInputHandler().addInput(InputID::Reload,
+                                        {{Input::ButtonType::Key, SDLK_R}});
+
     m_window.getInputHandler().addInput(
         InputID::Action1, {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});
     m_window.getInputHandler().addInput(

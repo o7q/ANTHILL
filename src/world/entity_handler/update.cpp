@@ -14,7 +14,7 @@ void EntityHandler::update(const ParticleWorld &world, float dt)
 
         handleEvents(entity->getEventEmitter());
 
-        if (entity->isDead())
+        if (entity->getHealth() <= 0.0f)
         {
             m_entitiesToRemove.push_back(entity->getID());
         }

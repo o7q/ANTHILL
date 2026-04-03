@@ -71,6 +71,10 @@ void AINavigation::update_movement(Vec2i currentPos)
     {
         m_stuckCounter++;
     }
+    else
+    {
+        m_stuckCounter = 0;
+    }
 
     m_previousCheckpoint = current;
 

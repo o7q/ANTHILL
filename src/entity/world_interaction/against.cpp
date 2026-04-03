@@ -1,11 +1,11 @@
-#include "math/rectangle.hpp"
-#include "world_interaction.hpp"
+#include "against.hpp"
 
-bool WorldInteractionHandler::againstSolidSurface(Vec2i pos, RectangleSide side,
-                                                  const ParticleWorld &world)
+bool EntityWorldInteraction::againstSolidSurface(
+    Vec2i pos, const StaticGridRectangle &boundingBox,
+    const ParticleWorld &world, RectangleSide side)
 {
-    Vec2u size = r_boundingBox.getSize();
-    Vec2i topLeft = pos + r_boundingBox.getA();
+    Vec2u size = boundingBox.getSize();
+    Vec2i topLeft = pos + boundingBox.getA();
 
     bool collided = false;
 
@@ -54,12 +54,12 @@ bool WorldInteractionHandler::againstSolidSurface(Vec2i pos, RectangleSide side,
     return collided;
 }
 
-bool WorldInteractionHandler::againstSolidCorner(Vec2i pos,
-                                                 RectangleCorner corner,
-                                                 const ParticleWorld &world)
+bool EntityWorldInteraction::againstSolidCorner(
+    Vec2i pos, const StaticGridRectangle &boundingBox,
+    const ParticleWorld &world, RectangleCorner corner)
 {
-    Vec2i size = r_boundingBox.getSize().toInt();
-    Vec2i topLeft = pos + r_boundingBox.getA();
+    Vec2i size = boundingBox.getSize().toInt();
+    Vec2i topLeft = pos + boundingBox.getA();
 
     bool collided = false;
     switch (corner)
@@ -115,25 +115,4 @@ bool WorldInteractionHandler::againstSolidCorner(Vec2i pos,
     }
 
     return collided;
-}
-
-WorldInteractionHandler::LocalWorldQuery
-WorldInteractionHandler::generateLocalWorldQuery(Vec2i pos,
-                                                 const ParticleWorld &world)
-{
-    LocalWorldQuery out;
-
-    auto query = [&](const Particle *p)
-    {
-        if (p->isSolid() && !p->isMoving())
-        {
-            out.staticSolidCount++;
-        }
-
-        return false;
-    };
-
-    world.query(r_boundingBox.getA() + pos, r_boundingBox.getB() + pos, query);
-
-    return out;
 }

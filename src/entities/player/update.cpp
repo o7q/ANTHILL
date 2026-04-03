@@ -1,3 +1,6 @@
+#include "entity/world_interaction/against.hpp"
+#include "item/reloadable.hpp"
+#include "math/rectangle.hpp"
 #include "player.hpp"
 
 void Player::update(const EntityUpdateContext &context)
@@ -14,13 +17,14 @@ void Player::update(const EntityUpdateContext &context)
     {
         m_jumpHandler.requestJump();
     }
-    if (r_input.getInput(InputID::Jump)->wasUnpressed())
+    if (!r_input.getInput(InputID::Jump)->isDown())
     {
         m_jumpHandler.cancelJump();
     }
 
-    bool onGround = m_interactionBox.getWorldHandler().againstSolidSurface(
-        m_body.getPosition(), RectangleSide::Bottom, context.world);
+    bool onGround = EntityWorldInteraction::againstSolidSurface(
+        m_body.getPosition(), m_boundingBox, context.world,
+        RectangleSide::Bottom);
 
     m_jumpHandler.update(context.dt, onGround);
 
@@ -44,6 +48,16 @@ void Player::update(const EntityUpdateContext &context)
             current->stopUsing();
         }
     }
+    if (r_input.getInput(InputID::Reload)->wasPressed())
+    {
+        if (current)
+        {
+            if (auto *reloadable = dynamic_cast<IReloadable *>(current))
+            {
+                reloadable->reload();
+            }
+        }
+    }
 
     if (current)
     {
@@ -52,6 +66,5 @@ void Player::update(const EntityUpdateContext &context)
         current->update(context, ownerContext);
     }
 
-    updateMotion(context);
-    updateHealth();
+    m_bodyHandler.update(context);
 }
