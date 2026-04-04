@@ -1,13 +1,12 @@
 #pragma once
 
-#include "backend/viewport/viewport.hpp"
+#include "backend/viewport/render_command.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/metadata.hpp"
 #include "entity/update_context.hpp"
 #include "events/entity/base.hpp"
-#include "events/event_emitter.hpp"
+#include "events/event_pool.hpp"
 #include "math/rectangle.hpp"
-#include "world/camera/camera.hpp"
 
 class Entity
 {
@@ -17,8 +16,9 @@ class Entity
     }
     virtual ~Entity() = default;
 
-    virtual void update(const EntityUpdateContext &context) = 0;
-    virtual void render(Viewport &viewport, const Camera &camera) = 0;
+    virtual EventPool<EntityEvent>
+    update(const EntityUpdateContext &context) = 0;
+    virtual std::vector<RenderCommand> render(const Camera &camera) = 0;
 
     void kill() { m_health = -1.0f; }
     void damage(float amount, uint64_t afflictor = 0) { m_health -= amount; }
@@ -34,14 +34,11 @@ class Entity
     const uint64_t getID() const { return m_id; }
     const uint64_t getParent() const { return m_parentID; }
 
-    EventEmitter<EntityEvent> &getEventEmitter() { return m_eventEmitter; }
-
   protected:
     StaticGridRectangle m_boundingBox;
     EntityBody m_body;
 
     EntityMetadata m_metadata;
-    EventEmitter<EntityEvent> m_eventEmitter;
 
   private:
     const uint64_t m_id = 0;

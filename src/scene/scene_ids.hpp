@@ -3,5 +3,6 @@
 enum class SceneID
 {
     None,
-    Testing
+    Testing,
+    Testing2
 };

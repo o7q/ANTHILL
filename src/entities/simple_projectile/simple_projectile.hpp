@@ -1,7 +1,6 @@
 #pragma once
 
-#include "backend/viewport/viewport.hpp"
-#include "debug/renderers.hpp"
+#include "backend/viewport/render_command.hpp"
 #include "entity/entity.hpp"
 #include "events/entity/entity_entity.hpp"
 
@@ -21,10 +20,13 @@ class SimpleProjectile : public Entity
         m_metadata.name = "Projectile";
     }
 
-    virtual void update(const EntityUpdateContext &context) override;
-    void render(Viewport &viewport, const Camera &camera) override
+    virtual EventPool<EntityEvent>
+    update(const EntityUpdateContext &context) override;
+
+    std::vector<RenderCommand> render(const Camera &camera) override
     {
-        DEBUG_renderBoundingBox(viewport, camera, m_body.getPosition(), m_boundingBox);
+        std::vector<RenderCommand> commands;
+        return commands;
     }
 
   private:

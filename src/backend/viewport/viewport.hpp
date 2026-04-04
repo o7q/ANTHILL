@@ -1,30 +1,14 @@
 #pragma once
 
 #include "backend/texture/texture.hpp"
+#include "backend/viewport/render_command.hpp"
 #include "math/color.hpp"
 #include "math/vec.hpp"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
-#include <optional>
 
 class Viewport
 {
-  public:
-    struct TextureRotateSettings
-    {
-        float angle = 0.0f;
-        int overdraw = 1;
-    };
-
-    struct TextureDrawSettings
-    {
-        Vec2i pos;
-        std::optional<Vec2i> origin;
-        bool flipX = false;
-        bool flipY = false;
-        std::optional<TextureRotateSettings> rotateSettings;
-    };
-
   public:
     Viewport(SDL_Window *window, Vec2u size);
     Viewport(const Viewport &other) = delete;
@@ -34,9 +18,6 @@ class Viewport
     void present();
     void clear();
 
-    void setPixel(Vec2u pos, Color color);
-    Color getPixel(Vec2u pos);
-
     Vec2u getSize() const { return m_size; }
     float getAspectRatio() const { return m_aspectRatio; }
 
@@ -44,15 +25,19 @@ class Viewport
 
     Vec2i windowToViewportPosition(Vec2f windowPosition);
 
-  public:
-    void drawSegment(Vec2i p1, Vec2i p2, Color color);
-    void drawRectOutline(Vec2i p1, Vec2i p2, Color color);
-    void drawRectFilled(Vec2i p1, Vec2i p2, Color color);
-    void drawTexture(const Texture &texture, TextureDrawSettings settings);
+    void render(const RenderCommandData &data);
 
   private:
-    void draw_texture_rotated(const Texture &texture,
-                              TextureDrawSettings settings);
+    void set_pixel(Vec2u pos, Color color);
+    Color get_pixel(Vec2u pos);
+
+    void render_segment(const SegmentRenderCommandData &data);
+    void render_rect(const RectangleRenderCommandData &data);
+    void render_rect_outline(const RectangleRenderCommandData &data);
+    void render_rect_fill(const RectangleRenderCommandData &data);
+    void render_texture(const TextureRenderCommandData &data);
+    void render_texture_basic(const TextureRenderCommandData &data);
+    void render_texture_rotated(const TextureRenderCommandData &data);
 
   private:
     void update_pixel_changes();

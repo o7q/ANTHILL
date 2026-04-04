@@ -3,12 +3,12 @@
 #include "events/entity/entity_backend.hpp"
 #include "events/entity/entity_entity.hpp"
 #include "events/entity/entity_particle.hpp"
-#include "events/event_emitter.hpp"
+#include "events/event_pool.hpp"
 #include <memory>
 
-void EntityHandler::handleEvents(EventEmitter<EntityEvent> &emitter)
+void EntityHandler::handleEvents(EventPool<EntityEvent> &pool)
 {
-    for (auto &event : emitter.getEmittedEvents())
+    for (auto &event : pool.getEvents())
     {
         switch (event->type)
         {
@@ -46,6 +46,4 @@ void EntityHandler::handleEvents(EventEmitter<EntityEvent> &emitter)
         break;
         }
     }
-
-    emitter.purge();
 }

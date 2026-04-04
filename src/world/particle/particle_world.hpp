@@ -1,7 +1,6 @@
 #pragma once
 
-#include "backend/viewport/viewport.hpp"
-#include "events/event_emitter.hpp"
+#include "events/event_pool.hpp"
 #include "events/particle/base.hpp"
 #include "utils/data_structures/chunk_map.hpp"
 #include "world/particle/dynamics/p_dynamics_handler.hpp"
@@ -21,7 +20,6 @@ class ParticleWorld
     }
 
     void update(float dt, Vec2i origin, Vec2i size);
-    void render(Viewport &viewport, const Camera &camera, const Assets &assets);
 
     const ChunkMap<Particle> &getParticles() const { return m_particles; }
     ChunkMap<Particle> &getParticles() { return m_particles; }
@@ -29,7 +27,8 @@ class ParticleWorld
     Navmesh &getNavmesh() { return m_navmesh; }
     PDynamicsHandler &getDynamics() { return m_dynamicsHandler; }
     ParticleEditor &getEditor() { return m_editor; }
-    EventEmitter<ParticleEvent> &getEvents() { return m_events; }
+    ParticleRenderer &getRenderer() { return m_renderer; }
+    EventPool<ParticleEvent> &getEvents() { return m_events; }
 
     template <typename QueryFunction>
     void query(Vec2i start, Vec2i end, QueryFunction &&query,
@@ -60,5 +59,5 @@ class ParticleWorld
     PDynamicsHandler m_dynamicsHandler;
     ParticleEditor m_editor;
     ParticleRenderer m_renderer;
-    EventEmitter<ParticleEvent> m_events;
+    EventPool<ParticleEvent> m_events;
 };

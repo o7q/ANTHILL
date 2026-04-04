@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-template <typename T> class EventEmitter
+template <typename T> class EventPool
 {
   public:
     void emit(std::unique_ptr<T> event)
@@ -11,7 +11,7 @@ template <typename T> class EventEmitter
         m_events.push_back(std::move(event));
     }
 
-    const std::vector<std::unique_ptr<T>> &getEmittedEvents() const
+    const std::vector<std::unique_ptr<T>> &getEvents() const
     {
         return m_events;
     }

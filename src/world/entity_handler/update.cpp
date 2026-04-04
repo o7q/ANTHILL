@@ -10,9 +10,9 @@ void EntityHandler::update(const ParticleWorld &world, float dt)
 
         std::vector<const Entity *> nearby = getNearbyEntities(entity);
         EntityUpdateContext context{dt, world, nearby};
-        entity->update(context);
+        EventPool<EntityEvent> events = entity->update(context);
 
-        handleEvents(entity->getEventEmitter());
+        handleEvents(events);
 
         if (entity->getHealth() <= 0.0f)
         {

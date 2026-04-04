@@ -4,10 +4,12 @@
 #include "backend/input/input_handler.hpp"
 #include "backend/sound/sound_handler.hpp"
 #include "backend/time/time_handler.hpp"
+#include "backend/viewport/render_command.hpp"
 #include "backend/window/window.hpp"
 #include "events/backend/base.hpp"
-#include "events/event_emitter.hpp"
+#include "events/event_pool.hpp"
 #include "scene_ids.hpp"
+#include <vector>
 
 class Scene
 {
@@ -51,7 +53,8 @@ class Scene
     InputHandler &r_input;
     TimeHandler &r_time;
 
-    EventEmitter<BackendEvent> m_backendEvents;
+    EventPool<BackendEvent> m_backendEvents;
+    std::vector<RenderCommand> m_renderCommands;
 
   private:
     bool m_firstTick = true;

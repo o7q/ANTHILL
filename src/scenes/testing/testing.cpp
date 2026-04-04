@@ -1,8 +1,6 @@
 #include "testing.hpp"
+#include "backend/viewport/render_command.hpp"
 #include "entities/wuskkogel/wuskkogel.hpp"
-#include "math/angle.hpp"
-#include "math/random.hpp"
-#include <iostream>
 #include <memory>
 
 void TestScene::onStart()
@@ -22,95 +20,39 @@ void TestScene::onStart()
 
 void TestScene::onTick()
 {
+    m_camera.setViewSize(r_viewport.getSize());
+
     Vec2i viewportMousePos =
         r_viewport.windowToViewportPosition(r_input.getMousePosition());
-    Vec2i worldMousePos =
-        m_world.getCamera().viewportToWorld(viewportMousePos, r_viewport);
+    Vec2i worldMousePos = m_camera.viewportToCamera(viewportMousePos);
 
-    if (r_window.getInputHandler().getInput(InputID::AltAction1)->isDown())
-    {
-        Particle stone;
-        float mult = Math::Random::weakRandInt(80, 100) / 100.0f;
-        stone.setColor(Color(200 * mult, 205 * mult, 200 * mult));
-        stone.setPhysicsType(Particle::PhysicsType::None);
-        stone.setMatterType(Particle::MatterType::Solid);
-        stone.setMass(200000000);
+    Player *player = m_world.getEntityHandler().getCurrentPlayer();
+    player->updateAimPosition(worldMousePos);
 
-        m_world.getParticleWorld().getEditor().draw(worldMousePos, stone, 20);
-    }
-    if (r_window.getInputHandler().getInput(InputID::AltAction2)->isDown())
-    {
-        Particle air;
+    Vec2i playerPos = player->getBody().getPosition();
+    m_world.getGenerator().generateInRadius(playerPos.toInt(), {20, 20});
+    m_camera.setGoal(playerPos);
+    m_camera.update(r_time.getDT());
 
-        m_world.getParticleWorld().getEditor().draw(worldMousePos, air, 10);
-    }
-    if (r_window.getInputHandler().getInput(InputID::AltAction3)->isDown())
-    {
-        Particle sand;
-        float mult = Math::Random::weakRandInt(80, 100) / 100.0f;
-        sand.setColor(Color(255 * mult, 235 * mult, 161 * mult));
-        sand.setPhysicsType(Particle::PhysicsType::Sand);
-        sand.setMatterType(Particle::MatterType::Solid);
-        sand.setRestitution(0.1f);
+    m_world.update(r_time.getDT(), {0, 0});
+    std::vector<RenderCommand> worldCommands =
+        m_world.render(m_camera, r_assets);
 
-        m_world.getParticleWorld().getEditor().draw(worldMousePos, sand, 4);
-    }
-    if (r_window.getInputHandler().getInput(InputID::AltAction4)->wasPressed())
+    for (auto c : worldCommands)
     {
-        m_flip = !m_flip;
-        // r_time.setSpeedMultiplier(0.1f);
-    }
-    if (r_window.getInputHandler().getInput(InputID::AltAction5)->wasPressed())
-    {
-        // r_time.setSpeedMultiplier(1.0f);
+        m_renderCommands.push_back(c);
     }
 
-    m_world.getEntityHandler().getCurrentPlayer()->updateAimPosition(
-        worldMousePos);
-    m_world.update(r_time.getDT());
-    if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
-    {
-        Vec2i playerPos = player->getBody().getPosition();
-        m_world.getGenerator().generateInRadius(playerPos.toInt(), {20, 20});
-        m_world.getCamera().setGoal(playerPos);
-        m_world.getCamera().update(r_time.getDT());
-    }
-    m_world.render(r_viewport, r_assets);
+    fpsText = r_assets.fonts()
+                  .get(FontID::Default)
+                  ->generateStringTexture(std::to_string((int)r_time.getFPS()),
+                                          Color(0, 255, 0), 5, 1, 8);
 
-    Texture fpsText =
-        r_assets.fonts()
-            .get(FontID::Default)
-            ->generateStringTexture(std::to_string((int)r_time.getFPS()),
-                                    Color(0, 255, 0), 5, 1, 8);
-    r_viewport.drawTexture(fpsText, {{10, 5}});
+    TextureRenderCommandData fpsRenderData;
+    fpsRenderData.texture = &fpsText;
+    fpsRenderData.position = {10, 5};
 
-    if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
-    {
-        Vec2f playerPos = player->getBody().getPositionFloat();
-        Texture posTest =
-            r_assets.fonts()
-                .get(FontID::Default)
-                ->generateStringTexture(std::to_string((int)playerPos.x) + " " +
-                                            std::to_string((int)playerPos.y),
-                                        Color(255, 255, 0), 5, 1, 8);
-        r_viewport.drawTexture(posTest, {{50, 5}});
-    }
-
-    // Vec2i base = {100, 100};
-    // Vec2i aimPos = viewportMousePos;
-
-    // float angle = Math::Angle::vectorsToAngle(base.toFloat(), aimPos.toFloat());
-
-    // Viewport::TextureDrawSettings settings;
-    // settings.pos = base;
-
-    // settings.origin = {5, 1};
-    // settings.flipY = m_flip;
-
-    // Viewport::TextureRotateSettings rot;
-    // rot.angle = angle;
-    // rot.overdraw = 0;
-    // settings.rotateSettings = rot;
-    // r_viewport.drawTexture(*r_assets.textures().get(TextureID::Shotgun),
-    //                        settings);
+    RenderCommand fpsRenderCommand;
+    fpsRenderCommand.data = fpsRenderData;
+    m_renderCommands.push_back(fpsRenderCommand);
 }

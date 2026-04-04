@@ -1,10 +1,11 @@
 #pragma once
 
+#include "backend/viewport/render_command.hpp"
 #include "entities/player/player.hpp"
 #include "entity/entity.hpp"
 #include "entity/update_context.hpp"
 #include "events/backend/base.hpp"
-#include "events/event_emitter.hpp"
+#include "events/event_pool.hpp"
 #include "world/entity_handler/id.hpp"
 #include "world/particle/particle_world.hpp"
 #include <cstdint>
@@ -15,8 +16,8 @@
 class EntityHandler
 {
   public:
-    EntityHandler(EventEmitter<BackendEvent> &backendEvents,
-                  EventEmitter<ParticleEvent> &particleEvents)
+    EntityHandler(EventPool<BackendEvent> &backendEvents,
+                  EventPool<ParticleEvent> &particleEvents)
         : r_backendEvents(backendEvents), r_particleEvents(particleEvents)
     {
     }
@@ -24,9 +25,9 @@ class EntityHandler
     EntityHandler &operator=(const EntityHandler &other) = delete;
 
     void update(const ParticleWorld &world, float dt);
-    void handleEvents(EventEmitter<EntityEvent> &emitter);
+    void handleEvents(EventPool<EntityEvent> &pool);
 
-    void render(Viewport &viewport, const Camera &camera);
+    std::vector<RenderCommand> render(const Camera &camera);
 
     void addEntity(std::unique_ptr<Entity> entity);
     void addPlayer(std::unique_ptr<Player> player);
@@ -39,8 +40,8 @@ class EntityHandler
     EntityIDHandler &getIDHandler() { return m_idHandler; }
 
   private:
-    EventEmitter<BackendEvent> &r_backendEvents;
-    EventEmitter<ParticleEvent> &r_particleEvents;
+    EventPool<BackendEvent> &r_backendEvents;
+    EventPool<ParticleEvent> &r_particleEvents;
 
     EntityIDHandler m_idHandler;
 

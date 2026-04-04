@@ -2,8 +2,7 @@
 
 #include "assets/assets.hpp"
 #include "backend/input/input_handler.hpp"
-#include "backend/viewport/viewport.hpp"
-#include "debug/renderers.hpp"
+#include "backend/viewport/render_command.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
 #include "entity/jump_handler/jump_handler.hpp"
@@ -12,7 +11,6 @@
 #include "item/inventory.hpp"
 #include "items/weapons/shotgun.hpp"
 #include "math/angle.hpp"
-#include "world/camera/camera.hpp"
 #include <memory>
 
 class Player : public Entity
@@ -34,12 +32,26 @@ class Player : public Entity
 
     Inventory &getInventory() { return m_inventory; }
 
-    virtual void update(const EntityUpdateContext &context) override;
+    virtual EventPool<EntityEvent>
+    update(const EntityUpdateContext &context) override;
 
-    void render(Viewport &viewport, const Camera &camera) override
+    std::vector<RenderCommand> render(const Camera &camera) override
     {
-        DEBUG_renderBoundingBox(viewport, camera, m_body.getPosition(),
-                                m_boundingBox);
+        std::vector<RenderCommand> commands;
+
+        RectangleRenderCommandData data;
+        data.a = camera.cameraToViewport(m_boundingBox.getA() +
+                                         m_body.getPosition());
+        data.b = camera.cameraToViewport(m_boundingBox.getB() +
+                                         m_body.getPosition());
+        data.color = Color(255, 0, 0);
+
+        RenderCommand command;
+        command.data = data;
+
+        commands.push_back(command);
+
+        return commands;
     }
 
     void updateAimPosition(Vec2i aimPos)

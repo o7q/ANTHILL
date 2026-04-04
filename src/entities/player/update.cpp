@@ -4,8 +4,10 @@
 #include "math/rectangle.hpp"
 #include "player.hpp"
 
-void Player::update(const EntityUpdateContext &context)
+EventPool<EntityEvent> Player::update(const EntityUpdateContext &context)
 {
+    EventPool<EntityEvent> events;
+
     if (r_input.getInput(InputID::Left)->isDown())
     {
         m_body.setVelocityTargetX(-5.0f);
@@ -46,7 +48,7 @@ void Player::update(const EntityUpdateContext &context)
 
             for (auto &event : current->use(context))
             {
-                m_eventEmitter.emit(std::move(event));
+                events.emit(std::move(event));
             }
         }
     }
@@ -67,4 +69,6 @@ void Player::update(const EntityUpdateContext &context)
     {
         current->update(context.dt);
     }
+
+    return events;
 }

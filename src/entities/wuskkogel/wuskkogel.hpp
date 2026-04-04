@@ -3,37 +3,25 @@
 #include "ai/navigation/ai_navigation.hpp"
 #include "ai/perception/ai_perception.hpp"
 #include "assets/assets.hpp"
-#include "backend/viewport/viewport.hpp"
-#include "debug/renderers.hpp"
+#include "backend/viewport/render_command.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
 #include "entity/update_context.hpp"
 #include "events/entity/entity_entity.hpp"
+#include "events/event_pool.hpp"
 #include "sprite/sprite_animator.hpp"
-#include "world/camera/camera.hpp"
 
 class Wuskkogel : public Entity
 {
   public:
     Wuskkogel(uint64_t id, const Assets &assets);
 
-    void update(const EntityUpdateContext &context) override;
+    EventPool<EntityEvent> update(const EntityUpdateContext &context) override;
 
-    void render(Viewport &viewport, const Camera &camera) override
+    std::vector<RenderCommand> render(const Camera &camera) override
     {
-        Viewport::TextureDrawSettings settings;
-        settings.pos = camera.worldToViewport(m_body.getPosition(), viewport);
-
-        if (m_body.getVelocity().x < 0)
-        {
-            settings.flipX = true;
-        }
-
-        viewport.drawTexture(*m_animator.getCurrentFrame(), settings);
-
-        // DEBUG_renderAINavigationInProgress(viewport, camera, m_aiNavigation,
-        //                                    {8, 8});
-        // DEBUG_renderAINavigation(viewport, camera, m_aiNavigation);
+        std::vector<RenderCommand> commands;
+        return commands;
     }
 
   private:

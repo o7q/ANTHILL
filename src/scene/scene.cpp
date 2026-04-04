@@ -1,6 +1,6 @@
 #include "scene.hpp"
 #include "events/backend/base.hpp"
-#include "events/event_emitter.hpp"
+#include "events/event_pool.hpp"
 
 void Scene::update()
 {
@@ -12,7 +12,7 @@ void Scene::update()
 
     onTick();
 
-    for (auto &e : m_backendEvents.getEmittedEvents())
+    for (auto &e : m_backendEvents.getEvents())
     {
         switch (e->type)
         {
@@ -27,4 +27,11 @@ void Scene::update()
     }
 
     m_backendEvents.purge();
+
+    for (RenderCommand command : m_renderCommands)
+    {
+        r_viewport.render(command.data);
+    }
+
+    m_renderCommands.clear();
 }

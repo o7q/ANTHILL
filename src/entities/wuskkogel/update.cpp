@@ -1,7 +1,9 @@
 #include "wuskkogel.hpp"
 
-void Wuskkogel::update(const EntityUpdateContext &context)
+EventPool<EntityEvent> Wuskkogel::update(const EntityUpdateContext &context)
 {
+    EventPool<EntityEvent> events;
+
     const Entity *player = nullptr;
     for (const Entity *entity : context.nearbyEntities)
     {
@@ -14,7 +16,7 @@ void Wuskkogel::update(const EntityUpdateContext &context)
 
     if (!player)
     {
-        return;
+        return events;
     }
 
     Vec2i playerPos = player->getBody().getPosition();
@@ -36,4 +38,6 @@ void Wuskkogel::update(const EntityUpdateContext &context)
 
     m_bodyHandler.update(context);
     m_animator.update(context.dt);
+
+    return events;
 }

@@ -1,16 +1,25 @@
 #include "particle_renderer.hpp"
+#include "backend/viewport/render_command.hpp"
+#include "camera/camera.hpp"
 
-void ParticleRenderer::render(Viewport &viewport, const Camera &camera,
-                              const Assets &assets)
+std::vector<RenderCommand> ParticleRenderer::render(const Camera &camera,
+                                                    const Assets &assets)
 {
-    Vec2u viewport_size = viewport.getSize();
+    Vec2u size = camera.getViewSize();
 
-    for (unsigned int y = 0; y < viewport_size.y; ++y)
+    if (m_texture.getSize() != size)
     {
-        for (unsigned int x = 0; x < viewport_size.x; ++x)
+        reconstructTexture(size);
+    }
+
+    for (unsigned int y = 0; y < size.y; ++y)
+    {
+        for (unsigned int x = 0; x < size.x; ++x)
         {
+            m_texture.setPixel({x, y}, Color());
+
             Vec2i cameraPos = camera.getPosition();
-            Vec2i worldPos = camera.viewportToWorld(Vec2i(x, y), viewport);
+            Vec2i worldPos = camera.viewportToCamera(Vec2i(x, y));
 
             Particle *p = r_particles.get(worldPos);
 
@@ -24,20 +33,32 @@ void ParticleRenderer::render(Viewport &viewport, const Camera &camera,
                 BackgroundRenderSettings settings;
                 settings.cameraPos = cameraPos;
                 settings.worldPos = worldPos;
-                settings.viewportDrawPos = {x, y};
-                render_background(viewport, assets, settings);
+                settings.drawPos = {x, y};
+                render_background(assets, settings);
             }
             else
             {
                 Color c = p->getColor();
-                viewport.setPixel({x, y}, c);
+                m_texture.setPixel({x, y}, c);
             }
         }
     }
+
+    TextureRenderCommandData data;
+    data.texture = &m_texture;
+    data.origin = {0, 0};
+
+    RenderCommand command;
+    command.index = 0;
+    command.data = data;
+
+    std::vector<RenderCommand> commands;
+    commands.push_back(command);
+
+    return commands;
 }
 
-void ParticleRenderer::render_background(Viewport &viewport,
-                                         const Assets &assets,
+void ParticleRenderer::render_background(const Assets &assets,
                                          BackgroundRenderSettings settings)
 {
     const Texture *sand = assets.textures().get(TextureID::SandBackground);
@@ -52,5 +73,5 @@ void ParticleRenderer::render_background(Viewport &viewport,
     c.g *= 0.26f;
     c.b *= 0.16f;
 
-    viewport.setPixel(settings.viewportDrawPos, c);
+    m_texture.setPixel(settings.drawPos, c);
 }

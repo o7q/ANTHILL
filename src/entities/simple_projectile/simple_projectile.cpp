@@ -3,8 +3,11 @@
 #include "events/entity/entity_particle.hpp"
 #include "math/random.hpp"
 
-void SimpleProjectile::update(const EntityUpdateContext &context)
+EventPool<EntityEvent>
+SimpleProjectile::update(const EntityUpdateContext &context)
 {
+    EventPool<EntityEvent> events;
+
     m_body.setVelocity(m_constantVelocity);
 
     Vec2i start = m_body.getPosition();
@@ -22,8 +25,10 @@ void SimpleProjectile::update(const EntityUpdateContext &context)
         event->particleEvent.radius = Math::Random::weakRandInt(3, 6);
         event->particleEvent.particle = Particle();
 
-        m_eventEmitter.emit(std::move(event));
+        events.emit(std::move(event));
 
         kill();
     }
+
+    return events;
 }

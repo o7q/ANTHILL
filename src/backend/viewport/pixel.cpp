@@ -1,6 +1,6 @@
 #include "viewport.hpp"
 
-void Viewport::setPixel(Vec2u pos, Color color)
+void Viewport::set_pixel(Vec2u pos, Color color)
 {
     if (pos.x >= m_size.x || pos.y >= m_size.y)
     {
@@ -14,7 +14,7 @@ void Viewport::setPixel(Vec2u pos, Color color)
         float a = color.a / 255.0f;
         float inv_a = 1.0f - a;
 
-        Color current = getPixel(pos);
+        Color current = get_pixel(pos);
         color.r = a * color.r + inv_a * current.r;
         color.g = a * color.g + inv_a * current.g;
         color.b = a * color.b + inv_a * current.b;
@@ -49,13 +49,8 @@ void Viewport::setPixel(Vec2u pos, Color color)
     m_pixelChanged = true;
 }
 
-Color Viewport::getPixel(Vec2u pos)
+Color Viewport::get_pixel(Vec2u pos)
 {
-    if (pos.x >= m_size.x || pos.y >= m_size.y)
-    {
-        return Color();
-    }
-
     const unsigned int index = get_pixel_index(pos);
     return Color(m_pixels[index], m_pixels[index + 1], m_pixels[index + 2]);
 }
