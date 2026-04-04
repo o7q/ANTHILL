@@ -1,7 +1,7 @@
 #pragma once
 
 #include "backend/sound/sound_handler.hpp"
-#include "identifiers/sounds.hpp"
+#include "identifiers/assets/sounds.hpp"
 
 enum class BackendEventType
 {

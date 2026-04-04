@@ -16,11 +16,11 @@ Window::Window(const std::string &name, Vec2u windowSize, Vec2u viewportSize)
 
 Window::~Window() { SDL_DestroyWindow(m_window); }
 
-void Window::frameStart()
-{
-    m_timeHandler.frameStart();
+void Window::frameStart() { m_timeHandler.frameStart(); }
+void Window::frameEnd() { m_timeHandler.frameEnd(); }
 
-    m_viewport.clear();
+void Window::update()
+{
     m_soundHandler.update();
 
     SDL_Event event;
@@ -46,6 +46,5 @@ void Window::frameStart()
     m_viewport.recalculatePresentRect(m_size, m_aspectRatio);
 }
 
-void Window::frameEnd() { m_timeHandler.frameEnd(); }
-
-void Window::render() { m_viewport.render(); }
+void Window::clear() { m_viewport.clear(); }
+void Window::present() { m_viewport.present(); }

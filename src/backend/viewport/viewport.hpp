@@ -31,7 +31,7 @@ class Viewport
     Viewport &operator=(const Viewport &other) = delete;
     ~Viewport();
 
-    void render();
+    void present();
     void clear();
 
     void setPixel(Vec2u pos, Color color);

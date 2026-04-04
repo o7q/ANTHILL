@@ -7,7 +7,7 @@
 #include "backend/window/window.hpp"
 #include "events/backend/base.hpp"
 #include "events/event_emitter.hpp"
-#include "identifiers/scene.hpp"
+#include "scene_ids.hpp"
 
 class Scene
 {

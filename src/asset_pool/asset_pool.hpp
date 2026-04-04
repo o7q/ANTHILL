@@ -3,13 +3,13 @@
 #include <memory>
 #include <unordered_map>
 
-template <typename KeyType, typename Type> class AssetStore
+template <typename KeyType, typename Type> class AssetPool
 {
   public:
-    AssetStore() = default;
-    AssetStore(const AssetStore &other) = delete;
-    AssetStore &operator=(const AssetStore &other) = delete;
-    ~AssetStore() = default;
+    AssetPool() = default;
+    AssetPool(const AssetPool &other) = delete;
+    AssetPool &operator=(const AssetPool &other) = delete;
+    ~AssetPool() = default;
 
     void add(KeyType key, std::unique_ptr<Type> asset)
     {

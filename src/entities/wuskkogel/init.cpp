@@ -1,5 +1,5 @@
 #include "entity/metadata.hpp"
-#include "identifiers/spritesheet.hpp"
+#include "identifiers/assets/spritesheet.hpp"
 #include "wuskkogel.hpp"
 
 Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
