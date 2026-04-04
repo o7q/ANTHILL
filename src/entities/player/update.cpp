@@ -1,4 +1,5 @@
 #include "entity/world_interaction/against.hpp"
+#include "item/context.hpp"
 #include "item/reloadable.hpp"
 #include "math/rectangle.hpp"
 #include "player.hpp"
@@ -34,18 +35,19 @@ void Player::update(const EntityUpdateContext &context)
     }
 
     Item *current = m_inventory.getSelectedItem();
-    if (r_input.getInput(InputID::Action1)->wasPressed())
+    if (r_input.getInput(InputID::Action1)->isDown())
     {
         if (current)
         {
-            current->startUsing();
-        }
-    }
-    if (r_input.getInput(InputID::Action1)->wasUnpressed())
-    {
-        if (current)
-        {
-            current->stopUsing();
+            ItemUseContext context;
+            context.ownerID = getID();
+            context.heldPosition = m_body.getPosition();
+            context.heldAngle = m_angle;
+
+            for (auto &event : current->use(context))
+            {
+                m_eventEmitter.emit(std::move(event));
+            }
         }
     }
     if (r_input.getInput(InputID::Reload)->wasPressed())
@@ -59,12 +61,10 @@ void Player::update(const EntityUpdateContext &context)
         }
     }
 
+    m_bodyHandler.update(context);
+
     if (current)
     {
-        ItemOwnerContext ownerContext{getID(), m_eventEmitter,
-                                      m_body.getPosition(), m_angle};
-        current->update(context, ownerContext);
+        current->update(context.dt);
     }
-
-    m_bodyHandler.update(context);
 }

@@ -31,9 +31,9 @@ class Wuskkogel : public Entity
 
         viewport.drawTexture(*m_animator.getCurrentFrame(), settings);
 
-        DEBUG_renderAINavigationInProgress(viewport, camera, m_aiNavigation,
-                                           {8, 8});
-        DEBUG_renderAINavigation(viewport, camera, m_aiNavigation);
+        // DEBUG_renderAINavigationInProgress(viewport, camera, m_aiNavigation,
+        //                                    {8, 8});
+        // DEBUG_renderAINavigation(viewport, camera, m_aiNavigation);
     }
 
   private:

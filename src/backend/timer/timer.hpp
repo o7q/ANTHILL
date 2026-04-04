@@ -69,7 +69,7 @@ class Timer
     float m_clock = 0.0f;
 
     bool m_ticked = false;
-    bool m_completed = false;
+    bool m_completed = true;
     bool m_active = false;
 
     Mode m_mode = Mode::Once;

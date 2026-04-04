@@ -1,8 +1,7 @@
 #pragma once
 
-#include "entity/update_context.hpp"
+#include "backend/timer/timer.hpp"
 #include "item/item.hpp"
-#include "item/owner_context.hpp"
 #include "item/reloadable.hpp"
 
 class Gun : public Item, public IReloadable
@@ -17,54 +16,43 @@ class Gun : public Item, public IReloadable
   public:
     Gun(const std::string &name) : Item(name) {}
 
-    virtual void update(const EntityUpdateContext &entityContext,
-                        const ItemOwnerContext &ownerContext) override
-    {
-        if (!m_canShoot)
-        {
-            return;
-        }
-
-        fire(ownerContext);
-
-        if (m_ammoInMagazine > 0)
-        {
-            m_ammoInMagazine--;
-        }
-
-        if (m_fireMode == FireMode::SemiAuto)
-        {
-            m_canShoot = false;
-        }
-    }
-
-    virtual void startUsing() override { m_canShoot = true; }
-    virtual void stopUsing() override { m_canShoot = false; }
     virtual void reload() override
     {
+        if (m_ammoInMagazine > m_magazineSize)
+        {
+            m_ammoInMagazine = m_magazineSize;
+        }
+
         int refillAmount = m_magazineSize - m_ammoInMagazine;
 
         if (refillAmount > m_ammoReserve)
         {
-            return;
+            m_ammoInMagazine = m_ammoInMagazine + m_ammoReserve;
+            m_ammoReserve = 0;
         }
-
-        m_ammoReserve -= refillAmount;
-        m_ammoInMagazine = m_magazineSize;
+        else
+        {
+            m_ammoInMagazine = m_magazineSize;
+            m_ammoReserve -= refillAmount;
+        }
     }
 
     void addAmmo(int amount) { m_ammoReserve += amount; }
+    void depleteAmmo() { m_ammoInMagazine--; }
+    int getAmmoInMagazine() { return m_ammoInMagazine; }
+    int getAmmoInReserve() { return m_ammoReserve; }
+    void setMagazineSize(int size) { m_magazineSize = size; }
 
   protected:
-    virtual void fire(const ItemOwnerContext &ownerContext) = 0;
+    virtual std::vector<std::unique_ptr<EntityEvent>>
+    fire(const ItemUseContext &context) = 0;
 
+  protected:
     FireMode m_fireMode = FireMode::SemiAuto;
+    Vec2i m_muzzlePosition;
+
   private:
     int m_ammoReserve = 0;
     int m_ammoInMagazine = 0;
     int m_magazineSize = 0;
-
-    bool m_canShoot = false;
-
-    float m_fireRate = 1.0f;
 };

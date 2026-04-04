@@ -1,8 +1,11 @@
 #pragma once
 
-#include "entity/update_context.hpp"
-#include "item/owner_context.hpp"
+#include "events/entity/base.hpp"
+#include "item/context.hpp"
+#include "math/vec.hpp"
+#include <memory>
 #include <string>
+#include <vector>
 
 class Item
 {
@@ -12,11 +15,12 @@ class Item
 
     std::string getName() { return m_name; }
 
-    virtual void update(const EntityUpdateContext &context,
-                        const ItemOwnerContext &ownerContext) = 0;
-    virtual void startUsing() = 0;
-    virtual void stopUsing() = 0;
+    virtual void update(float dt) = 0;
+    virtual std::vector<std::unique_ptr<EntityEvent>>
+    use(const ItemUseContext &context) = 0;
 
   protected:
     const std::string m_name = "";
+    Vec2i m_gripPoint1;
+    Vec2i m_gripPoint2;
 };

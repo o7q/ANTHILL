@@ -13,13 +13,13 @@ class Viewport
     struct TextureRotateSettings
     {
         float angle = 0.0f;
-        std::optional<Vec2i> origin;
         int overdraw = 1;
     };
 
     struct TextureDrawSettings
     {
         Vec2i pos;
+        std::optional<Vec2i> origin;
         bool flipX = false;
         bool flipY = false;
         std::optional<TextureRotateSettings> rotateSettings;

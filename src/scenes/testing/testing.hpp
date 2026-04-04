@@ -18,4 +18,6 @@ class TestScene : public Scene
 
   private:
     World m_world;
+
+    bool m_flip = false;
 };

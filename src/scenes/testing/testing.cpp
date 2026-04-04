@@ -1,6 +1,8 @@
 #include "testing.hpp"
 #include "entities/wuskkogel/wuskkogel.hpp"
+#include "math/angle.hpp"
 #include "math/random.hpp"
+#include <iostream>
 #include <memory>
 
 void TestScene::onStart()
@@ -55,11 +57,12 @@ void TestScene::onTick()
     }
     if (r_window.getInputHandler().getInput(InputID::AltAction4)->wasPressed())
     {
-        r_time.setSpeedMultiplier(0.1f);
+        m_flip = !m_flip;
+        // r_time.setSpeedMultiplier(0.1f);
     }
     if (r_window.getInputHandler().getInput(InputID::AltAction5)->wasPressed())
     {
-        r_time.setSpeedMultiplier(1.0f);
+        // r_time.setSpeedMultiplier(1.0f);
     }
 
     m_world.getEntityHandler().getCurrentPlayer()->updateAimPosition(
@@ -92,4 +95,22 @@ void TestScene::onTick()
                                         Color(255, 255, 0), 5, 1, 8);
         r_viewport.drawTexture(posTest, {{50, 5}});
     }
+
+    // Vec2i base = {100, 100};
+    // Vec2i aimPos = viewportMousePos;
+
+    // float angle = Math::Angle::vectorsToAngle(base.toFloat(), aimPos.toFloat());
+
+    // Viewport::TextureDrawSettings settings;
+    // settings.pos = base;
+
+    // settings.origin = {5, 1};
+    // settings.flipY = m_flip;
+
+    // Viewport::TextureRotateSettings rot;
+    // rot.angle = angle;
+    // rot.overdraw = 0;
+    // settings.rotateSettings = rot;
+    // r_viewport.drawTexture(*r_assets.textures().get(TextureID::Shotgun),
+    //                        settings);
 }

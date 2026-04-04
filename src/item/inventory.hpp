@@ -10,6 +10,8 @@ class Inventory
     Inventory() = default;
     virtual ~Inventory() = default;
 
+    void switchSlot(unsigned int slot) { m_selectedSlot = slot; }
+
     void addItem(std::unique_ptr<Item> item, unsigned int slot)
     {
         if (slot >= m_inventorySlots || m_items.count(slot))

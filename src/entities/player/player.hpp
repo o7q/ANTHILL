@@ -25,7 +25,7 @@ class Player : public Entity
         m_boundingBox.setSize({10, 25});
         m_metadata.faction = EntityFaction::Player;
 
-        auto shotgun = std::make_unique<Shotgun>();
+        auto shotgun = std::make_unique<Shotgun>(assets);
         m_inventory.addItem(std::move(shotgun), 0);
 
         m_metadata.name = "Player";
