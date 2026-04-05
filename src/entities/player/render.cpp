@@ -14,7 +14,7 @@ void Player::render(const Camera &camera,
         TextureRenderCommandData gunData;
         gunData.texture = renderable->getTexture();
         gunData.position = camera.cameraToViewport(m_body.getPosition());
-        gunData.origin = {5, 1};
+        gunData.origin = {9, 7};
 
         if (std::abs(m_angle) > 3.14159f / 2.0f)
         {

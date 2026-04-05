@@ -4,6 +4,7 @@
 
 enum class SpriteSheetID
 {
-    Wuskkogel
+    Wuskkogel,
+    Shotgun
 };
 using SpriteSheetIDKey = Identifier<SpriteSheetID>;

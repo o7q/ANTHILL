@@ -4,7 +4,6 @@
 
 enum class TextureID
 {
-    SandBackground,
-    Shotgun
+    SandBackground
 };
 using TextureIDKey = Identifier<TextureID>;

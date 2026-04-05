@@ -4,19 +4,23 @@
 #include "backend/timer/timer.hpp"
 #include "entities/simple_projectile/simple_projectile.hpp"
 #include "events/entity/entity_entity.hpp"
+#include "identifiers/assets/spritesheet.hpp"
 #include "item/context.hpp"
 #include "item/renderable.hpp"
 #include "items/weapons/gun.hpp"
+#include "sprite/sprite_animator.hpp"
 #include <memory>
 
 class Shotgun : public Gun, public IRenderable
 {
   public:
-    Shotgun(const Assets &assets) : Gun("Shotgun"), r_assets(assets)
+    Shotgun(const Assets &assets)
+        : Gun("Shotgun"),
+          m_animator(*assets.spriteSheets().get(SpriteSheetID::Shotgun))
     {
         m_fireMode = FireMode::SemiAuto;
 
-        m_muzzlePosition = {12, 1};
+        m_muzzlePosition = {17, 7};
         m_gripPoint1 = {3, 3};
         m_gripPoint2 = {9, 3};
 
@@ -24,9 +28,15 @@ class Shotgun : public Gun, public IRenderable
         m_fireCooldownTimer.setDurationInSeconds(0.25f);
 
         addAmmo(200);
+
+        m_animator.setFPS(20);
     }
 
-    virtual void update(float dt) override { m_fireCooldownTimer.update(dt); }
+    virtual void update(float dt) override
+    {
+        m_fireCooldownTimer.update(dt);
+        m_animator.update(dt);
+    }
 
     virtual void use(const ItemUseContext &context,
                      EventPool<EntityEvent> &eventsOut) override
@@ -35,12 +45,13 @@ class Shotgun : public Gun, public IRenderable
         {
             fire(context, eventsOut);
             m_fireCooldownTimer.restart();
+            m_animator.restart();
         }
     }
 
     const Texture *getTexture() const override
     {
-        return r_assets.textures().get(TextureID::Shotgun);
+        return m_animator.getCurrentFrame();
     }
 
   protected:
@@ -70,7 +81,6 @@ class Shotgun : public Gun, public IRenderable
     }
 
   private:
-    const Assets &r_assets;
-
     Timer m_fireCooldownTimer;
+    SpriteAnimator m_animator;
 };

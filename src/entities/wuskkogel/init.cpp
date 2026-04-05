@@ -71,4 +71,6 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
     m_aiNavigation.setConfig(cfg);
 
     m_animator.setFPS(12);
+    m_animator.enableLooping();
+    m_animator.restart();
 }

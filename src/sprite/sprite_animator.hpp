@@ -1,6 +1,7 @@
 #pragma once
 
 #include "backend/sprite_sheet/sprite_sheet.hpp"
+#include "backend/timer/timer.hpp"
 
 class SpriteAnimator
 {
@@ -8,26 +9,36 @@ class SpriteAnimator
     SpriteAnimator(const SpriteSheet &spriteSheet)
         : r_spriteSheet(spriteSheet), m_frames(spriteSheet.getSpriteCount())
     {
+        m_timer.setMode(Timer::Mode::Repeat);
     }
 
     void update(float dt)
     {
-        m_frameCounter += (m_fps * dt) / 60.0f;
-
-        if (m_frameCounter >= 1.0f)
+        if (m_timer.ticked())
         {
             m_currentFrame = (m_currentFrame + 1) % m_frames;
-            m_frameCounter = 0;
+
+            if (m_currentFrame == 0 && !m_loop)
+            {
+                m_timer.stop();
+            }
         }
+        m_timer.update(dt);
     }
 
-    void setFPS(unsigned int fps) { m_fps = fps; }
+    void setFPS(unsigned int fps) { m_timer.setDurationInSeconds(1.0f / fps); }
 
-    void play() { m_playing = true; }
-    void pause() { m_playing = false; }
+    void enableLooping() { m_loop = true; }
+    void disableLooping() { m_loop = false; }
+
+    void restart()
+    {
+        m_timer.restart();
+        seek(0);
+    }
     void stop()
     {
-        pause();
+        m_timer.stop();
         seek(0);
     }
     void seek(unsigned int frame) { m_currentFrame = frame; }
@@ -42,8 +53,7 @@ class SpriteAnimator
     const SpriteSheet &r_spriteSheet;
     const unsigned int m_frames = 0;
 
-    bool m_playing = false;
-    float m_frameCounter = 0;
+    Timer m_timer;
     unsigned int m_currentFrame = 0;
-    unsigned int m_fps = 20;
+    bool m_loop = false;
 };
