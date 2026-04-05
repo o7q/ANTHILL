@@ -1,28 +1,28 @@
 #include "p_dynamics_handler.hpp"
 
-bool PDynamicsHandler::can_solid_occupy(Particle *p)
+bool PDynamicsHandler::can_solid_occupy(const Particle *p)
 {
     if (!p)
     {
-        return true;
+        return false;
     }
     return p->isGas() || p->isLiquid();
 }
 
-bool PDynamicsHandler::can_liquid_occupy(Particle *p)
+bool PDynamicsHandler::can_liquid_occupy(const Particle *p)
 {
     if (!p)
     {
-        return true;
+        return false;
     }
     return p->isGas();
 }
 
-bool PDynamicsHandler::can_gas_occupy(Particle *p)
+bool PDynamicsHandler::can_gas_occupy(const Particle *p)
 {
     if (!p)
     {
-        return true;
+        return false;
     }
     return p->isAir();
 }

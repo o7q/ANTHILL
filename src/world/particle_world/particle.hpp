@@ -55,7 +55,8 @@ class Particle
 
     bool isMoving() const
     {
-        return m_verletBody.getPosition() != m_verletBody.getPreviousPosition();
+        return m_verletBody.getPosition().toGrid() !=
+               m_verletBody.getPreviousPosition().toGrid();
     }
 
     void setMass(float mass) { m_mass = mass; }

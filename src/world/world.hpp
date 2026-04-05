@@ -15,7 +15,8 @@ class World
     World(const World &other) = delete;
     World &operator=(const World &other) = delete;
 
-    void update(float dt, Vec2i origin, EventPool<BackendEvent> &backendEvents);
+    void update(float dt, Vec2i origin, Vec2u size,
+                EventPool<BackendEvent> &backendEvents);
 
     void render(const Camera &viewport, const Assets &assets,
                 std::vector<RenderCommand> &commandsOut);

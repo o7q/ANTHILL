@@ -1,10 +1,10 @@
 #include "world.hpp"
 #include "backend/viewport/render_command.hpp"
 
-void World::update(float dt, Vec2i origin,
+void World::update(float dt, Vec2i origin, Vec2u size,
                    EventPool<BackendEvent> &backendEvents)
 {
-    m_particleWorld.update(dt, origin, {600, 400});
+    m_particleWorld.update(dt, origin, size);
     m_entityHandler.update(m_particleWorld, dt,
                            {backendEvents, m_particleWorld.getEvents()});
 }

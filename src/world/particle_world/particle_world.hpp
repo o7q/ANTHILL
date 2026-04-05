@@ -19,7 +19,7 @@ class ParticleWorld
     {
     }
 
-    void update(float dt, Vec2i origin, Vec2i size);
+    void update(float dt, Vec2i origin, Vec2u size);
 
     const ChunkMap<Particle> &getParticles() const { return m_particles; }
     ChunkMap<Particle> &getParticles() { return m_particles; }

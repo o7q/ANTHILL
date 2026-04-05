@@ -19,7 +19,7 @@ class PDynamicsHandler
     {
     }
 
-    void update(float dt, Vec2i origin, Vec2i size);
+    void update(float dt, Vec2i origin, Vec2u size);
 
     void setGravity(float gravity) { m_gravity = gravity; }
     void addGravity(float gravity) { m_gravity += gravity; }
@@ -31,11 +31,18 @@ class PDynamicsHandler
     void update_particle(ParticleObject po, float dt);
     void resolve_particle_collision(ParticleObject po, Vec2f start, Vec2f end,
                                     float dt);
+    void resolve_particle_collision_against_other(ParticleObject po,
+                                                  Particle *hitParticle,
+                                                  Vec2i currentCheck,
+                                                  Vec2i previousCheck,
+                                                  float dt);
+    void resolve_particle_collision_against_null(ParticleObject po,
+                                                 Vec2i previousCheck);
     void finalize_particle(ParticleObject po);
 
-    bool can_solid_occupy(Particle *p);
-    bool can_liquid_occupy(Particle *p);
-    bool can_gas_occupy(Particle *p);
+    bool can_solid_occupy(const Particle *p);
+    bool can_liquid_occupy(const Particle *p);
+    bool can_gas_occupy(const Particle *p);
 
     void update_sand_particle(ParticleObject po, float dt);
     void update_water_particle(ParticleObject po, float dt);

@@ -1,6 +1,6 @@
 #include "particle_world.hpp"
 
-void ParticleWorld::update(float dt, Vec2i origin, Vec2i size)
+void ParticleWorld::update(float dt, Vec2i origin, Vec2u size)
 {
     for (auto &event : m_events.getEvents())
     {
