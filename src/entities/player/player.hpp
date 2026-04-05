@@ -36,20 +36,9 @@ class Player : public Entity
                 EventPool<EntityEvent> &eventsOut) override;
 
     void render(const Camera &camera,
-                std::vector<RenderCommand> &commandsOut) override
-    {
-        RectangleRenderCommandData data;
-        data.a = camera.cameraToViewport(m_boundingBox.getA() +
-                                         m_body.getPosition());
-        data.b = camera.cameraToViewport(m_boundingBox.getB() +
-                                         m_body.getPosition());
-        data.color = Color(255, 0, 0);
-
-        RenderCommand command;
-        command.data = data;
-
-        commandsOut.push_back(command);
-    }
+                std::vector<RenderCommand> &commandsOut) override;
+    void renderBox(const Camera &camera,
+                   std::vector<RenderCommand> &commandsOut);
 
     void updateAimPosition(Vec2i aimPos)
     {

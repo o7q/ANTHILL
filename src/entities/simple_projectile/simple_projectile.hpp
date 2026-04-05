@@ -26,17 +26,11 @@ class SimpleProjectile : public Entity
     void render(const Camera &camera,
                 std::vector<RenderCommand> &commandsOut) override
     {
-        RectangleRenderCommandData data;
-        data.a = camera.cameraToViewport(m_body.getPosition() +
-                                         m_boundingBox.getA());
-        data.b = camera.cameraToViewport(m_body.getPosition() +
-                                         m_boundingBox.getB());
-        data.color = Color(255, 0, 0);
+        PointRenderCommandData data;
+        data.position = camera.cameraToViewport(m_body.getPosition()).toUnsignedInt();
+        data.color = Color(232, 147, 28);
 
-        RenderCommand command;
-        command.data = data;
-
-        commandsOut.push_back(command);
+        commandsOut.push_back({1, data});
     }
 
   private:

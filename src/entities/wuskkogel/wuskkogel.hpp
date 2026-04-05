@@ -26,11 +26,8 @@ class Wuskkogel : public Entity
         data.texture = m_animator.getCurrentFrame();
         data.position = camera.cameraToViewport(m_body.getPosition());
         data.flipX = m_body.getVelocity().x < 0;
-        
-        RenderCommand command;
-        command.data = data;
 
-        commandsOut.push_back(command);
+        commandsOut.push_back({1, data});
     }
 
   private:

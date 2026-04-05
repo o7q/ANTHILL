@@ -5,10 +5,11 @@
 #include "entities/simple_projectile/simple_projectile.hpp"
 #include "events/entity/entity_entity.hpp"
 #include "item/context.hpp"
+#include "item/renderable.hpp"
 #include "items/weapons/gun.hpp"
 #include <memory>
 
-class Shotgun : public Gun
+class Shotgun : public Gun, public IRenderable
 {
   public:
     Shotgun(const Assets &assets) : Gun("Shotgun"), r_assets(assets)
@@ -37,18 +38,26 @@ class Shotgun : public Gun
         }
     }
 
+    const Texture *getTexture() const override
+    {
+        return r_assets.textures().get(TextureID::Shotgun);
+    }
+
   protected:
     virtual void fire(const ItemUseContext &context,
                       EventPool<EntityEvent> &eventsOut) override
     {
+        Vec2f n = {std::cosf(context.heldAngle), std::sinf(context.heldAngle)};
+        n *= 8;
+
         for (int i = -1; i <= 1; ++i)
         {
             auto event = std::make_unique<EntitySpawnEvent>(context.ownerID);
 
-            event->entityFactory = [i, context](uint64_t id)
+            event->entityFactory = [i, context, n](uint64_t id)
             {
                 auto bullet = std::make_unique<SimpleProjectile>(
-                    id, context.ownerID, context.heldPosition,
+                    id, context.ownerID, context.heldPosition + n.toGrid(),
                     context.heldAngle + i / 10.0f, 30.0f);
 
                 return bullet;

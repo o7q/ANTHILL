@@ -3,7 +3,6 @@
 #include "item/reloadable.hpp"
 #include "math/rectangle.hpp"
 #include "player.hpp"
-#include <iostream>
 
 void Player::update(const EntityUpdateContext &context,
                     EventPool<EntityEvent> &eventsOut)

@@ -26,7 +26,9 @@ void Viewport::renderDirect(const RenderCommandData &data)
                           [this](const SegmentRenderCommandData &data)
                           { this->render_segment(data); },
                           [this](const RectangleRenderCommandData &data)
-                          { this->render_rect(data); }},
+                          { this->render_rect(data); },
+                          [this](const PointRenderCommandData &data)
+                          { this->set_pixel(data.position, data.color); }},
                data);
 }
 

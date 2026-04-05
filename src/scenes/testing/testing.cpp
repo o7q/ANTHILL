@@ -1,8 +1,6 @@
 #include "testing.hpp"
 #include "backend/viewport/render_command.hpp"
 #include "entities/wuskkogel/wuskkogel.hpp"
-#include <cstring>
-#include <iostream>
 #include <memory>
 
 void TestScene::onStart()
