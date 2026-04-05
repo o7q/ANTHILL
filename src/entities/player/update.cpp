@@ -1,8 +1,11 @@
 #include "entity/world_interaction/against.hpp"
+#include "events/entity/entity_backend.hpp"
 #include "item/context.hpp"
 #include "item/reloadable.hpp"
+#include "math/random.hpp"
 #include "math/rectangle.hpp"
 #include "player.hpp"
+#include <memory>
 
 void Player::update(const EntityUpdateContext &context,
                     EventPool<EntityEvent> &eventsOut)
@@ -45,7 +48,19 @@ void Player::update(const EntityUpdateContext &context,
             context.heldPosition = m_body.getPosition();
             context.heldAngle = m_angle;
 
-            current->use(context, eventsOut);
+            bool used = current->use(context, eventsOut);
+
+            if (used)
+            {
+                auto shootSoundEvent =
+                    std::make_unique<EntityBackendPlaySoundEvent>(getID());
+                shootSoundEvent->backendEvent.soundID = current->getUseSound();
+                shootSoundEvent->backendEvent.settings.volume = 0.2f;
+                shootSoundEvent->backendEvent.settings.pitch =
+                    100.0f / Math::Random::weakRandInt(95, 100);
+
+                eventsOut.emit(std::move(shootSoundEvent));
+            }
         }
     }
     if (r_input.getInput(InputID::Reload)->wasPressed())

@@ -1,7 +1,18 @@
+#include "backend/texture/texture.hpp"
 #include "assets.hpp"
+#include "identifiers/assets/textures.hpp"
+#include <memory>
+#include <unordered_map>
 
 void Assets::initTextures()
 {
-    m_textures.add(TextureID::SandBackground,
-                   std::make_unique<Texture>("assets/textures/sand.png"));
+    std::unordered_map<TextureIDKey, TextureLoadData> textures;
+
+    textures[TextureID::SandBackground] = {
+        "assets/textures/backgrounds/sand.png"};
+
+    for (auto &[id, data] : textures)
+    {
+        m_textures.add(id, std::make_unique<Texture>(data.path));
+    }
 }

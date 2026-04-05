@@ -4,10 +4,13 @@
 #include "backend/timer/timer.hpp"
 #include "entities/simple_projectile/simple_projectile.hpp"
 #include "events/entity/entity_entity.hpp"
+#include "identifiers/assets/sounds.hpp"
 #include "identifiers/assets/spritesheet.hpp"
 #include "item/context.hpp"
 #include "item/renderable.hpp"
 #include "items/weapons/gun.hpp"
+#include "math/angle.hpp"
+#include "math/random.hpp"
 #include "sprite/sprite_animator.hpp"
 #include <memory>
 
@@ -38,7 +41,7 @@ class Shotgun : public Gun, public IRenderable
         m_animator.update(dt);
     }
 
-    virtual void use(const ItemUseContext &context,
+    virtual bool use(const ItemUseContext &context,
                      EventPool<EntityEvent> &eventsOut) override
     {
         if (m_fireCooldownTimer.completed() && getAmmoInMagazine() > 0)
@@ -46,7 +49,10 @@ class Shotgun : public Gun, public IRenderable
             fire(context, eventsOut);
             m_fireCooldownTimer.restart();
             m_animator.restart();
+            return true;
         }
+
+        return false;
     }
 
     const Texture *getTexture() const override
@@ -54,22 +60,38 @@ class Shotgun : public Gun, public IRenderable
         return m_animator.getCurrentFrame();
     }
 
+    const SoundIDKey getUseSound() const override
+    {
+        constexpr SoundID sounds[3] = {SoundID::WeaponShotgunFire1,
+                                       SoundID::WeaponShotgunFire2,
+                                       SoundID::WeaponShotgunFire3};
+
+        return sounds[Math::Random::weakRandInt(0, 3)];
+    }
+
+    const SoundIDKey getReloadSound() const override
+    {
+        return SoundID::WeaponShotgunReload1;
+    }
+
   protected:
     virtual void fire(const ItemUseContext &context,
                       EventPool<EntityEvent> &eventsOut) override
     {
-        Vec2f n = {std::cosf(context.heldAngle), std::sinf(context.heldAngle)};
+        float radians = Degrees(context.heldAngle).radians();
+
+        Vec2f n = {std::cosf(radians), std::sinf(radians)};
         n *= 8;
 
         for (int i = -1; i <= 1; ++i)
         {
             auto event = std::make_unique<EntitySpawnEvent>(context.ownerID);
 
-            event->entityFactory = [i, context, n](uint64_t id)
+            event->entityFactory = [i, context, n, radians](uint64_t id)
             {
                 auto bullet = std::make_unique<SimpleProjectile>(
                     id, context.ownerID, context.heldPosition + n.toGrid(),
-                    context.heldAngle + i / 10.0f, 30.0f);
+                    radians + i / 10.0f, 30.0f);
 
                 return bullet;
             };

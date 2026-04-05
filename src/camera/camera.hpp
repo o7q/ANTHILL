@@ -27,6 +27,8 @@ class Camera
     Vec2i viewportToCamera(Vec2i pos) const;
     Vec2i cameraToViewport(Vec2i pos) const;
 
+    void jerk(float angle, float amount);
+
   private:
     Vec2f m_position;
     Vec2u m_viewSize;

@@ -42,8 +42,9 @@ class Player : public Entity
 
     void updateAimPosition(Vec2i aimPos)
     {
-        m_angle = Math::Angle::vectorsToAngle(m_body.getPosition().toFloat(),
-                                              aimPos.toFloat());
+        m_angle = Math::Angles::vectorsToAngle(m_body.getPosition().toFloat(),
+                                               aimPos.toFloat())
+                      .degrees();
     }
 
   private:

@@ -2,6 +2,7 @@
 
 #include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
+#include "identifiers/assets/sounds.hpp"
 #include "item/context.hpp"
 #include "math/vec.hpp"
 #include <string>
@@ -15,8 +16,10 @@ class Item
     std::string getName() { return m_name; }
 
     virtual void update(float dt) = 0;
-    virtual void use(const ItemUseContext &context,
+    virtual bool use(const ItemUseContext &context,
                      EventPool<EntityEvent> &eventsOut) = 0;
+
+    virtual const SoundIDKey getUseSound() const = 0;
 
   protected:
     const std::string m_name = "";

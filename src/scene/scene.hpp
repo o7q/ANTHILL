@@ -43,6 +43,11 @@ class Scene
         m_result.shouldLoadScene = true;
     }
 
+    EventPool<BackendEvent> m_backendEvents;
+
+  private:
+    void handleBackendEvents();
+
   protected:
     const Assets &r_assets;
     Window &r_window;
@@ -50,11 +55,6 @@ class Scene
     SoundHandler &r_sound;
     InputHandler &r_input;
     TimeHandler &r_time;
-
-    EventPool<BackendEvent> m_backendEvents;
-
-  private:
-    void handleBackendEvents();
 
   private:
     bool m_firstTick = true;

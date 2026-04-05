@@ -1,5 +1,7 @@
 #include "backend/viewport/render_command.hpp"
+#include "math/angle.hpp"
 #include "player.hpp"
+#include <iostream>
 
 void Player::render(const Camera &camera,
                     std::vector<RenderCommand> &commandsOut)
@@ -16,12 +18,12 @@ void Player::render(const Camera &camera,
         gunData.position = camera.cameraToViewport(m_body.getPosition());
         gunData.origin = {9, 7};
 
-        if (std::abs(m_angle) > 3.14159f / 2.0f)
+        if (std::abs(m_angle) > 90.0f)
         {
             gunData.flipY = true;
         }
 
-        gunData.rotateSettings = {m_angle, 0};
+        gunData.rotateSettings = {Degrees(m_angle).radians(), 0};
         commandsOut.push_back({2, gunData});
     }
 }

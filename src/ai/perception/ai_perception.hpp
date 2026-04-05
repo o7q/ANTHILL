@@ -16,26 +16,24 @@ class AIPerception
     {
         m_sightPoints.clear();
 
-        float angleTop =
-            Math::Angle::degreesToRadians(headAngle - m_sightFOV / 2.0f);
+        float angleTop = headAngle - m_sightFOV / 2.0f;
 
-        float increment =
-            Math::Angle::degreesToRadians(m_sightFOV) / (m_sightRayAmount - 1);
+        float increment = m_sightFOV / (m_sightRayAmount - 1);
 
         for (int i = 0; i < m_sightRayAmount; ++i)
         {
-            float angle = angleTop + i * increment;
+            Angle angle = Degrees(angleTop + i * increment);
 
             Math::Line::bresenhamRaycast(
                 headPos, angle,
-                [&](int x, int y)
+                [&](Vec2i pos)
                 {
-                    if (function(x, y))
+                    if (function(pos))
                     {
                         return true;
                     }
 
-                    m_sightPoints.push_back(Vec2i(x, y));
+                    m_sightPoints.push_back(pos);
 
                     return false;
                 },

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "math/angle.hpp"
 #include "math/vec.hpp"
 #include <cmath>
 
@@ -49,11 +50,13 @@ inline void bresenhamLine(Vec2i p1, const Vec2i &p2, Function &&function)
 }
 
 template <typename HitCheckFunction>
-inline void bresenhamRaycast(const Vec2i &start, float angle,
+inline void bresenhamRaycast(const Vec2i &start, Angle angle,
                              HitCheckFunction &&function, int maxDistance = 100)
 {
-    int endX = start.x + std::cosf(angle) * maxDistance;
-    int endY = start.y + std::sinf(angle) * maxDistance;
+    float radians = angle.radians();
+
+    int endX = start.x + std::cosf(radians) * maxDistance;
+    int endY = start.y + std::sinf(radians) * maxDistance;
     Vec2i end = Vec2i(endX, endY).toGrid();
     bresenhamLine(start, end, function);
 }

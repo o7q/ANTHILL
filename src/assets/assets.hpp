@@ -12,6 +12,28 @@
 
 class Assets
 {
+  private:
+    struct TextureLoadData
+    {
+        std::string path = "";
+    };
+
+    struct SpriteSheetLoadData
+    {
+        std::string path = "";
+        Vec2u size;
+    };
+
+    struct FontLoadData
+    {
+        std::string path = "";
+    };
+
+    struct SoundLoadData
+    {
+        std::string path = "";
+    };
+
   public:
     Assets();
 
