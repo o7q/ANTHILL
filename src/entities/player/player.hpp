@@ -32,13 +32,12 @@ class Player : public Entity
 
     Inventory &getInventory() { return m_inventory; }
 
-    virtual EventPool<EntityEvent>
-    update(const EntityUpdateContext &context) override;
+    void update(const EntityUpdateContext &context,
+                EventPool<EntityEvent> &eventsOut) override;
 
-    std::vector<RenderCommand> render(const Camera &camera) override
+    void render(const Camera &camera,
+                std::vector<RenderCommand> &commandsOut) override
     {
-        std::vector<RenderCommand> commands;
-
         RectangleRenderCommandData data;
         data.a = camera.cameraToViewport(m_boundingBox.getA() +
                                          m_body.getPosition());
@@ -49,9 +48,7 @@ class Player : public Entity
         RenderCommand command;
         command.data = data;
 
-        commands.push_back(command);
-
-        return commands;
+        commandsOut.push_back(command);
     }
 
     void updateAimPosition(Vec2i aimPos)

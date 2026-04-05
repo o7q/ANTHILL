@@ -16,7 +16,7 @@ template <typename T> class EventPool
         return m_events;
     }
 
-    void purge() { m_events.clear(); }
+    void clear() { m_events.clear(); }
 
   private:
     std::vector<std::unique_ptr<T>> m_events;

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "backend/texture/texture.hpp"
 #include "backend/viewport/render_command.hpp"
 #include "math/color.hpp"
 #include "math/vec.hpp"
@@ -25,7 +24,8 @@ class Viewport
 
     Vec2i windowToViewportPosition(Vec2f windowPosition);
 
-    void render(const RenderCommandData &data);
+    void render(std::vector<RenderCommand>& commands);
+    void renderDirect(const RenderCommandData &data);
 
   private:
     void set_pixel(Vec2u pos, Color color);

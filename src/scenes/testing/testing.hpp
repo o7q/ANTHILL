@@ -7,10 +7,7 @@
 class TestScene : public Scene
 {
   public:
-    TestScene(const Assets &assets, Window &window)
-        : Scene(assets, window), m_world(m_backendEvents)
-    {
-    }
+    TestScene(const Assets &assets, Window &window) : Scene(assets, window) {}
 
   protected:
     void onStart() override;

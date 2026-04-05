@@ -3,11 +3,11 @@
 #include "item/reloadable.hpp"
 #include "math/rectangle.hpp"
 #include "player.hpp"
+#include <iostream>
 
-EventPool<EntityEvent> Player::update(const EntityUpdateContext &context)
+void Player::update(const EntityUpdateContext &context,
+                    EventPool<EntityEvent> &eventsOut)
 {
-    EventPool<EntityEvent> events;
-
     if (r_input.getInput(InputID::Left)->isDown())
     {
         m_body.setVelocityTargetX(-5.0f);
@@ -46,10 +46,7 @@ EventPool<EntityEvent> Player::update(const EntityUpdateContext &context)
             context.heldPosition = m_body.getPosition();
             context.heldAngle = m_angle;
 
-            for (auto &event : current->use(context))
-            {
-                events.emit(std::move(event));
-            }
+            current->use(context, eventsOut);
         }
     }
     if (r_input.getInput(InputID::Reload)->wasPressed())
@@ -69,6 +66,4 @@ EventPool<EntityEvent> Player::update(const EntityUpdateContext &context)
     {
         current->update(context.dt);
     }
-
-    return events;
 }

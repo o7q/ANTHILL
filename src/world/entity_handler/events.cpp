@@ -1,14 +1,16 @@
 #include "entity_handler.hpp"
 
+#include "events/entity/base.hpp"
 #include "events/entity/entity_backend.hpp"
 #include "events/entity/entity_entity.hpp"
 #include "events/entity/entity_particle.hpp"
 #include "events/event_pool.hpp"
 #include <memory>
 
-void EntityHandler::handleEvents(EventPool<EntityEvent> &pool)
+void EntityHandler::handleEvents(EventPool<EntityEvent> &events,
+                                 EventPoolRefs eventPoolRefs)
 {
-    for (auto &event : pool.getEvents())
+    for (auto &event : events.getEvents())
     {
         switch (event->type)
         {
@@ -21,7 +23,14 @@ void EntityHandler::handleEvents(EventPool<EntityEvent> &pool)
             {
                 break;
             }
-            m_entities[target]->damage(e->damage);
+
+            auto it = m_entities.find(target);
+            if (it == m_entities.end())
+            {
+                break;
+            }
+
+            it->second->damage(e->damage);
         }
         break;
         case EntityEventType::EntitySpawn:
@@ -33,14 +42,14 @@ void EntityHandler::handleEvents(EventPool<EntityEvent> &pool)
         case EntityEventType::ParticleDraw:
         {
             auto e = static_cast<EntityParticleDrawEvent *>(event.get());
-            r_particleEvents.emit(
+            eventPoolRefs.particle.emit(
                 std::make_unique<ParticleDrawEvent>(e->particleEvent));
         }
         break;
         case EntityEventType::BackendPlaySound:
         {
             auto e = static_cast<EntityBackendPlaySoundEvent *>(event.get());
-            r_backendEvents.emit(
+            eventPoolRefs.backend.emit(
                 std::make_unique<BackendPlaySoundEvent>(e->backendEvent));
         }
         break;

@@ -2,14 +2,14 @@
 #include "backend/viewport/render_command.hpp"
 #include "camera/camera.hpp"
 
-std::vector<RenderCommand> ParticleRenderer::render(const Camera &camera,
-                                                    const Assets &assets)
+void ParticleRenderer::render(const Camera &camera, const Assets &assets,
+                              std::vector<RenderCommand> &commandsOut)
 {
     Vec2u size = camera.getViewSize();
 
     if (m_texture.getSize() != size)
     {
-        reconstructTexture(size);
+        reconstruct_texture(size);
     }
 
     for (unsigned int y = 0; y < size.y; ++y)
@@ -52,10 +52,7 @@ std::vector<RenderCommand> ParticleRenderer::render(const Camera &camera,
     command.index = 0;
     command.data = data;
 
-    std::vector<RenderCommand> commands;
-    commands.push_back(command);
-
-    return commands;
+    commandsOut.push_back(command);
 }
 
 void ParticleRenderer::render_background(const Assets &assets,

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "assets/assets.hpp"
+#include "backend/timer/timer.hpp"
 #include "entities/simple_projectile/simple_projectile.hpp"
 #include "events/entity/entity_entity.hpp"
 #include "item/context.hpp"
@@ -26,25 +27,20 @@ class Shotgun : public Gun
 
     virtual void update(float dt) override { m_fireCooldownTimer.update(dt); }
 
-    virtual std::vector<std::unique_ptr<EntityEvent>>
-    use(const ItemUseContext &context) override
+    virtual void use(const ItemUseContext &context,
+                     EventPool<EntityEvent> &eventsOut) override
     {
-        std::vector<std::unique_ptr<EntityEvent>> out;
         if (m_fireCooldownTimer.completed() && getAmmoInMagazine() > 0)
         {
-            out = fire(context);
+            fire(context, eventsOut);
             m_fireCooldownTimer.restart();
         }
-
-        return out;
     }
 
   protected:
-    virtual std::vector<std::unique_ptr<EntityEvent>>
-    fire(const ItemUseContext &context) override
+    virtual void fire(const ItemUseContext &context,
+                      EventPool<EntityEvent> &eventsOut) override
     {
-        std::vector<std::unique_ptr<EntityEvent>> events;
-
         for (int i = -1; i <= 1; ++i)
         {
             auto event = std::make_unique<EntitySpawnEvent>(context.ownerID);
@@ -58,12 +54,10 @@ class Shotgun : public Gun
                 return bullet;
             };
 
-            events.push_back(std::move(event));
+            eventsOut.emit(std::move(event));
         }
 
         depleteAmmo();
-
-        return events;
     }
 
   private:

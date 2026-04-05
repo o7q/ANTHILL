@@ -20,6 +20,8 @@ void TestScene::onStart()
 
 void TestScene::onTick()
 {
+    std::vector<RenderCommand> renderCommands;
+
     m_camera.setViewSize(r_viewport.getSize());
 
     Vec2i viewportMousePos =
@@ -30,18 +32,12 @@ void TestScene::onTick()
     player->updateAimPosition(worldMousePos);
 
     Vec2i playerPos = player->getBody().getPosition();
-    m_world.getGenerator().generateInRadius(playerPos.toInt(), {20, 20});
+    m_world.getGenerator().generateInRadius(playerPos.toInt(), {4, 4});
     m_camera.setGoal(playerPos);
     m_camera.update(r_time.getDT());
 
-    m_world.update(r_time.getDT(), {0, 0});
-    std::vector<RenderCommand> worldCommands =
-        m_world.render(m_camera, r_assets);
-
-    for (auto c : worldCommands)
-    {
-        m_renderCommands.push_back(c);
-    }
+    m_world.update(r_time.getDT(), playerPos, m_backendEvents);
+    m_world.render(m_camera, r_assets, renderCommands);
 
     fpsText = r_assets.fonts()
                   .get(FontID::Default)
@@ -54,5 +50,7 @@ void TestScene::onTick()
 
     RenderCommand fpsRenderCommand;
     fpsRenderCommand.data = fpsRenderData;
-    m_renderCommands.push_back(fpsRenderCommand);
+    renderCommands.push_back(fpsRenderCommand);
+
+    r_viewport.render(renderCommands);
 }

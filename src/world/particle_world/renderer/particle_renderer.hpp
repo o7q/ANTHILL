@@ -4,7 +4,7 @@
 #include "backend/viewport/render_command.hpp"
 #include "camera/camera.hpp"
 #include "utils/data_structures/chunk_map.hpp"
-#include "world/particle/particle.hpp"
+#include "world/particle_world/particle.hpp"
 
 class ParticleRenderer
 {
@@ -19,12 +19,11 @@ class ParticleRenderer
   public:
     ParticleRenderer(ChunkMap<Particle> &particles) : r_particles(particles) {}
 
-    std::vector<RenderCommand> render(const Camera &camera,
-                                      const Assets &assets);
-
-    void reconstructTexture(Vec2u size) { m_texture = Texture(size); }
+    void render(const Camera &camera, const Assets &assets,
+                std::vector<RenderCommand> &commandsOut);
 
   private:
+    void reconstruct_texture(Vec2u size) { m_texture = Texture(size); }
     void render_background(const Assets &assets,
                            BackgroundRenderSettings settings);
 

@@ -12,6 +12,6 @@ void ParticleWorld::update(float dt, Vec2i origin, Vec2i size)
             break;
         }
     }
-    m_events.purge();
+    m_events.clear();
     m_dynamicsHandler.update(dt, origin, size);
 }

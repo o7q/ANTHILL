@@ -1,11 +1,10 @@
 #pragma once
 
 #include "events/entity/base.hpp"
+#include "events/event_pool.hpp"
 #include "item/context.hpp"
 #include "math/vec.hpp"
-#include <memory>
 #include <string>
-#include <vector>
 
 class Item
 {
@@ -16,8 +15,8 @@ class Item
     std::string getName() { return m_name; }
 
     virtual void update(float dt) = 0;
-    virtual std::vector<std::unique_ptr<EntityEvent>>
-    use(const ItemUseContext &context) = 0;
+    virtual void use(const ItemUseContext &context,
+                     EventPool<EntityEvent> &eventsOut) = 0;
 
   protected:
     const std::string m_name = "";

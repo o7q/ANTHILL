@@ -4,7 +4,7 @@
 #include "utils/data.hpp"
 #include "utils/data_structures/index_2d.hpp"
 #include "world/generator/biomes/desert.hpp"
-#include "world/particle/particle_world.hpp"
+#include "world/particle_world/particle_world.hpp"
 
 class Generator
 {

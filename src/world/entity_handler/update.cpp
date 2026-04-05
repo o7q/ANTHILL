@@ -1,24 +1,29 @@
 #include "entity_handler.hpp"
-#include "world/particle/particle_world.hpp"
+#include "events/entity/base.hpp"
+#include "events/event_pool.hpp"
+#include "world/particle_world/particle_world.hpp"
 #include <memory>
 
-void EntityHandler::update(const ParticleWorld &world, float dt)
+void EntityHandler::update(const ParticleWorld &world, float dt,
+                           EventPoolRefs eventPoolRefs)
 {
+    EventPool<EntityEvent> events;
+
     for (auto &entityPair : m_entities)
     {
         Entity *entity = entityPair.second.get();
 
         std::vector<const Entity *> nearby = getNearbyEntities(entity);
         EntityUpdateContext context{dt, world, nearby};
-        EventPool<EntityEvent> events = entity->update(context);
-
-        handleEvents(events);
+        entity->update(context, events);
 
         if (entity->getHealth() <= 0.0f)
         {
             m_entitiesToRemove.push_back(entity->getID());
         }
     }
+
+    handleEvents(events, eventPoolRefs);
 
     for (uint64_t id : m_entitiesToRemove)
     {

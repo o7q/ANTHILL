@@ -1,8 +1,8 @@
 #pragma once
 
 #include "utils/data_structures/chunk_map.hpp"
-#include "world/particle/navmesh/navmesh.hpp"
-#include "world/particle/particle.hpp"
+#include "world/particle_world/navmesh/navmesh.hpp"
+#include "world/particle_world/particle.hpp"
 
 class PDynamicsHandler
 {

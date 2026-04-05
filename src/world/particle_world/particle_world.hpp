@@ -3,11 +3,11 @@
 #include "events/event_pool.hpp"
 #include "events/particle/base.hpp"
 #include "utils/data_structures/chunk_map.hpp"
-#include "world/particle/dynamics/p_dynamics_handler.hpp"
-#include "world/particle/editor/particle_editor.hpp"
-#include "world/particle/navmesh/navmesh.hpp"
-#include "world/particle/particle.hpp"
-#include "world/particle/renderer/particle_renderer.hpp"
+#include "world/particle_world/dynamics/p_dynamics_handler.hpp"
+#include "world/particle_world/editor/particle_editor.hpp"
+#include "world/particle_world/navmesh/navmesh.hpp"
+#include "world/particle_world/particle.hpp"
+#include "world/particle_world/renderer/particle_renderer.hpp"
 
 class ParticleWorld
 {

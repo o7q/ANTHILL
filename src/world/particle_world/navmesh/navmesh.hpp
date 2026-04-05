@@ -1,7 +1,7 @@
 #pragma once
 
 #include "utils/data_structures/index_2d.hpp"
-#include "world/particle/particle.hpp"
+#include "world/particle_world/particle.hpp"
 #include <unordered_map>
 
 class Navmesh

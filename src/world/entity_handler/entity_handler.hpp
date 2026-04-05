@@ -5,9 +5,10 @@
 #include "entity/entity.hpp"
 #include "entity/update_context.hpp"
 #include "events/backend/base.hpp"
+#include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
 #include "world/entity_handler/id.hpp"
-#include "world/particle/particle_world.hpp"
+#include "world/particle_world/particle_world.hpp"
 #include <cstdint>
 #include <memory>
 #include <unordered_map>
@@ -16,18 +17,24 @@
 class EntityHandler
 {
   public:
-    EntityHandler(EventPool<BackendEvent> &backendEvents,
-                  EventPool<ParticleEvent> &particleEvents)
-        : r_backendEvents(backendEvents), r_particleEvents(particleEvents)
+    struct EventPoolRefs
     {
-    }
+        EventPool<BackendEvent> &backend;
+        EventPool<ParticleEvent> &particle;
+    };
+
+  public:
+    EntityHandler() {}
     EntityHandler(const EntityHandler &other) = delete;
     EntityHandler &operator=(const EntityHandler &other) = delete;
+    virtual ~EntityHandler() = default;
 
-    void update(const ParticleWorld &world, float dt);
-    void handleEvents(EventPool<EntityEvent> &pool);
+    void update(const ParticleWorld &world, float dt,
+                EventPoolRefs eventPoolRefs);
+    void handleEvents(EventPool<EntityEvent> &events,
+                      EventPoolRefs eventPoolRefs);
 
-    std::vector<RenderCommand> render(const Camera &camera);
+    void render(const Camera &camera, std::vector<RenderCommand> &commandsOut);
 
     void addEntity(std::unique_ptr<Entity> entity);
     void addPlayer(std::unique_ptr<Player> player);
@@ -40,9 +47,6 @@ class EntityHandler
     EntityIDHandler &getIDHandler() { return m_idHandler; }
 
   private:
-    EventPool<BackendEvent> &r_backendEvents;
-    EventPool<ParticleEvent> &r_particleEvents;
-
     EntityIDHandler m_idHandler;
 
     Player *m_currentPlayer = nullptr;

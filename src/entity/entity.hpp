@@ -16,9 +16,10 @@ class Entity
     }
     virtual ~Entity() = default;
 
-    virtual EventPool<EntityEvent>
-    update(const EntityUpdateContext &context) = 0;
-    virtual std::vector<RenderCommand> render(const Camera &camera) = 0;
+    virtual void update(const EntityUpdateContext &context,
+                        EventPool<EntityEvent> &eventsOut) = 0;
+    virtual void render(const Camera &camera,
+                        std::vector<RenderCommand> &commandsOut) = 0;
 
     void kill() { m_health = -1.0f; }
     void damage(float amount, uint64_t afflictor = 0) { m_health -= amount; }

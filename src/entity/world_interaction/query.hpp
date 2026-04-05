@@ -2,7 +2,7 @@
 
 #include "math/rectangle.hpp"
 #include "math/vec.hpp"
-#include "world/particle/particle_world.hpp"
+#include "world/particle_world/particle_world.hpp"
 
 namespace EntityWorldInteraction
 {

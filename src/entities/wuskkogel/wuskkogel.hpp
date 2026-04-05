@@ -16,12 +16,21 @@ class Wuskkogel : public Entity
   public:
     Wuskkogel(uint64_t id, const Assets &assets);
 
-    EventPool<EntityEvent> update(const EntityUpdateContext &context) override;
+    void update(const EntityUpdateContext &context,
+                EventPool<EntityEvent> &eventsOut) override;
 
-    std::vector<RenderCommand> render(const Camera &camera) override
+    void render(const Camera &camera,
+                std::vector<RenderCommand> &commandsOut) override
     {
-        std::vector<RenderCommand> commands;
-        return commands;
+        TextureRenderCommandData data;
+        data.texture = m_animator.getCurrentFrame();
+        data.position = camera.cameraToViewport(m_body.getPosition());
+        data.flipX = m_body.getVelocity().x < 0;
+        
+        RenderCommand command;
+        command.data = data;
+
+        commandsOut.push_back(command);
     }
 
   private:

@@ -12,6 +12,11 @@ void Scene::update()
 
     onTick();
 
+    handleBackendEvents();
+}
+
+void Scene::handleBackendEvents()
+{
     for (auto &e : m_backendEvents.getEvents())
     {
         switch (e->type)
@@ -26,12 +31,5 @@ void Scene::update()
         }
     }
 
-    m_backendEvents.purge();
-
-    for (RenderCommand command : m_renderCommands)
-    {
-        r_viewport.render(command.data);
-    }
-
-    m_renderCommands.clear();
+    m_backendEvents.clear();
 }

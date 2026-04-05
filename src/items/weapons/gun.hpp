@@ -1,6 +1,5 @@
 #pragma once
 
-#include "backend/timer/timer.hpp"
 #include "item/item.hpp"
 #include "item/reloadable.hpp"
 
@@ -44,8 +43,8 @@ class Gun : public Item, public IReloadable
     void setMagazineSize(int size) { m_magazineSize = size; }
 
   protected:
-    virtual std::vector<std::unique_ptr<EntityEvent>>
-    fire(const ItemUseContext &context) = 0;
+    virtual void fire(const ItemUseContext &context,
+                      EventPool<EntityEvent> &eventsOut) = 0;
 
   protected:
     FireMode m_fireMode = FireMode::SemiAuto;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "world/particle/particle_world.hpp"
+#include "world/particle_world/particle_world.hpp"
 #include <vector>
 
 class Entity;

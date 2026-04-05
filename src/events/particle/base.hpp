@@ -1,7 +1,7 @@
 #pragma once
 
 #include "math/vec.hpp"
-#include "world/particle/particle.hpp"
+#include "world/particle_world/particle.hpp"
 
 enum class ParticleEventType
 {

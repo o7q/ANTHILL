@@ -2,7 +2,7 @@
 
 #include "math/perlin.hpp"
 #include "math/random.hpp"
-#include "world/particle/particle.hpp"
+#include "world/particle_world/particle.hpp"
 #include <cstdint>
 
 inline Particle generate_desert(Vec2i pos, uint64_t seed)

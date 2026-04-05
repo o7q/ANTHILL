@@ -2,10 +2,24 @@
 #include "viewport.hpp"
 
 #include "math/line.hpp"
+#include "utils/variant_bp.hpp"
+#include <algorithm>
 #include <cmath>
 #include <optional>
 
-void Viewport::render(const RenderCommandData &data)
+void Viewport::render(std::vector<RenderCommand> &commands)
+{
+    std::sort(commands.begin(), commands.end(),
+              [](const RenderCommand &a, const RenderCommand &b)
+              { return a.index < b.index; });
+
+    for (const RenderCommand &command : commands)
+    {
+        renderDirect(command.data);
+    }
+}
+
+void Viewport::renderDirect(const RenderCommandData &data)
 {
     std::visit(overloaded{[this](const TextureRenderCommandData &data)
                           { this->render_texture(data); },

@@ -20,13 +20,23 @@ class SimpleProjectile : public Entity
         m_metadata.name = "Projectile";
     }
 
-    virtual EventPool<EntityEvent>
-    update(const EntityUpdateContext &context) override;
+    void update(const EntityUpdateContext &context,
+                EventPool<EntityEvent> &eventsOut) override;
 
-    std::vector<RenderCommand> render(const Camera &camera) override
+    void render(const Camera &camera,
+                std::vector<RenderCommand> &commandsOut) override
     {
-        std::vector<RenderCommand> commands;
-        return commands;
+        RectangleRenderCommandData data;
+        data.a = camera.cameraToViewport(m_body.getPosition() +
+                                         m_boundingBox.getA());
+        data.b = camera.cameraToViewport(m_body.getPosition() +
+                                         m_boundingBox.getB());
+        data.color = Color(255, 0, 0);
+
+        RenderCommand command;
+        command.data = data;
+
+        commandsOut.push_back(command);
     }
 
   private:
