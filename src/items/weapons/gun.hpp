@@ -15,18 +15,23 @@ class Gun : public Item, public IReloadable
   public:
     Gun(const std::string &name) : Item(name) {}
 
-    virtual void reload() override
+    virtual bool reload() override
     {
-        if (m_ammoInMagazine > m_magazineSize)
+        if (m_ammoReserve <= 0)
         {
-            m_ammoInMagazine = m_magazineSize;
+            return false;
         }
 
         int refillAmount = m_magazineSize - m_ammoInMagazine;
 
+        if (refillAmount <= 0)
+        {
+            return false;
+        }
+
         if (refillAmount > m_ammoReserve)
         {
-            m_ammoInMagazine = m_ammoInMagazine + m_ammoReserve;
+            m_ammoInMagazine += m_ammoReserve;
             m_ammoReserve = 0;
         }
         else
@@ -34,6 +39,8 @@ class Gun : public Item, public IReloadable
             m_ammoInMagazine = m_magazineSize;
             m_ammoReserve -= refillAmount;
         }
+
+        return true;
     }
 
     void addAmmo(int amount) { m_ammoReserve += amount; }

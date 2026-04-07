@@ -42,7 +42,8 @@ class EntityHandler
     Player *getCurrentPlayer() { return m_currentPlayer; }
     Entity *getLatestEntity() { return m_latestEntity; }
 
-    const std::vector<const Entity *> getNearbyEntities(const Entity *entity);
+    const std::vector<const Entity *>
+        getNearbyEntities(/*const Entity *entity*/);
 
     EntityIDHandler &getIDHandler() { return m_idHandler; }
 

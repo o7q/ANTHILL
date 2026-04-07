@@ -9,7 +9,7 @@ struct TextureRenderCommandData
     struct RotateSettings
     {
         float angle = 0.0f;
-        int overdraw = 1;
+        unsigned int overdraw = 1;
     };
 
     const Texture *texture = nullptr;

@@ -11,7 +11,7 @@ class Generator
   public:
     Generator(ParticleWorld &world) : r_world(world)
     {
-        m_seed = Math::Random::weakRandInt(0, 10000);
+        m_seed = Math::Random::weakRandInt(0, 10000000);
     }
 
     void generateInRadius(Vec2i origin, Vec2i size)
@@ -53,5 +53,5 @@ class Generator
     ParticleWorld &r_world;
     std::vector<Index2D> m_generatedMarkers;
 
-    uint64_t m_seed = 0;
+    uint32_t m_seed = 0;
 };

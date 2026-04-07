@@ -55,8 +55,10 @@ inline void bresenhamRaycast(const Vec2i &start, Angle angle,
 {
     float radians = angle.radians();
 
-    int endX = start.x + std::cosf(radians) * maxDistance;
-    int endY = start.y + std::sinf(radians) * maxDistance;
+    int endX = start.x +
+               static_cast<int>(std::floor(std::cosf(radians) * maxDistance));
+    int endY = start.y +
+               static_cast<int>(std::floor(std::sinf(radians) * maxDistance));
     Vec2i end = Vec2i(endX, endY).toGrid();
     bresenhamLine(start, end, function);
 }

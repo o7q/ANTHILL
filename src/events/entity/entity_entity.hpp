@@ -8,8 +8,8 @@ class Entity;
 
 struct EntitySpawnEvent : public EntityEvent
 {
-    EntitySpawnEvent(const uint64_t caller)
-        : EntityEvent(caller, EntityEventType::EntitySpawn)
+    EntitySpawnEvent(const uint64_t caller_)
+        : EntityEvent(caller_, EntityEventType::EntitySpawn)
     {
     }
 
@@ -18,8 +18,8 @@ struct EntitySpawnEvent : public EntityEvent
 
 struct EntityDamageEvent : public EntityEvent
 {
-    EntityDamageEvent(const uint64_t caller)
-        : EntityEvent(caller, EntityEventType::EntityDamage)
+    EntityDamageEvent(const uint64_t caller_)
+        : EntityEvent(caller_, EntityEventType::EntityDamage)
     {
     }
 

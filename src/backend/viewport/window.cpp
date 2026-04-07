@@ -2,8 +2,7 @@
 
 #include <algorithm>
 
-void Viewport::recalculatePresentRect(Vec2u windowSize,
-                                      float windowAspect)
+void Viewport::recalculatePresentRect(Vec2u windowSize, float windowAspect)
 {
     if (windowAspect > m_aspectRatio)
     {
@@ -33,5 +32,5 @@ Vec2i Viewport::windowToViewportPosition(Vec2f windowPosition)
     windowPosition.y =
         std::clamp(windowPosition.y, 0.0f, static_cast<float>(m_size.y) - 1);
 
-    return Vec2i(windowPosition.x, windowPosition.y);
+    return windowPosition.toGrid();
 }

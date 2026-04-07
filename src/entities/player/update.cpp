@@ -43,12 +43,12 @@ void Player::update(const EntityUpdateContext &context,
     {
         if (current)
         {
-            ItemUseContext context;
-            context.ownerID = getID();
-            context.heldPosition = m_body.getPosition();
-            context.heldAngle = m_angle;
+            ItemUseContext itemContext;
+            itemContext.ownerID = getID();
+            itemContext.heldPosition = m_body.getPosition();
+            itemContext.heldAngle = m_angle;
 
-            bool used = current->use(context, eventsOut);
+            bool used = current->use(itemContext, eventsOut);
 
             if (used)
             {
@@ -69,7 +69,20 @@ void Player::update(const EntityUpdateContext &context,
         {
             if (auto *reloadable = dynamic_cast<IReloadable *>(current))
             {
-                reloadable->reload();
+                bool reloaded = reloadable->reload();
+
+                if (reloaded)
+                {
+                    auto reloadSoundEvent =
+                        std::make_unique<EntityBackendPlaySoundEvent>(getID());
+                    reloadSoundEvent->backendEvent.soundID =
+                        reloadable->getReloadSound();
+                    reloadSoundEvent->backendEvent.settings.volume = 0.2f;
+                    reloadSoundEvent->backendEvent.settings.pitch =
+                        100.0f / Math::Random::weakRandInt(95, 100);
+
+                    eventsOut.emit(std::move(reloadSoundEvent));
+                }
             }
         }
     }

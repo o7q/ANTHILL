@@ -12,8 +12,8 @@ enum class EntityEventType
 
 struct EntityEvent
 {
-    EntityEvent(const uint64_t caller, EntityEventType type)
-        : caller(caller), type(type)
+    EntityEvent(const uint64_t caller_, EntityEventType type_)
+        : caller(caller_), type(type_)
     {
     }
     virtual ~EntityEvent() = default;

@@ -10,7 +10,7 @@ enum class BackendEventType
 
 struct BackendEvent
 {
-    BackendEvent(BackendEventType type) : type(type) {}
+    BackendEvent(BackendEventType type_) : type(type_) {}
     virtual ~BackendEvent() = default;
 
     BackendEventType type;

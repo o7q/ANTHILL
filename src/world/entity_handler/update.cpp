@@ -13,7 +13,7 @@ void EntityHandler::update(const ParticleWorld &world, float dt,
     {
         Entity *entity = entityPair.second.get();
 
-        std::vector<const Entity *> nearby = getNearbyEntities(entity);
+        std::vector<const Entity *> nearby = getNearbyEntities(/*entity*/);
         EntityUpdateContext context{dt, world, nearby};
         entity->update(context, events);
 

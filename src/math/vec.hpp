@@ -8,7 +8,7 @@ template <typename T> struct Vec2
     T x = 0, y = 0;
 
     Vec2() = default;
-    Vec2(T x, T y) : x(x), y(y) {}
+    Vec2(T x_, T y_) : x(x_), y(y_) {}
 
     Vec2 operator+(const Vec2 &v) const { return {x + v.x, y + v.y}; }
     Vec2 operator-(const Vec2 &v) const { return {x - v.x, y - v.y}; }

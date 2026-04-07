@@ -19,7 +19,7 @@ void Viewport::render(std::vector<RenderCommand> &commands)
     }
 }
 
-void Viewport::renderDirect(const RenderCommandData &data)
+void Viewport::renderDirect(const RenderCommandData &data_)
 {
     std::visit(overloaded{[this](const TextureRenderCommandData &data)
                           { this->render_texture(data); },
@@ -29,7 +29,7 @@ void Viewport::renderDirect(const RenderCommandData &data)
                           { this->render_rect(data); },
                           [this](const PointRenderCommandData &data)
                           { this->set_pixel(data.position, data.color); }},
-               data);
+               data_);
 }
 
 void Viewport::render_segment(const SegmentRenderCommandData &data)
@@ -136,19 +136,19 @@ void Viewport::render_texture_rotated(const TextureRenderCommandData &data)
 {
     TextureRenderCommandData::RotateSettings rs = data.rotateSettings.value();
 
-    Vec2i textureSize = data.texture->getSize().toInt();
-    Vec2i halfTextureSize = textureSize / 2;
-    Vec2i origin = data.origin.value_or(halfTextureSize);
+    Vec2u textureSize = data.texture->getSize();
+    Vec2u halfTextureSize = textureSize / 2;
+    Vec2i origin = data.origin.value_or(halfTextureSize.toInt());
 
     float cosA = std::cosf(rs.angle);
     float sinA = std::sinf(rs.angle);
 
-    for (int y = 0; y < textureSize.y; ++y)
+    for (unsigned int y = 0; y < textureSize.y; ++y)
     {
-        for (int x = 0; x < textureSize.x; ++x)
+        for (unsigned int x = 0; x < textureSize.x; ++x)
         {
-            float dx = x - origin.x;
-            float dy = y - origin.y;
+            float dx = static_cast<int>(x) - origin.x;
+            float dy = static_cast<int>(y) - origin.y;
 
             if (data.flipX)
             {
@@ -169,18 +169,18 @@ void Viewport::render_texture_rotated(const TextureRenderCommandData &data)
 
             Color color = data.texture->getPixel(Vec2u(x, y));
 
-            for (int py = 0; py < rs.overdraw + 1; ++py)
+            for (unsigned int py = 0; py < rs.overdraw + 1; ++py)
             {
-                for (int px = 0; px < rs.overdraw + 1; ++px)
+                for (unsigned int px = 0; px < rs.overdraw + 1; ++px)
                 {
                     if (x + px >= textureSize.x || y + py >= textureSize.y)
                     {
                         continue;
                     }
 
-                    int fx = destX + px;
-                    int fy = destY + py;
-                    set_pixel(Vec2u(fx, fy), color);
+                    unsigned int fx = destX + px;
+                    unsigned int fy = destY + py;
+                    set_pixel({fx, fy}, color);
                 }
             }
         }

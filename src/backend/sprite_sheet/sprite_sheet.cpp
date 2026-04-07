@@ -5,9 +5,9 @@ SpriteSheet::SpriteSheet(const std::filesystem::path &path, Vec2u spriteSize)
 {
     Texture spriteSheet(path);
 
-    int spriteCount = spriteSheet.getSize().x / spriteSize.x;
+    unsigned int spriteCount = spriteSheet.getSize().x / spriteSize.x;
 
-    for (int f = 0; f < spriteCount; ++f)
+    for (unsigned int sprite = 0; sprite < spriteCount; ++sprite)
     {
         std::vector<Color> pixels;
         pixels.resize(spriteSize.x * spriteSize.y);
@@ -15,7 +15,8 @@ SpriteSheet::SpriteSheet(const std::filesystem::path &path, Vec2u spriteSize)
         {
             for (unsigned int x = 0; x < spriteSize.x; ++x)
             {
-                Color color = spriteSheet.getPixel({x + spriteSize.x * f, y});
+                Color color =
+                    spriteSheet.getPixel({x + spriteSize.x * sprite, y});
                 pixels[Math::Index::index_2dto1d({x, y}, spriteSize.x)] = color;
             }
         }

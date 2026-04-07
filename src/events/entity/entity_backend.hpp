@@ -5,8 +5,8 @@
 
 struct EntityBackendPlaySoundEvent : public EntityEvent
 {
-    EntityBackendPlaySoundEvent(const uint64_t caller)
-        : EntityEvent(caller, EntityEventType::BackendPlaySound)
+    EntityBackendPlaySoundEvent(const uint64_t caller_)
+        : EntityEvent(caller_, EntityEventType::BackendPlaySound)
     {
     }
 

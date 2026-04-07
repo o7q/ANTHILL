@@ -57,11 +57,6 @@ void TestScene::onTick()
         m_world.getParticleWorld().getEditor().draw(worldMousePos, sand, 4);
     }
 
-    if (r_window.getInputHandler().getInput(InputID::AltAction4)->wasPressed())
-    {
-        // m_camera.shake({20, 20});
-    }
-
     Player *player = m_world.getEntityHandler().getCurrentPlayer();
     player->updateAimPosition(worldMousePos);
 

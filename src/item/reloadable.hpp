@@ -4,6 +4,6 @@
 class IReloadable
 {
   public:
-    virtual void reload() = 0;
+    virtual bool reload() = 0;
     virtual const SoundIDKey getReloadSound() const = 0;
 };

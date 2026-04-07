@@ -10,7 +10,7 @@ enum class ParticleEventType
 
 struct ParticleEvent
 {
-    ParticleEvent(const ParticleEventType type) : type(type) {}
+    ParticleEvent(const ParticleEventType type_) : type(type_) {}
     virtual ~ParticleEvent() = default;
 
     const ParticleEventType type;

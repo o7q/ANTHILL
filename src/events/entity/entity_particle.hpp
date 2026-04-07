@@ -5,8 +5,8 @@
 
 struct EntityParticleDrawEvent : public EntityEvent
 {
-    EntityParticleDrawEvent(const uint64_t caller)
-        : EntityEvent(caller, EntityEventType::ParticleDraw)
+    EntityParticleDrawEvent(const uint64_t caller_)
+        : EntityEvent(caller_, EntityEventType::ParticleDraw)
     {
     }
 

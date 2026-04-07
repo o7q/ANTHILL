@@ -22,7 +22,14 @@ class Entity
                         std::vector<RenderCommand> &commandsOut) = 0;
 
     void kill() { m_health = -1.0f; }
-    void damage(float amount, uint64_t afflictor = 0) { m_health -= amount; }
+    void damage(float amount, uint64_t afflictor = 0)
+    {
+        m_health -= amount;
+        if (afflictor != 0)
+        {
+            m_lastDamageAfflictor = afflictor;
+        }
+    }
     float getHealth() const { return m_health; }
 
     EntityBody &getBody() { return m_body; }
@@ -32,8 +39,8 @@ class Entity
 
     EntityMetadata getMetadata() const { return m_metadata; }
 
-    const uint64_t getID() const { return m_id; }
-    const uint64_t getParent() const { return m_parentID; }
+    uint64_t getID() const { return m_id; }
+    uint64_t getParent() const { return m_parentID; }
 
   protected:
     StaticGridRectangle m_boundingBox;
@@ -46,4 +53,6 @@ class Entity
     const uint64_t m_parentID = 0;
 
     float m_health = 100.0f;
+
+    uint64_t m_lastDamageAfflictor = 0;
 };

@@ -38,8 +38,7 @@ void Window::update()
 
     int winX, winY;
     SDL_GetWindowSizeInPixels(m_window, &winX, &winY);
-    m_size.x = winX;
-    m_size.y = winY;
+    m_size = Vec2i(winX, winY).toUnsignedInt();
 
     m_aspectRatio = static_cast<float>(winX) / winY;
 

@@ -1,7 +1,7 @@
 #include "entity_handler.hpp"
 
 const std::vector<const Entity *>
-EntityHandler::getNearbyEntities(const Entity *entity)
+    EntityHandler::getNearbyEntities(/*const Entity *entity*/)
 {
     std::vector<const Entity *> nearby;
     for (auto &entity : m_entities)
