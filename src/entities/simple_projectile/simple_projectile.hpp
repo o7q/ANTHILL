@@ -26,8 +26,8 @@ class SimpleProjectile : public Entity
     void render(const Camera &camera,
                 std::vector<RenderCommand> &commandsOut) override
     {
-        PointRenderCommandData data;
-        data.position = camera.cameraToViewport(m_body.getPosition()).toUnsignedInt();
+        PointsRenderCommandData data;
+        data.points = {camera.cameraToViewport(m_body.getPosition())};
         data.color = Color(232, 147, 28);
 
         commandsOut.push_back({1, data});

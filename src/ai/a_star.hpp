@@ -1,5 +1,6 @@
 #pragma once
 
+#include "a_star_neighbors.hpp"
 #include "math/vec.hpp"
 #include "utils/data_structures/index_2d.hpp"
 #include <cstdlib>
@@ -93,8 +94,8 @@ class AStarSolver
             for (int i = 0; i < 8; ++i)
             {
                 Index2D neighborIndex = {
-                    m_current.index.x + M_NEIGHBOR_INDICIES_X[i],
-                    m_current.index.y + M_NEIGHBOR_INDICIES_Y[i]};
+                    m_current.index.x + NEIGHBOR_INDICES_X[i],
+                    m_current.index.y + NEIGHBOR_INDICES_Y[i]};
 
                 if (!checkFunction(neighborIndex.x, neighborIndex.y))
                 {
@@ -144,9 +145,6 @@ class AStarSolver
     float dist(Index2D start, Index2D end);
 
   private:
-    static constexpr int M_NEIGHBOR_INDICIES_X[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
-    static constexpr int M_NEIGHBOR_INDICIES_Y[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
-
     std::unordered_map<Index2D, AStarNode, Index2DHash> m_nodes;
     std::priority_queue<AStarNode, std::vector<AStarNode>, AStarNodeCompare>
         m_toSearch;

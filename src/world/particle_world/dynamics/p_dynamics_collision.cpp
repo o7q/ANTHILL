@@ -2,7 +2,7 @@
 #include "math/physics/utils.hpp"
 #include "p_dynamics_handler.hpp"
 
-void PDynamicsHandler::resolve_particle_collision(ParticleObject po,
+void PDynamicsHandler::handle_particle_trajectory(ParticleObject po,
                                                   Vec2f start, Vec2f end,
                                                   float dt)
 {

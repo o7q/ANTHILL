@@ -37,8 +37,6 @@ class Player : public Entity
 
     void render(const Camera &camera,
                 std::vector<RenderCommand> &commandsOut) override;
-    void renderBox(const Camera &camera,
-                   std::vector<RenderCommand> &commandsOut);
 
     void updateAimPosition(Vec2i aimPos)
     {

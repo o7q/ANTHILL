@@ -6,6 +6,11 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
     : Entity(id), m_bodyHandler(m_body, m_boundingBox),
       m_animator(*assets.spriteSheets().get(SpriteSheetID::Wuskkogel))
 {
+    m_targetLostTimer.setDurationInSeconds(10.0f);
+    m_targetRecalcTimer.setDurationInSeconds(3.0f);
+    m_targetRecalcTimer.setMode(Timer::Mode::Repeat);
+    m_targetRecalcTimer.restart();
+
     m_metadata.name = "Wuskkogel";
 
     m_boundingBox.setSize({12, 16});
@@ -14,7 +19,7 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
 
     m_aiPerception.setSightFOV(120);
     m_aiPerception.setSightRayAmount(20);
-    m_aiPerception.setSightDistance(1000);
+    m_aiPerception.setSightDistance(500);
 
     AINavigation::Config cfg;
     cfg.astarIterationsPerFrame = 100;

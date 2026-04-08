@@ -31,6 +31,7 @@ class Viewport
     void set_pixel(Vec2u pos, Color color);
     Color get_pixel(Vec2u pos);
 
+    void render_points(const PointsRenderCommandData &data);
     void render_segment(const SegmentRenderCommandData &data);
     void render_rect(const RectangleRenderCommandData &data);
     void render_rect_outline(const RectangleRenderCommandData &data);

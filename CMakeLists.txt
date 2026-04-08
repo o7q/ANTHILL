@@ -6,14 +6,16 @@ project(ANTHILL)
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# "./3rd_party/SDL3/include" "./3rd_party/stb/include" "./3rd_party/miniaudio/include"
+# "./libs/SDL3/include" "./libs/stb/include" "./libs/miniaudio/include"
 target_include_directories(${PROJECT_NAME} PRIVATE "./src")
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 
+# -fsanitize=address,undefined
 target_compile_options(${PROJECT_NAME} PRIVATE -O2 -Wall -Wextra -Wpedantic -Wshadow)
+# target_link_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
 
-# PATHS "./3rd_party/SDL3" NO_DEFAULT_PATH
+# PATHS "./libs/SDL3" NO_DEFAULT_PATH
 find_package(SDL3 REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)

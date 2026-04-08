@@ -29,7 +29,7 @@ class PDynamicsHandler
 
   private:
     void update_particle(ParticleObject po, float dt);
-    void resolve_particle_collision(ParticleObject po, Vec2f start, Vec2f end,
+    void handle_particle_trajectory(ParticleObject po, Vec2f start, Vec2f end,
                                     float dt);
     void resolve_particle_collision_against_other(ParticleObject po,
                                                   Particle *hitParticle,

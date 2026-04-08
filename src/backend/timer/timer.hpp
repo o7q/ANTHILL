@@ -18,7 +18,10 @@ class Timer
 
     void update(float dt)
     {
-        m_ticked = false;
+        if (m_mode == Mode::Repeat)
+        {
+            m_completed = false;
+        }
 
         if (!m_active)
         {
@@ -27,7 +30,7 @@ class Timer
 
         if (m_clock >= 60.0f * m_durationInSeconds)
         {
-            m_ticked = true;
+            m_completed = true;
 
             switch (m_mode)
             {
@@ -35,7 +38,6 @@ class Timer
                 m_clock = 0.0f;
                 break;
             case Mode::Once:
-                m_completed = true;
                 m_clock = 0.0f;
                 m_active = false;
                 break;
@@ -59,7 +61,6 @@ class Timer
     }
 
     bool active() const { return m_active; }
-    bool ticked() const { return m_ticked; }
     bool completed() const { return m_completed; }
 
     void setMode(Mode mode) { m_mode = mode; }
@@ -68,8 +69,7 @@ class Timer
     float m_durationInSeconds = 1.0f;
     float m_clock = 0.0f;
 
-    bool m_ticked = false;
-    bool m_completed = true;
+    bool m_completed = false;
     bool m_active = false;
 
     Mode m_mode = Mode::Once;

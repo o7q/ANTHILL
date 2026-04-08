@@ -16,15 +16,15 @@ Texture::Texture(Vec2u size)
 }
 Texture::Texture(const std::filesystem::path &path)
 {
-    const std::string pathStr = path.string();
+    const std::string pathString = path.string();
 
     int width, height;
     stbi_uc *data =
-        stbi_load(pathStr.c_str(), &width, &height, NULL, STBI_rgb_alpha);
+        stbi_load(pathString.c_str(), &width, &height, NULL, STBI_rgb_alpha);
 
     if (!data)
     {
-        Logger::error("Texture::Texture()", "Failed to load: " + pathStr);
+        Logger::error("Texture::Texture()", "Failed to load: " + pathString);
 
         initNull();
         return;
@@ -49,7 +49,7 @@ Texture::Texture(const std::filesystem::path &path)
 
     stbi_image_free(data);
 
-    Logger::info("Texture::Texture()", "Successfully loaded: " + pathStr);
+    Logger::info("Texture::Texture()", "Successfully loaded: " + pathString);
 }
 
 void Texture::setPixel(Vec2u pos, Color color)

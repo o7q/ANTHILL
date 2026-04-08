@@ -62,6 +62,6 @@ void PDynamicsHandler::update_smoke_particle(ParticleObject po, float dt)
 
     Vec2f end = verlet.getPosition();
 
-    resolve_particle_collision(po, start, end, dt);
+    handle_particle_trajectory(po, start, end, dt);
     finalize_particle(po);
 }

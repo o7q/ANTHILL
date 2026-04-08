@@ -32,15 +32,15 @@ struct RectangleRenderCommandData
     bool fill = false;
 };
 
-struct PointRenderCommandData
+struct PointsRenderCommandData
 {
-    Vec2u position;
+    std::vector<Vec2i> points;
     Color color;
 };
 
 using RenderCommandData =
     std::variant<TextureRenderCommandData, SegmentRenderCommandData,
-                 RectangleRenderCommandData, PointRenderCommandData>;
+                 RectangleRenderCommandData, PointsRenderCommandData>;
 
 struct RenderCommand
 {

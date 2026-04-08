@@ -14,7 +14,7 @@ void EntityHandler::update(const ParticleWorld &world, float dt,
         Entity *entity = entityPair.second.get();
 
         std::vector<const Entity *> nearby = getNearbyEntities(/*entity*/);
-        EntityUpdateContext context{dt, world, nearby};
+        EntityUpdateContext context{dt, world, nearby, m_currentPlayer};
         entity->update(context, events);
 
         if (entity->getHealth() <= 0.0f)

@@ -21,15 +21,29 @@ void Viewport::render(std::vector<RenderCommand> &commands)
 
 void Viewport::renderDirect(const RenderCommandData &data_)
 {
-    std::visit(overloaded{[this](const TextureRenderCommandData &data)
-                          { this->render_texture(data); },
+    std::visit(overloaded{[this](const PointsRenderCommandData &data)
+                          { this->render_points(data); },
                           [this](const SegmentRenderCommandData &data)
                           { this->render_segment(data); },
                           [this](const RectangleRenderCommandData &data)
                           { this->render_rect(data); },
-                          [this](const PointRenderCommandData &data)
-                          { this->set_pixel(data.position, data.color); }},
+                          [this](const TextureRenderCommandData &data)
+                          { this->render_texture(data); }},
                data_);
+}
+
+void Viewport::render_points(const PointsRenderCommandData &data)
+{
+    for (Vec2i p : data.points)
+    {
+        Vec2u viewportSpace = p.toUnsignedInt();
+        if (viewportSpace.x >= m_size.x || viewportSpace.y >= m_size.y)
+        {
+            continue;
+        }
+
+        set_pixel(viewportSpace, data.color);
+    }
 }
 
 void Viewport::render_segment(const SegmentRenderCommandData &data)

@@ -14,7 +14,7 @@ class SpriteAnimator
 
     void update(float dt)
     {
-        if (m_timer.ticked())
+        if (m_timer.completed())
         {
             m_currentFrame = (m_currentFrame + 1) % m_frames;
 

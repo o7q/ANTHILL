@@ -33,6 +33,7 @@ class Shotgun : public Gun, public IRenderable
         addAmmo(200);
 
         m_animator.setFPS(20);
+        m_fireCooldownTimer.restart();
     }
 
     virtual void update(float dt) override
@@ -83,7 +84,7 @@ class Shotgun : public Gun, public IRenderable
         Vec2f n = {std::cosf(radians), std::sinf(radians)};
         n *= 8;
 
-        for (int i = -1; i <= 1; ++i)
+        for (int i = -3; i <= 3; ++i)
         {
             auto event = std::make_unique<EntitySpawnEvent>(context.ownerID);
 
@@ -91,7 +92,7 @@ class Shotgun : public Gun, public IRenderable
             {
                 auto bullet = std::make_unique<SimpleProjectile>(
                     id, context.ownerID, context.heldPosition + n.toGrid(),
-                    radians + i / 10.0f, 30.0f);
+                    radians + i / 15.0f, 30.0f);
 
                 return bullet;
             };
