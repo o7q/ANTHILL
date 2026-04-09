@@ -18,7 +18,7 @@ void SimpleProjectile::update(const EntityUpdateContext &context,
 
     if (response.collided)
     {
-        auto event = std::make_unique<EntityParticleDrawEvent>(getID());
+        auto event = std::make_unique<EntityParticleDrawEvent>(context.id);
         event->particleEvent.position = response.hitPosition;
         event->particleEvent.radius = Math::Random::weakRandInt(3, 6);
         event->particleEvent.particle = Particle();

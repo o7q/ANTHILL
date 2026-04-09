@@ -49,7 +49,7 @@ class Wuskkogel : public Entity
 
         commandsOut.push_back({1, data});
 
-        // DEBUG_renderAISightPoints(m_aiPerception, camera, commandsOut);
+        DEBUG_renderAISightPoints(m_aiPerception, camera, commandsOut);
     }
 
   private:

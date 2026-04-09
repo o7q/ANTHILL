@@ -1,4 +1,5 @@
 #pragma once
 
-extern const int NEIGHBOR_INDICES_X[8];
-extern const int NEIGHBOR_INDICES_Y[8];
+#include "utils/data_structures/index_2d.hpp"
+
+extern const Index2D NEIGHBOR_INDICES[8];

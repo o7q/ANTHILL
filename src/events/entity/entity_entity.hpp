@@ -1,7 +1,6 @@
 #pragma once
 
 #include "events/entity/base.hpp"
-#include <functional>
 #include <memory>
 
 class Entity;
@@ -13,7 +12,7 @@ struct EntitySpawnEvent : public EntityEvent
     {
     }
 
-    std::function<std::unique_ptr<Entity>(uint64_t id)> entityFactory;
+    std::unique_ptr<Entity> entity = nullptr;
 };
 
 struct EntityDamageEvent : public EntityEvent

@@ -68,19 +68,28 @@ void TestScene::onTick()
     m_world.update(r_time.getDT(), playerPos, {300, 300}, m_backendEvents);
     m_world.render(m_camera, r_assets, renderCommands);
 
-    fpsText = r_assets.fonts()
-                  .get(FontID::Default)
-                  ->generateStringTexture(std::to_string((int)r_time.getFPS()),
-                                          Color(0, 255, 0), 5, 1, 8);
+    Texture fpsText =
+        r_assets.fonts()
+            .get(FontID::Default)
+            ->generateStringTexture(std::to_string((int)r_time.getFPS()),
+                                    Color(0, 255, 0), 5, 1, 8);
 
     TextureRenderCommandData fpsRenderData;
     fpsRenderData.texture = &fpsText;
     fpsRenderData.position = {10, 5};
+    renderCommands.push_back({1000, fpsRenderData});
 
-    RenderCommand fpsRenderCommand;
-    fpsRenderCommand.data = fpsRenderData;
-    fpsRenderCommand.index = 1000;
-    renderCommands.push_back(fpsRenderCommand);
+    Texture entitiesText =
+        r_assets.fonts()
+            .get(FontID::Default)
+            ->generateStringTexture(
+                std::to_string(m_world.getEntityHandler().getEntityCount()),
+                Color(255, 100, 255), 5, 1, 8);
+
+    TextureRenderCommandData entitiesRenderData;
+    entitiesRenderData.texture = &entitiesText;
+    entitiesRenderData.position = {100, 5};
+    renderCommands.push_back({1000, entitiesRenderData});
 
     r_viewport.render(renderCommands);
 }

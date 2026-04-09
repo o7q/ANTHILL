@@ -36,7 +36,7 @@ void EntityHandler::handleEvents(EventPool<EntityEvent> &events,
         case EntityEventType::EntitySpawn:
         {
             auto e = static_cast<EntitySpawnEvent *>(event.get());
-            m_entitiesToAdd.push_back(e->entityFactory(m_idHandler.getNext()));
+            m_entitiesToAdd.push_back(std::move(e->entity));
         }
         break;
         case EntityEventType::ParticleDraw:

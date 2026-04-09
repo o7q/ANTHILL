@@ -5,13 +5,8 @@
 class EntityIDHandler
 {
   public:
-    uint64_t getNext()
-    {
-        uint64_t next = m_current;
-        m_current++;
-        return next;
-    }
+    uint64_t getNext() { return ++m_current; }
 
   private:
-    uint64_t m_current = 1;
-}; // namespace EntityID
+    uint64_t m_current = 0;
+};

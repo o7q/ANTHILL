@@ -4,22 +4,29 @@
 #include "world/particle_world/particle_world.hpp"
 #include <memory>
 
-void EntityHandler::update(const ParticleWorld &world, float dt,
-                           EventPoolRefs eventPoolRefs)
+void EntityHandler::update(const ParticleWorld &world, float dt, Vec2i origin,
+                           Vec2u size, EventPoolRefs eventPoolRefs)
 {
     EventPool<EntityEvent> events;
 
-    for (auto &entityPair : m_entities)
-    {
-        Entity *entity = entityPair.second.get();
+    const Entity *currentPlayer = getCurrentPlayer();
 
+    for (auto &[id, entity] : m_entities)
+    {
         std::vector<const Entity *> nearby = getNearbyEntities(/*entity*/);
-        EntityUpdateContext context{dt, world, nearby, m_currentPlayer};
+        EntityUpdateContext context{id, dt, world, nearby, currentPlayer};
+
         entity->update(context, events);
 
-        if (entity->getHealth() <= 0.0f)
+        Vec2i pos = entity->getBody().getPosition();
+
+        if (entity->getHealth() <= 0.0f ||
+            pos.x < origin.x - m_globalKillRadius.x ||
+            pos.x > origin.x + m_globalKillRadius.x ||
+            pos.y < origin.y - m_globalKillRadius.y ||
+            pos.y > origin.y + m_globalKillRadius.y)
         {
-            m_entitiesToRemove.push_back(entity->getID());
+            m_entitiesToRemove.push_back(id);
         }
     }
 
@@ -32,7 +39,7 @@ void EntityHandler::update(const ParticleWorld &world, float dt,
 
     for (std::unique_ptr<Entity> &newEntity : m_entitiesToAdd)
     {
-        m_entities[newEntity->getID()] = std::move(newEntity);
+        m_entities[m_idHandler.getNext()] = std::move(newEntity);
     }
 
     m_entitiesToAdd.clear();

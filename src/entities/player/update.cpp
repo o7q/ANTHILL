@@ -44,7 +44,7 @@ void Player::update(const EntityUpdateContext &context,
         if (current)
         {
             ItemUseContext itemContext;
-            itemContext.ownerID = getID();
+            itemContext.ownerID = context.id;
             itemContext.heldPosition = m_body.getPosition();
             itemContext.heldAngle = m_angle;
 
@@ -53,7 +53,7 @@ void Player::update(const EntityUpdateContext &context,
             if (used)
             {
                 auto shootSoundEvent =
-                    std::make_unique<EntityBackendPlaySoundEvent>(getID());
+                    std::make_unique<EntityBackendPlaySoundEvent>(context.id);
                 shootSoundEvent->backendEvent.soundID = current->getUseSound();
                 shootSoundEvent->backendEvent.settings.volume = 0.2f;
                 shootSoundEvent->backendEvent.settings.pitch =
@@ -74,7 +74,7 @@ void Player::update(const EntityUpdateContext &context,
                 if (reloaded)
                 {
                     auto reloadSoundEvent =
-                        std::make_unique<EntityBackendPlaySoundEvent>(getID());
+                        std::make_unique<EntityBackendPlaySoundEvent>(context.id);
                     reloadSoundEvent->backendEvent.soundID =
                         reloadable->getReloadSound();
                     reloadSoundEvent->backendEvent.settings.volume = 0.2f;

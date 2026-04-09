@@ -37,7 +37,7 @@ void Wuskkogel::update(const EntityUpdateContext &context,
 void Wuskkogel::update_idle(const EntityUpdateContext &context,
                             EventPool<EntityEvent> &eventsOut)
 {
-    const Entity *player = context.player;
+    const Entity *player = context.currentPlayer;
 
     if (!player)
     {

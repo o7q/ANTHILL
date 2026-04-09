@@ -94,8 +94,8 @@ class AStarSolver
             for (int i = 0; i < 8; ++i)
             {
                 Index2D neighborIndex = {
-                    m_current.index.x + NEIGHBOR_INDICES_X[i],
-                    m_current.index.y + NEIGHBOR_INDICES_Y[i]};
+                    m_current.index.x + NEIGHBOR_INDICES[i].x,
+                    m_current.index.y + NEIGHBOR_INDICES[i].y};
 
                 if (!checkFunction(neighborIndex.x, neighborIndex.y))
                 {
@@ -103,18 +103,18 @@ class AStarSolver
                 }
 
                 AStarNode &neighbor = m_nodes[neighborIndex];
-                float costToNeightbor =
+                float costToNeighbor =
                     m_current.gCost + dist(m_current.index, neighborIndex);
 
                 if (neighbor.state == State::Unvisited ||
-                    costToNeightbor < neighbor.gCost)
+                    costToNeighbor < neighbor.gCost)
                 {
                     AStarNode next;
                     next.index = neighborIndex;
                     next.parentIndex = m_current.index;
                     next.hasParent = true;
                     next.state = State::Open;
-                    next.gCost = costToNeightbor;
+                    next.gCost = costToNeighbor;
                     next.hCost = dist(neighborIndex, {m_end.x, m_end.y});
                     next.calculateFCost();
 

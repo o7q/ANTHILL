@@ -88,14 +88,11 @@ class Shotgun : public Gun, public IRenderable
         {
             auto event = std::make_unique<EntitySpawnEvent>(context.ownerID);
 
-            event->entityFactory = [i, context, n, radians](uint64_t id)
-            {
-                auto bullet = std::make_unique<SimpleProjectile>(
-                    id, context.ownerID, context.heldPosition + n.toGrid(),
-                    radians + i / 15.0f, 30.0f);
+            auto bullet = std::make_unique<SimpleProjectile>(
+                context.ownerID, context.heldPosition + n.toGrid(),
+                radians + i / 15.0f, 30.0f);
 
-                return bullet;
-            };
+            event->entity = std::move(bullet);
 
             eventsOut.emit(std::move(event));
         }

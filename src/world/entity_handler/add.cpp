@@ -1,13 +1,15 @@
 #include "entity_handler.hpp"
 
-void EntityHandler::addEntity(std::unique_ptr<Entity> entity)
+uint64_t EntityHandler::addEntity(std::unique_ptr<Entity> entity)
 {
-    m_latestEntity = entity.get();
-    m_entities[entity->getID()] = std::move(entity);
+    uint64_t id = m_idHandler.getNext();
+    m_latestEntityID = id;
+    m_entities[id] = std::move(entity);
+    return id;
 }
 
-void EntityHandler::addPlayer(std::unique_ptr<Player> player)
+uint64_t EntityHandler::addPlayer(std::unique_ptr<Player> player)
 {
-    m_currentPlayer = player.get();
-    addEntity(std::move(player));
+    m_currentPlayerID = addEntity(std::move(player));
+    return m_currentPlayerID;
 }

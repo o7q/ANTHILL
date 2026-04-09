@@ -7,9 +7,9 @@
 class SimpleProjectile : public Entity
 {
   public:
-    SimpleProjectile(uint64_t id, uint64_t parent, Vec2i startPos,
-                     float startAngle, float speed)
-        : Entity(id, parent)
+    SimpleProjectile(uint64_t parent, Vec2i startPos, float startAngle,
+                     float speed)
+        : Entity(parent)
     {
         m_body.setPosition(startPos);
         m_constantVelocity =

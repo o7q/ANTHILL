@@ -11,9 +11,7 @@
 class Entity
 {
   public:
-    Entity(uint64_t id, uint64_t parentID = 0) : m_id(id), m_parentID(parentID)
-    {
-    }
+    Entity(uint64_t parentID = 0) : m_parentID(parentID) {}
     virtual ~Entity() = default;
 
     virtual void update(const EntityUpdateContext &context,
@@ -39,7 +37,6 @@ class Entity
 
     EntityMetadata getMetadata() const { return m_metadata; }
 
-    uint64_t getID() const { return m_id; }
     uint64_t getParent() const { return m_parentID; }
 
   protected:
@@ -49,7 +46,6 @@ class Entity
     EntityMetadata m_metadata;
 
   private:
-    const uint64_t m_id = 0;
     const uint64_t m_parentID = 0;
 
     float m_health = 100.0f;
