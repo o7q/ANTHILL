@@ -1,16 +1,13 @@
+#include "entities/wuskkogel/states/roam.hpp"
 #include "entity/metadata.hpp"
 #include "identifiers/assets/spritesheet.hpp"
 #include "wuskkogel.hpp"
+#include <memory>
 
 Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
     : Entity(id), m_bodyHandler(m_body, m_boundingBox),
       m_animator(*assets.spriteSheets().get(SpriteSheetID::Wuskkogel))
 {
-    m_targetLostTimer.setDurationInSeconds(10.0f);
-    m_targetRecalcTimer.setDurationInSeconds(3.0f);
-    m_targetRecalcTimer.setMode(Timer::Mode::Repeat);
-    m_targetRecalcTimer.restart();
-
     m_metadata.name = "Wuskkogel";
 
     m_boundingBox.setSize({12, 16});
@@ -24,7 +21,7 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
     AINavigation::Config cfg;
     cfg.astarIterationsPerFrame = 100;
     cfg.stuckTemper = 100;
-    cfg.astarTerminationDistance = 4;
+    cfg.astarTerminationDistance = 0;
     cfg.astarMaxIterations = 10000000;
     cfg.checkpointEatRadius = 10;
     cfg.astarNeighborCheckFunction =
@@ -78,4 +75,7 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
     m_animator.setFPS(12);
     m_animator.enableLooping();
     m_animator.restart();
+
+    m_currentState = std::make_unique<WuskkogelRoamState>(
+        m_body, m_aiPerception, m_lookAngle, m_headPos, m_targetID);
 }

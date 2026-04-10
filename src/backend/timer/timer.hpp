@@ -10,55 +10,14 @@ class Timer
     };
 
   public:
-    void setDurationInSeconds(float seconds) { m_durationInSeconds = seconds; }
-    void setDurationInMilliseconds(float milliseconds)
-    {
-        m_durationInSeconds = milliseconds / 1000.0f;
-    }
+    void setDurationInSeconds(float seconds);
+    void setDurationInMilliseconds(float milliseconds);
 
-    void update(float dt)
-    {
-        if (m_mode == Mode::Repeat)
-        {
-            m_completed = false;
-        }
+    void update(float dt);
 
-        if (!m_active)
-        {
-            return;
-        }
+    void restart();
 
-        if (m_clock >= 60.0f * m_durationInSeconds)
-        {
-            m_completed = true;
-
-            switch (m_mode)
-            {
-            case Mode::Repeat:
-                m_clock = 0.0f;
-                break;
-            case Mode::Once:
-                m_clock = 0.0f;
-                m_active = false;
-                break;
-            }
-        }
-        m_clock += dt;
-    }
-
-    void restart()
-    {
-        m_clock = 0.0f;
-        m_active = true;
-        m_completed = false;
-    }
-
-    void stop()
-    {
-        m_clock = 0.0f;
-        m_active = false;
-        m_completed = false;
-    }
+    void stop();
 
     bool active() const { return m_active; }
     bool completed() const { return m_completed; }

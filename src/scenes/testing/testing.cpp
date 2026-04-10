@@ -12,10 +12,13 @@ void TestScene::onStart()
     m_world.getEntityHandler().getCurrentPlayer()->getBody().setPosition(
         {0, -200});
 
-    auto wuskkogel = std::make_unique<Wuskkogel>(
-        m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
-    wuskkogel->getBody().setPosition({0, -20});
-    m_world.getEntityHandler().addEntity(std::move(wuskkogel));
+    for (int i = 0; i < 1; ++i)
+    {
+        auto wuskkogel = std::make_unique<Wuskkogel>(
+            m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
+        wuskkogel->getBody().setPosition({i * 10, -20});
+        m_world.getEntityHandler().addEntity(std::move(wuskkogel));
+    }
 }
 
 void TestScene::onTick()
@@ -30,6 +33,7 @@ void TestScene::onTick()
 
     if (r_window.getInputHandler().getInput(InputID::AltAction1)->isDown())
     {
+
         Particle stone;
         float mult = Math::Random::weakRandInt(80, 100) / 100.0f;
         stone.setColor(Color(200 * mult, 205 * mult, 200 * mult));
@@ -58,14 +62,29 @@ void TestScene::onTick()
     }
 
     Player *player = m_world.getEntityHandler().getCurrentPlayer();
-    player->updateAimPosition(worldMousePos);
+    Vec2i updatePos;
+    Texture healthText;
+    if (player)
+    {
+        player->updateAimPosition(worldMousePos);
+        updatePos = player->getBody().getPosition();
 
-    Vec2i playerPos = player->getBody().getPosition();
-    m_world.getGenerator().generateInRadius(playerPos.toInt(), {20, 20});
-    m_camera.setGoal(playerPos);
+        healthText = r_assets.fonts()
+                         .get(FontID::Default)
+                         ->generateStringTexture(
+                             std::to_string((int)player->getHealth()),
+                             Color(255, 100, 100), 5, 1, 8);
+
+        TextureRenderCommandData healthRenderData;
+        healthRenderData.texture = &healthText;
+        healthRenderData.position = {70, 5};
+        renderCommands.push_back({1000, healthRenderData});
+    }
+
+    m_camera.setGoal(updatePos);
     m_camera.update(r_time.getDT());
-
-    m_world.update(r_time.getDT(), playerPos, {300, 300}, m_backendEvents);
+    m_world.getGenerator().generateInRadius(updatePos.toInt(), {20, 20});
+    m_world.update(r_time.getDT(), updatePos, {300, 300}, m_backendEvents);
     m_world.render(m_camera, r_assets, renderCommands);
 
     Texture fpsText =
@@ -88,7 +107,7 @@ void TestScene::onTick()
 
     TextureRenderCommandData entitiesRenderData;
     entitiesRenderData.texture = &entitiesText;
-    entitiesRenderData.position = {100, 5};
+    entitiesRenderData.position = {40, 5};
     renderCommands.push_back({1000, entitiesRenderData});
 
     r_viewport.render(renderCommands);

@@ -1,12 +1,12 @@
 #include "entity_handler.hpp"
 
-const std::vector<const Entity *>
-    EntityHandler::getNearbyEntities(/*const Entity *entity*/)
+const std::unordered_map<uint64_t, const Entity *>
+EntityHandler::getNearbyEntities()
 {
-    std::vector<const Entity *> nearby;
-    for (auto &entity : m_entities)
+    std::unordered_map<uint64_t, const Entity *> nearby;
+    for (auto &[id, entity] : m_entities)
     {
-        nearby.push_back(entity.second.get());
+        nearby[id] = entity.get();
     }
     return nearby;
 }

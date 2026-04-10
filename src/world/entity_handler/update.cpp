@@ -3,18 +3,18 @@
 #include "events/event_pool.hpp"
 #include "world/particle_world/particle_world.hpp"
 #include <memory>
+#include <unordered_map>
 
 void EntityHandler::update(const ParticleWorld &world, float dt, Vec2i origin,
                            Vec2u size, EventPoolRefs eventPoolRefs)
 {
     EventPool<EntityEvent> events;
 
-    const Entity *currentPlayer = getCurrentPlayer();
-
     for (auto &[id, entity] : m_entities)
     {
-        std::vector<const Entity *> nearby = getNearbyEntities(/*entity*/);
-        EntityUpdateContext context{id, dt, world, nearby, currentPlayer};
+        std::unordered_map<uint64_t, const Entity *> nearby =
+            getNearbyEntities(/*entity*/);
+        EntityUpdateContext context{id, dt, world, nearby};
 
         entity->update(context, events);
 

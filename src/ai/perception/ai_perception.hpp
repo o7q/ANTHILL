@@ -11,7 +11,7 @@ class AIPerception
     virtual ~AIPerception() = default;
 
     template <typename CheckFunction>
-    void checkForInterestsInSight(Vec2i headPos, float headAngle,
+    void scan(Vec2i headPos, float headAngle,
                                   CheckFunction &&function)
     {
         m_sightPoints.clear();
