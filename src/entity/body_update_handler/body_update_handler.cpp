@@ -4,21 +4,22 @@
 #include "entity/world_interaction/trajectory.hpp"
 #include "math/rectangle.hpp"
 
-void BodyUpdateHandler::update(const EntityUpdateContext &context)
+void BodyUpdateHandler::update(const EntityWorldContext &worldContext)
 {
     Vec2f currentPos = r_body.getPositionFloat();
-    apply_external_forces(currentPos.toGrid(), context);
-    r_body.update(context.dt);
+    apply_external_forces(currentPos.toGrid(), worldContext);
+    r_body.update(worldContext.dt);
     Vec2f updatedPos = r_body.getPositionFloat();
 
-    prevent_world_collision(currentPos, updatedPos, context);
+    prevent_world_collision(currentPos, updatedPos, worldContext);
 }
 
 void BodyUpdateHandler::apply_external_forces(
-    Vec2i currentPos, const EntityUpdateContext &context)
+    Vec2i currentPos, const EntityWorldContext &worldContext)
 {
-    if (EntityWorldInteraction::againstSolidSurface(
-            currentPos, r_boundingBox, context.world, RectangleSide::Bottom))
+    if (EntityWorldInteraction::againstSolidSurface(currentPos, r_boundingBox,
+                                                    worldContext.world,
+                                                    RectangleSide::Bottom))
     {
         r_body.haltMotionInDirection({0, 1});
     }
@@ -28,28 +29,28 @@ void BodyUpdateHandler::apply_external_forces(
     }
 
     if (EntityWorldInteraction::againstSolidSurface(
-            currentPos, r_boundingBox, context.world, RectangleSide::Top))
+            currentPos, r_boundingBox, worldContext.world, RectangleSide::Top))
     {
         r_body.haltMotionInDirection({0, -1});
     }
 }
 
 void BodyUpdateHandler::prevent_world_collision(
-    Vec2f currentPos, Vec2f updatedPos, const EntityUpdateContext &context)
+    Vec2f currentPos, Vec2f updatedPos, const EntityWorldContext &worldContext)
 {
     EntityWorldInteraction::TrajectoryCollisionResponse response =
         EntityWorldInteraction::calculateCollisionFromTrajectorySlide(
             currentPos.toGrid(), updatedPos.toGrid(), r_boundingBox,
-            context.world);
+            worldContext.world);
 
     if (response.collided)
     {
         Vec2f remainder = updatedPos - updatedPos.floor();
 
         EntityWorldInteraction::StepResponse step =
-            EntityWorldInteraction::calculateStep(response.resolvePosition,
-                                                  updatedPos.toGrid(),
-                                                  r_boundingBox, context.world);
+            EntityWorldInteraction::calculateStep(
+                response.resolvePosition, updatedPos.toGrid(), r_boundingBox,
+                worldContext.world);
 
         Vec2f finalPos = response.resolvePosition.toFloat() +
                          step.moveVector.toFloat() + remainder;

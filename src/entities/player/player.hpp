@@ -32,7 +32,7 @@ class Player : public Entity
 
     Inventory &getInventory() { return m_inventory; }
 
-    void update(const EntityUpdateContext &context,
+    void update(const EntityWorldContext &worldContext,
                 EventPool<EntityEvent> &eventsOut) override;
 
     void render(const Camera &camera,

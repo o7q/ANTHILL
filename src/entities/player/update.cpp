@@ -7,7 +7,7 @@
 #include "player.hpp"
 #include <memory>
 
-void Player::update(const EntityUpdateContext &context,
+void Player::update(const EntityWorldContext &worldContext,
                     EventPool<EntityEvent> &eventsOut)
 {
     if (r_input.getInput(InputID::Left)->isDown())
@@ -28,10 +28,10 @@ void Player::update(const EntityUpdateContext &context,
     }
 
     bool onGround = EntityWorldInteraction::againstSolidSurface(
-        m_body.getPosition(), m_boundingBox, context.world,
+        m_body.getPosition(), m_boundingBox, worldContext.world,
         RectangleSide::Bottom);
 
-    m_jumpHandler.update(context.dt, onGround);
+    m_jumpHandler.update(worldContext.dt, onGround);
 
     if (m_jumpHandler.canJump())
     {
@@ -44,7 +44,7 @@ void Player::update(const EntityUpdateContext &context,
         if (current)
         {
             ItemUseContext itemContext;
-            itemContext.ownerID = context.id;
+            itemContext.ownerID = worldContext.id;
             itemContext.heldPosition = m_body.getPosition();
             itemContext.heldAngle = m_angle;
 
@@ -53,7 +53,8 @@ void Player::update(const EntityUpdateContext &context,
             if (used)
             {
                 auto shootSoundEvent =
-                    std::make_unique<EntityBackendPlaySoundEvent>(context.id);
+                    std::make_unique<EntityBackendPlaySoundEvent>(
+                        worldContext.id);
                 shootSoundEvent->backendEvent.soundID = current->getUseSound();
                 shootSoundEvent->backendEvent.settings.volume = 0.2f;
                 shootSoundEvent->backendEvent.settings.pitch =
@@ -74,7 +75,8 @@ void Player::update(const EntityUpdateContext &context,
                 if (reloaded)
                 {
                     auto reloadSoundEvent =
-                        std::make_unique<EntityBackendPlaySoundEvent>(context.id);
+                        std::make_unique<EntityBackendPlaySoundEvent>(
+                            worldContext.id);
                     reloadSoundEvent->backendEvent.soundID =
                         reloadable->getReloadSound();
                     reloadSoundEvent->backendEvent.settings.volume = 0.2f;
@@ -87,10 +89,10 @@ void Player::update(const EntityUpdateContext &context,
         }
     }
 
-    m_bodyHandler.update(context);
+    m_bodyHandler.update(worldContext);
 
     if (current)
     {
-        current->update(context.dt);
+        current->update(worldContext.dt);
     }
 }

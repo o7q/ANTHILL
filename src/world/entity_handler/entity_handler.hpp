@@ -3,12 +3,9 @@
 #include "backend/viewport/render_command.hpp"
 #include "entities/player/player.hpp"
 #include "entity/entity.hpp"
-#include "entity/update_context.hpp"
 #include "events/backend/base.hpp"
-#include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
 #include "world/entity_handler/id.hpp"
-#include "world/particle_world/particle_world.hpp"
 #include <cstdint>
 #include <memory>
 #include <unordered_map>

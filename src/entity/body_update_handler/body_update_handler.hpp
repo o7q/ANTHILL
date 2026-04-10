@@ -1,7 +1,7 @@
 #pragma once
 
 #include "entity/body/entity_body.hpp"
-#include "entity/update_context.hpp"
+#include "entity/world_context.hpp"
 #include "math/rectangle.hpp"
 #include "math/vec.hpp"
 
@@ -14,13 +14,13 @@ class BodyUpdateHandler
     }
     virtual ~BodyUpdateHandler() = default;
 
-    void update(const EntityUpdateContext &context);
+    void update(const EntityWorldContext &worldContext);
 
   private:
     void apply_external_forces(Vec2i startPos,
-                               const EntityUpdateContext &context);
+                               const EntityWorldContext &worldContext);
     void prevent_world_collision(Vec2f startPos, Vec2f updatedPos,
-                                 const EntityUpdateContext &context);
+                                 const EntityWorldContext &worldContext);
 
   private:
     EntityBody &r_body;

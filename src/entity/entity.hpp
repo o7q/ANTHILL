@@ -3,7 +3,7 @@
 #include "backend/viewport/render_command.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/metadata.hpp"
-#include "entity/update_context.hpp"
+#include "entity/world_context.hpp"
 #include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
 #include "math/rectangle.hpp"
@@ -14,7 +14,7 @@ class Entity
     Entity(uint64_t parentID = 0) : m_parentID(parentID) {}
     virtual ~Entity() = default;
 
-    virtual void update(const EntityUpdateContext &context,
+    virtual void update(const EntityWorldContext &worldContext,
                         EventPool<EntityEvent> &eventsOut) = 0;
     virtual void render(const Camera &camera,
                         std::vector<RenderCommand> &commandsOut) = 0;
@@ -34,6 +34,11 @@ class Entity
     const EntityBody &getBody() const { return m_body; }
     StaticGridRectangle &getBoundingBox() { return m_boundingBox; }
     const StaticGridRectangle &getBoundingBox() const { return m_boundingBox; }
+
+    bool pointInside(Vec2i point) const
+    {
+        return m_boundingBox.pointInside(point - m_body.getPosition());
+    }
 
     EntityMetadata getMetadata() const { return m_metadata; }
 

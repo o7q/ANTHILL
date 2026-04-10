@@ -30,11 +30,11 @@ void ParticleRenderer::render(const Camera &camera, const Assets &assets,
 
             if (p->isAir())
             {
-                // BackgroundRenderSettings settings;
-                // settings.cameraPos = cameraPos;
-                // settings.worldPos = worldPos;
-                // settings.drawPos = {x, y};
-                // render_background(assets, settings);
+                BackgroundRenderSettings settings;
+                settings.cameraPos = cameraPos;
+                settings.worldPos = worldPos;
+                settings.drawPos = {x, y};
+                render_background(assets, settings);
             }
             else
             {

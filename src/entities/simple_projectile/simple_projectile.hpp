@@ -20,7 +20,7 @@ class SimpleProjectile : public Entity
         m_metadata.name = "Projectile";
     }
 
-    void update(const EntityUpdateContext &context,
+    void update(const EntityWorldContext &worldContext,
                 EventPool<EntityEvent> &eventsOut) override;
 
     void render(const Camera &camera,

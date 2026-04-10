@@ -6,7 +6,7 @@
 
 class Entity;
 
-struct EntityUpdateContext
+struct EntityWorldContext
 {
     const uint64_t id = 0;
     const float dt = 0.0f;

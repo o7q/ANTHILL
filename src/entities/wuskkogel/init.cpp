@@ -1,8 +1,5 @@
-#include "entities/wuskkogel/states/roam.hpp"
-#include "entity/metadata.hpp"
 #include "identifiers/assets/spritesheet.hpp"
 #include "wuskkogel.hpp"
-#include <memory>
 
 Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
     : Entity(id), m_bodyHandler(m_body, m_boundingBox),
@@ -25,12 +22,12 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
     cfg.astarMaxIterations = 10000000;
     cfg.checkpointEatRadius = 10;
     cfg.astarNeighborCheckFunction =
-        [&](const EntityUpdateContext &context, Index2D index)
+        [&](const EntityWorldContext &worldContext, Index2D index)
     {
-        auto data = context.world.getNavmesh().getChunkFromIndex(index);
+        auto data = worldContext.world.getNavmesh().getChunkFromIndex(index);
 
         Vec2i pos = Vec2i(index.x, index.y) *
-                    context.world.getNavmesh().getResolution().toInt();
+                    worldContext.world.getNavmesh().getResolution().toInt();
 
         Vec2i a = m_boundingBox.getA();
         Vec2i b = m_boundingBox.getB();
@@ -53,10 +50,10 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
             return false;
         };
 
-        context.world.query(topLeft, topRight, test);
-        context.world.query(topLeft, bottomLeft, test);
-        context.world.query(bottomLeft, bottomRight, test);
-        context.world.query(topRight, bottomRight, test);
+        worldContext.world.query(topLeft, topRight, test);
+        worldContext.world.query(topLeft, bottomLeft, test);
+        worldContext.world.query(bottomLeft, bottomRight, test);
+        worldContext.world.query(topRight, bottomRight, test);
 
         if (solid)
         {
@@ -75,7 +72,4 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
     m_animator.setFPS(12);
     m_animator.enableLooping();
     m_animator.restart();
-
-    m_currentState = std::make_unique<WuskkogelRoamState>(
-        m_body, m_aiPerception, m_lookAngle, m_headPos, m_targetID);
 }
