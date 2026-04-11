@@ -1,6 +1,7 @@
 #pragma once
 
 #include "math/numbers.hpp"
+#include <algorithm>
 #include <cmath>
 
 template <typename T> struct Vec2
@@ -116,8 +117,7 @@ template <typename T> struct Vec2
     }
     Vec2 clamp(const Vec2 &min, const Vec2 &max)
     {
-        return {Math::Numbers::clamp(x, min.x, max.x),
-                Math::Numbers::clamp(y, min.y, max.y)};
+        return {std::clamp(x, min.x, max.x), std::clamp(y, min.y, max.y)};
     }
     Vec2<int> direction()
     {

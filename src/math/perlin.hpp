@@ -1,6 +1,7 @@
 #pragma once
 
 #include "math/interpolation.hpp"
+#include "math/random.hpp"
 #include "math/vec.hpp"
 #include <algorithm>
 #include <cstdint>
@@ -18,17 +19,10 @@ inline const Vec2f gradients[16] = {
     {0.9239f, -0.3827f},
 };
 
-// https://en.wikipedia.org/wiki/MurmurHash
 inline Vec2f randomGradient(Vec2i index, uint32_t seed)
 {
-    uint32_t h = (uint32_t)index.x ^ ((uint32_t)index.y << 16);
-    h ^= seed;
-    h ^= h >> 16;
-    h *= 0x85ebca6b;
-    h ^= h >> 13;
-    h *= 0xc2b2ae35;
-    h ^= h >> 16;
-    return gradients[h >> 28];
+    uint32_t h = Random::hashFromPosition(index, seed);
+    return gradients[h >> 28];    
 }
 
 inline float sample(Vec2f pos, uint32_t seed)

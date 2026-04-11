@@ -2,12 +2,14 @@
 
 #include "math/physics/verlet.hpp"
 #include "world/particle_world/particle.hpp"
+#include <limits>
 
-void PDynamicsHandler::update(float dt, Vec2i origin, Vec2u size)
+void PDynamicsHandler::update(float dt, Vec2i origin)
 {
-    Vec2i halfSize = size.toInt() / 2;
+    Vec2i halfSize = m_updateSize.toInt() / 2;
 
-    Index2D lastNavmeshChunkIndex(1000000000, 1000000000);
+    Index2D lastNavmeshChunkIndex(std::numeric_limits<int>::max(),
+                                  std::numeric_limits<int>::max());
 
     for (int y = origin.y + halfSize.y; y >= origin.y - halfSize.y; --y)
     {

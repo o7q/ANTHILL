@@ -19,7 +19,7 @@ class PDynamicsHandler
     {
     }
 
-    void update(float dt, Vec2i origin, Vec2u size);
+    void update(float dt, Vec2i origin);
 
     void setGravity(float gravity) { m_gravity = gravity; }
     void addGravity(float gravity) { m_gravity += gravity; }
@@ -54,4 +54,6 @@ class PDynamicsHandler
     bool m_updateSwapID = 0;
 
     float m_gravity = 0.1f;
+
+    Vec2u m_updateSize = {500, 400};
 };

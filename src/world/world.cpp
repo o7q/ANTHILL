@@ -4,8 +4,8 @@
 void World::update(float dt, Vec2i origin,
                    EventPool<BackendEvent> &backendEvents)
 {
-    m_particleWorld.update(dt, origin, {500, 500});
-    m_entityHandler.update(m_particleWorld, dt, origin, {10000, 10000},
+    m_particleWorld.update(dt, origin);
+    m_entityHandler.update(m_particleWorld, dt, origin,
                            {backendEvents, m_particleWorld.getEvents()});
 }
 

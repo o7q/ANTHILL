@@ -7,7 +7,7 @@
 #include <unordered_map>
 
 void EntityHandler::update(const ParticleWorld &world, float dt, Vec2i origin,
-                           Vec2u size, EventPoolRefs eventPoolRefs)
+                           EventPoolRefs eventPoolRefs)
 {
     EventPool<EntityEvent> events;
 
