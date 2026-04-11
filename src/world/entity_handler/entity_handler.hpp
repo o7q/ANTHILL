@@ -40,7 +40,8 @@ class EntityHandler
     Entity *getLatestEntity();
     Entity *getEntity(uint64_t id);
 
-    const std::unordered_map<uint64_t, const Entity *> getNearbyEntities();
+    const std::unordered_map<uint64_t, const Entity *>
+    getNearbyEntities(uint64_t nearID);
 
     EntityIDHandler &getIDHandler() { return m_idHandler; }
 

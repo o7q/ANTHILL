@@ -32,6 +32,8 @@ class Wuskkogel : public Entity
         data.flipX = m_body.getVelocity().x < 0;
 
         commandsOut.push_back({1, data});
+
+        // DEBUG_renderAISightPoints(m_aiPerception, camera, commandsOut);
     }
 
   private:

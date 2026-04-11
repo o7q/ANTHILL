@@ -1,6 +1,7 @@
 #include "game.hpp"
 
 #include "scenes/testing/testing.hpp"
+#include "scenes/testing2/testing2.hpp"
 
 void Game::update_loop()
 {
@@ -22,6 +23,9 @@ void Game::update_loop()
     {
     case SceneID::Testing:
         m_scene = std::make_unique<TestScene>(m_assets, m_window);
+        break;
+    case SceneID::Testing2:
+        m_scene = std::make_unique<TestScene2>(m_assets, m_window);
         break;
     default:
         break;

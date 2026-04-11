@@ -33,6 +33,8 @@ class Texture
 
     const std::vector<Color> &getPixels() const { return m_pixels; }
 
+    void clear();
+
   private:
     void initNull();
 

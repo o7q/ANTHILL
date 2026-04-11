@@ -63,52 +63,19 @@ void TestScene::onTick()
 
     Player *player = m_world.getEntityHandler().getCurrentPlayer();
     Vec2i updatePos;
-    Texture healthText;
     if (player)
     {
         player->updateAimPosition(worldMousePos);
         updatePos = player->getBody().getPosition();
-
-        healthText = r_assets.fonts()
-                         .get(FontID::Default)
-                         ->generateStringTexture(
-                             std::to_string((int)player->getHealth()),
-                             Color(255, 100, 100), 5, 1, 8);
-
-        TextureRenderCommandData healthRenderData;
-        healthRenderData.texture = &healthText;
-        healthRenderData.position = {70, 5};
-        renderCommands.push_back({1000, healthRenderData});
     }
 
     m_camera.setGoal(updatePos);
     m_camera.update(r_time.getDT());
     m_world.getGenerator().generateInRadius(updatePos.toInt(), {20, 20});
-    m_world.update(r_time.getDT(), updatePos, {300, 300}, m_backendEvents);
+    m_world.update(r_time.getDT(), updatePos, m_backendEvents);
     m_world.render(m_camera, r_assets, renderCommands);
 
-    Texture fpsText =
-        r_assets.fonts()
-            .get(FontID::Default)
-            ->generateStringTexture(std::to_string((int)r_time.getFPS()),
-                                    Color(0, 255, 0), 5, 1, 8);
-
-    TextureRenderCommandData fpsRenderData;
-    fpsRenderData.texture = &fpsText;
-    fpsRenderData.position = {10, 5};
-    renderCommands.push_back({1000, fpsRenderData});
-
-    Texture entitiesText =
-        r_assets.fonts()
-            .get(FontID::Default)
-            ->generateStringTexture(
-                std::to_string(m_world.getEntityHandler().getEntityCount()),
-                Color(255, 100, 255), 5, 1, 8);
-
-    TextureRenderCommandData entitiesRenderData;
-    entitiesRenderData.texture = &entitiesText;
-    entitiesRenderData.position = {40, 5};
-    renderCommands.push_back({1000, entitiesRenderData});
+    renderText(renderCommands);
 
     r_viewport.render(renderCommands);
 }

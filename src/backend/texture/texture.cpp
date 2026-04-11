@@ -35,7 +35,7 @@ Texture::Texture(const std::filesystem::path &path)
 
     m_pixels.resize(width * height);
 
-    for (int i = 0; i < width * height; ++i)
+    for (unsigned int i = 0; i < m_size.x * m_size.y; ++i)
     {
         int dataIndex = i * 4;
 
@@ -84,5 +84,13 @@ void Texture::initNull()
     for (unsigned int i = 0; i < size * size; ++i)
     {
         m_pixels[i] = i % 2 == 0 ? Color(255, 0, 255) : Color(0, 0, 0);
+    }
+}
+
+void Texture::clear()
+{
+    for (size_t i = 0; i < m_pixels.size(); ++i)
+    {
+        m_pixels[i] = Color();
     }
 }
