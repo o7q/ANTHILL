@@ -43,21 +43,24 @@ void Generator::generate_terrain(Vec2i origin)
 void Generator::generate_terrain_at_pos(Vec2i pos)
 {
     float biomeEdgeWarble =
-        Math::Perlin::sampleEx(pos.toFloat(), {50, 50}, 2, m_seed) - 0.5f;
+        Math::Perlin::sampleEx(pos.toFloat(), {200, 200}, 5, m_seed) - 0.5f;
 
-    Math::Voronoi::Sample sample = Math::Voronoi::sampleEx(
-        pos.toFloat() + biomeEdgeWarble * 20, m_biomeSize.toFloat(), m_seed);
+    Math::Voronoi::Sample sample =
+        Math::Voronoi::sampleEx(pos.toFloat() + biomeEdgeWarble * 100.0f,
+                                m_biomeSize.toFloat(), m_seed);
 
     std::vector<BiomeID> biomes;
 
     float biomeTransitioner1 =
         Math::Perlin::sampleEx(pos.toFloat(), {200, 200}, 5, m_seed);
-    if (Math::Numbers::between(pos.y, (int)(-biomeTransitioner1 * 40), 1000 + (int)(biomeTransitioner1 * 100)))
+
+    if (Math::Numbers::between(pos.y, 0 + (int)(biomeTransitioner1 * 20),
+                               800 + (int)(biomeTransitioner1 * 100)))
     {
         biomes.push_back(BiomeID::DesertLayer1);
     }
-    if (Math::Numbers::between(pos.y, 1000 - (int)(biomeTransitioner1 * 100),
-                               100000))
+    if (Math::Numbers::between(pos.y, 800 - (int)(biomeTransitioner1 * 100),
+                               1000000))
     {
         biomes.push_back(BiomeID::DesertLayer2);
     }
@@ -77,10 +80,10 @@ void Generator::generate_terrain_at_pos(Vec2i pos)
     switch (id)
     {
     case BiomeID::DesertLayer1:
-        p = generate_desert_terrain0(pos, m_seed);
+        p = generate_desert_layer1(pos, m_seed);
         break;
     case BiomeID::DesertLayer2:
-        p = generate_desert_terrain1(pos, m_seed);
+        p = generate_desert_layer2(pos, m_seed);
         break;
     default:
         break;

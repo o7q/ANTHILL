@@ -2,6 +2,7 @@
 #include "backend/viewport/render_command.hpp"
 #include "math/color.hpp"
 #include "math/interpolation.hpp"
+#include "math/numbers.hpp"
 #include "math/perlin.hpp"
 #include "math/random.hpp"
 #include "math/vec.hpp"
@@ -20,25 +21,30 @@ void TestScene2::onTick()
 
         Vec2i gridSize = {20, 20};
 
-        Color colors[3] = {Color(255, 0, 0), Color(0, 255, 0),
-                           Color(0, 0, 255)};
-
         int seed = Math::Random::weakRandInt(0, 200);
 
         for (unsigned int y = 0; y < m_screen.getSize().y; ++y)
         {
             for (unsigned int x = 0; x < m_screen.getSize().x; ++x)
             {
-                float p = Math::Perlin::sampleEx(Vec2f(x, y), {20, 20}, 1, seed) - 0.5f;
+                float v =
+                    Math::Perlin::sampleEx(Vec2f(x, y), {20, 20}, 10, seed) -
+                    0.5f;
+                float v3 = Math::Perlin::sampleEx(Vec2f(x, y), {200, 200}, 2,
+                                                  seed + 2) -
+                           0.5f;
 
-                p *= Math::Interpolation::easeOutCubic(0, 10, y / (float)m_screen.getSize().y);
+                int modifier = static_cast<int>(
+                    v * 50.0f + std::sinf(y * v3 / 20.0f) * 100.0f);
 
-                Math::Voronoi::Sample sample = Math::Voronoi::sampleEx(
-                    Vec2f(x + p * 200, y + p * 200), gridSize.toFloat(), seed);
-
-                Color c = colors[Math::Random::hashFromPosition(sample.cell, seed) % 3];
-
-                m_screen.setPixel({x, y}, c);
+                if (Math::Numbers::between((int)(x + modifier), 200, 220))
+                {
+                    m_screen.setPixel({x, y}, Color(255, 255, 50));
+                }
+                else
+                {
+                    m_screen.setPixel({x, y}, Color(50, 50, 255));
+                }
             }
         }
     }
