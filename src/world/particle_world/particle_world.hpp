@@ -3,6 +3,7 @@
 #include "events/event_pool.hpp"
 #include "events/particle/base.hpp"
 #include "utils/data_structures/chunk_map.hpp"
+#include "world/particle_world/biome.hpp"
 #include "world/particle_world/dynamics/p_dynamics_handler.hpp"
 #include "world/particle_world/editor/particle_editor.hpp"
 #include "world/particle_world/navmesh/navmesh.hpp"
@@ -13,9 +14,8 @@ class ParticleWorld
 {
   public:
     ParticleWorld()
-        : m_particles({32, 32}), m_navmesh({8, 8}),
-          m_dynamicsHandler(m_particles, m_navmesh), m_editor(m_particles),
-          m_renderer(m_particles)
+        : m_particles({32, 32}), m_biomeMarkers({32, 32}), m_navmesh({8, 8}),
+          m_dynamicsHandler(m_particles, m_navmesh), m_editor(m_particles)
     {
     }
 
@@ -23,6 +23,8 @@ class ParticleWorld
 
     const ChunkMap<Particle> &getParticles() const { return m_particles; }
     ChunkMap<Particle> &getParticles() { return m_particles; }
+    const ChunkMap<BiomeID> &getBiomeMarkers() const { return m_biomeMarkers; }
+    ChunkMap<BiomeID> &getBiomeMarkers() { return m_biomeMarkers; }
     const Navmesh &getNavmesh() const { return m_navmesh; }
     Navmesh &getNavmesh() { return m_navmesh; }
     PDynamicsHandler &getDynamics() { return m_dynamicsHandler; }
@@ -55,6 +57,7 @@ class ParticleWorld
 
   private:
     ChunkMap<Particle> m_particles;
+    ChunkMap<BiomeID> m_biomeMarkers;
     Navmesh m_navmesh;
     PDynamicsHandler m_dynamicsHandler;
     ParticleEditor m_editor;

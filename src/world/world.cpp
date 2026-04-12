@@ -12,6 +12,8 @@ void World::update(float dt, Vec2i origin,
 void World::render(const Camera &camera, const Assets &assets,
                    std::vector<RenderCommand> &commandsOut)
 {
-    m_particleWorld.getRenderer().render(camera, assets, commandsOut);
+    m_particleWorld.getRenderer().render(m_particleWorld.getParticles(),
+                                         m_particleWorld.getBiomeMarkers(),
+                                         camera, assets, commandsOut);
     m_entityHandler.render(camera, commandsOut);
 }

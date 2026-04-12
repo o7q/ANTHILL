@@ -10,6 +10,8 @@ void Assets::initTextures()
 
     textures[TextureID::SandBackground] = {
         "assets/textures/backgrounds/sand.png"};
+    textures[TextureID::SandBackground2] = {
+        "assets/textures/backgrounds/sand2.png"};
 
     for (auto &[id, data] : textures)
     {

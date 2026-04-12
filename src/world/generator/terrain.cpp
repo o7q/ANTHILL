@@ -1,9 +1,11 @@
 #include "world/generator/desert/terrain.hpp"
 #include "generator.hpp"
+#include "math/numbers.hpp"
+#include "math/perlin.hpp"
 #include "math/random.hpp"
 #include "math/voronoi.hpp"
 #include "utils/data.hpp"
-#include "world/generator/biome.hpp"
+#include "world/particle_world/biome.hpp"
 
 void Generator::generate_terrain(Vec2i origin)
 {
@@ -40,49 +42,50 @@ void Generator::generate_terrain(Vec2i origin)
 
 void Generator::generate_terrain_at_pos(Vec2i pos)
 {
-    float pd =
-        Math::Perlin::sampleEx(pos.toFloat(), {20, 20}, 1, m_seed) - 0.5f;
-
-    pd *= pos.y / 100.0f;
+    float biomeEdgeWarble =
+        Math::Perlin::sampleEx(pos.toFloat(), {50, 50}, 2, m_seed) - 0.5f;
 
     Math::Voronoi::Sample sample = Math::Voronoi::sampleEx(
-        pos.toFloat() + pd * 20, m_biomeSize.toFloat(), m_seed);
+        pos.toFloat() + biomeEdgeWarble * 20, m_biomeSize.toFloat(), m_seed);
 
-    unsigned int maxLayer = (pos.y > ((pd + 0.5f) * 20 + 5000) ? 2 : 1);
+    std::vector<BiomeID> biomes;
 
-    unsigned int biomeSelector =
-        Math::Random::hashFromPosition(sample.cell) % maxLayer;
-
-    BiomeID biomeID = BiomeID::Surface;
-    if (pos.y > (pd + 0.5f) * 50.0f)
+    float biomeTransitioner1 =
+        Math::Perlin::sampleEx(pos.toFloat(), {200, 200}, 5, m_seed);
+    if (Math::Numbers::between(pos.y, (int)(-biomeTransitioner1 * 40), 1000 + (int)(biomeTransitioner1 * 100)))
     {
-        switch (biomeSelector)
-        {
-        case 0:
-            biomeID = BiomeID::Desert;
-            break;
-        case 1:
-            biomeID = BiomeID::Hell;
-            break;
-        }
+        biomes.push_back(BiomeID::DesertLayer1);
     }
+    if (Math::Numbers::between(pos.y, 1000 - (int)(biomeTransitioner1 * 100),
+                               100000))
+    {
+        biomes.push_back(BiomeID::DesertLayer2);
+    }
+
+    size_t size = biomes.size();
+    if (size <= 0)
+    {
+        return;
+    }
+
+    unsigned int selector =
+        Math::Random::hashFromPosition(sample.cell, m_seed) % biomes.size();
+
+    BiomeID id = biomes[selector];
 
     Particle p;
-
-    switch (biomeID)
+    switch (id)
     {
-    case BiomeID::Surface:
-        p = Particle();
+    case BiomeID::DesertLayer1:
+        p = generate_desert_terrain0(pos, m_seed);
         break;
-    case BiomeID::Desert:
-        p = generate_desert_terrain(pos, m_seed);
+    case BiomeID::DesertLayer2:
+        p = generate_desert_terrain1(pos, m_seed);
         break;
-    case BiomeID::Hell:
-        p.setMatterType(Particle::MatterType::Solid);
-        p.setPhysicsType(Particle::PhysicsType::None);
-        p.setColor(Color(255, 0, 0));
+    default:
         break;
     }
 
+    r_world.getBiomeMarkers().set(pos, id);
     r_world.getEditor().set(pos, p);
 }

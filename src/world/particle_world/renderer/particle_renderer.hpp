@@ -4,6 +4,7 @@
 #include "backend/viewport/render_command.hpp"
 #include "camera/camera.hpp"
 #include "utils/data_structures/chunk_map.hpp"
+#include "world/particle_world/biome.hpp"
 #include "world/particle_world/particle.hpp"
 
 class ParticleRenderer
@@ -17,26 +18,27 @@ class ParticleRenderer
     };
 
   public:
-    ParticleRenderer(ChunkMap<Particle> &particles) : r_particles(particles) {}
+    ParticleRenderer() = default;
 
-    void render(const Camera &camera, const Assets &assets,
-                std::vector<RenderCommand> &commandsOut);
+    void render(const ChunkMap<Particle> &particles,
+                const ChunkMap<BiomeID> &biomeMarkers, const Camera &camera,
+                const Assets &assets, std::vector<RenderCommand> &commandsOut);
 
   private:
     void reconstruct_texture(Vec2u size) { m_texture = Texture(size); }
-    void render_background(const Assets &assets,
+    void render_background(const ChunkMap<BiomeID> &biomeMarkers,
+                           const Assets &assets,
                            BackgroundRenderSettings settings);
 
-    Vec2u calculate_parallax(Vec2i worldPos, Vec2i cameraPos, Vec2u size,
+    Vec2u calculate_parallax(Vec2i worldPos, Vec2i cameraPos, Vec2u textureSize,
                              float amount)
     {
         Vec2u parallax = (worldPos.toFloat() - cameraPos.toFloat() * amount)
                              .toUnsignedInt() %
-                         size;
+                         textureSize;
         return parallax;
     }
 
   private:
-    ChunkMap<Particle> &r_particles;
     Texture m_texture;
 };

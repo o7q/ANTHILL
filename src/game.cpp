@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "scenes/testing/testing.hpp"
+#include "scenes/testing2/testing2.hpp"
 
 void Game::start()
 {

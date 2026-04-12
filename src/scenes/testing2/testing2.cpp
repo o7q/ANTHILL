@@ -31,7 +31,7 @@ void TestScene2::onTick()
             {
                 float p = Math::Perlin::sampleEx(Vec2f(x, y), {20, 20}, 1, seed) - 0.5f;
 
-                p *= Math::Interpolation::easeOutCubic(0, 20, y / (float)m_screen.getSize().y);
+                p *= Math::Interpolation::easeOutCubic(0, 10, y / (float)m_screen.getSize().y);
 
                 Math::Voronoi::Sample sample = Math::Voronoi::sampleEx(
                     Vec2f(x + p * 200, y + p * 200), gridSize.toFloat(), seed);
