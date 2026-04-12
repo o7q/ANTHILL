@@ -17,7 +17,8 @@ inline int weakRandInt(int min, int max)
 // https://en.wikipedia.org/wiki/MurmurHash
 inline uint32_t hashFromPosition(Vec2i pos, uint32_t seed = 0)
 {
-    uint32_t h = (uint32_t)pos.x ^ ((uint32_t)pos.y << 16);
+    uint32_t h =
+        static_cast<uint32_t>(pos.x) ^ (static_cast<uint32_t>(pos.y) << 16);
     h ^= seed;
     h ^= h >> 16;
     h *= 0x85ebca6b;

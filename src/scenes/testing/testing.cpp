@@ -49,17 +49,7 @@ void TestScene::onTick()
 
         m_world.getParticleWorld().getEditor().draw(worldMousePos, air, 10);
     }
-    if (r_window.getInputHandler().getInput(InputID::AltAction3)->isDown())
-    {
-        Particle sand;
-        float mult = Math::Random::weakRandInt(80, 100) / 100.0f;
-        sand.setColor(Color(255 * mult, 235 * mult, 161 * mult));
-        sand.setPhysicsType(Particle::PhysicsType::Sand);
-        sand.setMatterType(Particle::MatterType::Solid);
-        sand.setRestitution(0.1f);
 
-        m_world.getParticleWorld().getEditor().draw(worldMousePos, sand, 4);
-    }
 
     Player *player = m_world.getEntityHandler().getCurrentPlayer();
     Vec2i updatePos;
@@ -71,7 +61,7 @@ void TestScene::onTick()
 
     m_camera.setGoal(updatePos);
     m_camera.update(r_time.getDT());
-    m_world.getGenerator().generateInRadius(updatePos.toInt(), {20, 20});
+    m_world.getGenerator().generate(updatePos.toInt());
     m_world.update(r_time.getDT(), updatePos, m_backendEvents);
     m_world.render(m_camera, r_assets, renderCommands);
 

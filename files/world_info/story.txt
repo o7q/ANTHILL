@@ -1,13 +1,11 @@
 WHAT IS THE FOCUS
 Plot, Character, or Lore??
 
-ANTILL - A power-packed retro-roguelike about digging to the center of the Earth.
+ANTHILL - A power-packed retro-roguelike about unearthing sinister horrors inside an alien planet.
 
 You play as an excavation robot: SÆRLIG-UDGRAVNING MK-IV.
 
 You crash land on a remote alien planet, you have no recollection of who you are or where you came from. Leaving this planet is impossible, the surface temperature is near absolute zero. Your only option is down.
-
-Tutorial explained on the walls of ship while its crashing.
 
 name ideas:
 INA

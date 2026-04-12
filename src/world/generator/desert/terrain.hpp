@@ -5,12 +5,8 @@
 #include "world/particle_world/particle.hpp"
 #include <cstdint>
 
-inline Particle generate_desert(Vec2i pos, uint32_t seed)
+inline Particle generate_desert_terrain(Vec2i pos, uint32_t seed)
 {
-    if (pos.y < 0)
-    {
-        return Particle();
-    }
     float v = Math::Perlin::sampleEx(pos.toFloat(), {300, 200}, 4, seed);
 
     Particle p;

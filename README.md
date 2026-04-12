@@ -1,3 +1,2 @@
 # ANTHILL
-
-ANTILL - A power-packed retro-roguelike about digging to the center of an alien planet.
+A power-packed retro-roguelike about unearthing sinister horrors inside an alien planet.
