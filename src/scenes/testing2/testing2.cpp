@@ -1,12 +1,10 @@
 #include "testing2.hpp"
 #include "backend/viewport/render_command.hpp"
 #include "math/color.hpp"
-#include "math/interpolation.hpp"
 #include "math/numbers.hpp"
 #include "math/perlin.hpp"
 #include "math/random.hpp"
 #include "math/vec.hpp"
-#include "math/voronoi.hpp"
 #include <vector>
 
 void TestScene2::onStart() {}
