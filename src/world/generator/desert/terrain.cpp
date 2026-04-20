@@ -72,6 +72,7 @@ Particle generate_desert_layer1(Vec2i pos, uint32_t seed)
 
         p.setColor(c);
         p.setMatterType(Particle::MatterType::Solid);
+        p.setPhysicsType(Particle::PhysicsType::Sand);
     }
 
     return p;
@@ -127,6 +128,7 @@ Particle generate_desert_layer2(Vec2i pos, uint32_t seed)
 
         p.setColor(c);
         p.setMatterType(Particle::MatterType::Solid);
+        p.setPhysicsType(Particle::PhysicsType::Sand);
     }
 
     return p;

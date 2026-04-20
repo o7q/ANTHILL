@@ -55,6 +55,6 @@ class PDynamicsHandler
 
     float m_gravity = 0.1f;
 
-    // Vec2u m_updateSize = {500, 400};
-    Vec2u m_updateSize = {0, 0};
+    Vec2u m_updateRadius = {0, 0};
+    // Vec2u m_updateSize = {0, 0};
 };

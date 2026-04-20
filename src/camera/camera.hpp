@@ -33,7 +33,9 @@ class Camera
     Vec2f m_position;
     Vec2u m_viewSize;
 
+    float m_dtAvg = 0.0f;
+
     Vec2i m_goal;
     bool m_goalSet = false;
-    float m_goalSpeed = 0.15f;
+    float m_goalSpeed = 1.0f;
 };

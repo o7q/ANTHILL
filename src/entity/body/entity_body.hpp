@@ -53,5 +53,5 @@ class EntityBody
     Vec2f m_velocityTarget;
     Vec2f m_targetDamping = {0.5f, 0.97f};
 
-    float m_gravity = 15.0f;
+    float m_gravity = 12.0f;
 };

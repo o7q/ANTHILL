@@ -6,14 +6,14 @@
 
 void PDynamicsHandler::update(float dt, Vec2i origin)
 {
-    Vec2i halfSize = m_updateSize.toInt() / 2;
-
     Index2D lastNavmeshChunkIndex(std::numeric_limits<int>::max(),
                                   std::numeric_limits<int>::max());
 
-    for (int y = origin.y + halfSize.y; y >= origin.y - halfSize.y; --y)
+    for (int y = origin.y + static_cast<int>(m_updateRadius.y);
+         y >= origin.y - static_cast<int>(m_updateRadius.y); --y)
     {
-        for (int x = origin.x + halfSize.x; x >= origin.x - halfSize.x; --x)
+        for (int x = origin.x + static_cast<int>(m_updateRadius.x);
+             x >= origin.x - static_cast<int>(m_updateRadius.x); --x)
         {
             Particle *p = r_particles.get({x, y});
 

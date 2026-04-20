@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SDL3/SDL_timer.h>
 #include <chrono>
 
 class TimeHandler

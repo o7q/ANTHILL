@@ -7,6 +7,6 @@ void Camera::update(float dt)
         return;
     }
 
-    Vec2f move = (m_goal.toFloat() - m_position) * 0.1f * dt;
+    Vec2f move = (m_goal.toFloat().floor() - m_position.floor()) * 0.1f * dt;
     m_position += move;
 }

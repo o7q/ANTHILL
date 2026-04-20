@@ -12,11 +12,11 @@ void Player::update(const EntityWorldContext &worldContext,
 {
     if (r_input.getInput(InputID::Left)->isDown())
     {
-        m_body.setVelocityTargetX(-3.0f);
+        m_body.setVelocityTargetX(-2.5f);
     }
     if (r_input.getInput(InputID::Right)->isDown())
     {
-        m_body.setVelocityTargetX(3.0f);
+        m_body.setVelocityTargetX(2.5f);
     }
     if (r_input.getInput(InputID::Jump)->wasPressed())
     {
@@ -97,7 +97,7 @@ void Player::update(const EntityWorldContext &worldContext,
     }
 
     if (std::abs(m_body.getVelocity().x) > 0.2f &&
-        std::abs(m_body.getPosition().x - m_body.getLastPosition().x) > 0.1f)
+        m_body.getPosition().x - m_body.getLastPosition().x != 0)
     {
         m_sprite.switchAnimator("run");
     }
