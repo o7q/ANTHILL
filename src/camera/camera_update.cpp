@@ -7,20 +7,6 @@ void Camera::update(float dt)
         return;
     }
 
-    if (std::abs(m_position.x - m_goal.x) < 0.25f)
-    {
-        m_position.x = m_goal.x;
-    }
-    else
-    {
-        m_position.x += (m_goal.x - m_position.x) * m_goalSpeed * dt;
-    }
-    if (std::abs(m_position.y - m_goal.y) < 0.25f)
-    {
-        m_position.y = m_goal.y;
-    }
-    else
-    {
-        m_position.y += (m_goal.y - m_position.y) * m_goalSpeed * dt;
-    }
+    Vec2f move = (m_goal.toFloat() - m_position) * 0.1f * dt;
+    m_position += move;
 }

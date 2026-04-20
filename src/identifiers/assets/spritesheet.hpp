@@ -4,7 +4,10 @@
 
 enum class SpriteSheetID
 {
-    Wuskkogel,
-    Shotgun
+    Entity_SumiIdle,
+    Entity_SumiRun,
+    Entity_SumiIdleToRun,
+    Entity_Wuskkogel,
+    Item_Shotgun
 };
 using SpriteSheetIDKey = Identifier<SpriteSheetID>;

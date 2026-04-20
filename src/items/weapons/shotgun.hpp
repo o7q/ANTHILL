@@ -19,7 +19,7 @@ class Shotgun : public Gun, public IRenderable
   public:
     Shotgun(const Assets &assets)
         : Gun("Shotgun"),
-          m_animator(*assets.spriteSheets().get(SpriteSheetID::Shotgun))
+          m_animator(*assets.spriteSheets().get(SpriteSheetID::Item_Shotgun))
     {
         m_fireMode = FireMode::SemiAuto;
 
@@ -33,6 +33,7 @@ class Shotgun : public Gun, public IRenderable
         addAmmo(200);
 
         m_animator.setFPS(20);
+        m_animator.disableLooping();
         m_fireCooldownTimer.restart();
     }
 

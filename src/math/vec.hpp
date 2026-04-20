@@ -111,6 +111,10 @@ template <typename T> struct Vec2
     {
         return {static_cast<T>(std::ceil(x)), static_cast<T>(std::ceil(y))};
     }
+    Vec2 round() const
+    {
+        return {static_cast<T>(std::round(x)), static_cast<T>(std::round(y))};
+    }
     Vec2 pow(const Vec2 &other) const
     {
         return {std::pow(x, other.x), std::pow(y, other.y)};

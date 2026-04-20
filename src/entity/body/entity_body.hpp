@@ -34,6 +34,7 @@ class EntityBody
     void addVelocityTarget(Vec2f vel) { m_velocityTarget += vel; }
     void setTargetDamping(Vec2f damping) { m_targetDamping = damping; }
     Vec2f getVelocity() const { return m_velocity; }
+    Vec2f getVelocityTarget() const { return m_velocityTarget; }
 
     void setPosition(Vec2i pos) { m_position = pos.toFloat(); }
     void setPositionFloat(Vec2f pos) { m_position = pos; }

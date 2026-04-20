@@ -8,26 +8,19 @@
 #include "entity/jump_handler/jump_handler.hpp"
 #include "entity/metadata.hpp"
 #include "events/entity/entity_entity.hpp"
+#include "identifiers/assets/spritesheet.hpp"
 #include "item/inventory.hpp"
 #include "items/weapons/shotgun.hpp"
 #include "math/angle.hpp"
+#include "sprite/sprite_animator.hpp"
+#include "sprite/sprite_system.hpp"
 #include <memory>
+#include <unordered_map>
 
 class Player : public Entity
 {
   public:
-    Player(uint64_t id, InputHandler &input, const Assets &assets)
-        : Entity(id), r_input(input), r_assets(assets),
-          m_bodyHandler(m_body, m_boundingBox)
-    {
-        m_boundingBox.setSize({10, 25});
-        m_metadata.type = EntityType::Player;
-
-        auto shotgun = std::make_unique<Shotgun>(assets);
-        m_inventory.addItem(std::move(shotgun), 0);
-
-        m_metadata.name = "Player";
-    }
+    Player(uint64_t id, InputHandler &input, const Assets &assets);
     virtual ~Player() = default;
 
     Inventory &getInventory() { return m_inventory; }
@@ -55,4 +48,6 @@ class Player : public Entity
     Vec2i m_mouseWorldPos;
 
     float m_angle = 0.0f;
+
+    SpriteSystem m_sprite;
 };

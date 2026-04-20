@@ -50,7 +50,6 @@ void TestScene::onTick()
         m_world.getParticleWorld().getEditor().draw(worldMousePos, air, 10);
     }
 
-
     Player *player = m_world.getEntityHandler().getCurrentPlayer();
     Vec2i updatePos;
     if (player)
@@ -59,10 +58,17 @@ void TestScene::onTick()
         updatePos = player->getBody().getPosition();
     }
 
-    m_camera.setGoal(updatePos);
-    m_camera.update(r_time.getDT());
     m_world.getGenerator().generate(updatePos.toInt());
     m_world.update(r_time.getDT(), updatePos, m_backendEvents);
+
+    if (player)
+    {
+        player->updateAimPosition(worldMousePos);
+        updatePos = player->getBody().getPosition();
+    }
+    m_camera.setGoal(updatePos);
+    m_camera.update(r_time.getDT());
+
     m_world.render(m_camera, r_assets, renderCommands);
 
     renderText(renderCommands);

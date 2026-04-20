@@ -5,6 +5,6 @@
 int main()
 {
     SDLFlagHandler sdlFlagHandler(SDL_INIT_VIDEO);
-    Game game({1280, 720}, {480, 270});
+    Game game({1280, 720}, {384, 216});
     return 0;
 }

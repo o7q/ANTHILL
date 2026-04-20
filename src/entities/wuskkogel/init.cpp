@@ -3,7 +3,7 @@
 
 Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
     : Entity(id), m_bodyHandler(m_body, m_boundingBox),
-      m_animator(*assets.spriteSheets().get(SpriteSheetID::Wuskkogel))
+      m_animator(*assets.spriteSheets().get(SpriteSheetID::Entity_Wuskkogel))
 {
     m_metadata.name = "Wuskkogel";
 
@@ -37,25 +37,25 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
         Vec2i bottomLeft = pos + Vec2i(a.x, b.y);
         Vec2i bottomRight = pos + Vec2i(b.x, b.y);
 
-        bool solid = false;
+        bool impassible = false;
 
         auto test = [&](const Particle *p)
         {
-            if (p->isSolid())
+            if (!p || p->isSolid())
             {
-                solid = true;
+                impassible = true;
                 return true;
             }
 
             return false;
         };
 
-        worldContext.world.query(topLeft, topRight, test);
-        worldContext.world.query(topLeft, bottomLeft, test);
-        worldContext.world.query(bottomLeft, bottomRight, test);
-        worldContext.world.query(topRight, bottomRight, test);
+        worldContext.world.query(topLeft, topRight, test, false);
+        worldContext.world.query(topLeft, bottomLeft, test, false);
+        worldContext.world.query(bottomLeft, bottomRight, test, false);
+        worldContext.world.query(topRight, bottomRight, test, false);
 
-        if (solid)
+        if (impassible)
         {
             return false;
         }
@@ -70,6 +70,5 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
     m_aiNavigation.setConfig(cfg);
 
     m_animator.setFPS(12);
-    m_animator.enableLooping();
     m_animator.restart();
 }

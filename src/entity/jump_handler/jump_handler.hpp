@@ -8,7 +8,7 @@ class JumpHandler
     JumpHandler()
     {
         m_coyoteTimer.setDurationInSeconds(0.1f);
-        m_holdJumpTimer.setDurationInSeconds(0.15f);
+        m_holdJumpTimer.setDurationInSeconds(0.2f);
         m_jumpBufferTimer.setDurationInSeconds(0.1f);
     }
     virtual ~JumpHandler() = default;
@@ -30,7 +30,7 @@ class JumpHandler
     float getJumpPower() const { return m_jumpPower; }
 
   private:
-    float m_jumpPower = 6.0f;
+    float m_jumpPower = 4.5f;
     bool m_jumpRequested = false;
 
     Timer m_holdJumpTimer;

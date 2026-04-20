@@ -2,6 +2,7 @@
 
 #include "backend/sprite_sheet/sprite_sheet.hpp"
 #include "backend/timer/timer.hpp"
+#include <optional>
 
 class SpriteAnimator
 {
@@ -49,11 +50,25 @@ class SpriteAnimator
         return r_spriteSheet.getSprite(frame);
     }
 
+    void setOrigin(std::pair<std::optional<int>, std::optional<int>> origin)
+    {
+        m_origin = origin;
+    }
+
+    std::pair<std::optional<int>, std::optional<int>> getOrigin() const
+    {
+        return m_origin;
+    }
+
+    bool completed() const { return m_timer.completed(); }
+
   private:
     const SpriteSheet &r_spriteSheet;
     const unsigned int m_frames = 0;
 
     Timer m_timer;
     unsigned int m_currentFrame = 0;
-    bool m_loop = false;
+    bool m_loop = true;
+
+    std::pair<std::optional<int>, std::optional<int>> m_origin;
 };

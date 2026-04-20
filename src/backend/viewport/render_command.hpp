@@ -2,6 +2,7 @@
 
 #include "backend/texture/texture.hpp"
 #include <optional>
+#include <utility>
 #include <variant>
 
 struct TextureRenderCommandData
@@ -14,7 +15,7 @@ struct TextureRenderCommandData
 
     const Texture *texture = nullptr;
     Vec2i position;
-    std::optional<Vec2i> origin;
+    std::pair<std::optional<int>, std::optional<int>> origin;
     bool flipX = false, flipY = false;
     std::optional<RotateSettings> rotateSettings;
 };

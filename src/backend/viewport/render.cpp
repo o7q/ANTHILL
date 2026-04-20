@@ -122,7 +122,8 @@ void Viewport::render_texture_basic(const TextureRenderCommandData &data)
 {
     Vec2i textureSize = data.texture->getSize().toInt();
     Vec2i halfTextureSize = textureSize / 2;
-    Vec2i origin = data.origin.value_or(halfTextureSize);
+    Vec2i origin = {data.origin.first.value_or(halfTextureSize.x),
+                    data.origin.second.value_or(halfTextureSize.y)};
 
     for (int y = 0; y < textureSize.y; ++y)
     {
@@ -152,7 +153,8 @@ void Viewport::render_texture_rotated(const TextureRenderCommandData &data)
 
     Vec2u textureSize = data.texture->getSize();
     Vec2u halfTextureSize = textureSize / 2;
-    Vec2i origin = data.origin.value_or(halfTextureSize.toInt());
+    Vec2i origin = {data.origin.first.value_or(halfTextureSize.x),
+                    data.origin.second.value_or(halfTextureSize.y)};
 
     float cosA = std::cosf(rs.angle);
     float sinA = std::sinf(rs.angle);
