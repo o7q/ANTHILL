@@ -8,10 +8,10 @@ WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
         return WuskkogelStateID::Roam;
     }
 
-    m_targetLostTimer.update(context.worldContext.dt);
+    m_targetLostTimer.update(context.context.dt);
 
     const Entity *targetEntity = nullptr;
-    for (auto &[id, entity] : context.worldContext.nearbyEntities)
+    for (auto &[id, entity] : context.context.nearbyEntities)
     {
         if (id == r_targetID)
         {
@@ -38,7 +38,7 @@ WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
             }
 
             if (const Particle *p =
-                    context.worldContext.world.getParticles().get(pos))
+                    context.context.particleHandler.getParticles().get(pos))
             {
                 if (p->isSolid())
                 {
@@ -54,7 +54,7 @@ WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
         context.navigation.setGoal(targetPos);
     }
 
-    context.navigation.update(context.body.getPosition(), context.worldContext);
+    context.navigation.update(context.body.getPosition(), context.context);
     auto result = context.navigation.getMoveVector();
 
     if (result.has_value())

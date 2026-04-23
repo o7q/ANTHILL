@@ -6,16 +6,9 @@
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
 #include "entity/jump_handler/jump_handler.hpp"
-#include "entity/metadata.hpp"
-#include "events/entity/entity_entity.hpp"
-#include "identifiers/assets/spritesheet.hpp"
 #include "item/inventory.hpp"
-#include "items/weapons/shotgun.hpp"
 #include "math/angle.hpp"
-#include "sprite/sprite_animator.hpp"
 #include "sprite/sprite_system.hpp"
-#include <memory>
-#include <unordered_map>
 
 class Player : public Entity
 {
@@ -25,7 +18,7 @@ class Player : public Entity
 
     Inventory &getInventory() { return m_inventory; }
 
-    void update(const EntityWorldContext &worldContext,
+    void update(const EntityUpdateContext &context,
                 EventPool<EntityEvent> &eventsOut) override;
 
     void render(const Camera &camera,

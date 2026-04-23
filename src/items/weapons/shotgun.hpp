@@ -3,7 +3,6 @@
 #include "assets/assets.hpp"
 #include "backend/timer/timer.hpp"
 #include "entities/simple_projectile/simple_projectile.hpp"
-#include "events/entity/entity_entity.hpp"
 #include "identifiers/assets/sounds.hpp"
 #include "identifiers/assets/spritesheet.hpp"
 #include "item/context.hpp"

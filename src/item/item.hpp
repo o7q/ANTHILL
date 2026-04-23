@@ -1,10 +1,10 @@
 #pragma once
 
-#include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
 #include "identifiers/assets/sounds.hpp"
 #include "item/context.hpp"
 #include "math/vec.hpp"
+#include "world/entity_handler/events/events.hpp"
 #include <string>
 
 class Item

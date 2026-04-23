@@ -1,53 +1,52 @@
 #include "simple_projectile.hpp"
-#include "events/entity/entity_entity.hpp"
-#include "events/entity/entity_particle.hpp"
 #include "math/line.hpp"
 #include "math/random.hpp"
-#include "world/particle_world/particle.hpp"
+#include "world/entity_handler/events/events.hpp"
+#include "world/particle_handler/events/events.hpp"
+#include "world/particle_handler/particle.hpp"
 #include <memory>
 
-void SimpleProjectile::update(const EntityWorldContext &worldContext,
+void SimpleProjectile::update(const EntityUpdateContext &context,
                               EventPool<EntityEvent> &eventsOut)
 {
     m_body.setVelocity(m_constantVelocity);
 
     Vec2i start = m_body.getPosition();
-    m_body.update(worldContext.dt);
+    m_body.update(context.dt);
     Vec2i end = m_body.getPosition();
 
     Math::Line::bresenhamLine(
         start, end,
         [&](Vec2i pos)
         {
-            const Particle *p = worldContext.world.getParticles().get(pos);
+            const Particle *p = context.particleHandler.getParticles().get(pos);
             if (p && p->isSolid())
             {
-                auto event =
-                    std::make_unique<EntityParticleDrawEvent>(worldContext.id);
-                event->particleEvent.position = pos;
-                event->particleEvent.radius = Math::Random::weakRandInt(3, 6);
-                event->particleEvent.particle = Particle();
+                auto event = std::make_unique<ParticleDrawEvent>();
+                event->position = pos;
+                event->radius = Math::Random::weakRandInt(3, 6);
+                event->particle = Particle();
 
-                eventsOut.emit(std::move(event));
+                eventsOut.emit(std::make_unique<EntityParticleEvent>(
+                    context.id, std::move(event)));
 
                 kill();
                 return true;
             }
 
-            for (auto &[id, entity] : worldContext.nearbyEntities)
+            for (auto &[id, entity] : context.nearbyEntities)
             {
                 if (entity->pointInside(pos) &&
                     entity->getMetadata().type != m_metadata.type &&
                     id != getParent())
                 {
                     auto event =
-                        std::make_unique<EntityDamageEvent>(worldContext.id);
+                        std::make_unique<EntityDamageEvent>(context.id);
                     event->damage = 5;
                     event->target = id;
                     eventsOut.emit(std::move(event));
 
-                    auto event2 = std::make_unique<EntityParticleDrawEvent>(
-                        worldContext.id);
+                    auto event2 = std::make_unique<ParticleDrawEvent>();
                     Particle blood;
                     blood.setMatterType(Particle::MatterType::Liquid);
                     blood.setPhysicsType(Particle::PhysicsType::Water);
@@ -59,10 +58,11 @@ void SimpleProjectile::update(const EntityWorldContext &worldContext,
                                 1.0f;
 
                     blood.getVerlet().addForce(dir);
-                    event2->particleEvent.particle = blood;
-                    event2->particleEvent.radius = 3;
-                    event2->particleEvent.position = pos;
-                    eventsOut.emit(std::move(event2));
+                    event2->particle = blood;
+                    event2->radius = 3;
+                    event2->position = pos;
+                    eventsOut.emit(std::make_unique<EntityParticleEvent>(
+                        context.id, std::move(event2)));
 
                     kill();
                     return true;

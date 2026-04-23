@@ -1,9 +1,11 @@
 #include "game.hpp"
 #include "scenes/testing/testing.hpp"
-#include "scenes/testing2/testing2.hpp"
+#include <SDL3/SDL_init.h>
 
 void Game::start()
 {
+    SDL_Init(SDL_INIT_VIDEO);
+
     init_binds();
 
     m_scene = std::make_unique<TestScene>(m_assets, m_window);
@@ -21,3 +23,5 @@ void Game::start()
         m_window.frameEnd();
     }
 }
+
+Game::~Game() { SDL_Quit(); }

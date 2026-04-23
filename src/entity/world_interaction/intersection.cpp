@@ -3,7 +3,7 @@
 EntityWorldInteraction::MTVIntersectionResponse
 EntityWorldInteraction::calculateWorldIntersection_MTV(
     Vec2i pos, const StaticGridRectangle &boundingBox,
-    const ParticleWorld &world)
+    const ParticleHandler &particleHandler)
 {
     const Vec2i size = boundingBox.getSize().toGrid();
     const Vec2i topLeft = boundingBox.getA() + pos;
@@ -19,7 +19,7 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(
         {
             Vec2i worldPos = topLeft + Vec2i(x, y);
 
-            const Particle *p = world.getParticles().get(worldPos);
+            const Particle *p = particleHandler.getParticles().get(worldPos);
 
             if (!p)
             {
@@ -85,7 +85,7 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(
 
 Vec2f EntityWorldInteraction::calculateWorldIntersection_averageDirection(
     Vec2i pos, const StaticGridRectangle &boundingBox,
-    const ParticleWorld &world)
+    const ParticleHandler &particleHandler)
 {
     const Vec2u size = boundingBox.getSize();
     const Vec2i topLeft = pos + boundingBox.getA();
@@ -99,7 +99,7 @@ Vec2f EntityWorldInteraction::calculateWorldIntersection_averageDirection(
         {
             Vec2i worldPos = topLeft + Vec2i(x, y);
 
-            const Particle *p = world.getParticles().get(worldPos);
+            const Particle *p = particleHandler.getParticles().get(worldPos);
             if (!p)
             {
                 continue;

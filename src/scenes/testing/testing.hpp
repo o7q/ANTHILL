@@ -3,11 +3,15 @@
 #include "assets/assets.hpp"
 #include "scene/scene.hpp"
 #include "world/world.hpp"
+#include "world_generator/world_generator.hpp"
 
 class TestScene : public Scene
 {
   public:
-    TestScene(const Assets &assets, Window &window) : Scene(assets, window) {}
+    TestScene(const Assets &assets, Window &window)
+        : Scene(assets, window), m_generator(m_world)
+    {
+    }
 
   protected:
     void onStart() override;
@@ -59,7 +63,7 @@ class TestScene : public Scene
         chunksText = r_assets.fonts()
                          .get(FontID::Default)
                          ->generateStringTexture(
-                             std::to_string(m_world.getParticleWorld()
+                             std::to_string(m_world.getParticleHandler()
                                                 .getParticles()
                                                 .getChunks()
                                                 .size()),
@@ -76,6 +80,7 @@ class TestScene : public Scene
 
   private:
     World m_world;
+    WorldGenerator m_generator;
     Camera m_camera;
 
     Texture healthText;

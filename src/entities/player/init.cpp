@@ -1,3 +1,4 @@
+#include "items/weapons/shotgun.hpp"
 #include "player.hpp"
 
 Player::Player(uint64_t id, InputHandler &input, const Assets &assets)
@@ -14,9 +15,9 @@ Player::Player(uint64_t id, InputHandler &input, const Assets &assets)
 
     SpriteAnimator run(
         *assets.spriteSheets().get(SpriteSheetID::Entity_SumiRun));
-    run.setFPS(10);
+    run.setFPS(12);
     m_sprite.addAnimator(run, "run");
-    
+
     SpriteAnimator idle(
         *assets.spriteSheets().get(SpriteSheetID::Entity_SumiIdle));
     idle.setFPS(5);
@@ -26,7 +27,6 @@ Player::Player(uint64_t id, InputHandler &input, const Assets &assets)
         *assets.spriteSheets().get(SpriteSheetID::Entity_SumiIdleToRun));
     idleToRun.setFPS(10);
     m_sprite.addAnimator(idleToRun, "idleToRun");
-
 
     m_sprite.switchAnimator("idle");
 }

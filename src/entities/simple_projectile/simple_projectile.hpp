@@ -3,7 +3,6 @@
 #include "backend/viewport/render_command.hpp"
 #include "entity/entity.hpp"
 #include "entity/metadata.hpp"
-#include "events/entity/entity_entity.hpp"
 
 class SimpleProjectile : public Entity
 {
@@ -22,7 +21,7 @@ class SimpleProjectile : public Entity
         m_metadata.type = EntityType::Projectile;
     }
 
-    void update(const EntityWorldContext &worldContext,
+    void update(const EntityUpdateContext &context,
                 EventPool<EntityEvent> &eventsOut) override;
 
     void render(const Camera &camera,

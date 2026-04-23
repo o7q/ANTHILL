@@ -4,14 +4,13 @@
 #include "events/backend/base.hpp"
 #include "events/event_pool.hpp"
 #include "world/entity_handler/entity_handler.hpp"
-#include "world/generator/generator.hpp"
-#include "world/particle_world/particle_world.hpp"
+#include "world/particle_handler/particle_handler.hpp"
 #include <vector>
 
 class World
 {
   public:
-    World() : m_generator(m_particleWorld) {}
+    World() {}
     World(const World &other) = delete;
     World &operator=(const World &other) = delete;
 
@@ -20,12 +19,10 @@ class World
     void render(const Camera &viewport, const Assets &assets,
                 std::vector<RenderCommand> &commandsOut);
 
-    ParticleWorld &getParticleWorld() { return m_particleWorld; }
-    Generator &getGenerator() { return m_generator; }
+    ParticleHandler &getParticleHandler() { return m_particleHandler; }
     EntityHandler &getEntityHandler() { return m_entityHandler; }
 
   private:
-    ParticleWorld m_particleWorld;
-    Generator m_generator;
+    ParticleHandler m_particleHandler;
     EntityHandler m_entityHandler;
 };

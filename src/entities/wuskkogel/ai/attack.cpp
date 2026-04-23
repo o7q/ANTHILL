@@ -1,14 +1,14 @@
 #include "attack.hpp"
 #include "entity/entity.hpp"
-#include "events/entity/entity_entity.hpp"
+#include "world/entity_handler/events/events.hpp"
 
 WuskkogelStateID WuskkogelAttackState::update(const UpdateContext &context)
 {
-    m_attackTimer.update(context.worldContext.dt);
+    m_attackTimer.update(context.context.dt);
 
     uint64_t target = 0;
     const Entity *targetEntity = nullptr;
-    for (auto &[id, entity] : context.worldContext.nearbyEntities)
+    for (auto &[id, entity] : context.context.nearbyEntities)
     {
         if (id == r_targetID)
         {
@@ -40,7 +40,7 @@ WuskkogelStateID WuskkogelAttackState::update(const UpdateContext &context)
     if (std::abs(dx) + std::abs(dy) < 10 && !m_bit)
     {
         auto damageEvent =
-            std::make_unique<EntityDamageEvent>(context.worldContext.id);
+            std::make_unique<EntityDamageEvent>(context.context.id);
         damageEvent->target = target;
         damageEvent->damage = 5;
         context.events.emit(std::move(damageEvent));

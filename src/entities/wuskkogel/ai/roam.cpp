@@ -11,12 +11,12 @@ WuskkogelStateID WuskkogelRoamState::update(const UpdateContext &context)
         moveDir.y = Math::Random::weakRandInt(-2, 3);
     }
 
-    m_roamMoveTimer.update(context.worldContext.dt);
+    m_roamMoveTimer.update(context.context.dt);
     context.body.setVelocityTarget(moveDir.toFloat());
 
     uint64_t target = 0;
     const Entity *targetEntity = nullptr;
-    for (auto &[id, entity] : context.worldContext.nearbyEntities)
+    for (auto &[id, entity] : context.context.nearbyEntities)
     {
         if (entity->getMetadata().type == EntityType::Player)
         {
@@ -43,7 +43,7 @@ WuskkogelStateID WuskkogelRoamState::update(const UpdateContext &context)
             }
 
             if (const Particle *p =
-                    context.worldContext.world.getParticles().get(pos))
+                    context.context.particleHandler.getParticles().get(pos))
             {
                 if (p->isSolid())
                 {

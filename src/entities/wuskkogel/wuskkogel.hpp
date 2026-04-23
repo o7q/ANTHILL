@@ -4,14 +4,10 @@
 #include "ai/perception/ai_perception.hpp"
 #include "assets/assets.hpp"
 #include "backend/viewport/render_command.hpp"
-#include "debug/renderers.hpp"
 #include "entities/wuskkogel/ai/state_machine.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
-#include "entity/world_context.hpp"
-#include "events/entity/base.hpp"
-#include "events/entity/entity_entity.hpp"
 #include "events/event_pool.hpp"
 #include "sprite/sprite_animator.hpp"
 
@@ -20,7 +16,7 @@ class Wuskkogel : public Entity
   public:
     Wuskkogel(uint64_t id, const Assets &assets);
 
-    void update(const EntityWorldContext &worldContext,
+    void update(const EntityUpdateContext &context,
                 EventPool<EntityEvent> &eventsOut) override;
 
     void render(const Camera &camera,

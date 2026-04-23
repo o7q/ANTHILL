@@ -4,7 +4,6 @@
 #include "backend/window/window.hpp"
 #include "math/vec.hpp"
 #include "scene/scene.hpp"
-#include <SDL3/SDL_keycode.h>
 #include <memory>
 
 class Game
@@ -15,6 +14,7 @@ class Game
     {
         start();
     }
+    ~Game();
     Game(const Game &other) = delete;
     Game &operator=(const Game &other) = delete;
 

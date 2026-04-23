@@ -3,7 +3,7 @@
 EntityWorldInteraction::LocalWorldQuery
 EntityWorldInteraction::generateLocalWorldQuery(
     Vec2i pos, const StaticGridRectangle &boundingBox,
-    const ParticleWorld &world)
+    const ParticleHandler &particleHandler)
 {
     LocalWorldQuery out;
 
@@ -17,7 +17,8 @@ EntityWorldInteraction::generateLocalWorldQuery(
         return false;
     };
 
-    world.query(boundingBox.getA() + pos, boundingBox.getB() + pos, query);
+    particleHandler.query(boundingBox.getA() + pos, boundingBox.getB() + pos,
+                          query);
 
     return out;
 }

@@ -1,4 +1,5 @@
 #include "scene.hpp"
+#include "events/backend/events.hpp"
 
 void Scene::update()
 {

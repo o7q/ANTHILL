@@ -26,7 +26,7 @@ class EntityHandler
     EntityHandler &operator=(const EntityHandler &other) = delete;
     virtual ~EntityHandler() = default;
 
-    void update(const ParticleWorld &world, float dt, Vec2i origin,
+    void update(const ParticleHandler &world, float dt, Vec2i origin,
                 EventPoolRefs eventPoolRefs);
     void handleEvents(EventPool<EntityEvent> &events,
                       EventPoolRefs eventPoolRefs);

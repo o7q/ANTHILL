@@ -3,10 +3,10 @@
 #include "backend/viewport/render_command.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/metadata.hpp"
-#include "entity/world_context.hpp"
-#include "events/entity/base.hpp"
+#include "entity/update_context.hpp"
 #include "events/event_pool.hpp"
 #include "math/rectangle.hpp"
+#include "world/entity_handler/events/base.hpp"
 
 class Entity
 {
@@ -14,7 +14,7 @@ class Entity
     Entity(uint64_t parentID = 0) : m_parentID(parentID) {}
     virtual ~Entity() = default;
 
-    virtual void update(const EntityWorldContext &worldContext,
+    virtual void update(const EntityUpdateContext &context,
                         EventPool<EntityEvent> &eventsOut) = 0;
     virtual void render(const Camera &camera,
                         std::vector<RenderCommand> &commandsOut) = 0;

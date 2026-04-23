@@ -22,12 +22,14 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
     cfg.astarMaxIterations = 10000000;
     cfg.checkpointEatRadius = 10;
     cfg.astarNeighborCheckFunction =
-        [&](const EntityWorldContext &worldContext, Index2D index)
+        [&](const EntityUpdateContext &context, Index2D index)
     {
-        auto data = worldContext.world.getNavmesh().getChunkFromIndex(index);
+        auto data =
+            context.particleHandler.getNavmesh().getChunkFromIndex(index);
 
-        Vec2i pos = Vec2i(index.x, index.y) *
-                    worldContext.world.getNavmesh().getResolution().toInt();
+        Vec2i pos =
+            Vec2i(index.x, index.y) *
+            context.particleHandler.getNavmesh().getResolution().toInt();
 
         Vec2i a = m_boundingBox.getA();
         Vec2i b = m_boundingBox.getB();
@@ -50,10 +52,10 @@ Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
             return false;
         };
 
-        worldContext.world.query(topLeft, topRight, test, false);
-        worldContext.world.query(topLeft, bottomLeft, test, false);
-        worldContext.world.query(bottomLeft, bottomRight, test, false);
-        worldContext.world.query(topRight, bottomRight, test, false);
+        context.particleHandler.query(topLeft, topRight, test, false);
+        context.particleHandler.query(topLeft, bottomLeft, test, false);
+        context.particleHandler.query(bottomLeft, bottomRight, test, false);
+        context.particleHandler.query(topRight, bottomRight, test, false);
 
         if (impassible)
         {

@@ -4,7 +4,7 @@
 EntityWorldInteraction::TrajectoryCollisionResponse
 EntityWorldInteraction::calculateCollisionFromTrajectory(
     Vec2i start, Vec2i end, const StaticGridRectangle &boundingBox,
-    const ParticleWorld &world)
+    const ParticleHandler &particleHandler)
 {
     bool collided = false;
     Vec2i currentPos = start;
@@ -28,7 +28,7 @@ EntityWorldInteraction::calculateCollisionFromTrajectory(
 
             return false;
         };
-        world.query(a, b, query);
+        particleHandler.query(a, b, query);
 
         if (collidedThisIteration)
         {
@@ -53,12 +53,12 @@ EntityWorldInteraction::calculateCollisionFromTrajectory(
 EntityWorldInteraction::TrajectoryCollisionResponse
 EntityWorldInteraction::calculateCollisionFromTrajectorySlide(
     Vec2i start, Vec2i end, const StaticGridRectangle &boundingBox,
-    const ParticleWorld &world)
+    const ParticleHandler &particleHandler)
 {
     TrajectoryCollisionResponse out;
 
-    TrajectoryCollisionResponse xy_response =
-        calculateCollisionFromTrajectory(start, end, boundingBox, world);
+    TrajectoryCollisionResponse xy_response = calculateCollisionFromTrajectory(
+        start, end, boundingBox, particleHandler);
 
     // all axis
     if (xy_response.collided)
@@ -67,7 +67,7 @@ EntityWorldInteraction::calculateCollisionFromTrajectorySlide(
         Vec2i end_x = {end.x, xy_response.resolvePosition.y};
         TrajectoryCollisionResponse x_response =
             calculateCollisionFromTrajectory(xy_response.resolvePosition, end_x,
-                                             boundingBox, world);
+                                             boundingBox, particleHandler);
 
         if (x_response.collided)
         {
@@ -75,7 +75,8 @@ EntityWorldInteraction::calculateCollisionFromTrajectorySlide(
             Vec2i end_y = {xy_response.resolvePosition.x, end.y};
             TrajectoryCollisionResponse y_response =
                 calculateCollisionFromTrajectory(xy_response.resolvePosition,
-                                                 end_y, boundingBox, world);
+                                                 end_y, boundingBox,
+                                                 particleHandler);
 
             out.resolvePosition = y_response.resolvePosition;
         }

@@ -1,22 +1,23 @@
 #include "entity/world_interaction/against.hpp"
-#include "events/entity/entity_backend.hpp"
+#include "events/backend/events.hpp"
 #include "item/context.hpp"
 #include "item/reloadable.hpp"
 #include "math/random.hpp"
 #include "math/rectangle.hpp"
 #include "player.hpp"
+#include "world/entity_handler/events/events.hpp"
 #include <memory>
 
-void Player::update(const EntityWorldContext &worldContext,
+void Player::update(const EntityUpdateContext &context,
                     EventPool<EntityEvent> &eventsOut)
 {
     if (r_input.getInput(InputID::Left)->isDown())
     {
-        m_body.setVelocityTargetX(-2.5f);
+        m_body.setVelocityTargetX(-3.0f);
     }
     if (r_input.getInput(InputID::Right)->isDown())
     {
-        m_body.setVelocityTargetX(2.5f);
+        m_body.setVelocityTargetX(3.0f);
     }
     if (r_input.getInput(InputID::Jump)->wasPressed())
     {
@@ -28,10 +29,10 @@ void Player::update(const EntityWorldContext &worldContext,
     }
 
     bool onGround = EntityWorldInteraction::againstSolidSurface(
-        m_body.getPosition(), m_boundingBox, worldContext.world,
+        m_body.getPosition(), m_boundingBox, context.particleHandler,
         RectangleSide::Bottom);
 
-    m_jumpHandler.update(worldContext.dt, onGround);
+    m_jumpHandler.update(context.dt, onGround);
 
     if (m_jumpHandler.canJump())
     {
@@ -44,7 +45,7 @@ void Player::update(const EntityWorldContext &worldContext,
         if (current)
         {
             ItemUseContext itemContext;
-            itemContext.ownerID = worldContext.id;
+            itemContext.ownerID = context.id;
             itemContext.heldPosition = m_body.getPosition();
             itemContext.heldAngle = m_angle;
 
@@ -53,14 +54,15 @@ void Player::update(const EntityWorldContext &worldContext,
             if (used)
             {
                 auto shootSoundEvent =
-                    std::make_unique<EntityBackendPlaySoundEvent>(
-                        worldContext.id);
-                shootSoundEvent->backendEvent.soundID = current->getUseSound();
-                shootSoundEvent->backendEvent.settings.volume = 0.2f;
-                shootSoundEvent->backendEvent.settings.pitch =
+                    std::make_unique<BackendPlaySoundEvent>();
+
+                shootSoundEvent->soundID = current->getUseSound();
+                shootSoundEvent->settings.volume = 0.2f;
+                shootSoundEvent->settings.pitch =
                     100.0f / Math::Random::weakRandInt(95, 100);
 
-                eventsOut.emit(std::move(shootSoundEvent));
+                eventsOut.emit(std::make_unique<EntityBackendEvent>(
+                    context.id, std::move(shootSoundEvent)));
             }
         }
     }
@@ -75,25 +77,24 @@ void Player::update(const EntityWorldContext &worldContext,
                 if (reloaded)
                 {
                     auto reloadSoundEvent =
-                        std::make_unique<EntityBackendPlaySoundEvent>(
-                            worldContext.id);
-                    reloadSoundEvent->backendEvent.soundID =
-                        reloadable->getReloadSound();
-                    reloadSoundEvent->backendEvent.settings.volume = 0.2f;
-                    reloadSoundEvent->backendEvent.settings.pitch =
+                        std::make_unique<BackendPlaySoundEvent>();
+                    reloadSoundEvent->soundID = reloadable->getReloadSound();
+                    reloadSoundEvent->settings.volume = 0.2f;
+                    reloadSoundEvent->settings.pitch =
                         100.0f / Math::Random::weakRandInt(95, 100);
 
-                    eventsOut.emit(std::move(reloadSoundEvent));
+                    eventsOut.emit(std::make_unique<EntityBackendEvent>(
+                        context.id, std::move(reloadSoundEvent)));
                 }
             }
         }
     }
 
-    m_bodyHandler.update(worldContext);
+    m_bodyHandler.update(context);
 
     if (current)
     {
-        current->update(worldContext.dt);
+        current->update(context.dt);
     }
 
     if (std::abs(m_body.getVelocity().x) > 0.2f &&
@@ -106,5 +107,5 @@ void Player::update(const EntityWorldContext &worldContext,
         m_sprite.switchAnimator("idle");
     }
 
-    m_sprite.update(worldContext.dt);
+    m_sprite.update(context.dt);
 }

@@ -1,7 +1,9 @@
 #include "camera.hpp"
+#include "math/angle.hpp"
 
-void Camera::jerk(float angle, float amount)
+void Camera::jerk(Angle angle, float amount)
 {
-    // Vec2f vec = Vec2f(std::cosf(angle), std::sinf(angle)) * amount;
-    // m_position += vec;
+    float radians = angle.radians();
+    Vec2f vec = Vec2f(std::cosf(radians), std::sinf(radians)) * amount;
+    m_position += vec;
 }

@@ -1,6 +1,7 @@
 #include "testing.hpp"
 #include "backend/viewport/render_command.hpp"
 #include "entities/wuskkogel/wuskkogel.hpp"
+#include "math/random.hpp"
 #include <memory>
 
 void TestScene::onStart()
@@ -41,13 +42,13 @@ void TestScene::onTick()
         stone.setMatterType(Particle::MatterType::Solid);
         stone.setMass(200000000);
 
-        m_world.getParticleWorld().getEditor().draw(worldMousePos, stone, 20);
+        m_world.getParticleHandler().getEditor().draw(worldMousePos, stone, 20);
     }
     if (r_window.getInputHandler().getInput(InputID::AltAction2)->isDown())
     {
         Particle air;
 
-        m_world.getParticleWorld().getEditor().draw(worldMousePos, air, 10);
+        m_world.getParticleHandler().getEditor().draw(worldMousePos, air, 10);
     }
 
     Player *player = m_world.getEntityHandler().getCurrentPlayer();
@@ -58,7 +59,7 @@ void TestScene::onTick()
         updatePos = player->getBody().getPosition();
     }
 
-    m_world.getGenerator().generate(updatePos.toInt());
+    m_generator.generate(updatePos.toInt());
     m_world.update(r_time.getDT(), updatePos, m_backendEvents);
 
     if (player)

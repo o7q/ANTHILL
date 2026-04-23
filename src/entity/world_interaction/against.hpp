@@ -2,13 +2,15 @@
 
 #include "math/rectangle.hpp"
 #include "math/vec.hpp"
-#include "world/particle_world/particle_world.hpp"
+#include "world/particle_handler/particle_handler.hpp"
 
 namespace EntityWorldInteraction
 {
 bool againstSolidSurface(Vec2i pos, const StaticGridRectangle &boundingBox,
-                         const ParticleWorld &world, RectangleSide side);
+                         const ParticleHandler &particleHandler,
+                         RectangleSide side);
 
 bool againstSolidCorner(Vec2i pos, const StaticGridRectangle &boundingBox,
-                        const ParticleWorld &world, RectangleCorner corner);
+                        const ParticleHandler &particleHandler,
+                        RectangleCorner corner);
 } // namespace EntityWorldInteraction

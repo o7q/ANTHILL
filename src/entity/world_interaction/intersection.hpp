@@ -2,7 +2,7 @@
 
 #include "math/rectangle.hpp"
 #include "math/vec.hpp"
-#include "world/particle_world/particle_world.hpp"
+#include "world/particle_handler/particle_handler.hpp"
 
 namespace EntityWorldInteraction
 {
@@ -21,9 +21,9 @@ struct MTVIntersectionResponse
 MTVIntersectionResponse
 calculateWorldIntersection_MTV(Vec2i pos,
                                const StaticGridRectangle &boundingBox,
-                               const ParticleWorld &world);
+                               const ParticleHandler &particleHandler);
 
 Vec2f calculateWorldIntersection_averageDirection(
     Vec2i pos, const StaticGridRectangle &boundingBox,
-    const ParticleWorld &world);
+    const ParticleHandler &particleHandler);
 } // namespace EntityWorldInteraction
