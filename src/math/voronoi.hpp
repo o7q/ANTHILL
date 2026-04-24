@@ -65,7 +65,7 @@ inline Sample sample(Vec2f pos, uint32_t seed, Style style = Style::Normal)
     return out;
 }
 
-inline Sample sampleEx(Vec2f pos, Vec2f gridSize, uint32_t seed = 0,
+inline Sample sampleEx(Vec2f pos, Vec2f gridSize, uint32_t seed,
                        Style style = Style::Normal)
 {
     return sample(pos / gridSize, seed, style);

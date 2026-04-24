@@ -20,8 +20,6 @@ class Game
 
   private:
     void start();
-
-  private:
     void update_loop();
     void init_binds();
 

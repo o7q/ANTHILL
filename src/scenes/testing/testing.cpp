@@ -59,7 +59,7 @@ void TestScene::onTick()
         updatePos = player->getBody().getPosition();
     }
 
-    m_generator.generate(updatePos.toInt());
+    m_generator.generate(updatePos.toInt(), {10, 10});
     m_world.update(r_time.getDT(), updatePos, m_backendEvents);
 
     if (player)

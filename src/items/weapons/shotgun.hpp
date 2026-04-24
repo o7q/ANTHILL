@@ -11,6 +11,7 @@
 #include "math/angle.hpp"
 #include "math/random.hpp"
 #include "sprite/sprite_animator.hpp"
+#include "world/entity_handler/events/events.hpp"
 #include <memory>
 
 class Shotgun : public Gun, public IRenderable

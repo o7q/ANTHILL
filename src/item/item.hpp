@@ -4,7 +4,7 @@
 #include "identifiers/assets/sounds.hpp"
 #include "item/context.hpp"
 #include "math/vec.hpp"
-#include "world/entity_handler/events/events.hpp"
+#include "world/entity_handler/events/base.hpp"
 #include <string>
 
 class Item

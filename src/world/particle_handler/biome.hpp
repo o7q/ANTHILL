@@ -2,7 +2,7 @@
 
 enum class BiomeID
 {
-    Space,
+    Void,
     DesertLayer1,
     DesertLayer2
 };

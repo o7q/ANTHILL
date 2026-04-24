@@ -1,25 +1,36 @@
 #pragma once
 
+#include "utils/data_structures/chunk_map.hpp"
 #include "utils/data_structures/index_2d.hpp"
 #include "world/world.hpp"
 
 class WorldGenerator
 {
+  private:
+    struct BiomeWeight
+    {
+        BiomeID id = BiomeID::Void;
+        int weight = 1;
+    };
+
   public:
     WorldGenerator(World &world);
 
-    void generate(Vec2i origin) { generate_terrain(origin); }
+    void generate(Vec2i origin, Vec2i radius);
 
   private:
-    void generate_terrain(Vec2i origin);
-    void generate_terrain_at_pos(Vec2i pos);
+    void place_terrain_and_pregen_structures(Vec2i origin, Vec2i radius);
+    void place_structures(Vec2i origin, Vec2i radius);
+
+    BiomeID get_biome(Vec2i pos);
+    void get_biome_candidates(Vec2i pos, std::vector<BiomeWeight>& candidates);
 
   private:
     World &r_world;
+    ChunkMap<Particle> m_structureLayer;
     std::vector<Index2D> m_generatedChunkMarkers;
 
     uint32_t m_seed = 0;
 
-    Vec2i m_generateRadius = {10, 10};
     Vec2i m_biomeSize = {200, 200};
 };
