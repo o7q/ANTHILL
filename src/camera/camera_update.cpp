@@ -1,5 +1,4 @@
 #include "camera.hpp"
-#include <iostream>
 
 void Camera::update(float dt)
 {
@@ -8,16 +7,16 @@ void Camera::update(float dt)
         return;
     }
 
-    m_position += (m_goal.toFloat().floor() - m_position.floor()) * 0.05f * dt;
+    Vec2f diff = m_goal.toFloat().floor() - m_position.floor();
+    m_position.x += diff.x * 0.1f * dt;
+    m_position.y += diff.y * 0.1f * dt;
 
-    Vec2f diff = m_goal.toFloat() - m_position;
-
-    if (diff.x > 20)
+    if (diff.x > 26)
     {
-        m_position.x = m_goal.x - 20;
+        m_position.x = m_goal.x - 26;
     }
-    else if (diff.x < -20)
+    else if (diff.x < -26)
     {
-        m_position.x = m_goal.x + 20;
+        m_position.x = m_goal.x + 26;
     }
 }
