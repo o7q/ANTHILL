@@ -19,11 +19,11 @@ class WorldGenerator
     void generate(Vec2i origin, Vec2i radius);
 
   private:
-    void place_terrain_and_pregen_structures(Vec2i origin, Vec2i radius);
+    void place_terrain(Vec2i origin, Vec2i radius);
     void place_structures(Vec2i origin, Vec2i radius);
 
     BiomeID get_biome(Vec2i pos);
-    void get_biome_candidates(Vec2i pos, std::vector<BiomeWeight>& candidates);
+    void get_biome_candidates(Vec2i pos, std::vector<BiomeWeight> &candidates);
 
   private:
     World &r_world;
@@ -31,6 +31,4 @@ class WorldGenerator
     std::vector<Index2D> m_generatedChunkMarkers;
 
     uint32_t m_seed = 0;
-
-    Vec2i m_biomeSize = {200, 200};
 };

@@ -9,8 +9,7 @@ Particle generate_desert_layer1(Vec2i pos, uint32_t seed)
 {
     Particle p;
 
-    float p0 =
-        Math::Perlin::sampleEx(pos.toFloat(), {100.0f, 100.0f}, 4, seed);
+    float p0 = Math::Perlin::sampleEx(pos.toFloat(), {100.0f, 100.0f}, 4, seed);
 
     if (p0 < 0.7f)
     {
@@ -25,14 +24,13 @@ Particle generate_desert_layer2(Vec2i pos, uint32_t seed)
 {
     Particle p;
 
-    float p0 =
-        Math::Perlin::sampleEx(pos.toFloat(), {10.0f, 10.0f}, 1, seed);
+    float p0 = Math::Perlin::sampleEx(pos.toFloat(), {50.0f, 50.0f}, 2, seed);
 
-    if (p0 > 0.5f)
+    if (p0 < 0.7f)
     {
+        p.setColor(Color(255, 255, 0));
+        p.setMatterType(Particle::MatterType::Solid);
     }
-    p.setColor(Color(255, 255, 0));
-    p.setMatterType(Particle::MatterType::Solid);
 
     return p;
 }

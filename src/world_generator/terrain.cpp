@@ -2,8 +2,7 @@
 #include "utils/data.hpp"
 #include "world_generator.hpp"
 
-void WorldGenerator::place_terrain_and_pregen_structures(Vec2i origin,
-                                                         Vec2i radius)
+void WorldGenerator::place_terrain(Vec2i origin, Vec2i radius)
 {
     Index2D chunkOrigin =
         r_world.getParticleHandler().getParticles().getChunkIndex(origin);
@@ -47,7 +46,8 @@ void WorldGenerator::place_terrain_and_pregen_structures(Vec2i origin,
                     }
 
                     r_world.getParticleHandler().getEditor().set(pos, p);
-                    r_world.getParticleHandler().getBiomeMarkers().set(pos, biomeID);
+                    r_world.getParticleHandler().getBiomeMarkers().set(pos,
+                                                                       biomeID);
                 }
             }
         }

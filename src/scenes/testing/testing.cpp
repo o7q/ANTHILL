@@ -2,6 +2,7 @@
 #include "backend/viewport/render_command.hpp"
 #include "entities/wuskkogel/wuskkogel.hpp"
 #include "math/random.hpp"
+#include <iostream>
 #include <memory>
 
 void TestScene::onStart()
@@ -30,6 +31,10 @@ void TestScene::onTick()
 
     Vec2i viewportMousePos =
         r_viewport.windowToViewportPosition(r_input.getMousePosition());
+    Vec2f viewportMousePosCenterNormalized =
+        (viewportMousePos - r_viewport.getSize().toInt() / 2).toFloat() /
+        r_viewport.getSize().toFloat();
+
     Vec2i worldMousePos = m_camera.viewportToCamera(viewportMousePos);
 
     if (r_window.getInputHandler().getInput(InputID::AltAction1)->isDown())
@@ -67,6 +72,7 @@ void TestScene::onTick()
         player->updateAimPosition(worldMousePos);
         updatePos = player->getBody().getPosition();
     }
+    // m_camera.setGoal(updatePos + (viewportMousePosCenterNormalized * 100.0f).toInt());
     m_camera.setGoal(updatePos);
     m_camera.update(r_time.getDT());
 

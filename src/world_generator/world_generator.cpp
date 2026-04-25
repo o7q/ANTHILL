@@ -9,5 +9,5 @@ WorldGenerator::WorldGenerator(World &world)
 
 void WorldGenerator::generate(Vec2i origin, Vec2i radius)
 {
-    place_terrain_and_pregen_structures(origin, radius);
+    place_terrain(origin, radius);
 }
