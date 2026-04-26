@@ -101,11 +101,15 @@ void Player::update(const EntityUpdateContext &context,
     if (std::abs(m_body.getVelocity().x) > 0.2f &&
         m_body.getPosition().x - m_body.getLastPosition().x != 0)
     {
-        m_sprite.switchAnimation(PlayerAnimation::Run);
+        m_sprite.head.switchAnimator(PlayerSprite::HeadAnimation::Run);
+        m_sprite.torso.switchAnimator(PlayerSprite::TorsoAnimation::Run);
+        m_sprite.legs.switchAnimator(PlayerSprite::LegsAnimation::Run);
     }
     else
     {
-        m_sprite.switchAnimation(PlayerAnimation::Idle);
+        m_sprite.head.switchAnimator(PlayerSprite::HeadAnimation::Idle);
+        m_sprite.torso.switchAnimator(PlayerSprite::TorsoAnimation::Idle);
+        m_sprite.legs.switchAnimator(PlayerSprite::LegsAnimation::Idle);
     }
 
     m_sprite.update(context.dt);

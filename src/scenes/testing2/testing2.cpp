@@ -17,8 +17,6 @@ void TestScene2::onTick()
     {
         m_screen.clear();
 
-        Vec2i gridSize = {20, 20};
-
         int seed = Math::Random::weakRandInt(0, 200);
 
         for (unsigned int y = 0; y < m_screen.getSize().y; ++y)

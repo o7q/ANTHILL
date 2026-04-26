@@ -11,6 +11,7 @@ class SpriteAnimator
         : r_spriteSheet(spriteSheet), m_frames(spriteSheet.getSpriteCount())
     {
         m_timer.setMode(Timer::Mode::Repeat);
+        restart();
     }
 
     void update(float dt)
@@ -49,6 +50,7 @@ class SpriteAnimator
     {
         return r_spriteSheet.getSprite(frame);
     }
+    int getCurrentFrameIndex() const { return m_currentFrame; }
 
     void setOffset(Vec2i offset) { m_offset = offset; }
     Vec2i getOffset() const { return m_offset; }

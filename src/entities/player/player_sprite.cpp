@@ -1,52 +1,37 @@
 #include "player_sprite.hpp"
+#include "identifiers/assets/spritesheet.hpp"
+#include "sprite/sprite_animator.hpp"
+#include <utility>
 
 PlayerSprite::PlayerSprite(const Assets &assets)
 {
-    init_run(assets);
-    init_idle(assets);
-}
+    auto makeAnimator = [&](SpriteSheetID id, unsigned int fps,
+                            std::pair<int, int> origin, Vec2i offset)
+    {
+        SpriteAnimator animator(*assets.spriteSheets().get(id));
+        animator.setFPS(fps);
+        animator.setOrigin(origin);
+        animator.setOffset(offset);
+        return animator;
+    };
 
-void PlayerSprite::init_run(const Assets &assets)
-{
-    SpriteAnimator headAnimation(
-        *assets.spriteSheets().get(SpriteSheetID::Entity_SumiRunHead));
-    headAnimation.setFPS(12);
-    headAnimation.setOrigin({3, std::nullopt});
-    add_animation(PlayerBodyPart::Head, PlayerAnimation::Run, headAnimation);
+    head.addAnimator(
+        makeAnimator(SpriteSheetID::Entity_SumiIdleHead, 5, {4, 7}, {0, -4}),
+        HeadAnimation::Idle);
+    torso.addAnimator(
+        makeAnimator(SpriteSheetID::Entity_SumiIdleTorso, 5, {2, 7}, {0, 3}),
+        TorsoAnimation::Idle);
+    legs.addAnimator(
+        makeAnimator(SpriteSheetID::Entity_SumiIdleLegs, 5, {2, 7}, {0, 10}),
+        LegsAnimation::Idle);
 
-    SpriteAnimator torsoAnimation(
-        *assets.spriteSheets().get(SpriteSheetID::Entity_SumiRunTorso));
-    torsoAnimation.setFPS(12);
-    headAnimation.setOrigin({1, 0});
-    add_animation(PlayerBodyPart::Torso, PlayerAnimation::Run, torsoAnimation);
-
-    SpriteAnimator legsAnimation(
-        *assets.spriteSheets().get(SpriteSheetID::Entity_SumiRunLegs));
-    legsAnimation.setFPS(12);
-    legsAnimation.setOrigin({9, 0});
-    add_animation(PlayerBodyPart::Legs, PlayerAnimation::Run, legsAnimation);
-}
-
-void PlayerSprite::init_idle(const Assets &assets)
-{
-    SpriteAnimator headAnimation(
-        *assets.spriteSheets().get(SpriteSheetID::Entity_SumiIdleHead));
-    headAnimation.setFPS(5);
-    headAnimation.setOrigin({4, 14});
-    headAnimation.setOffset({0, 3});
-    add_animation(PlayerBodyPart::Head, PlayerAnimation::Idle, headAnimation);
-
-    SpriteAnimator torsoAnimation(
-        *assets.spriteSheets().get(SpriteSheetID::Entity_SumiIdleTorso));
-    torsoAnimation.setFPS(5);
-    torsoAnimation.setOrigin({1, 7});
-    torsoAnimation.setOffset({0, 3});
-    add_animation(PlayerBodyPart::Torso, PlayerAnimation::Idle, torsoAnimation);
-
-    SpriteAnimator legsAnimation(
-        *assets.spriteSheets().get(SpriteSheetID::Entity_SumiIdleLegs));
-    legsAnimation.setFPS(5);
-    legsAnimation.setOrigin({2, 0});
-    legsAnimation.setOffset({0, 3});
-    add_animation(PlayerBodyPart::Legs, PlayerAnimation::Idle, legsAnimation);
+    head.addAnimator(
+        makeAnimator(SpriteSheetID::Entity_SumiRunHead, 12, {3, 7}, {0, -4}),
+        HeadAnimation::Run);
+    torso.addAnimator(
+        makeAnimator(SpriteSheetID::Entity_SumiRunTorso, 12, {5, 7}, {0, 3}),
+        TorsoAnimation::Run);
+    legs.addAnimator(
+        makeAnimator(SpriteSheetID::Entity_SumiRunLegs, 12, {9, 8}, {0, 10}),
+        LegsAnimation::Run);
 }

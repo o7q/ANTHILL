@@ -13,12 +13,9 @@ void Player::render(const Camera &camera,
     // DEBUG_renderBoundingBox(m_body.getPosition(), m_boundingBox, camera,
     //                         commandsOut);
 
-    const SpriteAnimator *head =
-        m_sprite.getBodyPartAnimator(PlayerBodyPart::Head);
-    const SpriteAnimator *torso =
-        m_sprite.getBodyPartAnimator(PlayerBodyPart::Torso);
-    const SpriteAnimator *legs =
-        m_sprite.getBodyPartAnimator(PlayerBodyPart::Legs);
+    const SpriteAnimator *head = m_sprite.head.getCurrentAnimator();
+    const SpriteAnimator *torso = m_sprite.torso.getCurrentAnimator();
+    const SpriteAnimator *legs = m_sprite.legs.getCurrentAnimator();
 
     if (head)
     {
@@ -39,7 +36,7 @@ void Player::render(const Camera &camera,
             camera.cameraToViewport(m_body.getPosition() + torso->getOffset());
         spriteData.origin = torso->getOrigin();
         spriteData.flipX = m_body.getPosition().x > m_aimPos.x;
-        commandsOut.push_back({2, spriteData});
+        commandsOut.push_back({3, spriteData});
     }
 
     if (legs)

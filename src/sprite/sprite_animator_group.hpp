@@ -6,12 +6,12 @@
 template <typename AnimationID> class SpriteAnimatorGroup
 {
   public:
-    void addAnimator(SpriteAnimator animator, AnimationID id)
+    void addAnimator(SpriteAnimator animator, const AnimationID &id)
     {
         m_animators.insert({id, animator});
     }
 
-    void switchAnimator(AnimationID id, bool restartAnimation = true)
+    void switchAnimator(const AnimationID &id, int frameStart = 0)
     {
         if (m_currentID.has_value() && m_currentID.value() == id)
         {
@@ -27,9 +27,9 @@ template <typename AnimationID> class SpriteAnimatorGroup
         m_currentID = id;
         m_currentAnimator = &it->second;
 
-        if (restartAnimation)
+        if (frameStart >= 0)
         {
-            m_currentAnimator->restart();
+            m_currentAnimator->seek(frameStart);
         }
     }
 
@@ -47,6 +47,7 @@ template <typename AnimationID> class SpriteAnimatorGroup
 
         m_currentAnimator->update(dt);
     }
+    const AnimationID &getCurrentID() const { return m_currentID; }
 
   private:
     std::unordered_map<AnimationID, SpriteAnimator> m_animators;

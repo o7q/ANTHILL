@@ -1,30 +1,36 @@
 #pragma once
 
 #include "assets/assets.hpp"
-#include "identifiers/assets/spritesheet.hpp"
-#include "sprite/character_sprite.hpp"
-#include "sprite/sprite_animator.hpp"
-#include <optional>
+#include "sprite/sprite_animator_group.hpp"
 
-enum class PlayerBodyPart
+struct PlayerSprite
 {
-    Head,
-    Torso,
-    Legs
-};
+    enum class HeadAnimation
+    {
+        Idle,
+        Run
+    };
+    enum class TorsoAnimation
+    {
+        Idle,
+        Run
+    };
+    enum class LegsAnimation
+    {
+        Idle,
+        Run
+    };
 
-enum class PlayerAnimation
-{
-    Run,
-    Idle
-};
+    void update(float dt)
+    {
+        head.update(dt);
+        torso.update(dt);
+        legs.update(dt);
+    }
 
-class PlayerSprite : public CharacterSprite<PlayerBodyPart, PlayerAnimation>
-{
-  public:
     PlayerSprite(const Assets &assets);
 
-  private:
-    void init_run(const Assets &assets);
-    void init_idle(const Assets &assets);
+    SpriteAnimatorGroup<HeadAnimation> head;
+    SpriteAnimatorGroup<TorsoAnimation> torso;
+    SpriteAnimatorGroup<LegsAnimation> legs;
 };
