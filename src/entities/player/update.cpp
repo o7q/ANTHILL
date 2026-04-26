@@ -7,6 +7,7 @@
 #include "math/rectangle.hpp"
 #include "player.hpp"
 #include "world/entity_handler/events/events.hpp"
+#include <iostream>
 #include <memory>
 
 void Player::update(const EntityUpdateContext &context,
@@ -101,13 +102,21 @@ void Player::update(const EntityUpdateContext &context,
     if (std::abs(m_body.getVelocity().x) > 0.2f &&
         m_body.getPosition().x - m_body.getLastPosition().x != 0)
     {
-        m_sprite.head.switchAnimator(PlayerSprite::HeadAnimation::Run);
-        m_sprite.torso.switchAnimator(PlayerSprite::TorsoAnimation::Run);
-        m_sprite.legs.switchAnimator(PlayerSprite::LegsAnimation::Run);
+
     }
     else
     {
-        m_sprite.head.switchAnimator(PlayerSprite::HeadAnimation::Idle);
+        if (std::abs(m_angle + 90) < 80)
+        {
+            m_sprite.head.switchAnimator(PlayerSprite::HeadAnimation::IdleUp45,
+                                         true);
+        }
+        else
+        {
+            m_sprite.head.switchAnimator(PlayerSprite::HeadAnimation::Idle,
+                                         true);
+        }
+
         m_sprite.torso.switchAnimator(PlayerSprite::TorsoAnimation::Idle);
         m_sprite.legs.switchAnimator(PlayerSprite::LegsAnimation::Idle);
     }

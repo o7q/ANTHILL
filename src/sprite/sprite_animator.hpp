@@ -14,6 +14,12 @@ class SpriteAnimator
         restart();
     }
 
+    void transitionFrom(const SpriteAnimator &other)
+    {
+        m_timer.setClockTime(other.getFrameSubTime());
+        seek(other.getCurrentFrameIndex());
+    }
+
     void update(float dt)
     {
         if (m_timer.completed())
@@ -66,6 +72,8 @@ class SpriteAnimator
     }
 
     bool completed() const { return m_timer.completed(); }
+
+    float getFrameSubTime() const { return m_timer.getClockTime(); }
 
   private:
     const SpriteSheet &r_spriteSheet;

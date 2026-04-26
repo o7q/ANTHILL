@@ -1,6 +1,8 @@
 #pragma once
 
 #include "sprite/sprite_animator.hpp"
+#include <iostream>
+#include <optional>
 #include <unordered_map>
 
 template <typename AnimationID> class SpriteAnimatorGroup
@@ -11,7 +13,7 @@ template <typename AnimationID> class SpriteAnimatorGroup
         m_animators.insert({id, animator});
     }
 
-    void switchAnimator(const AnimationID &id, int frameStart = 0)
+    void switchAnimator(const AnimationID &id, bool transition = false)
     {
         if (m_currentID.has_value() && m_currentID.value() == id)
         {
@@ -25,11 +27,16 @@ template <typename AnimationID> class SpriteAnimatorGroup
         }
 
         m_currentID = id;
+        SpriteAnimator *oldAnimator = m_currentAnimator;
         m_currentAnimator = &it->second;
 
-        if (frameStart >= 0)
+        if (oldAnimator && transition)
         {
-            m_currentAnimator->seek(frameStart);
+            m_currentAnimator->transitionFrom(*oldAnimator);
+        }
+        else
+        {
+            m_currentAnimator->restart();
         }
     }
 

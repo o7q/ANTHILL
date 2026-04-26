@@ -5,9 +5,17 @@
 
 struct PlayerSprite
 {
+    enum class GlobalState
+    {
+        Idle,
+        Run
+    };
+
     enum class HeadAnimation
     {
         Idle,
+        IdleUp45,
+        IdleDown45,
         Run
     };
     enum class TorsoAnimation
@@ -26,6 +34,13 @@ struct PlayerSprite
         head.update(dt);
         torso.update(dt);
         legs.update(dt);
+    }
+
+    void switchToRun()
+    {
+        m_sprite.head.switchAnimator(PlayerSprite::HeadAnimation::Run);
+        m_sprite.torso.switchAnimator(PlayerSprite::TorsoAnimation::Run);
+        m_sprite.legs.switchAnimator(PlayerSprite::LegsAnimation::Run);
     }
 
     PlayerSprite(const Assets &assets);

@@ -24,6 +24,9 @@ class Timer
 
     void setMode(Mode mode) { m_mode = mode; }
 
+    void setClockTime(float clock) { m_clock = clock; }
+    float getClockTime() const { return m_clock; }
+
   private:
     float m_durationInSeconds = 1.0f;
     float m_clock = 0.0f;

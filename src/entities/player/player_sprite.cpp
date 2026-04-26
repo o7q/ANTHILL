@@ -18,6 +18,12 @@ PlayerSprite::PlayerSprite(const Assets &assets)
     head.addAnimator(
         makeAnimator(SpriteSheetID::Entity_SumiIdleHead, 5, {4, 7}, {0, -4}),
         HeadAnimation::Idle);
+    head.addAnimator(makeAnimator(SpriteSheetID::Entity_SumiIdleHeadUp45, 5,
+                                  {5, 7}, {0, -4}),
+                     HeadAnimation::IdleUp45);
+    head.addAnimator(makeAnimator(SpriteSheetID::Entity_SumiIdleHeadDown45, 5,
+                                  {2, 8}, {0, -3}),
+                     HeadAnimation::IdleDown45);
     torso.addAnimator(
         makeAnimator(SpriteSheetID::Entity_SumiIdleTorso, 5, {2, 7}, {0, 3}),
         TorsoAnimation::Idle);
