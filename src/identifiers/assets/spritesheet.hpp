@@ -4,9 +4,13 @@
 
 enum class SpriteSheetID
 {
-    Entity_SumiIdle,
-    Entity_SumiRun,
-    Entity_SumiIdleToRun,
+    Entity_SumiIdleHead,
+    Entity_SumiIdleTorso,
+    Entity_SumiIdleLegs,
+    Entity_SumiRunHead,
+    Entity_SumiRunTorso,
+    Entity_SumiRunLegs,
+    
     Entity_Wuskkogel,
     Item_Shotgun
 };

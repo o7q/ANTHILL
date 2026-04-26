@@ -1,21 +1,19 @@
 #pragma once
 
 #include "sprite/sprite_animator.hpp"
-#include <iostream>
-#include <string>
 #include <unordered_map>
 
-class SpriteSystem
+template <typename AnimationID> class SpriteAnimatorGroup
 {
   public:
-    void addAnimator(SpriteAnimator animator, const std::string &id)
+    void addAnimator(SpriteAnimator animator, AnimationID id)
     {
         m_animators.insert({id, animator});
     }
 
-    void switchAnimator(const std::string &id, bool restartAnimation = true)
+    void switchAnimator(AnimationID id, bool restartAnimation = true)
     {
-        if (m_currentID == id)
+        if (m_currentID.has_value() && m_currentID.value() == id)
         {
             return;
         }
@@ -25,6 +23,7 @@ class SpriteSystem
         {
             return;
         }
+
         m_currentID = id;
         m_currentAnimator = &it->second;
 
@@ -50,7 +49,7 @@ class SpriteSystem
     }
 
   private:
-    std::unordered_map<std::string, SpriteAnimator> m_animators;
-    std::string m_currentID = "";
+    std::unordered_map<AnimationID, SpriteAnimator> m_animators;
+    std::optional<AnimationID> m_currentID;
     SpriteAnimator *m_currentAnimator = nullptr;
 };

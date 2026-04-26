@@ -1,6 +1,7 @@
 #pragma once
 
 #include "backend/texture/texture.hpp"
+#include "math/angle.hpp"
 #include <optional>
 #include <utility>
 #include <variant>
@@ -9,7 +10,7 @@ struct TextureRenderCommandData
 {
     struct RotateSettings
     {
-        float angle = 0.0f;
+        Angle angle;
         unsigned int overdraw = 1;
     };
 

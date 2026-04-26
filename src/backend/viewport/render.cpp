@@ -156,8 +156,8 @@ void Viewport::render_texture_rotated(const TextureRenderCommandData &data)
     Vec2i origin = {data.origin.first.value_or(halfTextureSize.x),
                     data.origin.second.value_or(halfTextureSize.y)};
 
-    float cosA = std::cosf(rs.angle);
-    float sinA = std::sinf(rs.angle);
+    float cosA = std::cosf(rs.angle.radians());
+    float sinA = std::sinf(rs.angle.radians());
 
     for (unsigned int y = 0; y < textureSize.y; ++y)
     {

@@ -14,13 +14,13 @@ void TestScene::onStart()
     m_world.getEntityHandler().getCurrentPlayer()->getBody().setPosition(
         {0, -200});
 
-    for (int i = 0; i < 1; ++i)
-    {
-        auto wuskkogel = std::make_unique<Wuskkogel>(
-            m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
-        wuskkogel->getBody().setPosition({i * 10, -20});
-        m_world.getEntityHandler().addEntity(std::move(wuskkogel));
-    }
+    // for (int i = 0; i < 1; ++i)
+    // {
+    //     auto wuskkogel = std::make_unique<Wuskkogel>(
+    //         m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
+    //     wuskkogel->getBody().setPosition({i * 10, -20});
+    //     m_world.getEntityHandler().addEntity(std::move(wuskkogel));
+    // }
 }
 
 void TestScene::onTick()

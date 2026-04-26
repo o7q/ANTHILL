@@ -1,3 +1,4 @@
+#include "entities/player/player_sprite.hpp"
 #include "entity/world_interaction/against.hpp"
 #include "events/backend/events.hpp"
 #include "item/context.hpp"
@@ -100,11 +101,11 @@ void Player::update(const EntityUpdateContext &context,
     if (std::abs(m_body.getVelocity().x) > 0.2f &&
         m_body.getPosition().x - m_body.getLastPosition().x != 0)
     {
-        m_sprite.switchAnimator("run");
+        m_sprite.switchAnimation(PlayerAnimation::Run);
     }
     else
     {
-        m_sprite.switchAnimator("idle");
+        m_sprite.switchAnimation(PlayerAnimation::Idle);
     }
 
     m_sprite.update(context.dt);

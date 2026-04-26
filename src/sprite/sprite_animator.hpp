@@ -50,6 +50,9 @@ class SpriteAnimator
         return r_spriteSheet.getSprite(frame);
     }
 
+    void setOffset(Vec2i offset) { m_offset = offset; }
+    Vec2i getOffset() const { return m_offset; }
+
     void setOrigin(std::pair<std::optional<int>, std::optional<int>> origin)
     {
         m_origin = origin;
@@ -70,5 +73,6 @@ class SpriteAnimator
     unsigned int m_currentFrame = 0;
     bool m_loop = true;
 
+    Vec2i m_offset;
     std::pair<std::optional<int>, std::optional<int>> m_origin;
 };
