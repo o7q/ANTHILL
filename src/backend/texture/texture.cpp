@@ -14,6 +14,16 @@ Texture::Texture(Vec2u size)
                  "Successfully created a blank texture of size: " +
                      std::to_string(size.x) + "x" + std::to_string(size.y));
 }
+Texture::Texture(const std::vector<Color> &pixels, Vec2u size)
+{
+    m_pixels.resize(pixels.size());
+    for (unsigned int i = 0; i < pixels.size(); ++i)
+    {
+        m_pixels[i] = pixels[i];
+    }
+
+    m_size = size;
+}
 Texture::Texture(const std::filesystem::path &path)
 {
     const std::string pathString = path.string();

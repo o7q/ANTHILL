@@ -10,7 +10,6 @@ void Scene::update()
     }
 
     onTick();
-
     handleBackendEvents();
 }
 

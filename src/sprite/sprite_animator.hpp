@@ -13,6 +13,18 @@ class SpriteAnimator
         m_timer.setMode(Timer::Mode::Repeat);
         restart();
     }
+    SpriteAnimator(const SpriteSheet &spriteSheet, unsigned int fps,
+                   std::pair<std::optional<int>, std::optional<int>> origin,
+                   Vec2i offset)
+        : r_spriteSheet(spriteSheet), m_frames(spriteSheet.getSpriteCount())
+    {
+        setFPS(fps);
+        setOrigin(origin);
+        setOffset(offset);
+
+        m_timer.setMode(Timer::Mode::Repeat);
+        restart();
+    }
 
     void transitionFrom(const SpriteAnimator &other)
     {

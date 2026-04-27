@@ -1,11 +1,6 @@
 #include "backend/viewport/render_command.hpp"
-#include "debug/renderers.hpp"
-#include "entities/player/player_sprite.hpp"
-#include "item/renderable.hpp"
-#include "math/angle.hpp"
 #include "player.hpp"
 #include "sprite/sprite_animator.hpp"
-#include <iostream>
 
 void Player::render(const Camera &camera,
                     std::vector<RenderCommand> &commandsOut)
@@ -13,9 +8,9 @@ void Player::render(const Camera &camera,
     // DEBUG_renderBoundingBox(m_body.getPosition(), m_boundingBox, camera,
     //                         commandsOut);
 
-    const SpriteAnimator *head = m_sprite.head.getCurrentAnimator();
-    const SpriteAnimator *torso = m_sprite.torso.getCurrentAnimator();
-    const SpriteAnimator *legs = m_sprite.legs.getCurrentAnimator();
+    const SpriteAnimator *head = m_sprite.getHead().getCurrentAnimator();
+    const SpriteAnimator *torso = m_sprite.getTorso().getCurrentAnimator();
+    const SpriteAnimator *legs = m_sprite.getLegs().getCurrentAnimator();
 
     if (head)
     {

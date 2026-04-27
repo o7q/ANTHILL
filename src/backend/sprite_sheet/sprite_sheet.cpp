@@ -1,5 +1,4 @@
 #include "sprite_sheet.hpp"
-#include "math/index.hpp"
 
 SpriteSheet::SpriteSheet(const std::filesystem::path &path, Vec2u spriteSize)
 {
@@ -9,19 +8,18 @@ SpriteSheet::SpriteSheet(const std::filesystem::path &path, Vec2u spriteSize)
 
     for (unsigned int sprite = 0; sprite < spriteCount; ++sprite)
     {
-        std::vector<Color> pixels;
-        pixels.resize(spriteSize.x * spriteSize.y);
+        Texture frame(spriteSize);
         for (unsigned int y = 0; y < spriteSize.y; ++y)
         {
             for (unsigned int x = 0; x < spriteSize.x; ++x)
             {
                 Color color =
                     spriteSheet.getPixel({x + spriteSize.x * sprite, y});
-                pixels[Math::Index::index_2dto1d({x, y}, spriteSize.x)] = color;
+                frame.setPixel({x, y}, color);
             }
         }
 
-        m_frames.push_back(Texture(pixels, spriteSize));
+        m_frames.push_back(frame);
     }
 }
 

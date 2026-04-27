@@ -15,7 +15,23 @@ class Gun : public Item, public IReloadable
   public:
     Gun(const std::string &name) : Item(name) {}
 
-    virtual bool reload() override
+    virtual bool reload(const ItemUseContext &context,
+                        EventPool<EntityEvent> &eventsOut) override
+    {
+        return restock_ammo();
+    }
+
+    void addAmmo(int amount) { m_ammoReserve += amount; }
+    void depleteAmmo() { m_ammoInMagazine--; }
+    int getAmmoInMagazine() { return m_ammoInMagazine; }
+    int getAmmoInReserve() { return m_ammoReserve; }
+    void setMagazineSize(int size) { m_magazineSize = size; }
+
+  protected:
+    virtual void fire(const ItemUseContext &context,
+                      EventPool<EntityEvent> &eventsOut) = 0;
+
+    virtual bool restock_ammo()
     {
         if (m_ammoReserve <= 0)
         {
@@ -42,16 +58,6 @@ class Gun : public Item, public IReloadable
 
         return true;
     }
-
-    void addAmmo(int amount) { m_ammoReserve += amount; }
-    void depleteAmmo() { m_ammoInMagazine--; }
-    int getAmmoInMagazine() { return m_ammoInMagazine; }
-    int getAmmoInReserve() { return m_ammoReserve; }
-    void setMagazineSize(int size) { m_magazineSize = size; }
-
-  protected:
-    virtual void fire(const ItemUseContext &context,
-                      EventPool<EntityEvent> &eventsOut) = 0;
 
   protected:
     FireMode m_fireMode = FireMode::SemiAuto;

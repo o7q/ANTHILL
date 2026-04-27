@@ -13,7 +13,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 
 # -fsanitize=address,undefined
-target_compile_options(${PROJECT_NAME} PRIVATE -O2 -Wall -Wextra -Wpedantic -Wshadow)
+target_compile_options(${PROJECT_NAME} PRIVATE -O2 -Wall -Wextra -Wpedantic -Wshadow -Wuninitialized)
 # target_link_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
 
 # PATHS "./libs/SDL3" NO_DEFAULT_PATH

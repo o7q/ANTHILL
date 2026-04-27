@@ -3,7 +3,7 @@
 #include "assets/assets.hpp"
 #include "backend/input/input_handler.hpp"
 #include "backend/viewport/render_command.hpp"
-#include "entities/player/player_sprite.hpp"
+#include "entities/player/sprite/player_sprite.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
 #include "entity/jump_handler/jump_handler.hpp"
@@ -27,10 +27,17 @@ class Player : public Entity
     void updateAimPosition(Vec2i aimPos)
     {
         m_aimPos = aimPos;
-        m_angle = Math::Angles::vectorsToAngle(m_body.getPosition().toFloat(),
-                                               aimPos.toFloat())
+        m_angle = Math::Angles::vectorsToAngle(
+                      (m_body.getPosition() + m_headOffset).toFloat(),
+                      aimPos.toFloat())
                       .degrees();
     }
+
+  private:
+    void update_movement(const EntityUpdateContext &context,
+                         EventPool<EntityEvent> &eventsOut);
+    void update_items(const EntityUpdateContext &context,
+                      EventPool<EntityEvent> &eventsOut);
 
   private:
     InputHandler &r_input;
@@ -41,6 +48,7 @@ class Player : public Entity
 
     Vec2i m_aimPos;
     float m_angle = 0.0f;
+    Vec2i m_headOffset = {0, -6};
 
     PlayerSprite m_sprite;
 };

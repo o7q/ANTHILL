@@ -1,10 +1,12 @@
 #pragma once
 
-#include "identifiers/assets/sounds.hpp"
+#include "events/event_pool.hpp"
+#include "item/context.hpp"
+#include "world/entity_handler/events/base.hpp"
 
 class IReloadable
 {
   public:
-    virtual bool reload() = 0;
-    virtual const SoundIDKey getReloadSound() const = 0;
+    virtual bool reload(const ItemUseContext &context,
+                        EventPool<EntityEvent> &eventsOut) = 0;
 };

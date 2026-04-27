@@ -3,6 +3,7 @@
 #include "assets/assets.hpp"
 #include "backend/timer/timer.hpp"
 #include "entities/simple_projectile/simple_projectile.hpp"
+#include "events/backend/events.hpp"
 #include "identifiers/assets/sounds.hpp"
 #include "identifiers/assets/spritesheet.hpp"
 #include "item/context.hpp"
@@ -51,6 +52,21 @@ class Shotgun : public Gun, public IRenderable
             fire(context, eventsOut);
             m_fireCooldownTimer.restart();
             m_animator.restart();
+
+            auto shootSoundEvent = std::make_unique<BackendPlaySoundEvent>();
+
+            constexpr SoundID sounds[3] = {SoundID::WeaponShotgunFire1,
+                                           SoundID::WeaponShotgunFire2,
+                                           SoundID::WeaponShotgunFire3};
+
+            shootSoundEvent->soundID = sounds[Math::Random::weakRandInt(0, 3)];
+            shootSoundEvent->settings.volume = 0.2f;
+            shootSoundEvent->settings.pitch =
+                100.0f / Math::Random::weakRandInt(95, 100);
+
+            eventsOut.emit(std::make_unique<EntityBackendEvent>(
+                context.ownerID, std::move(shootSoundEvent)));
+
             return true;
         }
 
@@ -62,18 +78,24 @@ class Shotgun : public Gun, public IRenderable
         return m_animator.getCurrentFrame();
     }
 
-    const SoundIDKey getUseSound() const override
+    bool reload(const ItemUseContext &context,
+                EventPool<EntityEvent> &eventsOut) override
     {
-        constexpr SoundID sounds[3] = {SoundID::WeaponShotgunFire1,
-                                       SoundID::WeaponShotgunFire2,
-                                       SoundID::WeaponShotgunFire3};
+        if (restock_ammo())
+        {
+            auto reloadSoundEvent = std::make_unique<BackendPlaySoundEvent>();
+            reloadSoundEvent->soundID = SoundID::WeaponShotgunReload1;
+            reloadSoundEvent->settings.volume = 0.2f;
+            reloadSoundEvent->settings.pitch =
+                100.0f / Math::Random::weakRandInt(95, 100);
 
-        return sounds[Math::Random::weakRandInt(0, 3)];
-    }
+            eventsOut.emit(std::make_unique<EntityBackendEvent>(
+                context.ownerID, std::move(reloadSoundEvent)));
 
-    const SoundIDKey getReloadSound() const override
-    {
-        return SoundID::WeaponShotgunReload1;
+            return true;
+        }
+
+        return false;
     }
 
   protected:

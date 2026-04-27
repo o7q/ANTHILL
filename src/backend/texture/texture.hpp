@@ -11,16 +11,7 @@ class Texture
   public:
     Texture();
     Texture(Vec2u size);
-    Texture(const std::vector<Color> &pixels, Vec2u size)
-    {
-        m_pixels.resize(pixels.size());
-        for (unsigned int i = 0; i < pixels.size(); ++i)
-        {
-            m_pixels[i] = pixels[i];
-        }
-
-        m_size = size;
-    }
+    Texture(const std::vector<Color> &pixels, Vec2u size);
     Texture(const std::filesystem::path &path);
     Texture(const Texture &other) = default;
     Texture &operator=(const Texture &other) = default;

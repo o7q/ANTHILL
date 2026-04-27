@@ -1,11 +1,9 @@
-#include "testing.hpp"
+#include "main.hpp"
 #include "backend/viewport/render_command.hpp"
-#include "entities/wuskkogel/wuskkogel.hpp"
 #include "math/random.hpp"
-#include <iostream>
 #include <memory>
 
-void TestScene::onStart()
+void MainScene::onStart()
 {
     m_world.getEntityHandler().addPlayer(std::make_unique<Player>(
         m_world.getEntityHandler().getIDHandler().getNext(), r_input,
@@ -13,17 +11,9 @@ void TestScene::onStart()
 
     m_world.getEntityHandler().getCurrentPlayer()->getBody().setPosition(
         {0, -200});
-
-    // for (int i = 0; i < 1; ++i)
-    // {
-    //     auto wuskkogel = std::make_unique<Wuskkogel>(
-    //         m_world.getEntityHandler().getIDHandler().getNext(), r_assets);
-    //     wuskkogel->getBody().setPosition({i * 10, -20});
-    //     m_world.getEntityHandler().addEntity(std::move(wuskkogel));
-    // }
 }
 
-void TestScene::onTick()
+void MainScene::onTick()
 {
     std::vector<RenderCommand> renderCommands;
 
@@ -72,12 +62,12 @@ void TestScene::onTick()
         player->updateAimPosition(worldMousePos);
         updatePos = player->getBody().getPosition();
     }
-    m_camera.setGoal(updatePos + (viewportMousePosCenterNormalized * 60.0f).toInt());
+    m_camera.setGoal(updatePos +
+                     (viewportMousePosCenterNormalized * 60.0f).toInt());
     m_camera.update(r_time.getDT());
 
     m_world.render(m_camera, r_assets, renderCommands);
 
     renderText(renderCommands);
-
     r_viewport.render(renderCommands);
 }
