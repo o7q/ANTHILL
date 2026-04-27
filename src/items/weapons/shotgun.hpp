@@ -59,10 +59,11 @@ class Shotgun : public Gun, public IRenderable
                                            SoundID::WeaponShotgunFire2,
                                            SoundID::WeaponShotgunFire3};
 
-            shootSoundEvent->soundID = sounds[Math::Random::weakRandInt(0, 3)];
+            shootSoundEvent->soundID =
+                sounds[Math::Random::unseededRandomInt(0, 3)];
             shootSoundEvent->settings.volume = 0.2f;
             shootSoundEvent->settings.pitch =
-                100.0f / Math::Random::weakRandInt(95, 100);
+                100.0f / Math::Random::unseededRandomInt(95, 100);
 
             eventsOut.emit(std::make_unique<EntityBackendEvent>(
                 context.ownerID, std::move(shootSoundEvent)));
@@ -87,7 +88,7 @@ class Shotgun : public Gun, public IRenderable
             reloadSoundEvent->soundID = SoundID::WeaponShotgunReload1;
             reloadSoundEvent->settings.volume = 0.2f;
             reloadSoundEvent->settings.pitch =
-                100.0f / Math::Random::weakRandInt(95, 100);
+                100.0f / Math::Random::unseededRandomInt(95, 100);
 
             eventsOut.emit(std::make_unique<EntityBackendEvent>(
                 context.ownerID, std::move(reloadSoundEvent)));

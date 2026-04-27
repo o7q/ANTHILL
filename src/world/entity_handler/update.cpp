@@ -41,6 +41,6 @@ void EntityHandler::update(const ParticleHandler &particleHandler, float dt,
         m_entities[m_idHandler.getNext()] = std::move(newEntity);
     }
 
-    m_entitiesToAdd.clear();
     m_entitiesToRemove.clear();
+    m_entitiesToAdd.clear();
 }

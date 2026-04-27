@@ -36,10 +36,10 @@ class Particle
     void setMatterType(MatterType matterType) { m_matterType = matterType; }
     MatterType getMatterType() const { return m_matterType; }
 
-    bool isAir() const
+    bool isBlank() const
     {
         return m_physicsType == PhysicsType::None &&
-               m_matterType == MatterType::Gas;
+               m_matterType == MatterType::Gas && m_color.a == 0;
     }
     bool isSolid() const { return m_matterType == MatterType::Solid; }
     bool isLiquid() const { return m_matterType == MatterType::Liquid; }
@@ -68,7 +68,7 @@ class Particle
     MatterType m_matterType = MatterType::Gas;
 
     VerletBody m_verletBody;
-    float m_restitution = 1.0f;
+    float m_restitution = 0.0f;
     float m_mass = 1.0f;
 
     bool m_updateSwapID = 0;

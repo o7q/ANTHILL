@@ -1,6 +1,7 @@
 #include "biomes/desert.hpp"
 #include "utils/data.hpp"
 #include "world_generator.hpp"
+#include "world_generator/generate_result.hpp"
 
 void WorldGenerator::place_terrain(Vec2i origin, Vec2i radius)
 {
@@ -31,21 +32,30 @@ void WorldGenerator::place_terrain(Vec2i origin, Vec2i radius)
                     int ay = cy * chunkSize.y + y;
                     Vec2i pos = {ax, ay};
 
-                    Particle p;
                     BiomeID biomeID = get_biome({ax, ay});
+
+                    GenerateResult result;
                     switch (biomeID)
                     {
                     case BiomeID::Void:
                         break;
                     case BiomeID::DesertLayer1:
-                        p = generate_desert_layer1(pos, m_seed);
+                        result = generate_desert_layer1(pos, m_seed, r_assets);
                         break;
                     case BiomeID::DesertLayer2:
-                        p = generate_desert_layer2(pos, m_seed);
+                        result = generate_desert_layer2(pos, m_seed, r_assets);
                         break;
                     }
 
-                    r_world.getParticleHandler().getEditor().set(pos, p);
+                    r_world.getParticleHandler().getEditor().set(
+                        pos, result.particle);
+
+                    if (result.spawnEntity)
+                    {
+                        r_world.getEntityHandler().addEntity(
+                            std::move(result.spawnEntity));
+                    }
+
                     r_world.getParticleHandler().getBiomeMarkers().set(pos,
                                                                        biomeID);
                 }

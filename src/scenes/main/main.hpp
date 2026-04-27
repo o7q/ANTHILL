@@ -9,7 +9,7 @@ class MainScene : public Scene
 {
   public:
     MainScene(const Assets &assets, Window &window)
-        : Scene(assets, window), m_generator(m_world)
+        : Scene(assets, window), m_generator(m_world, r_assets)
     {
     }
 

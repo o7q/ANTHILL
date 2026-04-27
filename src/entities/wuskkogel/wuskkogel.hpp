@@ -14,7 +14,7 @@
 class Wuskkogel : public Entity
 {
   public:
-    Wuskkogel(uint64_t id, const Assets &assets);
+    Wuskkogel(const Assets &assets, uint64_t id = 0);
 
     void update(const EntityUpdateContext &context,
                 EventPool<EntityEvent> &eventsOut) override;

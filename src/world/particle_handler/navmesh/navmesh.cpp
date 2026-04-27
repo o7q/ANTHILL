@@ -2,7 +2,7 @@
 
 void Navmesh::update(const Particle *p, Index2D index)
 {
-    if (p->isAir() || p->isMoving())
+    if (p->isBlank() || p->isMoving())
     {
         return;
     }

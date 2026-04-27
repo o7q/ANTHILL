@@ -56,5 +56,5 @@ class EntityHandler
     std::vector<std::unique_ptr<Entity>> m_entitiesToAdd;
     std::vector<uint64_t> m_entitiesToRemove;
 
-    Vec2i m_globalKillRadius = {5000, 5000};
+    Vec2i m_globalKillRadius = {2000, 2000};
 };

@@ -24,7 +24,7 @@ bool PDynamicsHandler::can_gas_occupy(const Particle *p)
     {
         return false;
     }
-    return p->isAir();
+    return p->isBlank();
 }
 
 void PDynamicsHandler::applyForce(int x, int y, float power, float dt)
@@ -45,8 +45,7 @@ void PDynamicsHandler::applyForce(int x, int y, float power, float dt)
                     continue;
                 }
 
-                if (p->isAir() ||
-                    p->getPhysicsType() == Particle::PhysicsType::None)
+                if (p->getPhysicsType() == Particle::PhysicsType::None)
                 {
                     continue;
                 }

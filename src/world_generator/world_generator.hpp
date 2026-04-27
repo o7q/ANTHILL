@@ -1,6 +1,5 @@
 #pragma once
 
-#include "utils/data_structures/chunk_map.hpp"
 #include "utils/data_structures/index_2d.hpp"
 #include "world/world.hpp"
 
@@ -14,20 +13,19 @@ class WorldGenerator
     };
 
   public:
-    WorldGenerator(World &world);
+    WorldGenerator(World &world, const Assets &assets);
 
     void generate(Vec2i origin, Vec2i radius);
 
   private:
     void place_terrain(Vec2i origin, Vec2i radius);
-    void place_structures(Vec2i origin, Vec2i radius);
 
     BiomeID get_biome(Vec2i pos);
     void get_biome_candidates(Vec2i pos, std::vector<BiomeWeight> &candidates);
 
   private:
     World &r_world;
-    ChunkMap<Particle> m_structureLayer;
+    const Assets &r_assets;
     std::vector<Index2D> m_generatedChunkMarkers;
 
     uint32_t m_seed = 0;

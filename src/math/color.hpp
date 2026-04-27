@@ -12,9 +12,4 @@ struct Color
         : r(r_), g(g_), b(b_), a(a_)
     {
     }
-
-    template <typename T> Color operator*(T v)
-    {
-        return Color(r * v, g * v, b * v);
-    }
 };

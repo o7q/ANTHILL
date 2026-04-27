@@ -1,7 +1,7 @@
 #include "identifiers/assets/spritesheet.hpp"
 #include "wuskkogel.hpp"
 
-Wuskkogel::Wuskkogel(uint64_t id, const Assets &assets)
+Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
     : Entity(id), m_bodyHandler(m_body, m_boundingBox),
       m_animator(*assets.spriteSheets().get(SpriteSheetID::Entity_Wuskkogel))
 {

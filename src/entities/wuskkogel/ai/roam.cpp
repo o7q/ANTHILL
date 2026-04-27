@@ -7,8 +7,8 @@ WuskkogelStateID WuskkogelRoamState::update(const UpdateContext &context)
 {
     if (m_roamMoveTimer.completed())
     {
-        moveDir.x = Math::Random::weakRandInt(-2, 3);
-        moveDir.y = Math::Random::weakRandInt(-2, 3);
+        moveDir.x = Math::Random::unseededRandomInt(-2, 3);
+        moveDir.y = Math::Random::unseededRandomInt(-2, 3);
     }
 
     m_roamMoveTimer.update(context.context.dt);

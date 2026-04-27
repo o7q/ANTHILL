@@ -37,7 +37,7 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
 
     if (canLeft && canRight)
     {
-        switch (Math::Random::weakRandInt(0, 2))
+        switch (Math::Random::unseededRandomInt(0, 2))
         {
         case 0:
             verlet.addVelocity({-0.3f, 0.0f}, dt);

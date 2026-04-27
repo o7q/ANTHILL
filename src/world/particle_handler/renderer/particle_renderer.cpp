@@ -23,25 +23,20 @@ void ParticleRenderer::render(const ChunkMap<Particle> &particles,
             Vec2i cameraPos = camera.getPosition();
             Vec2i worldPos = camera.viewportToCamera(Vec2i(x, y));
 
-            const Particle *p = particles.get(worldPos);
+            BackgroundRenderSettings settings;
+            settings.cameraPos = cameraPos;
+            settings.worldPos = worldPos;
+            settings.drawPos = {x, y};
+            render_background(biomeMarkers, assets, settings);
 
-            if (!p)
-            {
-                continue;
-            }
-
-            if (p->isAir())
-            {
-                BackgroundRenderSettings settings;
-                settings.cameraPos = cameraPos;
-                settings.worldPos = worldPos;
-                settings.drawPos = {x, y};
-                render_background(biomeMarkers, assets, settings);
-            }
-            else
+            if (const Particle *p = particles.get(worldPos))
             {
                 Color c = p->getColor();
-                m_texture.setPixel({x, y}, c);
+
+                if (c.a != 0)
+                {
+                    m_texture.setPixel({x, y}, c);
+                }
             }
         }
     }

@@ -24,7 +24,7 @@ void SimpleProjectile::update(const EntityUpdateContext &context,
             {
                 auto event = std::make_unique<ParticleDrawEvent>();
                 event->position = pos;
-                event->radius = Math::Random::weakRandInt(3, 6);
+                event->radius = Math::Random::unseededRandomInt(3, 6);
                 event->particle = Particle();
 
                 eventsOut.emit(std::make_unique<EntityParticleEvent>(

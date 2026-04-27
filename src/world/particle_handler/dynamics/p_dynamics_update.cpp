@@ -29,7 +29,7 @@ void PDynamicsHandler::update(float dt, Vec2i origin)
             }
             r_navmesh.update(p, chunkIndex);
             lastNavmeshChunkIndex = chunkIndex;
-            if (p->getUpdateSwapID() == m_updateSwapID || p->isAir() ||
+            if (p->getUpdateSwapID() == m_updateSwapID ||
                 p->getPhysicsType() == Particle::PhysicsType::None)
             {
                 continue;
