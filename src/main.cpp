@@ -11,6 +11,6 @@ class SDLFlagHandler
 int main()
 {
     SDLFlagHandler flagHandler(SDL_INIT_VIDEO);
-    Game game({1920, 1080}, {480, 270});
+    Game game({1280, 720}, Vec2u(320, 180));
     return 0;
 }

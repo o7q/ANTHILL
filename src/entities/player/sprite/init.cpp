@@ -18,21 +18,21 @@ PlayerSprite::PlayerSprite(const Assets &assets)
 void PlayerSprite::init_head(const Assets &assets)
 {
     m_head.addAnimator(
-        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiHead),
+        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiStaticHead),
          1,
          {4, 6},
          {0, -4}},
         HeadAnimation::Idle);
 
     m_head.addAnimator(
-        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiHeadUp45),
+        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiStaticHeadUp45),
          1,
          {5, 7},
          {0, -3}},
         HeadAnimation::IdleUp45);
 
     m_head.addAnimator(
-        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiHeadDown45),
+        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiStaticHeadDown45),
          1,
          {2, 7},
          {0, -3}},
@@ -66,7 +66,7 @@ void PlayerSprite::init_torso(const Assets &assets)
 void PlayerSprite::init_legs(const Assets &assets)
 {
     m_legs.addAnimator(
-        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiIdleLegs),
+        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiStaticLegs),
          1,
          {1, 7},
          {0, 10}},
