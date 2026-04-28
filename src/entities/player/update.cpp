@@ -6,5 +6,5 @@ void Player::update(const EntityUpdateContext &context,
     update_movement(context, eventsOut);
     update_items(context, eventsOut);
 
-    m_sprite.update(m_body, m_angle, context.dt);
+    m_sprite.update({m_body, m_angle, false, false, false}, context.dt);
 }

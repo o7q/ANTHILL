@@ -21,7 +21,8 @@ void Timer::update(float dt)
         return;
     }
 
-    if (m_clock >= 60.0f * m_durationInSeconds)
+    const float k = 60.0f * m_durationInSeconds;
+    if (m_clock >= k)
     {
         m_completed = true;
 
@@ -36,7 +37,9 @@ void Timer::update(float dt)
             break;
         }
     }
+
     m_clock += dt;
+    m_progress = m_clock / k;
 }
 
 void Timer::restart()

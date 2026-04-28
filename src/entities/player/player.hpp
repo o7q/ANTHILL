@@ -3,6 +3,8 @@
 #include "assets/assets.hpp"
 #include "backend/input/input_handler.hpp"
 #include "backend/viewport/render_command.hpp"
+#include "entities/player/dash/dash_handler.hpp"
+#include "entities/player/jetpack/jetpack.hpp"
 #include "entities/player/sprite/player_sprite.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
@@ -28,7 +30,7 @@ class Player : public Entity
     {
         m_aimPos = aimPos;
         m_angle = Math::Angles::vectorsToAngle(
-                      (m_body.getPosition() + m_headOffset).toFloat(),
+                      (m_body.getPosition() + m_relativeHeadPosition).toFloat(),
                       aimPos.toFloat())
                       .degrees();
     }
@@ -48,7 +50,10 @@ class Player : public Entity
 
     Vec2i m_aimPos;
     float m_angle = 0.0f;
-    Vec2i m_headOffset = {0, -6};
+    Vec2i m_relativeHeadPosition = {0, -6};
 
     PlayerSprite m_sprite;
+
+    Jetpack m_jetpack;
+    DashHandler m_dashHandler;
 };

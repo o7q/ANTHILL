@@ -18,21 +18,21 @@ PlayerSprite::PlayerSprite(const Assets &assets)
 void PlayerSprite::init_head(const Assets &assets)
 {
     m_head.addAnimator(
-        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiIdleHead),
+        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiHead),
          1,
          {4, 6},
          {0, -4}},
         HeadAnimation::Idle);
 
     m_head.addAnimator(
-        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiIdleHeadUp45),
+        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiHeadUp45),
          1,
          {5, 7},
          {0, -3}},
         HeadAnimation::IdleUp45);
 
     m_head.addAnimator(
-        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiIdleHeadDown45),
+        {*assets.spriteSheets().get(SpriteSheetID::Entity_SumiHeadDown45),
          1,
          {2, 7},
          {0, -3}},

@@ -16,7 +16,7 @@ void Player::update_items(const EntityUpdateContext &context,
     itemContext.heldPosition = m_body.getPosition();
     itemContext.heldAngle = m_angle;
 
-    if (r_input.getInput(InputID::Action1)->isDown())
+    if (r_input.getInput(InputID::Shoot)->isDown())
     {
         current->use(itemContext, eventsOut);
     }

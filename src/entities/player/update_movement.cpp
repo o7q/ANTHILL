@@ -27,12 +27,18 @@ void Player::update_movement(const EntityUpdateContext &context,
         m_body.getPosition(), m_boundingBox, context.particleHandler,
         RectangleSide::Bottom);
 
-    m_jumpHandler.update(context.dt, onGround);
+    m_jumpHandler.update(m_body, context.dt, onGround);
 
-    if (m_jumpHandler.canJump())
+    if (r_input.getInput(InputID::Dash)->isDown())
     {
-        m_body.setVelocityY(-m_jumpHandler.getJumpPower());
+        m_dashHandler.start(m_angle);
     }
+    else
+    {
+        m_dashHandler.stop();
+    }
+
+    m_dashHandler.update(m_body, eventsOut, context);
 
     m_bodyHandler.update(context);
 }

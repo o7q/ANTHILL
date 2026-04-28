@@ -10,9 +10,10 @@ enum class InputID
     Down,
 
     Jump,
+    Reload,
 
-    Action1,
-    Action2,
+    Shoot,
+    Dash,
 
     AltAction1,
     AltAction2,
@@ -23,8 +24,6 @@ enum class InputID
     AltAction7,
     AltAction8,
     AltAction9,
-    AltAction10,
-
-    Reload
+    AltAction10
 };
 using InputIDKey = Identifier<InputID>;

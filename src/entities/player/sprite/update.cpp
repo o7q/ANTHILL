@@ -1,8 +1,8 @@
 #include "player_sprite.hpp"
 
-void PlayerSprite::update(const EntityBody &body, float lookAngle, float dt)
+void PlayerSprite::update(UpdateData data, float dt)
 {
-    State state = determine_state(body);
+    State state = determine_state(data.body);
 
     if (state != m_lastState)
     {
@@ -11,7 +11,7 @@ void PlayerSprite::update(const EntityBody &body, float lookAngle, float dt)
         m_legs.restartAll();
     }
 
-    update_head(state, lookAngle, dt);
+    update_head(state, data.lookAngle, dt);
     update_torso(state, dt);
     update_legs(state, dt);
 
@@ -23,42 +23,27 @@ void PlayerSprite::update_head(State state, float lookAngle, float dt)
     const bool lookingUp45 = std::abs(lookAngle + 90.0f) < 65.0f;
     const bool lookingDown45 = std::abs(lookAngle - 90.0f) < 65.0f;
 
-    if (lookingUp45)
+    switch (state)
     {
-        switch (state)
+    case State::Idle:
+        if (lookingUp45)
         {
-        case State::Idle:
             m_head.switchAnimator(HeadAnimation::IdleUp45);
-            break;
-        case State::Run:
-        default:
-            break;
         }
-    }
-    else if (lookingDown45)
-    {
-        switch (state)
+        else if (lookingDown45)
         {
-        case State::Idle:
             m_head.switchAnimator(HeadAnimation::IdleDown45);
-            break;
-        case State::Run:
-        default:
-            break;
         }
-    }
-    else
-    {
-        switch (state)
+        else
         {
-        case State::Idle:
             m_head.switchAnimator(HeadAnimation::Idle);
-            break;
-        case State::Run:
-            m_head.switchAnimator(HeadAnimation::Run);
-        default:
-            break;
         }
+        break;
+    case State::Run:
+        m_head.switchAnimator(HeadAnimation::Run);
+        break;
+    default:
+        break;
     }
 
     m_head.update(dt);

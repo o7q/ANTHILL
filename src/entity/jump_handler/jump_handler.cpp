@@ -1,6 +1,6 @@
 #include "jump_handler.hpp"
 
-void JumpHandler::update(float dt, bool onGround)
+void JumpHandler::update(EntityBody &body, float dt, bool onGround)
 {
     if (onGround)
     {
@@ -46,4 +46,9 @@ void JumpHandler::update(float dt, bool onGround)
     m_holdJumpTimer.update(dt);
     m_jumpBufferTimer.update(dt);
     m_jumpRequested = false;
+
+    if (m_holdJumpTimer.active())
+    {
+        body.setVelocityY(-m_jumpPower);
+    }
 }
