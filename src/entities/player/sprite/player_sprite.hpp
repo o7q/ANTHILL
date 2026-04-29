@@ -21,7 +21,10 @@ class PlayerSprite
         Idle,
         IdleUp45,
         IdleDown45,
-        Run
+
+        Run,
+        RunUp45,
+        RunDown45
     };
 
     enum class TorsoAnimation

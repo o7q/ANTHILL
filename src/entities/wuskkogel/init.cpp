@@ -3,7 +3,7 @@
 
 Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
     : Entity(id), m_bodyHandler(m_body, m_boundingBox),
-      m_animator(*assets.spriteSheets().get(SpriteSheetID::Entity_Wuskkogel))
+      m_animator(assets.spriteSheets().get(SpriteSheetID::Entity_Wuskkogel))
 {
     m_metadata.name = "Wuskkogel";
 
@@ -16,27 +16,23 @@ Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
     m_aiPerception.setSightDistance(500);
 
     AINavigation::Config cfg;
-    cfg.astarIterationsPerFrame = 100;
-    cfg.stuckTemper = 100;
-    cfg.astarTerminationDistance = 0;
-    cfg.astarMaxIterations = 10000000;
-    cfg.checkpointEatRadius = 10;
-    cfg.astarNeighborCheckFunction =
-        [&](const EntityUpdateContext &context, Index2D index)
+    cfg.astarIterationsPerFrame    = 100;
+    cfg.stuckTemper                = 100;
+    cfg.astarTerminationDistance   = 0;
+    cfg.astarMaxIterations         = 10000000;
+    cfg.checkpointEatRadius        = 10;
+    cfg.astarNeighborCheckFunction = [&](const EntityUpdateContext &context, Index2D index)
     {
-        auto data =
-            context.particleHandler.getNavmesh().getChunkFromIndex(index);
+        auto data = context.particleHandler.getNavmesh().getChunkFromIndex(index);
 
-        Vec2i pos =
-            Vec2i(index.x, index.y) *
-            context.particleHandler.getNavmesh().getResolution().toInt();
+        Vec2i pos = Vec2i(index.x, index.y) * context.particleHandler.getNavmesh().getResolution().toInt();
 
         Vec2i a = m_boundingBox.getA();
         Vec2i b = m_boundingBox.getB();
 
-        Vec2i topLeft = pos + Vec2i(a.x, a.y);
-        Vec2i topRight = pos + Vec2i(b.x, a.y);
-        Vec2i bottomLeft = pos + Vec2i(a.x, b.y);
+        Vec2i topLeft     = pos + Vec2i(a.x, a.y);
+        Vec2i topRight    = pos + Vec2i(b.x, a.y);
+        Vec2i bottomLeft  = pos + Vec2i(a.x, b.y);
         Vec2i bottomRight = pos + Vec2i(b.x, b.y);
 
         bool impassible = false;

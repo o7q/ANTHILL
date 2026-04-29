@@ -19,14 +19,13 @@ class Shotgun : public Gun, public IRenderable
 {
   public:
     Shotgun(const Assets &assets)
-        : Gun("Shotgun"),
-          m_animator(*assets.spriteSheets().get(SpriteSheetID::Item_Shotgun))
+        : Gun("Shotgun"), m_animator(assets.spriteSheets().get(SpriteSheetID::Item_Shotgun))
     {
         m_fireMode = FireMode::SemiAuto;
 
         m_muzzlePosition = {17, 7};
-        m_gripPoint1 = {3, 3};
-        m_gripPoint2 = {9, 3};
+        m_gripPoint1     = {3, 3};
+        m_gripPoint2     = {9, 3};
 
         setMagazineSize(10);
         m_fireCooldownTimer.setDurationInSeconds(0.25f);
@@ -44,8 +43,7 @@ class Shotgun : public Gun, public IRenderable
         m_animator.update(dt);
     }
 
-    virtual bool use(const ItemUseContext &context,
-                     EventPool<EntityEvent> &eventsOut) override
+    virtual bool use(const ItemUseContext &context, EventPool<EntityEvent> &eventsOut) override
     {
         if (m_fireCooldownTimer.completed() && getAmmoInMagazine() > 0)
         {
@@ -55,18 +53,14 @@ class Shotgun : public Gun, public IRenderable
 
             auto shootSoundEvent = std::make_unique<BackendPlaySoundEvent>();
 
-            constexpr SoundID sounds[3] = {SoundID::WeaponShotgunFire1,
-                                           SoundID::WeaponShotgunFire2,
+            constexpr SoundID sounds[3] = {SoundID::WeaponShotgunFire1, SoundID::WeaponShotgunFire2,
                                            SoundID::WeaponShotgunFire3};
 
-            shootSoundEvent->soundID =
-                sounds[Math::Random::unseededRandomInt(0, 3)];
+            shootSoundEvent->soundID         = sounds[Math::Random::unseededRandomInt(0, 3)];
             shootSoundEvent->settings.volume = 0.2f;
-            shootSoundEvent->settings.pitch =
-                100.0f / Math::Random::unseededRandomInt(95, 100);
+            shootSoundEvent->settings.pitch  = 100.0f / Math::Random::unseededRandomInt(95, 100);
 
-            eventsOut.emit(std::make_unique<EntityBackendEvent>(
-                context.ownerID, std::move(shootSoundEvent)));
+            eventsOut.emit(std::make_unique<EntityBackendEvent>(context.ownerID, std::move(shootSoundEvent)));
 
             return true;
         }
@@ -74,24 +68,19 @@ class Shotgun : public Gun, public IRenderable
         return false;
     }
 
-    const Texture *getTexture() const override
-    {
-        return m_animator.getCurrentFrame();
-    }
+    const Texture *getTexture() const override { return m_animator.getCurrentFrame(); }
 
-    bool reload(const ItemUseContext &context,
-                EventPool<EntityEvent> &eventsOut) override
+    bool reload(const ItemUseContext &context, EventPool<EntityEvent> &eventsOut) override
     {
         if (restock_ammo())
         {
-            auto reloadSoundEvent = std::make_unique<BackendPlaySoundEvent>();
-            reloadSoundEvent->soundID = SoundID::WeaponShotgunReload1;
+            auto reloadSoundEvent             = std::make_unique<BackendPlaySoundEvent>();
+            reloadSoundEvent->soundID         = SoundID::WeaponShotgunReload1;
             reloadSoundEvent->settings.volume = 0.2f;
-            reloadSoundEvent->settings.pitch =
-                100.0f / Math::Random::unseededRandomInt(95, 100);
+            reloadSoundEvent->settings.pitch  = 100.0f / Math::Random::unseededRandomInt(95, 100);
 
-            eventsOut.emit(std::make_unique<EntityBackendEvent>(
-                context.ownerID, std::move(reloadSoundEvent)));
+            eventsOut.emit(
+                std::make_unique<EntityBackendEvent>(context.ownerID, std::move(reloadSoundEvent)));
 
             return true;
         }
@@ -100,8 +89,7 @@ class Shotgun : public Gun, public IRenderable
     }
 
   protected:
-    virtual void fire(const ItemUseContext &context,
-                      EventPool<EntityEvent> &eventsOut) override
+    virtual void fire(const ItemUseContext &context, EventPool<EntityEvent> &eventsOut) override
     {
         float radians = Degrees(context.heldAngle).radians();
 
@@ -113,8 +101,7 @@ class Shotgun : public Gun, public IRenderable
             auto event = std::make_unique<EntitySpawnEvent>(context.ownerID);
 
             auto bullet = std::make_unique<SimpleProjectile>(
-                context.ownerID, context.heldPosition + n.toGrid(),
-                radians + i / 15.0f, 30.0f);
+                context.ownerID, context.heldPosition + n.toGrid(), radians + i / 15.0f, 30.0f);
 
             event->entity = std::move(bullet);
 

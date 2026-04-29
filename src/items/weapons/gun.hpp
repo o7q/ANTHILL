@@ -15,8 +15,7 @@ class Gun : public Item, public IReloadable
   public:
     Gun(const std::string &name) : Item(name) {}
 
-    virtual bool reload(const ItemUseContext &context,
-                        EventPool<EntityEvent> &eventsOut) override
+    virtual bool reload(const ItemUseContext &context, EventPool<EntityEvent> &eventsOut) override
     {
         return restock_ammo();
     }
@@ -28,8 +27,7 @@ class Gun : public Item, public IReloadable
     void setMagazineSize(int size) { m_magazineSize = size; }
 
   protected:
-    virtual void fire(const ItemUseContext &context,
-                      EventPool<EntityEvent> &eventsOut) = 0;
+    virtual void fire(const ItemUseContext &context, EventPool<EntityEvent> &eventsOut) = 0;
 
     virtual bool restock_ammo()
     {
@@ -64,7 +62,7 @@ class Gun : public Item, public IReloadable
     Vec2i m_muzzlePosition;
 
   private:
-    int m_ammoReserve = 0;
+    int m_ammoReserve    = 0;
     int m_ammoInMagazine = 0;
-    int m_magazineSize = 0;
+    int m_magazineSize   = 0;
 };

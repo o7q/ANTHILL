@@ -11,15 +11,12 @@ template <typename KeyType, typename Type> class AssetPool
     AssetPool &operator=(const AssetPool &other) = delete;
     ~AssetPool()                                 = default;
 
-    void add(KeyType key, std::unique_ptr<Type> asset)
-    {
-        m_assets[key] = std::move(asset);
-    }
+    void add(KeyType key, std::unique_ptr<Type> asset) { m_assets[key] = std::move(asset); }
     void remove(KeyType key) { m_assets.erase(key); }
-    const Type *get(KeyType key) const
+    const Type &get(KeyType key) const
     {
         auto it = m_assets.find(key);
-        return it != m_assets.end() ? it->second.get() : &m_fallback;
+        return it != m_assets.end() ? *it->second.get() : m_fallback;
     }
 
   private:

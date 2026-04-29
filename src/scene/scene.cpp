@@ -22,8 +22,7 @@ void Scene::handleBackendEvents()
         case BackendEventType::PlaySound:
         {
             auto event = static_cast<BackendPlaySoundEvent *>(e.get());
-            r_sound.playSound(*r_assets.sounds().get(event->soundID),
-                              event->settings);
+            r_sound.playSound(r_assets.sounds().get(event->soundID), event->settings);
         }
         break;
         }

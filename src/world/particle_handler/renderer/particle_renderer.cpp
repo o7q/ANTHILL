@@ -66,11 +66,11 @@ void ParticleRenderer::render_background(const ChunkMap<BiomeID> &biomeMarkers, 
     switch (*a)
     {
     case BiomeID::DesertLayer1:
-        tex    = assets.textures().get(TextureID::SandBackground);
+        tex    = &assets.textures().get(TextureID::SandBackground);
         amount = 0.0f;
         break;
     case BiomeID::DesertLayer2:
-        tex    = assets.textures().get(TextureID::SandBackground);
+        tex    = &assets.textures().get(TextureID::SandBackground);
         amount = 0.2f;
         break;
     default:

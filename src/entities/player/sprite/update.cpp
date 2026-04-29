@@ -20,7 +20,7 @@ void PlayerSprite::update(UpdateData data, float dt)
 
 void PlayerSprite::update_head(State state, float lookAngle, float dt)
 {
-    const bool lookingUp45 = std::abs(lookAngle + 90.0f) < 65.0f;
+    const bool lookingUp45   = std::abs(lookAngle + 90.0f) < 65.0f;
     const bool lookingDown45 = std::abs(lookAngle - 90.0f) < 65.0f;
 
     switch (state)
@@ -40,7 +40,18 @@ void PlayerSprite::update_head(State state, float lookAngle, float dt)
         }
         break;
     case State::Run:
-        m_head.switchAnimator(HeadAnimation::Run);
+        if (lookingUp45)
+        {
+            m_head.switchAnimator(HeadAnimation::RunUp45);
+        }
+        else if (lookingDown45)
+        {
+            m_head.switchAnimator(HeadAnimation::RunDown45);
+        }
+        else
+        {
+            m_head.switchAnimator(HeadAnimation::Run);
+        }
         break;
     default:
         break;

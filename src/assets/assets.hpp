@@ -12,20 +12,11 @@
 
 class Assets
 {
-  private:
-
-
   public:
     Assets();
 
-    const AssetPool<TextureIDKey, Texture> &textures() const
-    {
-        return m_textures;
-    }
-    const AssetPool<SpriteSheetIDKey, SpriteSheet> &spriteSheets() const
-    {
-        return m_spriteSheets;
-    }
+    const AssetPool<TextureIDKey, Texture> &textures() const { return m_textures; }
+    const AssetPool<SpriteSheetIDKey, SpriteSheet> &spriteSheets() const { return m_spriteSheets; }
     const AssetPool<FontIDKey, Font> &fonts() const { return m_fonts; }
     const AssetPool<SoundIDKey, Sound> &sounds() const { return m_sounds; }
 
