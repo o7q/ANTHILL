@@ -2,9 +2,9 @@
 
 uint64_t EntityHandler::addEntity(std::unique_ptr<Entity> entity)
 {
-    uint64_t id = m_idHandler.getNext();
+    uint64_t id      = m_idHandler.getNext();
     m_latestEntityID = id;
-    m_entities[id] = std::move(entity);
+    m_entities[id]   = std::move(entity);
     return id;
 }
 

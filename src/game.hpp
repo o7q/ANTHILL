@@ -9,13 +9,9 @@
 class Game
 {
   public:
-    Game(Vec2u windowSize, Vec2u viewportSize)
-        : m_window("ANTHILL", windowSize, viewportSize)
-    {
-        start();
-    }
+    Game(Vec2u windowSize, Vec2u viewportSize) : m_window("ANTHILL", windowSize, viewportSize) { start(); }
     ~Game();
-    Game(const Game &other) = delete;
+    Game(const Game &other)            = delete;
     Game &operator=(const Game &other) = delete;
 
   private:

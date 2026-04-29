@@ -11,7 +11,7 @@ class World
 {
   public:
     World() {}
-    World(const World &other) = delete;
+    World(const World &other)            = delete;
     World &operator=(const World &other) = delete;
 
     void update(float dt, Vec2i origin, EventPool<BackendEvent> &backendEvents);

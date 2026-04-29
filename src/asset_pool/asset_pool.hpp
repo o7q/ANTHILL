@@ -6,10 +6,10 @@
 template <typename KeyType, typename Type> class AssetPool
 {
   public:
-    AssetPool() = default;
-    AssetPool(const AssetPool &other) = delete;
+    AssetPool()                                  = default;
+    AssetPool(const AssetPool &other)            = delete;
     AssetPool &operator=(const AssetPool &other) = delete;
-    ~AssetPool() = default;
+    ~AssetPool()                                 = default;
 
     void add(KeyType key, std::unique_ptr<Type> asset)
     {

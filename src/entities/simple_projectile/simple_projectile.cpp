@@ -50,7 +50,7 @@ void SimpleProjectile::update(const EntityUpdateContext &context,
                     Particle blood;
                     blood.setMatterType(Particle::MatterType::Liquid);
                     blood.setPhysicsType(Particle::PhysicsType::Water);
-                    blood.setColor(Color(176, 7, 24, 220));
+                    blood.setColor(Color(255, 0, 0, 220));
 
                     Vec2f dir = (m_body.getPositionFloat() -
                                  m_body.getLastPositionFloat())

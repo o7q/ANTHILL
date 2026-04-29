@@ -4,7 +4,7 @@
 #include "backend/viewport/render_command.hpp"
 #include "camera/camera.hpp"
 #include "entity/body/entity_body.hpp"
-#include "sprite/sprite_animator_group.hpp"
+#include "sprite/sprite_system.hpp"
 
 class PlayerSprite
 {
@@ -39,18 +39,17 @@ class PlayerSprite
     struct UpdateData
     {
         const EntityBody &body;
-        float lookAngle = 0.0f;
-        bool dashing = false;
+        float lookAngle   = 0.0f;
+        bool dashing      = false;
         bool usingJetpack = false;
-        bool jumping = false;
+        bool jumping      = false;
     };
 
   public:
     PlayerSprite(const Assets &assets);
 
     void update(UpdateData data, float dt);
-    void render(Vec2i pos, Vec2i aimPos, const Camera &camera,
-                std::vector<RenderCommand> &commandsOut);
+    void render(Vec2i pos, Vec2i aimPos, const Camera &camera, std::vector<RenderCommand> &commandsOut);
 
   private:
     State determine_state(const EntityBody &body);
@@ -64,9 +63,9 @@ class PlayerSprite
     void init_legs(const Assets &assets);
 
   private:
-    SpriteAnimatorGroup<HeadAnimation> m_head;
-    SpriteAnimatorGroup<TorsoAnimation> m_torso;
-    SpriteAnimatorGroup<LegsAnimation> m_legs;
+    SpriteSystem<HeadAnimation> m_head;
+    SpriteSystem<TorsoAnimation> m_torso;
+    SpriteSystem<LegsAnimation> m_legs;
 
     State m_lastState = State::None;
 };

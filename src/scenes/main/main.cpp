@@ -51,7 +51,7 @@ void MainScene::onTick()
     if (player)
     {
         player->updateAimPosition(worldMousePos);
-        updatePos = player->getBody().getPosition();
+        updatePos = m_camera.getPosition();
     }
 
     m_generator.generate(updatePos.toInt(), {10, 10});

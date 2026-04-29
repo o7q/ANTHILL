@@ -13,26 +13,7 @@
 class Assets
 {
   private:
-    struct TextureLoadData
-    {
-        std::string path = "";
-    };
 
-    struct SpriteSheetLoadData
-    {
-        std::string path = "";
-        Vec2u size;
-    };
-
-    struct FontLoadData
-    {
-        std::string path = "";
-    };
-
-    struct SoundLoadData
-    {
-        std::string path = "";
-    };
 
   public:
     Assets();
@@ -47,12 +28,6 @@ class Assets
     }
     const AssetPool<FontIDKey, Font> &fonts() const { return m_fonts; }
     const AssetPool<SoundIDKey, Sound> &sounds() const { return m_sounds; }
-
-  private:
-    void initTextures();
-    void initSpriteSheets();
-    void initSounds();
-    void initFonts();
 
   private:
     AssetPool<TextureIDKey, Texture> m_textures;

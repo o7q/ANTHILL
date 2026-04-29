@@ -11,7 +11,10 @@ enum class SpriteSheetID
 
     Entity_SumiIdleTorso,
 
+    Entity_SumiRunHeadFull,
     Entity_SumiRunHead,
+    Entity_SumiRunHeadUp45,
+    Entity_SumiRunHeadDown45,
     Entity_SumiRunTorso,
     Entity_SumiRunLegs,
 

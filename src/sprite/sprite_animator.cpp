@@ -1,21 +1,10 @@
 #include "sprite_animator.hpp"
 
-SpriteAnimator::SpriteAnimator(const SpriteSheet &spriteSheet)
+SpriteAnimator::SpriteAnimator(const SpriteSheet &spriteSheet, int fps)
     : r_spriteSheet(spriteSheet), m_frames(spriteSheet.getSpriteCount())
 {
     m_timer.setMode(Timer::Mode::Repeat);
-    restart();
-}
-SpriteAnimator::SpriteAnimator(
-    const SpriteSheet &spriteSheet, unsigned int fps,
-    std::pair<std::optional<int>, std::optional<int>> origin, Vec2i offset)
-    : r_spriteSheet(spriteSheet), m_frames(spriteSheet.getSpriteCount())
-{
     setFPS(fps);
-    setOrigin(origin);
-    setOffset(offset);
-
-    m_timer.setMode(Timer::Mode::Repeat);
     restart();
 }
 
@@ -42,10 +31,4 @@ void SpriteAnimator::stop()
 {
     m_timer.stop();
     seek(0);
-}
-
-void SpriteAnimator::transitionFrom(const SpriteAnimator &other)
-{
-    m_timer.setClockTime(other.getFrameSubTime());
-    seek(other.getCurrentFrameIndex());
 }

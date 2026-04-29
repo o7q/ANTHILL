@@ -22,14 +22,12 @@ class EntityHandler
 
   public:
     EntityHandler() {}
-    EntityHandler(const EntityHandler &other) = delete;
+    EntityHandler(const EntityHandler &other)            = delete;
     EntityHandler &operator=(const EntityHandler &other) = delete;
-    virtual ~EntityHandler() = default;
+    virtual ~EntityHandler()                             = default;
 
-    void update(const ParticleHandler &world, float dt, Vec2i origin,
-                EventPoolRefs eventPoolRefs);
-    void handleEvents(EventPool<EntityEvent> &events,
-                      EventPoolRefs eventPoolRefs);
+    void update(const ParticleHandler &world, float dt, Vec2i origin, EventPoolRefs eventPoolRefs);
+    void handleEvents(EventPool<EntityEvent> &events, EventPoolRefs eventPoolRefs);
 
     void render(const Camera &camera, std::vector<RenderCommand> &commandsOut);
 
@@ -40,8 +38,7 @@ class EntityHandler
     Entity *getLatestEntity();
     Entity *getEntity(uint64_t id);
 
-    const std::unordered_map<uint64_t, const Entity *>
-    getNearbyEntities(uint64_t nearID);
+    const std::unordered_map<uint64_t, const Entity *> getNearbyEntities(uint64_t nearID);
 
     EntityIDHandler &getIDHandler() { return m_idHandler; }
 
@@ -51,7 +48,7 @@ class EntityHandler
     EntityIDHandler m_idHandler;
 
     uint64_t m_currentPlayerID = 0;
-    uint64_t m_latestEntityID = 0;
+    uint64_t m_latestEntityID  = 0;
     std::unordered_map<uint64_t, std::unique_ptr<Entity>> m_entities;
     std::vector<std::unique_ptr<Entity>> m_entitiesToAdd;
     std::vector<uint64_t> m_entitiesToRemove;
