@@ -35,13 +35,11 @@ inline Sample sample(Vec2f pos, uint32_t seed, Style style = Style::Normal)
         {
             Vec2i cell = baseCell + Vec2i(rx, ry);
 
-            constexpr float maxHash =
-                static_cast<float>(std::numeric_limits<uint32_t>::max());
-            float randomLocalX = Random::hashFromPosition(cell, seed) / maxHash;
-            float randomLocalY =
-                Random::hashFromPosition(cell, seed + 1) / maxHash;
-            Vec2f seedLocalPos = {randomLocalX, randomLocalY};
-            Vec2f seedGlobalPos = cell.toFloat() + seedLocalPos;
+            constexpr float maxHash = static_cast<float>(std::numeric_limits<uint32_t>::max());
+            float randomLocalX      = Random::hashFromPosition(cell, seed) / maxHash;
+            float randomLocalY      = Random::hashFromPosition(cell, seed + 1) / maxHash;
+            Vec2f seedLocalPos      = {randomLocalX, randomLocalY};
+            Vec2f seedGlobalPos     = cell.toFloat() + seedLocalPos;
 
             float dist = 0.0f;
             switch (style)
@@ -57,7 +55,7 @@ inline Sample sample(Vec2f pos, uint32_t seed, Style style = Style::Normal)
             if (dist < out.distance)
             {
                 out.distance = dist;
-                out.cell = cell;
+                out.cell     = cell;
             }
         }
     }
@@ -65,8 +63,7 @@ inline Sample sample(Vec2f pos, uint32_t seed, Style style = Style::Normal)
     return out;
 }
 
-inline Sample sampleEx(Vec2f pos, Vec2f gridSize, uint32_t seed,
-                       Style style = Style::Normal)
+inline Sample sampleEx(Vec2f pos, Vec2f gridSize, uint32_t seed, Style style = Style::Normal)
 {
     return sample(pos / gridSize, seed, style);
 }

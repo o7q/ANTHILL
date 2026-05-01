@@ -14,10 +14,8 @@ class World
     World(const World &other)            = delete;
     World &operator=(const World &other) = delete;
 
-    void update(float dt, Vec2i origin, EventPool<BackendEvent> &backendEvents);
-
-    void render(const Camera &viewport, const Assets &assets,
-                std::vector<RenderCommand> &commandsOut);
+    void update(TimeInfo time, Vec2i origin, EventPool<BackendEvent> &backendEvents);
+    void render(const Camera &viewport, const Assets &assets, std::vector<RenderCommand> &commandsOut);
 
     ParticleHandler &getParticleHandler() { return m_particleHandler; }
     EntityHandler &getEntityHandler() { return m_entityHandler; }

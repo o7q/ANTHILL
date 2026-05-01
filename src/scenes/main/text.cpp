@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "main_scene.hpp"
 
 void MainScene::renderText(std::vector<RenderCommand> &renderCommands)
 {
@@ -20,7 +20,8 @@ void MainScene::renderText(std::vector<RenderCommand> &renderCommands)
 
     fpsText = r_assets.fonts()
                   .get(FontID::Default)
-                  .generateStringTexture(std::to_string((int)r_time.getFPS()), Color(0, 255, 0), 5, 1, 8);
+                  .generateStringTexture(std::to_string((int)r_window.getTime().getInfo().fps),
+                                         Color(0, 255, 0), 5, 1, 8);
 
     TextureRenderCommandData fpsRenderData;
     fpsRenderData.texture  = &fpsText;

@@ -1,8 +1,8 @@
-#include "entity/world_interaction/against.hpp"
 #include "player.hpp"
 
-void Player::update_movement(const EntityUpdateContext &context,
-                             EventPool<EntityEvent> &eventsOut)
+#include "entity/world_interaction/against.hpp"
+
+void Player::update_movement(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
     float velX = 0.0f;
     if (r_input.getInput(InputID::Left)->isDown())
@@ -24,10 +24,9 @@ void Player::update_movement(const EntityUpdateContext &context,
     }
 
     bool onGround = EntityWorldInteraction::againstSolidSurface(
-        m_body.getPosition(), m_boundingBox, context.particleHandler,
-        RectangleSide::Bottom);
+        m_body.getPosition(), m_boundingBox, context.particleHandler, RectangleSide::Bottom);
 
-    m_jumpHandler.update(m_body, context.dt, onGround);
+    m_jumpHandler.update(m_body, context.time.dt, onGround);
 
     if (r_input.getInput(InputID::Dash)->isDown())
     {

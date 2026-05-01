@@ -38,7 +38,7 @@ void PDynamicsHandler::applyForce(int x, int y, float power, float dt)
             {
                 const int px = chunkPos.x * chunkSize.x + cx;
                 const int py = chunkPos.y * chunkSize.y + cy;
-                Particle *p = r_particles.get({px, py});
+                Particle *p  = r_particles.get({px, py});
 
                 if (!p)
                 {
@@ -60,7 +60,7 @@ void PDynamicsHandler::applyForce(int x, int y, float power, float dt)
                 }
 
                 float strength = power;
-                Vec2f force = dir * strength;
+                Vec2f force    = dir * strength;
 
                 p->getVerlet().setVelocity(force, dt);
             }

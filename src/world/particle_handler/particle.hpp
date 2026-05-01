@@ -27,10 +27,7 @@ class Particle
     void setColor(Color color) { m_color = color; }
     Color getColor() const { return m_color; }
 
-    void setPhysicsType(PhysicsType physicsType)
-    {
-        m_physicsType = physicsType;
-    }
+    void setPhysicsType(PhysicsType physicsType) { m_physicsType = physicsType; }
     PhysicsType getPhysicsType() const { return m_physicsType; }
 
     void setMatterType(MatterType matterType) { m_matterType = matterType; }
@@ -38,8 +35,7 @@ class Particle
 
     bool isBlank() const
     {
-        return m_physicsType == PhysicsType::None &&
-               m_matterType == MatterType::Gas && m_color.a == 0;
+        return m_physicsType == PhysicsType::None && m_matterType == MatterType::Gas && m_color.a == 0;
     }
     bool isSolid() const { return m_matterType == MatterType::Solid; }
     bool isLiquid() const { return m_matterType == MatterType::Liquid; }
@@ -55,8 +51,7 @@ class Particle
 
     bool isMoving() const
     {
-        return m_verletBody.getPosition().toGrid() !=
-               m_verletBody.getPreviousPosition().toGrid();
+        return m_verletBody.getPosition().toGrid() != m_verletBody.getPreviousPosition().toGrid();
     }
 
     void setMass(float mass) { m_mass = mass; }
@@ -65,11 +60,11 @@ class Particle
   private:
     Color m_color;
     PhysicsType m_physicsType = PhysicsType::None;
-    MatterType m_matterType = MatterType::Gas;
+    MatterType m_matterType   = MatterType::Gas;
 
     VerletBody m_verletBody;
     float m_restitution = 0.0f;
-    float m_mass = 1.0f;
+    float m_mass        = 1.0f;
 
     bool m_updateSwapID = 0;
 };

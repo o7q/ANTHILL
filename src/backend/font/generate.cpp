@@ -3,17 +3,14 @@
 
 #include <limits>
 
-Texture Font::generateStringTexture(const std::string &text, Color color,
-                                    int spaceWidth, int horizontalSpacing,
-                                    int verticalSpacing) const
+Texture Font::generateStringTexture(const std::string &text, Color color, int spaceWidth,
+                                    int horizontalSpacing, int verticalSpacing) const
 {
     std::vector<Vec2i> sparseRaster;
 
     Vec2i current;
-    Vec2i a = {std::numeric_limits<int>::max(),
-               std::numeric_limits<int>::max()};
-    Vec2i b = {std::numeric_limits<int>::min(),
-               std::numeric_limits<int>::min()};
+    Vec2i a = {std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
+    Vec2i b = {std::numeric_limits<int>::min(), std::numeric_limits<int>::min()};
 
     for (char c : text)
     {

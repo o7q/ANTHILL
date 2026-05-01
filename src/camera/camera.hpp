@@ -1,19 +1,20 @@
 #pragma once
 
+#include "backend/time/time_handler.hpp"
 #include "math/angle.hpp"
 #include "math/vec.hpp"
 
 class Camera
 {
   public:
-    Camera() = default;
+    Camera()          = default;
     virtual ~Camera() = default;
 
-    void update(float dt);
+    void update(TimeInfo time);
 
     void setGoal(Vec2i pos)
     {
-        m_goal = pos;
+        m_goal    = pos;
         m_goalSet = true;
     }
 

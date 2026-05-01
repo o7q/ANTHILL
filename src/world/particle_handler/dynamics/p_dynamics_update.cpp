@@ -4,10 +4,9 @@
 #include "world/particle_handler/particle.hpp"
 #include <limits>
 
-void PDynamicsHandler::update(float dt, Vec2i origin)
+void PDynamicsHandler::update(TimeInfo timeInfo, Vec2i origin)
 {
-    Index2D lastNavmeshChunkIndex(std::numeric_limits<int>::max(),
-                                  std::numeric_limits<int>::max());
+    Index2D lastNavmeshChunkIndex(std::numeric_limits<int>::max(), std::numeric_limits<int>::max());
 
     for (int y = origin.y + static_cast<int>(m_updateRadius.y);
          y >= origin.y - static_cast<int>(m_updateRadius.y); --y)
@@ -29,14 +28,13 @@ void PDynamicsHandler::update(float dt, Vec2i origin)
             }
             r_navmesh.update(p, chunkIndex);
             lastNavmeshChunkIndex = chunkIndex;
-            if (p->getUpdateSwapID() == m_updateSwapID ||
-                p->getPhysicsType() == Particle::PhysicsType::None)
+            if (p->getUpdateSwapID() == m_updateSwapID || p->getPhysicsType() == Particle::PhysicsType::None)
             {
                 continue;
             }
 
             ParticleObject po{p, {x, y}};
-            update_particle(po, dt);
+            update_particle(po, timeInfo.dt);
         }
     }
 

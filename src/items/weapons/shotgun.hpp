@@ -4,6 +4,7 @@
 #include "backend/timer/timer.hpp"
 #include "entities/simple_projectile/simple_projectile.hpp"
 #include "events/backend/events.hpp"
+#include "events/entity/events.hpp"
 #include "identifiers/assets/sounds.hpp"
 #include "identifiers/assets/spritesheet.hpp"
 #include "item/context.hpp"
@@ -12,7 +13,6 @@
 #include "math/angle.hpp"
 #include "math/random.hpp"
 #include "sprite/sprite_animator.hpp"
-#include "world/entity_handler/events/events.hpp"
 #include <memory>
 
 class Shotgun : public Gun, public IRenderable
@@ -24,8 +24,6 @@ class Shotgun : public Gun, public IRenderable
         m_fireMode = FireMode::SemiAuto;
 
         m_muzzlePosition = {17, 7};
-        m_gripPoint1     = {3, 3};
-        m_gripPoint2     = {9, 3};
 
         setMagazineSize(10);
         m_fireCooldownTimer.setDurationInSeconds(0.25f);

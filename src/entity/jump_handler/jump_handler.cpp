@@ -5,7 +5,7 @@ void JumpHandler::update(EntityBody &body, float dt, bool onGround)
     if (onGround)
     {
         m_coyoteTimer.restart();
-        m_allowCoyoteJump = true;
+        m_allowCoyoteJump   = true;
         m_doubleJumpCounter = 0;
     }
 

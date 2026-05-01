@@ -20,8 +20,8 @@ Viewport::Viewport(SDL_Window *window, Vec2u size)
         Logger::fatal("Viewport::Viewport()", "SDL_Renderer* is null!");
     }
 
-    m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGB24,
-                                  SDL_TEXTUREACCESS_STREAMING, size.x, size.y);
+    m_texture =
+        SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STREAMING, size.x, size.y);
 
     if (!m_texture)
     {
@@ -36,11 +36,10 @@ Viewport::Viewport(SDL_Window *window, Vec2u size)
 
     reset_update_points();
 
-    m_size = size;
+    m_size        = size;
     m_aspectRatio = static_cast<float>(size.x) / size.y;
 
-    Logger::info("Viewport::Viewport()",
-                 "Successfully initialized the viewport!");
+    Logger::info("Viewport::Viewport()", "Successfully initialized the viewport!");
 }
 
 Viewport::~Viewport()

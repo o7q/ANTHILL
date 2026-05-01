@@ -1,7 +1,6 @@
 #include "ai_navigation.hpp"
 
-std::optional<AINavigation::Checkpoint>
-AINavigation::get_next_movement_checkpoint(Vec2i currentPos)
+std::optional<AINavigation::Checkpoint> AINavigation::get_next_movement_checkpoint(Vec2i currentPos)
 {
     Checkpoint current;
     bool eatNext = true;
@@ -52,8 +51,7 @@ void AINavigation::update_movement(Vec2i currentPos)
     }
 
     // eat checkpoints
-    std::optional<AINavigation::Checkpoint> current_opt =
-        get_next_movement_checkpoint(currentPos);
+    std::optional<AINavigation::Checkpoint> current_opt = get_next_movement_checkpoint(currentPos);
 
     if (!current_opt.has_value())
     {
@@ -78,6 +76,6 @@ void AINavigation::update_movement(Vec2i currentPos)
 
     m_previousCheckpoint = current;
 
-    Vec2i dir = current.pos - currentPos;
+    Vec2i dir    = current.pos - currentPos;
     m_moveVector = dir;
 }

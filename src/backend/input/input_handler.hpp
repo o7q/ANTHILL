@@ -23,10 +23,7 @@ class Input
         ButtonType type;
         unsigned int id;
 
-        bool operator==(const Bind &other) const
-        {
-            return type == other.type && id == other.id;
-        }
+        bool operator==(const Bind &other) const { return type == other.type && id == other.id; }
     };
 
   public:
@@ -48,19 +45,19 @@ class Input
   private:
     std::vector<Bind> m_binds;
 
-    bool m_down = false;
-    bool m_wasDown = false;
-    bool m_pressed = false;
+    bool m_down      = false;
+    bool m_wasDown   = false;
+    bool m_pressed   = false;
     bool m_unpressed = false;
 };
 
 class InputHandler
 {
   public:
-    InputHandler() = default;
-    InputHandler(const InputHandler &other) = delete;
+    InputHandler()                                     = default;
+    InputHandler(const InputHandler &other)            = delete;
     InputHandler &operator=(const InputHandler &other) = delete;
-    ~InputHandler() = default;
+    ~InputHandler()                                    = default;
 
     void poll(SDL_Event &event);
     void update();

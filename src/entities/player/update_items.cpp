@@ -1,8 +1,8 @@
-#include "item/reloadable.hpp"
 #include "player.hpp"
 
-void Player::update_items(const EntityUpdateContext &context,
-                          EventPool<EntityEvent> &eventsOut)
+#include "item/reloadable.hpp"
+
+void Player::update_items(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
     Item *current = m_inventory.getSelectedItem();
 
@@ -12,9 +12,9 @@ void Player::update_items(const EntityUpdateContext &context,
     }
 
     ItemUseContext itemContext;
-    itemContext.ownerID = context.id;
+    itemContext.ownerID      = context.id;
     itemContext.heldPosition = m_body.getPosition();
-    itemContext.heldAngle = m_angle;
+    itemContext.heldAngle    = m_angle;
 
     if (r_input.getInput(InputID::Shoot)->isDown())
     {
@@ -28,5 +28,5 @@ void Player::update_items(const EntityUpdateContext &context,
         }
     }
 
-    current->update(context.dt);
+    current->update(context.time.dt);
 }

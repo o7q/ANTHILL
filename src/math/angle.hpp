@@ -17,10 +17,7 @@ struct Angle
 
 struct Degrees : public Angle
 {
-    Degrees(float degrees)
-    {
-        m_radians = degrees * Math::Constants::DEG_TO_RAD;
-    }
+    Degrees(float degrees) { m_radians = degrees * Math::Constants::DEG_TO_RAD; }
 };
 
 struct Radians : public Angle

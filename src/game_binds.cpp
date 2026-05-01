@@ -4,7 +4,7 @@
 
 void Game::init_binds()
 {
-    InputHandler &input = m_window.getInputHandler();
+    InputHandler &input = m_window.getInput();
 
     input.addInput(InputID::Left, {{Input::ButtonType::Key, SDLK_A}});
     input.addInput(InputID::Right, {{Input::ButtonType::Key, SDLK_D}});

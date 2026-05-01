@@ -15,9 +15,10 @@ Plot, Character, or Lore?
 What will people be doing for 90% of the game? (gameplay loop)
 
 Example for Ultrakill:
-You walk into a room, enemies spawn, you shoot the enemies, and avoid getting killed using fun mechanics.
+- You walk into a room, enemies spawn, you shoot the enemies, and avoid getting killed using fun mechanics.
 
-For ANTHILL:
-The gameplay consists of exploration, killing and looting enemies, and upgrading your character.
+Ideas for ANTHILL:
+- The gameplay consists of exploration, killing and looting enemies, and upgrading your character.
+- Fixed width of world, you dig down
 
 ---------------------------------------------

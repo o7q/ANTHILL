@@ -7,8 +7,7 @@
 #include <SDL3/SDL_video.h>
 
 Window::Window(const std::string &name, Vec2u windowSize, Vec2u viewportSize)
-    : m_window(SDL_CreateWindow(name.c_str(), windowSize.x, windowSize.y,
-                                SDL_WINDOW_RESIZABLE)),
+    : m_window(SDL_CreateWindow(name.c_str(), windowSize.x, windowSize.y, SDL_WINDOW_RESIZABLE)),
       m_viewport(m_window, viewportSize)
 {
     Logger::info("Window::Window()", "Successfully initialized the window!");
@@ -16,12 +15,12 @@ Window::Window(const std::string &name, Vec2u windowSize, Vec2u viewportSize)
 
 Window::~Window() { SDL_DestroyWindow(m_window); }
 
-void Window::frameStart() { m_timeHandler.frameStart(); }
-void Window::frameEnd() { m_timeHandler.frameEnd(); }
+void Window::frameStart() { m_time.frameStart(); }
+void Window::frameEnd() { m_time.frameEnd(); }
 
 void Window::update()
 {
-    m_soundHandler.update();
+    m_sound.update();
 
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -31,10 +30,10 @@ void Window::update()
             m_running = false;
         }
 
-        m_inputHandler.poll(event);
+        m_input.poll(event);
     }
 
-    m_inputHandler.update();
+    m_input.update();
 
     int winX, winY;
     SDL_GetWindowSizeInPixels(m_window, &winX, &winY);

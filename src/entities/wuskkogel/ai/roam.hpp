@@ -7,8 +7,7 @@
 class WuskkogelRoamState : public State<WuskkogelStateID, UpdateContext>
 {
   public:
-    WuskkogelRoamState(uint64_t &targetID)
-        : State(WuskkogelStateID::Roam), r_targetID(targetID)
+    WuskkogelRoamState(uint64_t &targetID) : State(WuskkogelStateID::Roam), r_targetID(targetID)
     {
         m_roamMoveTimer.setDurationInSeconds(1.0f);
         m_roamMoveTimer.setMode(Timer::Mode::Repeat);

@@ -27,10 +27,8 @@ Vec2i Viewport::windowToViewportPosition(Vec2f windowPosition)
     windowPosition.x /= pixelSize;
     windowPosition.y /= pixelSize;
 
-    windowPosition.x =
-        std::clamp(windowPosition.x, 0.0f, static_cast<float>(m_size.x) - 1);
-    windowPosition.y =
-        std::clamp(windowPosition.y, 0.0f, static_cast<float>(m_size.y) - 1);
+    windowPosition.x = std::clamp(windowPosition.x, 0.0f, static_cast<float>(m_size.x) - 1);
+    windowPosition.y = std::clamp(windowPosition.y, 0.0f, static_cast<float>(m_size.y) - 1);
 
     return windowPosition.toGrid();
 }

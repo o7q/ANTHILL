@@ -16,14 +16,13 @@ class Font
   public:
     Font() = default;
     Font(const std::filesystem::path &path);
-    Font(const Font &other) = delete;
+    Font(const Font &other)            = delete;
     Font &operator=(const Font &other) = delete;
-    ~Font() = default;
+    ~Font()                            = default;
 
     GlyphInfo createGlyphIndex(unsigned int atlasXIndex);
 
-    Texture generateStringTexture(const std::string &text, Color color,
-                                  int spaceWidth, int horizontalSpacing,
+    Texture generateStringTexture(const std::string &text, Color color, int spaceWidth, int horizontalSpacing,
                                   int verticalSpacing) const;
 
   private:

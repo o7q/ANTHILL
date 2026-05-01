@@ -17,10 +17,8 @@ class BodyUpdateHandler
     void update(const EntityUpdateContext &context);
 
   private:
-    void apply_external_forces(Vec2i startPos,
-                               const EntityUpdateContext &context);
-    void prevent_world_collision(Vec2f startPos, Vec2f updatedPos,
-                                 const EntityUpdateContext &context);
+    void apply_external_forces(Vec2i startPos, const EntityUpdateContext &context);
+    void prevent_world_collision(Vec2f startPos, Vec2f updatedPos, const EntityUpdateContext &context);
 
   private:
     EntityBody &r_body;

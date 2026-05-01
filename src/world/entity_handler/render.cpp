@@ -1,8 +1,7 @@
 #include "backend/viewport/render_command.hpp"
 #include "entity_handler.hpp"
 
-void EntityHandler::render(const Camera &camera,
-                           std::vector<RenderCommand> &commandsOut)
+void EntityHandler::render(const Camera &camera, std::vector<RenderCommand> &commandsOut)
 {
     for (auto &entityPair : m_entities)
     {

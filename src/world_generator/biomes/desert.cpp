@@ -54,7 +54,6 @@ GenerateResult generate_desert_layer2(Vec2i pos, uint32_t seed, const Assets &as
     GenerateResult result;
 
     float p0 = Math::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, seed);
-    float p1 = Math::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 8, seed);
 
     Particle::MatterType matterType = Particle::MatterType::Solid;
     Color color(255, 159, 0);

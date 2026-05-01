@@ -9,9 +9,9 @@ void PDynamicsHandler::update_smoke_particle(ParticleObject po, float dt)
 
     Vec2f start = verlet.getPosition();
 
-    Particle *left = r_particles.get({po.pos.x - 1, po.pos.y});
+    Particle *left  = r_particles.get({po.pos.x - 1, po.pos.y});
     Particle *right = r_particles.get({po.pos.x + 1, po.pos.y});
-    Particle *up = r_particles.get({po.pos.x, po.pos.y - 1});
+    Particle *up    = r_particles.get({po.pos.x, po.pos.y - 1});
 
     bool canUp = false, canLeft = false, canRight = false;
 

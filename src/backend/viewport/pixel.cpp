@@ -11,16 +11,16 @@ void Viewport::set_pixel(Vec2u pos, Color color)
 
     if (color.a != 255)
     {
-        float a = color.a / 255.0f;
+        float a     = color.a / 255.0f;
         float inv_a = 1.0f - a;
 
         Color current = get_pixel(pos);
-        color.r = a * color.r + inv_a * current.r;
-        color.g = a * color.g + inv_a * current.g;
-        color.b = a * color.b + inv_a * current.b;
+        color.r       = a * color.r + inv_a * current.r;
+        color.g       = a * color.g + inv_a * current.g;
+        color.b       = a * color.b + inv_a * current.b;
     }
 
-    m_pixels[index] = color.r;
+    m_pixels[index]     = color.r;
     m_pixels[index + 1] = color.g;
     m_pixels[index + 2] = color.b;
 

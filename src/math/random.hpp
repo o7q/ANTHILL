@@ -28,8 +28,7 @@ inline uint32_t hash(uint32_t v, uint32_t seed)
 
 inline uint32_t hashFromPosition(Vec2i pos, uint32_t seed)
 {
-    uint32_t h =
-        static_cast<uint32_t>(pos.x) ^ (static_cast<uint32_t>(pos.y) << 16);
+    uint32_t h = static_cast<uint32_t>(pos.x) ^ (static_cast<uint32_t>(pos.y) << 16);
     return hash(h, seed);
 }
 } // namespace Random

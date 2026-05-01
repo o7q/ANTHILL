@@ -20,7 +20,7 @@ class JumpHandler
     void cancelJump() { m_holdJumpTimer.stop(); }
 
   private:
-    float m_jumpPower = 4.5f;
+    float m_jumpPower    = 4.5f;
     bool m_jumpRequested = false;
 
     Timer m_holdJumpTimer;
@@ -29,6 +29,6 @@ class JumpHandler
     Timer m_coyoteTimer;
     bool m_allowCoyoteJump = false;
 
-    int m_doubleJumpAmount = 0;
+    int m_doubleJumpAmount  = 0;
     int m_doubleJumpCounter = 0;
 };

@@ -1,4 +1,5 @@
 #include "follow.hpp"
+
 #include "entity/entity.hpp"
 
 WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
@@ -8,7 +9,7 @@ WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
         return WuskkogelStateID::Roam;
     }
 
-    m_targetLostTimer.update(context.context.dt);
+    m_targetLostTimer.update(context.context.time.dt);
 
     const Entity *targetEntity = nullptr;
     for (auto &[id, entity] : context.context.nearbyEntities)
@@ -24,30 +25,29 @@ WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
         return WuskkogelStateID::Roam;
     }
 
-    Vec2i targetPos = targetEntity->getBody().getPosition();
+    Vec2i targetPos     = targetEntity->getBody().getPosition();
     Vec2i targetLastPos = targetEntity->getBody().getLastPosition();
 
-    context.perception.scan(
-        context.body.getPosition() + context.headPos, context.lookAngle,
-        [&](Vec2i pos)
-        {
-            if (targetEntity->pointInside(pos))
-            {
-                m_targetLostTimer.restart();
-                return true;
-            }
+    context.perception.scan(context.body.getPosition() + context.headPos, context.lookAngle,
+                            [&](Vec2i pos)
+                            {
+                                if (targetEntity->pointInside(pos))
+                                {
+                                    m_targetLostTimer.restart();
+                                    return true;
+                                }
 
-            if (const Particle *p =
-                    context.context.particleHandler.getParticles().get(pos))
-            {
-                if (p->isSolid())
-                {
-                    return true;
-                }
-            }
+                                if (const Particle *p =
+                                        context.context.particleHandler.getParticles().get(pos))
+                                {
+                                    if (p->isSolid())
+                                    {
+                                        return true;
+                                    }
+                                }
 
-            return false;
-        });
+                                return false;
+                            });
 
     if (targetPos != targetLastPos)
     {

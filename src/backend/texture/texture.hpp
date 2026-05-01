@@ -13,9 +13,9 @@ class Texture
     Texture(Vec2u size);
     Texture(const std::vector<Color> &pixels, Vec2u size);
     Texture(const std::filesystem::path &path);
-    Texture(const Texture &other) = default;
+    Texture(const Texture &other)            = default;
     Texture &operator=(const Texture &other) = default;
-    ~Texture() = default;
+    ~Texture()                               = default;
 
     Vec2u getSize() const { return m_size; }
 

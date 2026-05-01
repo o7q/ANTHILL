@@ -7,10 +7,8 @@
 namespace EntityWorldInteraction
 {
 bool againstSolidSurface(Vec2i pos, const StaticGridRectangle &boundingBox,
-                         const ParticleHandler &particleHandler,
-                         RectangleSide side);
+                         const ParticleHandler &particleHandler, RectangleSide side);
 
 bool againstSolidCorner(Vec2i pos, const StaticGridRectangle &boundingBox,
-                        const ParticleHandler &particleHandler,
-                        RectangleCorner corner);
+                        const ParticleHandler &particleHandler, RectangleCorner corner);
 } // namespace EntityWorldInteraction

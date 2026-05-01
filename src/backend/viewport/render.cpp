@@ -10,8 +10,7 @@
 void Viewport::render(std::vector<RenderCommand> &commands)
 {
     std::sort(commands.begin(), commands.end(),
-              [](const RenderCommand &a, const RenderCommand &b)
-              { return a.index < b.index; });
+              [](const RenderCommand &a, const RenderCommand &b) { return a.index < b.index; });
 
     for (const RenderCommand &command : commands)
     {
@@ -21,14 +20,10 @@ void Viewport::render(std::vector<RenderCommand> &commands)
 
 void Viewport::renderDirect(const RenderCommandData &data_)
 {
-    std::visit(overloaded{[this](const PointsRenderCommandData &data)
-                          { this->render_points(data); },
-                          [this](const SegmentRenderCommandData &data)
-                          { this->render_segment(data); },
-                          [this](const RectangleRenderCommandData &data)
-                          { this->render_rect(data); },
-                          [this](const TextureRenderCommandData &data)
-                          { this->render_texture(data); }},
+    std::visit(overloaded{[this](const PointsRenderCommandData &data) { this->render_points(data); },
+                          [this](const SegmentRenderCommandData &data) { this->render_segment(data); },
+                          [this](const RectangleRenderCommandData &data) { this->render_rect(data); },
+                          [this](const TextureRenderCommandData &data) { this->render_texture(data); }},
                data_);
 }
 
@@ -120,10 +115,10 @@ void Viewport::render_texture(const TextureRenderCommandData &data)
 
 void Viewport::render_texture_basic(const TextureRenderCommandData &data)
 {
-    Vec2i textureSize = data.texture->getSize().toInt();
+    Vec2i textureSize     = data.texture->getSize().toInt();
     Vec2i halfTextureSize = textureSize / 2;
-    Vec2i origin = {data.origin.first.value_or(halfTextureSize.x),
-                    data.origin.second.value_or(halfTextureSize.y)};
+    Vec2i origin          = {data.origin.first.value_or(halfTextureSize.x),
+                             data.origin.second.value_or(halfTextureSize.y)};
 
     for (int y = 0; y < textureSize.y; ++y)
     {
@@ -140,7 +135,7 @@ void Viewport::render_texture_basic(const TextureRenderCommandData &data)
                 localPos.y = -localPos.y;
             }
 
-            Color color = data.texture->getPixel(Vec2u(x, y));
+            Color color      = data.texture->getPixel(Vec2u(x, y));
             Vec2i pixelPlace = data.position + localPos;
             set_pixel(pixelPlace.toUnsignedInt(), color);
         }
@@ -151,10 +146,10 @@ void Viewport::render_texture_rotated(const TextureRenderCommandData &data)
 {
     TextureRenderCommandData::RotateSettings rs = data.rotateSettings.value();
 
-    Vec2u textureSize = data.texture->getSize();
+    Vec2u textureSize     = data.texture->getSize();
     Vec2u halfTextureSize = textureSize / 2;
-    Vec2i origin = {data.origin.first.value_or(halfTextureSize.x),
-                    data.origin.second.value_or(halfTextureSize.y)};
+    Vec2i origin          = {data.origin.first.value_or(halfTextureSize.x),
+                             data.origin.second.value_or(halfTextureSize.y)};
 
     float cosA = std::cosf(rs.angle.radians());
     float sinA = std::sinf(rs.angle.radians());
@@ -178,10 +173,8 @@ void Viewport::render_texture_rotated(const TextureRenderCommandData &data)
             float rotatedX = cosA * dx - sinA * dy;
             float rotatedY = sinA * dx + cosA * dy;
 
-            int destX =
-                static_cast<int>(std::roundf(data.position.x + rotatedX));
-            int destY =
-                static_cast<int>(std::roundf(data.position.y + rotatedY));
+            int destX = static_cast<int>(std::roundf(data.position.x + rotatedX));
+            int destY = static_cast<int>(std::roundf(data.position.y + rotatedY));
 
             Color color = data.texture->getPixel(Vec2u(x, y));
 

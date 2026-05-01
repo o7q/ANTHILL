@@ -10,11 +10,9 @@ void Viewport::update_pixel_changes()
         return;
     }
 
-    const unsigned int index =
-        get_pixel_index(Vec2u(m_update_rect.x, m_update_rect.y));
+    const unsigned int index = get_pixel_index(Vec2u(m_update_rect.x, m_update_rect.y));
 
-    SDL_UpdateTexture(m_texture, &m_update_rect, &m_pixels[index],
-                      m_size.x * 3);
+    SDL_UpdateTexture(m_texture, &m_update_rect, &m_pixels[index], m_size.x * 3);
     reset_update_points();
 
     m_pixelChanged = false;
@@ -28,7 +26,4 @@ void Viewport::reset_update_points()
     m_update_pos2.y = 0u;
 }
 
-unsigned int Viewport::get_pixel_index(Vec2u pos)
-{
-    return Math::Index::index_2dto1d(pos, m_size.x) * 3u;
-}
+unsigned int Viewport::get_pixel_index(Vec2u pos) { return Math::Index::index_2dto1d(pos, m_size.x) * 3u; }

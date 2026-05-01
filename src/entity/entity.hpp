@@ -4,9 +4,9 @@
 #include "entity/body/entity_body.hpp"
 #include "entity/metadata.hpp"
 #include "entity/update_context.hpp"
+#include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
 #include "math/rectangle.hpp"
-#include "world/entity_handler/events/base.hpp"
 
 class Entity
 {
@@ -14,10 +14,8 @@ class Entity
     Entity(uint64_t parentID = 0) : m_parentID(parentID) {}
     virtual ~Entity() = default;
 
-    virtual void update(const EntityUpdateContext &context,
-                        EventPool<EntityEvent> &eventsOut) = 0;
-    virtual void render(const Camera &camera,
-                        std::vector<RenderCommand> &commandsOut) = 0;
+    virtual void update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) = 0;
+    virtual void render(const Camera &camera, std::vector<RenderCommand> &commandsOut)         = 0;
 
     void kill() { m_health = -1.0f; }
     void damage(float amount, uint64_t afflictor = 0)
@@ -35,10 +33,7 @@ class Entity
     StaticGridRectangle &getBoundingBox() { return m_boundingBox; }
     const StaticGridRectangle &getBoundingBox() const { return m_boundingBox; }
 
-    bool pointInside(Vec2i point) const
-    {
-        return m_boundingBox.pointInside(point - m_body.getPosition());
-    }
+    bool pointInside(Vec2i point) const { return m_boundingBox.pointInside(point - m_body.getPosition()); }
 
     EntityMetadata getMetadata() const { return m_metadata; }
 

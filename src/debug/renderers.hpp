@@ -6,25 +6,21 @@
 #include "math/rectangle.hpp"
 #include <vector>
 
-inline void DEBUG_renderBoundingBox(Vec2i pos, const StaticGridRectangle &bb,
-                                    const Camera &camera,
-                                    std::vector<RenderCommand> &commandsOut,
-                                    Color color = Color(255, 0, 0),
+inline void DEBUG_renderBoundingBox(Vec2i pos, const StaticGridRectangle &bb, const Camera &camera,
+                                    std::vector<RenderCommand> &commandsOut, Color color = Color(255, 0, 0),
                                     unsigned int index = 1)
 {
     RectangleRenderCommandData data;
-    data.a = camera.cameraToViewport(bb.getA() + pos);
-    data.b = camera.cameraToViewport(bb.getB() + pos);
+    data.a     = camera.cameraToViewport(bb.getA() + pos);
+    data.b     = camera.cameraToViewport(bb.getB() + pos);
     data.color = color;
 
     commandsOut.push_back({index, data});
 }
 
-inline void DEBUG_renderAISightPoints(const AIPerception &perception,
-                                      const Camera &camera,
+inline void DEBUG_renderAISightPoints(const AIPerception &perception, const Camera &camera,
                                       std::vector<RenderCommand> &commandsOut,
-                                      Color color = Color(255, 255, 0),
-                                      unsigned int index = 1)
+                                      Color color = Color(255, 255, 0), unsigned int index = 1)
 {
     std::vector<Vec2i> points = perception.getSightPoints();
 
@@ -35,7 +31,7 @@ inline void DEBUG_renderAISightPoints(const AIPerception &perception,
 
     PointsRenderCommandData data;
     data.points = points;
-    data.color = color;
+    data.color  = color;
 
     commandsOut.push_back({index, data});
 }

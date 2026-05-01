@@ -29,10 +29,9 @@ class ParticleEditor
         }
     }
 
-    void textureToParticles(const Texture &texture, Vec2i pos,
-                            Particle particleBase)
+    void textureToParticles(const Texture &texture, Vec2i pos, Particle particleBase)
     {
-        Vec2i size = texture.getSize().toInt();
+        Vec2i size     = texture.getSize().toInt();
         Vec2i halfSize = texture.getSize().toInt() / 2;
 
         for (int y = 0; y < size.y; ++y)

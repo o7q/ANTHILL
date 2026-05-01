@@ -10,13 +10,12 @@ class AINavigation
   public:
     struct Config
     {
-        int astarMaxIterations = 100000;
+        int astarMaxIterations       = 100000;
         int astarTerminationDistance = 0;
-        int astarIterationsPerFrame = 100;
-        int checkpointEatRadius = 4;
-        int stuckTemper = 100;
-        std::function<bool(const EntityUpdateContext &, Index2D)>
-            astarNeighborCheckFunction;
+        int astarIterationsPerFrame  = 100;
+        int checkpointEatRadius      = 4;
+        int stuckTemper              = 100;
+        std::function<bool(const EntityUpdateContext &, Index2D)> astarNeighborCheckFunction;
     };
 
     enum class PathState
@@ -37,19 +36,13 @@ class AINavigation
         Vec2i pos;
         Axis axis;
 
-        bool operator==(const Checkpoint &other)
-        {
-            return pos == other.pos && axis == other.axis;
-        }
+        bool operator==(const Checkpoint &other) { return pos == other.pos && axis == other.axis; }
 
-        bool operator!=(const Checkpoint &other)
-        {
-            return pos != other.pos || axis != other.axis;
-        }
+        bool operator!=(const Checkpoint &other) { return pos != other.pos || axis != other.axis; }
     };
 
   public:
-    AINavigation() = default;
+    AINavigation()          = default;
     virtual ~AINavigation() = default;
 
     void update(Vec2i currentPos, const EntityUpdateContext &context);
@@ -64,10 +57,7 @@ class AINavigation
 
     std::optional<Vec2i> getMoveVector() const { return m_moveVector; }
 
-    const std::vector<Checkpoint> &getCheckpoints() const
-    {
-        return m_checkpoints;
-    }
+    const std::vector<Checkpoint> &getCheckpoints() const { return m_checkpoints; }
 
     std::vector<Vec2i> generatePath() { return m_astar.generatePath(); }
 
@@ -86,8 +76,8 @@ class AINavigation
     std::vector<Checkpoint> m_checkpoints;
 
     Checkpoint m_previousCheckpoint;
-    int m_stuckCounter = 0;
+    int m_stuckCounter      = 0;
     int m_stuckRetryCounter = 0;
-    bool m_isStuck = false;
+    bool m_isStuck          = false;
     std::optional<Vec2i> m_moveVector;
 };

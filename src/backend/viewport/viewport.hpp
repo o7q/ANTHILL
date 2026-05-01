@@ -10,7 +10,7 @@ class Viewport
 {
   public:
     Viewport(SDL_Window *window, Vec2u size);
-    Viewport(const Viewport &other) = delete;
+    Viewport(const Viewport &other)            = delete;
     Viewport &operator=(const Viewport &other) = delete;
     ~Viewport();
 
@@ -24,7 +24,7 @@ class Viewport
 
     Vec2i windowToViewportPosition(Vec2f windowPosition);
 
-    void render(std::vector<RenderCommand>& commands);
+    void render(std::vector<RenderCommand> &commands);
     void renderDirect(const RenderCommandData &data);
 
   private:
@@ -50,9 +50,9 @@ class Viewport
 
     float m_aspectRatio = 1.0f;
 
-    SDL_Texture *m_texture = nullptr;
+    SDL_Texture *m_texture   = nullptr;
     SDL_Renderer *m_renderer = nullptr;
-    Uint8 *m_pixels = nullptr;
+    Uint8 *m_pixels          = nullptr;
 
     Vec2u m_update_pos1;
     Vec2u m_update_pos2;

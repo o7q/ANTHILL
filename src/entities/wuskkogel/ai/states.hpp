@@ -4,7 +4,7 @@
 #include "ai/perception/ai_perception.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/update_context.hpp"
-#include "world/entity_handler/events/base.hpp"
+#include "events/entity/base.hpp"
 
 enum class WuskkogelStateID
 {

@@ -7,8 +7,7 @@
 class WuskkogelAttackState : public State<WuskkogelStateID, UpdateContext>
 {
   public:
-    WuskkogelAttackState(uint64_t &targetID)
-        : State(WuskkogelStateID::Attack), r_targetID(targetID)
+    WuskkogelAttackState(uint64_t &targetID) : State(WuskkogelStateID::Attack), r_targetID(targetID)
     {
         m_attackTimer.setDurationInSeconds(0.5f);
     }

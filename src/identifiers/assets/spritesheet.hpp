@@ -19,7 +19,7 @@ enum class SpriteSheetID
     Entity_SumiRunLegs,
 
     Entity_Wuskkogel,
-    
+
     Item_Shotgun
 };
 using SpriteSheetIDKey = Identifier<SpriteSheetID>;

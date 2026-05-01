@@ -9,7 +9,7 @@ EntityWorldInteraction::calculateStep(Vec2i resolvedPosition, Vec2i originalEnd,
     StepResponse response;
 
     int amount = originalEnd.x - resolvedPosition.x;
-    int dir = Math::Numbers::sign(amount);
+    int dir    = Math::Numbers::sign(amount);
 
     int maxStepAmount = 4;
 
@@ -20,25 +20,20 @@ EntityWorldInteraction::calculateStep(Vec2i resolvedPosition, Vec2i originalEnd,
     {
         int step = i * dir;
 
-        Vec2i upwardsCheckPos = {resolvedPosition.x + step,
-                                 resolvedPosition.y + stepUpwards.sum.y};
-        Vec2i downwardsCheckPos = {resolvedPosition.x + step,
-                                   resolvedPosition.y + stepDownwards.sum.y};
+        Vec2i upwardsCheckPos   = {resolvedPosition.x + step, resolvedPosition.y + stepUpwards.sum.y};
+        Vec2i downwardsCheckPos = {resolvedPosition.x + step, resolvedPosition.y + stepDownwards.sum.y};
 
-        MTVIntersectionResponse upwardsCheck = calculateWorldIntersection_MTV(
-            upwardsCheckPos, boundingBox, particleHandler);
+        MTVIntersectionResponse upwardsCheck =
+            calculateWorldIntersection_MTV(upwardsCheckPos, boundingBox, particleHandler);
 
-        MTVIntersectionResponse downwardsCheck = calculateWorldIntersection_MTV(
-            downwardsCheckPos, boundingBox, particleHandler);
+        MTVIntersectionResponse downwardsCheck =
+            calculateWorldIntersection_MTV(downwardsCheckPos, boundingBox, particleHandler);
 
-        Vec2i upwardsNextPos = upwardsCheckPos + Vec2i(0, -upwardsCheck.bottom);
-        Vec2i downwardsNextPos =
-            downwardsCheckPos + Vec2i(0, downwardsCheck.top);
+        Vec2i upwardsNextPos   = upwardsCheckPos + Vec2i(0, -upwardsCheck.bottom);
+        Vec2i downwardsNextPos = downwardsCheckPos + Vec2i(0, downwardsCheck.top);
 
         if (upwardsCheck.bottom <= maxStepAmount &&
-            calculateWorldIntersection_MTV(upwardsNextPos, boundingBox,
-                                           particleHandler)
-                    .resolveDistance == 0)
+            calculateWorldIntersection_MTV(upwardsNextPos, boundingBox, particleHandler).resolveDistance == 0)
         {
             stepUpwards.sum.x = step;
             stepUpwards.sum.y -= upwardsCheck.bottom;
@@ -47,9 +42,8 @@ EntityWorldInteraction::calculateStep(Vec2i resolvedPosition, Vec2i originalEnd,
         }
 
         if (downwardsCheck.top <= maxStepAmount &&
-            calculateWorldIntersection_MTV(downwardsNextPos, boundingBox,
-                                           particleHandler)
-                    .resolveDistance == 0)
+            calculateWorldIntersection_MTV(downwardsNextPos, boundingBox, particleHandler).resolveDistance ==
+                0)
         {
             stepDownwards.sum.x = step;
             stepDownwards.sum.y += downwardsCheck.top;

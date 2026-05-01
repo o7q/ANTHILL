@@ -26,8 +26,8 @@ class AStarSolver
 
         State state = State::Unvisited;
 
-        float gCost = 0.0f; // distance from starting node
-        float hCost = 0.0f; // distance from end node
+        float gCost       = 0.0f; // distance from starting node
+        float hCost       = 0.0f; // distance from end node
         float fCostCached = 0.0f;
         void calculateFCost() { fCostCached = gCost + hCost; }
     };
@@ -76,8 +76,8 @@ class AStarSolver
 
             if (m_terminateDistance.has_value())
             {
-                int terminateDistTest = std::abs(m_current.index.x - m_end.x) +
-                                        std::abs(m_current.index.y - m_end.y);
+                int terminateDistTest =
+                    std::abs(m_current.index.x - m_end.x) + std::abs(m_current.index.y - m_end.y);
 
                 if (terminateDistTest < m_terminateDistance)
                 {
@@ -93,29 +93,26 @@ class AStarSolver
 
             for (int i = 0; i < 8; ++i)
             {
-                Index2D neighborIndex = {
-                    m_current.index.x + NEIGHBOR_INDICES[i].x,
-                    m_current.index.y + NEIGHBOR_INDICES[i].y};
+                Index2D neighborIndex = {m_current.index.x + NEIGHBOR_INDICES[i].x,
+                                         m_current.index.y + NEIGHBOR_INDICES[i].y};
 
                 if (!checkFunction(neighborIndex.x, neighborIndex.y))
                 {
                     continue;
                 }
 
-                AStarNode &neighbor = m_nodes[neighborIndex];
-                float costToNeighbor =
-                    m_current.gCost + dist(m_current.index, neighborIndex);
+                AStarNode &neighbor  = m_nodes[neighborIndex];
+                float costToNeighbor = m_current.gCost + dist(m_current.index, neighborIndex);
 
-                if (neighbor.state == State::Unvisited ||
-                    costToNeighbor < neighbor.gCost)
+                if (neighbor.state == State::Unvisited || costToNeighbor < neighbor.gCost)
                 {
                     AStarNode next;
-                    next.index = neighborIndex;
+                    next.index       = neighborIndex;
                     next.parentIndex = m_current.index;
-                    next.hasParent = true;
-                    next.state = State::Open;
-                    next.gCost = costToNeighbor;
-                    next.hCost = dist(neighborIndex, {m_end.x, m_end.y});
+                    next.hasParent   = true;
+                    next.state       = State::Open;
+                    next.gCost       = costToNeighbor;
+                    next.hCost       = dist(neighborIndex, {m_end.x, m_end.y});
                     next.calculateFCost();
 
                     m_nodes[neighborIndex] = next;
@@ -130,10 +127,7 @@ class AStarSolver
     std::vector<Vec2i> generatePath();
 
     bool endReached() const { return m_endReached; }
-    void setMaxIterations(int maxIterations)
-    {
-        m_maxIterations = maxIterations;
-    }
+    void setMaxIterations(int maxIterations) { m_maxIterations = maxIterations; }
 
     void setTerminateDistance(int distance) { m_terminateDistance = distance; }
     void removeTerminateDistance() { m_terminateDistance = std::nullopt; }
@@ -146,14 +140,13 @@ class AStarSolver
 
   private:
     std::unordered_map<Index2D, AStarNode, Index2DHash> m_nodes;
-    std::priority_queue<AStarNode, std::vector<AStarNode>, AStarNodeCompare>
-        m_toSearch;
+    std::priority_queue<AStarNode, std::vector<AStarNode>, AStarNodeCompare> m_toSearch;
 
     AStarNode m_current;
 
     Vec2i m_start, m_end;
 
-    int m_maxIterations = 50000;
+    int m_maxIterations  = 50000;
     int m_iterationCount = 0;
 
     bool m_endReached = false;

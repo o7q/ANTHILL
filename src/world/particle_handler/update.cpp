@@ -1,7 +1,8 @@
 #include "particle_handler.hpp"
-#include "world/particle_handler/events/events.hpp"
 
-void ParticleHandler::update(float dt, Vec2i origin)
+#include "events/particle/events.hpp"
+
+void ParticleHandler::update(TimeInfo time, Vec2i origin)
 {
     for (auto &event : m_events.getEvents())
     {
@@ -14,5 +15,5 @@ void ParticleHandler::update(float dt, Vec2i origin)
         }
     }
     m_events.clear();
-    m_dynamicsHandler.update(dt, origin);
+    m_dynamicsHandler.update(time, origin);
 }

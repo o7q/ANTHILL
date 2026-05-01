@@ -31,11 +31,11 @@ class Timer
 
   private:
     float m_durationInSeconds = 1.0f;
-    float m_clock = 0.0f;
-    float m_progress = 0.0f;
+    float m_clock             = 0.0f;
+    float m_progress          = 0.0f;
 
     bool m_completed = false;
-    bool m_active = false;
+    bool m_active    = false;
 
     Mode m_mode = Mode::Once;
 };

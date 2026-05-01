@@ -5,7 +5,7 @@
 class EntityBody
 {
   public:
-    EntityBody() = default;
+    EntityBody()          = default;
     virtual ~EntityBody() = default;
 
     void update(float dt);
@@ -15,17 +15,17 @@ class EntityBody
 
     void setVelocity(Vec2f vel)
     {
-        m_velocity = vel;
+        m_velocity       = vel;
         m_velocityTarget = vel;
     }
     void setVelocityX(float x)
     {
-        m_velocity.x = x;
+        m_velocity.x       = x;
         m_velocityTarget.x = x;
     }
     void setVelocityY(float y)
     {
-        m_velocity.y = y;
+        m_velocity.y       = y;
         m_velocityTarget.y = y;
     }
     void setVelocityTarget(Vec2f target) { m_velocityTarget = target; }

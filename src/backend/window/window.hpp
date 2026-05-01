@@ -11,7 +11,7 @@ class Window
 {
   public:
     Window(const std::string &name, Vec2u windowSize, Vec2u viewportSize);
-    Window(const Window &other) = delete;
+    Window(const Window &other)            = delete;
     Window &operator=(const Window &other) = delete;
     ~Window();
 
@@ -23,9 +23,9 @@ class Window
     void present();
 
     Viewport &getViewport() { return m_viewport; }
-    SoundHandler &getSoundHandler() { return m_soundHandler; }
-    InputHandler &getInputHandler() { return m_inputHandler; }
-    TimeHandler &getTimeHandler() { return m_timeHandler; }
+    SoundHandler &getSound() { return m_sound; }
+    InputHandler &getInput() { return m_input; }
+    TimeHandler &getTime() { return m_time; }
 
     bool isRunning() const { return m_running; }
 
@@ -33,9 +33,9 @@ class Window
     SDL_Window *m_window = nullptr;
 
     Viewport m_viewport;
-    SoundHandler m_soundHandler;
-    InputHandler m_inputHandler;
-    TimeHandler m_timeHandler;
+    SoundHandler m_sound;
+    InputHandler m_input;
+    TimeHandler m_time;
 
     Vec2u m_size;
     float m_aspectRatio = 1.0f;

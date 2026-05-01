@@ -3,13 +3,13 @@
 Font::Font(const std::filesystem::path &path) : m_atlas(path)
 {
     unsigned int atlasXIndex = 0;
-    unsigned int charIndex = 0;
+    unsigned int charIndex   = 0;
     while (true)
     {
         Color color = m_atlas.getPixel({atlasXIndex, 0});
         if (color.r == 255)
         {
-            GlyphInfo info = createGlyphIndex(atlasXIndex);
+            GlyphInfo info                     = createGlyphIndex(atlasXIndex);
             m_glyphInfos[m_charmap[charIndex]] = info;
             atlasXIndex += info.size.x + 2;
             charIndex++;
@@ -19,8 +19,7 @@ Font::Font(const std::filesystem::path &path) : m_atlas(path)
             atlasXIndex++;
         }
 
-        if (atlasXIndex >= m_atlas.getSize().x ||
-            charIndex >= m_charmap.length())
+        if (atlasXIndex >= m_atlas.getSize().x || charIndex >= m_charmap.length())
         {
             break;
         }

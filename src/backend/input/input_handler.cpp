@@ -19,17 +19,14 @@ void Input::poll(Bind bind, bool isDown)
 
 void Input::update()
 {
-    m_pressed = m_down && !m_wasDown;
+    m_pressed   = m_down && !m_wasDown;
     m_unpressed = m_wasDown && !m_down;
 
     m_wasDown = m_down;
 }
 
 void Input::assignBind(const Bind &bind) { m_binds.push_back(bind); }
-void Input::removeBind(const Bind &bind)
-{
-    Utils::Data::removeItemFromVector(m_binds, bind);
-}
+void Input::removeBind(const Bind &bind) { Utils::Data::removeItemFromVector(m_binds, bind); }
 void Input::removeBindsOfType(ButtonType type)
 {
     for (auto it = m_binds.begin(); it != m_binds.end(); ++it)
@@ -82,8 +79,7 @@ void InputHandler::update()
     }
 }
 
-void InputHandler::addInput(InputIDKey key,
-                            const std::vector<Input::Bind> &binds)
+void InputHandler::addInput(InputIDKey key, const std::vector<Input::Bind> &binds)
 {
     Input input;
     for (const Input::Bind &bind : binds)

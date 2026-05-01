@@ -11,7 +11,6 @@ struct LocalWorldQuery
     int staticSolidCount = 0;
 };
 
-LocalWorldQuery generateLocalWorldQuery(Vec2i pos,
-                                        const StaticGridRectangle &boundingBox,
+LocalWorldQuery generateLocalWorldQuery(Vec2i pos, const StaticGridRectangle &boundingBox,
                                         const ParticleHandler &particleHandler);
 } // namespace EntityWorldInteraction

@@ -40,9 +40,8 @@ struct PointsRenderCommandData
     Color color;
 };
 
-using RenderCommandData =
-    std::variant<TextureRenderCommandData, SegmentRenderCommandData,
-                 RectangleRenderCommandData, PointsRenderCommandData>;
+using RenderCommandData = std::variant<TextureRenderCommandData, SegmentRenderCommandData,
+                                       RectangleRenderCommandData, PointsRenderCommandData>;
 
 struct RenderCommand
 {

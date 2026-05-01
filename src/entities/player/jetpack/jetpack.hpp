@@ -13,10 +13,7 @@ class Jetpack
     };
 
   public:
-    Jetpack()
-    {
-        m_flightTimer.setDurationInMilliseconds(500);
-    }
+    Jetpack() { m_flightTimer.setDurationInMilliseconds(500); }
 
     void start()
     {

@@ -7,8 +7,7 @@ SoundHandler::SoundHandler()
 {
     if (ma_engine_init(NULL, &m_engine) != MA_SUCCESS)
     {
-        Logger::error("AudioSystem::AudioSystem()",
-                      "Failed to initialize the miniaudio engine!");
+        Logger::error("AudioSystem::AudioSystem()", "Failed to initialize the miniaudio engine!");
         return;
     }
 
@@ -48,10 +47,10 @@ void SoundHandler::playSound(const Sound &s, const SoundPlaySettings settings)
 
     SoundInstance instance;
     instance.buffer = (ma_audio_buffer *)malloc(sizeof(ma_audio_buffer));
-    instance.sound = (ma_sound *)malloc(sizeof(ma_sound));
+    instance.sound  = (ma_sound *)malloc(sizeof(ma_sound));
 
-    ma_audio_buffer_config bufferConfig = ma_audio_buffer_config_init(
-        s.getFormat(), s.getChannels(), s.getFrameCount(), s.getData(), NULL);
+    ma_audio_buffer_config bufferConfig =
+        ma_audio_buffer_config_init(s.getFormat(), s.getChannels(), s.getFrameCount(), s.getData(), NULL);
 
     if (ma_audio_buffer_init(&bufferConfig, instance.buffer) != MA_SUCCESS)
     {
@@ -60,8 +59,7 @@ void SoundHandler::playSound(const Sound &s, const SoundPlaySettings settings)
         return;
     }
 
-    if (ma_sound_init_from_data_source(&m_engine, instance.buffer, 0, NULL,
-                                       instance.sound) != MA_SUCCESS)
+    if (ma_sound_init_from_data_source(&m_engine, instance.buffer, 0, NULL, instance.sound) != MA_SUCCESS)
     {
         ma_audio_buffer_uninit(instance.buffer);
         free(instance.buffer);

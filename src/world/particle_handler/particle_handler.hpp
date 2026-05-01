@@ -1,11 +1,12 @@
 #pragma once
 
+#include "backend/time/time_handler.hpp"
 #include "events/event_pool.hpp"
+#include "events/particle/base.hpp"
 #include "utils/data_structures/chunk_map.hpp"
 #include "world/particle_handler/biome.hpp"
 #include "world/particle_handler/dynamics/p_dynamics_handler.hpp"
 #include "world/particle_handler/editor/particle_editor.hpp"
-#include "world/particle_handler/events/base.hpp"
 #include "world/particle_handler/navmesh/navmesh.hpp"
 #include "world/particle_handler/particle.hpp"
 #include "world/particle_handler/renderer/particle_renderer.hpp"
@@ -19,7 +20,7 @@ class ParticleHandler
     {
     }
 
-    void update(float dt, Vec2i origin);
+    void update(TimeInfo time, Vec2i origin);
 
     const ChunkMap<Particle> &getParticles() const { return m_particles; }
     ChunkMap<Particle> &getParticles() { return m_particles; }
@@ -37,8 +38,7 @@ class ParticleHandler
     EventPool<ParticleEvent> &getEvents() { return m_events; }
 
     template <typename QueryFunction>
-    void query(Vec2i start, Vec2i end, QueryFunction &&query,
-               bool skipNull = true) const
+    void query(Vec2i start, Vec2i end, QueryFunction &&query, bool skipNull = true) const
     {
         for (int y = start.y; y <= end.y; ++y)
         {

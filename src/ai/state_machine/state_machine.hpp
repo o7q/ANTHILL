@@ -29,10 +29,7 @@ template <typename StateID, typename Context> class StateMachine
         m_currentState = std::move(state);
     }
 
-    State<StateID, Context> *get_current_state()
-    {
-        return m_currentState.get();
-    }
+    State<StateID, Context> *get_current_state() { return m_currentState.get(); }
 
   private:
     std::unique_ptr<State<StateID, Context>> m_currentState = nullptr;

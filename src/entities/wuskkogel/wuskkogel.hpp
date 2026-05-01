@@ -16,16 +16,14 @@ class Wuskkogel : public Entity
   public:
     Wuskkogel(const Assets &assets, uint64_t id = 0);
 
-    void update(const EntityUpdateContext &context,
-                EventPool<EntityEvent> &eventsOut) override;
+    void update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) override;
 
-    void render(const Camera &camera,
-                std::vector<RenderCommand> &commandsOut) override
+    void render(const Camera &camera, std::vector<RenderCommand> &commandsOut) override
     {
         TextureRenderCommandData data;
-        data.texture = m_animator.getCurrentFrame();
+        data.texture  = m_animator.getCurrentFrame();
         data.position = camera.cameraToViewport(m_body.getPosition());
-        data.flipX = m_body.getVelocity().x < 0;
+        data.flipX    = m_body.getVelocity().x < 0;
 
         commandsOut.push_back({1, data});
 
@@ -42,5 +40,5 @@ class Wuskkogel : public Entity
     AINavigation m_aiNavigation;
 
     float m_lookAngle = 0.0f;
-    Vec2i m_headPos = {0, -5};
+    Vec2i m_headPos   = {0, -5};
 };

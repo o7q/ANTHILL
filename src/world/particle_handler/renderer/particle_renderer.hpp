@@ -20,22 +20,17 @@ class ParticleRenderer
   public:
     ParticleRenderer() = default;
 
-    void render(const ChunkMap<Particle> &particles,
-                const ChunkMap<BiomeID> &biomeMarkers, const Camera &camera,
-                const Assets &assets, std::vector<RenderCommand> &commandsOut);
+    void render(const ChunkMap<Particle> &particles, const ChunkMap<BiomeID> &biomeMarkers,
+                const Camera &camera, const Assets &assets, std::vector<RenderCommand> &commandsOut);
 
   private:
     void reconstruct_texture(Vec2u size) { m_texture = Texture(size); }
-    void render_background(const ChunkMap<BiomeID> &biomeMarkers,
-                           const Assets &assets,
+    void render_background(const ChunkMap<BiomeID> &biomeMarkers, const Assets &assets,
                            BackgroundRenderSettings settings);
 
-    Vec2u calculate_parallax(Vec2i worldPos, Vec2i cameraPos, Vec2u textureSize,
-                             float amount)
+    Vec2u calculate_parallax(Vec2i worldPos, Vec2i cameraPos, Vec2u textureSize, float amount)
     {
-        Vec2u parallax = (worldPos.toFloat() - cameraPos.toFloat() * amount)
-                             .toUnsignedInt() %
-                         textureSize;
+        Vec2u parallax = (worldPos.toFloat() - cameraPos.toFloat() * amount).toUnsignedInt() % textureSize;
         return parallax;
     }
 

@@ -9,9 +9,9 @@ void PDynamicsHandler::update_sand_particle(ParticleObject po, float dt)
 
     Vec2f start = verlet.getPosition();
 
-    Particle *leftDown = r_particles.get({po.pos.x - 1, po.pos.y + 1});
+    Particle *leftDown  = r_particles.get({po.pos.x - 1, po.pos.y + 1});
     Particle *rightDown = r_particles.get({po.pos.x + 1, po.pos.y + 1});
-    Particle *down = r_particles.get({po.pos.x, po.pos.y + 1});
+    Particle *down      = r_particles.get({po.pos.x, po.pos.y + 1});
 
     bool canDown = false, canLeft = false, canRight = false;
 

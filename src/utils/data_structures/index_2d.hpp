@@ -9,15 +9,8 @@ struct Index2D
     Index2D() = default;
     Index2D(int x_, int y_) : x(x_), y(y_) {}
 
-    bool operator==(const Index2D &other) const
-    {
-        return x == other.x && y == other.y;
-    }
-
-    bool operator!=(const Index2D &other) const
-    {
-        return x != other.x || y != other.y;
-    }
+    bool operator==(const Index2D &other) const { return x == other.x && y == other.y; }
+    bool operator!=(const Index2D &other) const { return x != other.x || y != other.y; }
 };
 
 // https://stackoverflow.com/a/20602159

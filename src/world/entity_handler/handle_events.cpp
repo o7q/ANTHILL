@@ -1,11 +1,10 @@
 #include "entity_handler.hpp"
 
+#include "events/entity/events.hpp"
 #include "events/event_pool.hpp"
-#include "events/events.hpp"
 #include <memory>
 
-void EntityHandler::handleEvents(EventPool<EntityEvent> &events,
-                                 EventPoolRefs eventPoolRefs)
+void EntityHandler::handleEvents(EventPool<EntityEvent> &events, EventPoolRefs eventPoolRefs)
 {
     for (auto &event : events.getEvents())
     {

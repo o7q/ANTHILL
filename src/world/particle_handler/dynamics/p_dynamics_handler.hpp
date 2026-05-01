@@ -1,5 +1,6 @@
 #pragma once
 
+#include "backend/time/time_handler.hpp"
 #include "utils/data_structures/chunk_map.hpp"
 #include "world/particle_handler/navmesh/navmesh.hpp"
 #include "world/particle_handler/particle.hpp"
@@ -19,7 +20,7 @@ class PDynamicsHandler
     {
     }
 
-    void update(float dt, Vec2i origin);
+    void update(TimeInfo timeInfo, Vec2i origin);
 
     void setGravity(float gravity) { m_gravity = gravity; }
     void addGravity(float gravity) { m_gravity += gravity; }
@@ -29,15 +30,10 @@ class PDynamicsHandler
 
   private:
     void update_particle(ParticleObject po, float dt);
-    void handle_particle_trajectory(ParticleObject po, Vec2f start, Vec2f end,
-                                    float dt);
-    void resolve_particle_collision_against_other(ParticleObject po,
-                                                  Particle *hitParticle,
-                                                  Vec2i currentCheck,
-                                                  Vec2i previousCheck,
-                                                  float dt);
-    void resolve_particle_collision_against_null(ParticleObject po,
-                                                 Vec2i previousCheck);
+    void handle_particle_trajectory(ParticleObject po, Vec2f start, Vec2f end, float dt);
+    void resolve_particle_collision_against_other(ParticleObject po, Particle *hitParticle,
+                                                  Vec2i currentCheck, Vec2i previousCheck, float dt);
+    void resolve_particle_collision_against_null(ParticleObject po, Vec2i previousCheck);
     void finalize_particle(ParticleObject po);
 
     bool can_solid_occupy(const Particle *p);

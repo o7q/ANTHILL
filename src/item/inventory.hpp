@@ -7,7 +7,7 @@
 class Inventory
 {
   public:
-    Inventory() = default;
+    Inventory()          = default;
     virtual ~Inventory() = default;
 
     void switchSlot(unsigned int slot) { m_selectedSlot = slot; }
@@ -34,8 +34,7 @@ class Inventory
 
     void swapItem(unsigned int slot1, unsigned int slot2)
     {
-        if (slot1 >= m_inventorySlots || slot2 >= m_inventorySlots ||
-            slot1 == slot2)
+        if (slot1 >= m_inventorySlots || slot2 >= m_inventorySlots || slot1 == slot2)
         {
             return;
         }
@@ -61,5 +60,5 @@ class Inventory
   private:
     std::unordered_map<int, std::unique_ptr<Item>> m_items;
     unsigned int m_inventorySlots = 10;
-    unsigned int m_selectedSlot = 0;
+    unsigned int m_selectedSlot   = 0;
 };

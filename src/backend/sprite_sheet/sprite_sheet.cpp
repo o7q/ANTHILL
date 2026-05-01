@@ -13,8 +13,7 @@ SpriteSheet::SpriteSheet(const std::filesystem::path &path, Vec2u spriteSize)
         {
             for (unsigned int x = 0; x < spriteSize.x; ++x)
             {
-                Color color =
-                    spriteSheet.getPixel({x + spriteSize.x * sprite, y});
+                Color color = spriteSheet.getPixel({x + spriteSize.x * sprite, y});
                 frame.setPixel({x, y}, color);
             }
         }

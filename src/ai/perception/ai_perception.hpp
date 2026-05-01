@@ -7,12 +7,10 @@
 class AIPerception
 {
   public:
-    AIPerception() = default;
+    AIPerception()          = default;
     virtual ~AIPerception() = default;
 
-    template <typename CheckFunction>
-    void scan(Vec2i headPos, float headAngle,
-                                  CheckFunction &&function)
+    template <typename CheckFunction> void scan(Vec2i headPos, float headAngle, CheckFunction &&function)
     {
         m_sightPoints.clear();
 
@@ -52,7 +50,7 @@ class AIPerception
     std::vector<Vec2i> m_sightPoints;
 
     float m_detectionRadius = 0.0f;
-    float m_sightFOV = 90.0f;
-    int m_sightDistance = 100;
-    int m_sightRayAmount = 10;
+    float m_sightFOV        = 90.0f;
+    int m_sightDistance     = 100;
+    int m_sightRayAmount    = 10;
 };

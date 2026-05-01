@@ -11,6 +11,6 @@ enum class EntityType
 
 struct EntityMetadata
 {
-    EntityType type = EntityType::Generic;
+    EntityType type  = EntityType::Generic;
     std::string name = "";
 };

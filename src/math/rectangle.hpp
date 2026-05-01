@@ -25,8 +25,8 @@ class StaticGridRectangle
 
     void setSize(Vec2u size)
     {
-        m_size = size;
-        m_area = size.x * size.y;
+        m_size     = size;
+        m_area     = size.x * size.y;
         m_halfSize = (m_size / 2.0f).toGrid().toUnsignedInt();
         recalculateAB();
     }
@@ -38,8 +38,7 @@ class StaticGridRectangle
 
     virtual bool pointInside(Vec2i pos) const
     {
-        return pos.x >= m_a.x && pos.x <= m_b.x && pos.y >= m_a.y &&
-               pos.y <= m_b.y;
+        return pos.x >= m_a.x && pos.x <= m_b.x && pos.y >= m_a.y && pos.y <= m_b.y;
     }
 
   protected:

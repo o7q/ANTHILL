@@ -13,13 +13,11 @@ struct TrajectoryCollisionResponse
     bool collided = false;
 };
 
-TrajectoryCollisionResponse
-calculateCollisionFromTrajectory(Vec2i start, Vec2i end,
-                                 const StaticGridRectangle &boundingBox,
-                                 const ParticleHandler &particleHandler);
+TrajectoryCollisionResponse calculateCollisionFromTrajectory(Vec2i start, Vec2i end,
+                                                             const StaticGridRectangle &boundingBox,
+                                                             const ParticleHandler &particleHandler);
 
-TrajectoryCollisionResponse
-calculateCollisionFromTrajectorySlide(Vec2i start, Vec2i end,
-                                      const StaticGridRectangle &boundingBox,
-                                      const ParticleHandler &particleHandler);
+TrajectoryCollisionResponse calculateCollisionFromTrajectorySlide(Vec2i start, Vec2i end,
+                                                                  const StaticGridRectangle &boundingBox,
+                                                                  const ParticleHandler &particleHandler);
 } // namespace EntityWorldInteraction

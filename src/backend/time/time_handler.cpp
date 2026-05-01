@@ -4,20 +4,14 @@
 #include <chrono>
 #include <thread>
 
-void TimeHandler::frameStart()
-{
-    m_frame_start = std::chrono::steady_clock::now();
-}
+void TimeHandler::frameStart() { m_frame_start = std::chrono::steady_clock::now(); }
 
 void TimeHandler::frameEnd()
 {
-    std::chrono::steady_clock::time_point frame_end =
-        std::chrono::steady_clock::now();
+    std::chrono::steady_clock::time_point frame_end = std::chrono::steady_clock::now();
 
     const float frame_seconds =
-        std::chrono::duration_cast<std::chrono::duration<float>>(frame_end -
-                                                                 m_frame_start)
-            .count();
+        std::chrono::duration_cast<std::chrono::duration<float>>(frame_end - m_frame_start).count();
 
     const float target_frame_seconds = 1.0f / m_max_fps;
 
@@ -27,12 +21,10 @@ void TimeHandler::frameEnd()
         std::this_thread::sleep_for(std::chrono::duration<float>(frame_delay));
     }
 
-    const std::chrono::steady_clock::time_point delayed_frame_end =
-        std::chrono::steady_clock::now();
-    const float total_frame_seconds =
-        std::chrono::duration<float>(delayed_frame_end - m_frame_start).count();
+    const std::chrono::steady_clock::time_point delayed_frame_end = std::chrono::steady_clock::now();
+    const float total_frame_seconds = std::chrono::duration<float>(delayed_frame_end - m_frame_start).count();
 
-    m_fps = 1.0f / total_frame_seconds;
-    m_dt = m_dt_base_fps / m_fps * m_speed_multiplier;
-    m_dt = std::clamp(m_dt, 0.0f, m_max_dt);
+    m_info.fps    = 1.0f / total_frame_seconds;
+    m_info.dt_raw = std::clamp(m_dt_base_fps / m_info.fps, 0.0f, m_max_dt);
+    m_info.dt     = m_info.dt_raw * m_speed_multiplier;
 }

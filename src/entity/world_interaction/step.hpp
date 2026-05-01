@@ -15,10 +15,9 @@ struct StepDirectionalData
 {
     Vec2i sum;
     int distance = 0;
-    bool moved = false;
+    bool moved   = false;
 };
 
-StepResponse calculateStep(Vec2i resolvedPosition, Vec2i originalEnd,
-                           const StaticGridRectangle &boundingBox,
+StepResponse calculateStep(Vec2i resolvedPosition, Vec2i originalEnd, const StaticGridRectangle &boundingBox,
                            const ParticleHandler &particleHandler);
 } // namespace EntityWorldInteraction

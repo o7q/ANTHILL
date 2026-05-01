@@ -6,11 +6,9 @@ void EntityBody::update(float dt)
 {
     m_lastPosition = m_position;
 
-    Vec2f targetDamping = {std::pow(m_targetDamping.x, dt),
-                           std::pow(m_targetDamping.y, dt)};
+    Vec2f targetDamping = {std::pow(m_targetDamping.x, dt), std::pow(m_targetDamping.y, dt)};
 
-    m_velocity =
-        m_velocityTarget + (m_velocity - m_velocityTarget) * targetDamping;
+    m_velocity = m_velocityTarget + (m_velocity - m_velocityTarget) * targetDamping;
 
     m_position += m_velocity * dt;
 

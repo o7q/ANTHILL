@@ -9,9 +9,9 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
 
     Vec2f start = verlet.getPosition();
 
-    Particle *left = r_particles.get({po.pos.x - 1, po.pos.y});
+    Particle *left  = r_particles.get({po.pos.x - 1, po.pos.y});
     Particle *right = r_particles.get({po.pos.x + 1, po.pos.y});
-    Particle *down = r_particles.get({po.pos.x, po.pos.y + 1});
+    Particle *down  = r_particles.get({po.pos.x, po.pos.y + 1});
 
     bool canDown = false, canLeft = false, canRight = false;
 

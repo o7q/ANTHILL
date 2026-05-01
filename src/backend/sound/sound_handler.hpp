@@ -7,7 +7,7 @@
 struct SoundPlaySettings
 {
     float volume = 1.0f;
-    float pitch = 1.0f;
+    float pitch  = 1.0f;
 };
 
 class SoundHandler
@@ -16,18 +16,17 @@ class SoundHandler
     struct SoundInstance
     {
         ma_audio_buffer *buffer = nullptr;
-        ma_sound *sound = nullptr;
+        ma_sound *sound         = nullptr;
     };
 
   public:
     SoundHandler();
-    SoundHandler(const SoundHandler &other) = delete;
+    SoundHandler(const SoundHandler &other)            = delete;
     SoundHandler &operator=(const SoundHandler &other) = delete;
     ~SoundHandler();
 
     void update();
-    void playSound(const Sound &s,
-                   const SoundPlaySettings settings = SoundPlaySettings());
+    void playSound(const Sound &s, const SoundPlaySettings settings = SoundPlaySettings());
     void stopAllSounds();
 
   private:

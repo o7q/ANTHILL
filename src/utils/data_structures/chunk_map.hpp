@@ -13,7 +13,7 @@ template <typename T> class ChunkMap
     {
       public:
         Chunk(Vec2u size) { m_values.resize(size.x * size.y); }
-        Chunk(const Chunk &other) = delete;
+        Chunk(const Chunk &other)            = delete;
         Chunk &operator=(const Chunk &other) = delete;
 
         void set(Vec2u pos, T value, unsigned int width)
@@ -38,7 +38,7 @@ template <typename T> class ChunkMap
 
   public:
     ChunkMap(Vec2u chunkSize) { m_chunkSize = chunkSize; }
-    ChunkMap(const ChunkMap &other) = delete;
+    ChunkMap(const ChunkMap &other)            = delete;
     ChunkMap &operator=(const ChunkMap &other) = delete;
 
     void set(Vec2i pos, T value)
@@ -110,10 +110,7 @@ template <typename T> class ChunkMap
         set(p2, v);
     }
 
-    const std::unordered_map<Index2D, Chunk, Index2DHash> &getChunks() const
-    {
-        return m_chunks;
-    }
+    const std::unordered_map<Index2D, Chunk, Index2DHash> &getChunks() const { return m_chunks; }
 
     Vec2u getChunkSize() const { return m_chunkSize; }
 

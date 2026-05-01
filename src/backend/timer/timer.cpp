@@ -1,13 +1,7 @@
 #include "timer.hpp"
 
-void Timer::setDurationInSeconds(float seconds)
-{
-    m_durationInSeconds = seconds;
-}
-void Timer::setDurationInMilliseconds(float milliseconds)
-{
-    m_durationInSeconds = milliseconds / 1000.0f;
-}
+void Timer::setDurationInSeconds(float seconds) { m_durationInSeconds = seconds; }
+void Timer::setDurationInMilliseconds(float milliseconds) { m_durationInSeconds = milliseconds / 1000.0f; }
 
 void Timer::update(float dt)
 {
@@ -32,7 +26,7 @@ void Timer::update(float dt)
             m_clock = 0.0f;
             break;
         case Mode::Once:
-            m_clock = 0.0f;
+            m_clock  = 0.0f;
             m_active = false;
             break;
         }
@@ -44,14 +38,14 @@ void Timer::update(float dt)
 
 void Timer::restart()
 {
-    m_clock = 0.0f;
-    m_active = true;
+    m_clock     = 0.0f;
+    m_active    = true;
     m_completed = false;
 }
 
 void Timer::stop()
 {
-    m_clock = 0.0f;
-    m_active = false;
+    m_clock     = 0.0f;
+    m_active    = false;
     m_completed = false;
 }

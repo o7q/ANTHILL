@@ -1,17 +1,16 @@
 #include "intersection.hpp"
 
 EntityWorldInteraction::MTVIntersectionResponse
-EntityWorldInteraction::calculateWorldIntersection_MTV(
-    Vec2i pos, const StaticGridRectangle &boundingBox,
-    const ParticleHandler &particleHandler)
+EntityWorldInteraction::calculateWorldIntersection_MTV(Vec2i pos, const StaticGridRectangle &boundingBox,
+                                                       const ParticleHandler &particleHandler)
 {
-    const Vec2i size = boundingBox.getSize().toGrid();
+    const Vec2i size    = boundingBox.getSize().toGrid();
     const Vec2i topLeft = boundingBox.getA() + pos;
 
     //    0
     // 3 [-] 1
     //    2
-    bool collisionOccurred = false;
+    bool collisionOccurred          = false;
     std::array<int, 4> intersection = {0, 0, 0, 0};
     for (int y = 0; y < size.y; ++y)
     {
@@ -39,10 +38,10 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(
     }
 
     MTVIntersectionResponse response;
-    response.top = intersection[0];
-    response.right = intersection[1];
-    response.bottom = intersection[2];
-    response.left = intersection[3];
+    response.top        = intersection[0];
+    response.right      = intersection[1];
+    response.bottom     = intersection[2];
+    response.left       = intersection[3];
     response.moveVector = Vec2i(0, 0);
 
     if (!collisionOccurred)
@@ -51,14 +50,14 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(
     }
 
     int lowest = std::numeric_limits<int>::max();
-    int side = -1;
+    int side   = -1;
 
     for (int i = 0; i < 4; ++i)
     {
         if (intersection[i] < lowest)
         {
             lowest = intersection[i];
-            side = i;
+            side   = i;
         }
     }
 
@@ -84,10 +83,9 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(
 }
 
 Vec2f EntityWorldInteraction::calculateWorldIntersection_averageDirection(
-    Vec2i pos, const StaticGridRectangle &boundingBox,
-    const ParticleHandler &particleHandler)
+    Vec2i pos, const StaticGridRectangle &boundingBox, const ParticleHandler &particleHandler)
 {
-    const Vec2u size = boundingBox.getSize();
+    const Vec2u size    = boundingBox.getSize();
     const Vec2i topLeft = pos + boundingBox.getA();
 
     Vec2i sum = Vec2i(0, 0);
