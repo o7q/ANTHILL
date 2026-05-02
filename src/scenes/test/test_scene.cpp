@@ -1,10 +1,7 @@
 #include "test_scene.hpp"
+
 #include "backend/texture/texture.hpp"
 #include "backend/viewport/render_command.hpp"
-#include "math/angle.hpp"
-#include "math/physics/verlet.hpp"
-#include "math/physics/verlet_link.hpp"
-#include <iostream>
 
 void TestScene::onStart() {}
 
@@ -15,7 +12,7 @@ void TestScene::onTick()
     Vec2i viewportMousePos =
         r_window.getViewport().windowToViewportPosition(r_window.getInput().getMousePosition());
 
-    if (r_window.getInput().getInput(InputID::AltAction1)->wasPressed())
+    if (r_window.getInput().getInput(InputID::AltAction1)->isDown())
     {
         VerletBody body;
         body.setPosition(viewportMousePos.toFloat());
@@ -42,7 +39,7 @@ void TestScene::onTick()
     {
         VerletBody &body = m_bodies[m_bodies.size() - 1];
 
-        Vec2f vel = (viewportMousePos.toFloat() - body.getPosition()).normalize() * 20.0f;
+        Vec2f vel = (viewportMousePos.toFloat() - body.getPosition()).normalize() * 70.0f;
 
         body.addForce(vel);
     }
@@ -53,7 +50,7 @@ void TestScene::onTick()
         {
             continue;
         }
-        m_bodies[i].addForce({0, 1});
+        // m_bodies[i].addForce({0, 1});
     }
 
     for (int i = 0; i < m_bodies.size(); ++i)
@@ -78,22 +75,6 @@ void TestScene::onTick()
     data.texture = &m_drawTex;
     data.origin  = {0, 0};
     renderCommands.push_back({0, data});
-
-    if (m_bodies.size() >= 2)
-    {
-        Vec2f last1 = m_bodies[m_bodies.size() - 1].getPosition();
-        Vec2f last2 = m_bodies[m_bodies.size() - 2].getPosition();
-
-        float degrees = Math::Angles::vectorsToAngle(last1, last2).degrees();
-        degrees += 90;
-        Angle angle = Degrees(degrees);
-
-        TextureRenderCommandData data2;
-        data2.texture        = &r_assets.textures().get(TextureID::Test);
-        data2.position       = last2.toGrid();
-        data2.rotateSettings = {angle, 1};
-        renderCommands.push_back({1, data2});
-    }
 
     r_window.getViewport().render(renderCommands);
 

@@ -1,6 +1,7 @@
-#include "math/line.hpp"
-#include "math/physics/utils.hpp"
 #include "p_dynamics_handler.hpp"
+
+#include "math/line.hpp"
+#include "math/physics.hpp"
 
 void PDynamicsHandler::handle_particle_trajectory(ParticleObject po, Vec2f start, Vec2f end, float dt)
 {

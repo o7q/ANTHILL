@@ -1,12 +1,11 @@
 #include "game.hpp"
 #include "scenes/main/main_scene.hpp"
-#include "scenes/test/test_scene.hpp"
 
 void Game::start()
 {
     init_binds();
 
-    m_scene = std::make_unique<TestScene>(m_window, m_assets);
+    m_scene = std::make_unique<MainScene>(m_window, m_assets);
 
     m_window.getTime().setMaxFPS(144);
     while (m_window.isRunning())

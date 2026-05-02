@@ -1,6 +1,5 @@
 #include "p_dynamics_handler.hpp"
 
-#include "math/physics/verlet.hpp"
 #include "math/random.hpp"
 
 void PDynamicsHandler::update_smoke_particle(ParticleObject po, float dt)
