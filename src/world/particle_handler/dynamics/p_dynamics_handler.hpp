@@ -41,6 +41,7 @@ class PDynamicsHandler
     bool can_gas_occupy(const Particle *p);
 
     void update_sand_particle(ParticleObject po, float dt);
+    void update_sandstone_particle(ParticleObject po, float dt);
     void update_water_particle(ParticleObject po, float dt);
     void update_smoke_particle(ParticleObject po, float dt);
 

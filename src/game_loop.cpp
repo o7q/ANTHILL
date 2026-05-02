@@ -1,7 +1,9 @@
-#include "backend/logger/logger.hpp"
 #include "game.hpp"
+
+#include "backend/logger/logger.hpp"
 #include "identifiers/scene.hpp"
 #include "scenes/main/main_scene.hpp"
+#include "scenes/test/test_scene.hpp"
 #include "utils/variant_bp.hpp"
 #include <variant>
 
@@ -12,11 +14,9 @@ void Game::update_loop()
         return;
     }
 
-    m_scene->update();
+    SceneIDKey resultID = m_scene->update();
 
-    Scene::Result result = m_scene->getResult();
-
-    if (!result.shouldLoadScene)
+    if (resultID == m_scene->getID())
     {
         return;
     }
@@ -26,7 +26,10 @@ void Game::update_loop()
                               switch (id)
                               {
                               case SceneID::Main:
-                                  m_scene = std::make_unique<MainScene>(m_assets, m_window);
+                                  m_scene = std::make_unique<MainScene>(m_window, m_assets);
+                                  break;
+                              case SceneID::Test:
+                                  m_scene = std::make_unique<TestScene>(m_window, m_assets);
                                   break;
                               default:
                                   break;
@@ -34,5 +37,5 @@ void Game::update_loop()
                           },
                           [](const std::string &id)
                           { Logger::info("Game::update_loop()", "Recieved custom scene change: " + id); }},
-               result.sceneLoadID);
+               resultID);
 }

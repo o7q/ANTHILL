@@ -6,6 +6,8 @@ void initTextures(AssetPool<TextureIDKey, Texture> &assets)
 
     initBackgrounds(v);
 
+    v[TextureID::Test] = {"assets/textures/test.png"};
+
     for (auto &[id, data] : v)
     {
         assets.add(id, std::make_unique<Texture>(data.path));

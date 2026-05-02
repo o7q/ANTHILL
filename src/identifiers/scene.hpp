@@ -5,6 +5,7 @@
 enum class SceneID
 {
     None,
-    Main
+    Main,
+    Test
 };
 using SceneIDKey = Identifier<SceneID>;

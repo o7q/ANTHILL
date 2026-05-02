@@ -9,6 +9,7 @@ class Particle
     enum class PhysicsType
     {
         Sand,
+        Sandstone,
         Water,
         Smoke,
         None

@@ -1,7 +1,7 @@
 #include "scene.hpp"
 #include "events/backend/events.hpp"
 
-void Scene::update()
+SceneIDKey Scene::update()
 {
     if (m_firstTick)
     {
@@ -11,6 +11,8 @@ void Scene::update()
 
     onTick();
     handleBackendEvents();
+
+    return m_sceneSwitchID;
 }
 
 void Scene::handleBackendEvents()

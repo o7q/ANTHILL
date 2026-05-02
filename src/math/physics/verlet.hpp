@@ -14,6 +14,7 @@ class VerletBody
         m_position     = pos;
         m_positionPrev = pos;
     }
+    void setPositionPresent(Vec2f pos) { m_position = pos; }
     Vec2f getPosition() const { return m_position; }
     Vec2f getPreviousPosition() const { return m_positionPrev; }
 

@@ -10,6 +10,8 @@ void MainScene::onStart()
         m_world.getEntityHandler().getIDHandler().getNext(), r_window.getInput(), r_assets));
 
     m_world.getEntityHandler().getCurrentPlayer()->getBody().setPosition({0, -200});
+
+    m_slowTimer.setDurationInSeconds(2);
 }
 
 void MainScene::onTick()
@@ -43,6 +45,34 @@ void MainScene::onTick()
         Particle air;
 
         m_world.getParticleHandler().getEditor().draw(worldMousePos, air, 10);
+    }
+    if (r_window.getInput().getInput(InputID::AltAction3)->isDown())
+    {
+        Particle sandstone;
+        sandstone.setColor(Color(255, 255, 0));
+        sandstone.setPhysicsType(Particle::PhysicsType::Sandstone);
+        sandstone.setMatterType(Particle::MatterType::Solid);
+
+        m_world.getParticleHandler().getEditor().draw(worldMousePos, sandstone, 5);
+    }
+    if (r_window.getInput().getInput(InputID::AltAction4)->isDown())
+    {
+        m_slowTimer.restart();
+    }
+    if (r_window.getInput().getInput(InputID::AltAction5)->isDown())
+    {
+        requestSceneChange(SceneID::Test);
+    }
+
+    m_slowTimer.update(r_window.getTime().getInfo().dt_raw);
+
+    if (m_slowTimer.active())
+    {
+        r_window.getTime().setSpeedMultiplier(m_slowTimer.getProgress());
+    }
+    else
+    {
+        r_window.getTime().setSpeedMultiplier(1);
     }
 
     Player *player = m_world.getEntityHandler().getCurrentPlayer();

@@ -8,7 +8,10 @@
 class MainScene : public Scene
 {
   public:
-    MainScene(const Assets &assets, Window &window) : Scene(assets, window), m_generator(m_world, r_assets) {}
+    MainScene(Window &window, const Assets &assets)
+        : Scene(SceneID::Main, window, assets), m_generator(m_world, r_assets)
+    {
+    }
 
   protected:
     void onStart() override;
@@ -25,4 +28,6 @@ class MainScene : public Scene
     Texture fpsText;
     Texture entitiesText;
     Texture chunksText;
+
+    Timer m_slowTimer;
 };

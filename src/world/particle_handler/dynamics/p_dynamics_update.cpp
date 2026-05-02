@@ -48,6 +48,9 @@ void PDynamicsHandler::update_particle(ParticleObject po, float dt)
     case Particle::PhysicsType::Sand:
         update_sand_particle(po, dt);
         break;
+    case Particle::PhysicsType::Sandstone:
+        update_sandstone_particle(po, dt);
+        break;
     case Particle::PhysicsType::Water:
         update_water_particle(po, dt);
         break;

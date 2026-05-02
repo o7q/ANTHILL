@@ -1,5 +1,6 @@
-#include "backend/input/input_handler.hpp"
 #include "game.hpp"
+
+#include "backend/input/input_handler.hpp"
 #include <SDL3/SDL_keycode.h>
 
 void Game::init_binds()

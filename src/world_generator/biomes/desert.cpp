@@ -13,7 +13,7 @@ GenerateResult generate_desert_layer1(Vec2i pos, uint32_t seed, const Assets &as
     float p1 = Math::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 9, seed);
 
     Particle::MatterType matterType   = Particle::MatterType::Solid;
-    Particle::PhysicsType physicsType = Particle::PhysicsType::Sand;
+    Particle::PhysicsType physicsType = Particle::PhysicsType::Sandstone;
     Color color(255, 159, 0);
     if (p1 > 0.4f)
     {
