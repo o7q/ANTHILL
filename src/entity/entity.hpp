@@ -11,6 +11,17 @@
 class Entity
 {
   public:
+    struct DamageSource
+    {
+        DamageSource(uint64_t afflictor_) : afflictor(afflictor_) {}
+
+        const uint64_t afflictor = 0;
+        float amount             = 0.0f;
+        Vec2i position;
+        Vec2f direction;
+    };
+
+  public:
     Entity(uint64_t parentID = 0) : m_parentID(parentID) {}
     virtual ~Entity() = default;
 
@@ -18,14 +29,7 @@ class Entity
     virtual void render(const Camera &camera, std::vector<RenderCommand> &commandsOut)         = 0;
 
     void kill() { m_health = -1.0f; }
-    void damage(float amount, uint64_t afflictor = 0)
-    {
-        m_health -= amount;
-        if (afflictor != 0)
-        {
-            m_lastDamageAfflictor = afflictor;
-        }
-    }
+    virtual void damage(DamageSource source) { m_health -= source.amount; }
     float getHealth() const { return m_health; }
 
     EntityBody &getBody() { return m_body; }
@@ -45,10 +49,8 @@ class Entity
 
     EntityMetadata m_metadata;
 
-  private:
-    const uint64_t m_parentID = 0;
-
     float m_health = 100.0f;
 
-    uint64_t m_lastDamageAfflictor = 0;
+  private:
+    const uint64_t m_parentID = 0;
 };

@@ -1,0 +1,19 @@
+What will people be doing for 90% of the game? (gameplay loop)
+
+Example for Ultrakill:
+- You walk into a room, enemies spawn, you shoot the enemies, and avoid getting killed using fun mechanics.
+
+Ideas for ANTHILL:
+- The gameplay consists of exploration, killing and looting enemies, and upgrading your character.
+- Fixed width of world, you dig down
+
+---------------------------------------------
+
+Principles of Game Feel (from GAME FEEL by Steve Swink):
+- Predictable results: When players take action, they get the response they expect.
+- Instantaneous response: The player feels the response to their input is immediate.
+- Easy but deep: The game takes minutes to learn but a lifetime to master.
+- Novelty: Though the result of an input is predictable, there is enough subtlety and expressiveness to keep the controls feeling fresh and interesting through hours and hours of play.
+- Appealing response: The sensation of control is aesthetically appealing and compelling, separate from context.
+- Organic motion: Controlling the avatar creates appealing arcs of motion.
+- Harmony: Each element of a game's feel supports a single, cohesive perception of a unique physical reality for the player.

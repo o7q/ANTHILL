@@ -12,10 +12,13 @@ struct EntitySpawnEvent : public EntityEvent
 
 struct EntityDamageEvent : public EntityEvent
 {
-    EntityDamageEvent(const uint64_t caller_) : EntityEvent(caller_, EntityEventType::EntityDamage) {}
+    EntityDamageEvent(const uint64_t caller_)
+        : EntityEvent(caller_, EntityEventType::EntityDamage), source(caller_)
+    {
+    }
 
+    Entity::DamageSource source;
     uint64_t target = 0;
-    float damage    = 0.0f;
 };
 
 struct EntityParticleEvent : public EntityEvent

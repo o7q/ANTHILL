@@ -10,7 +10,7 @@ class Camera
     Camera()          = default;
     virtual ~Camera() = default;
 
-    void update(TimeInfo time);
+    void update(TimeHandler::Info time);
 
     void setGoal(Vec2i pos)
     {

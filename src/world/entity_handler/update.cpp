@@ -1,11 +1,11 @@
-#include "backend/time/time_handler.hpp"
 #include "entity_handler.hpp"
+
 #include "events/event_pool.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 #include <memory>
 #include <unordered_map>
 
-void EntityHandler::update(const ParticleHandler &particleHandler, TimeInfo time, Vec2i origin,
+void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::Info time, Vec2i origin,
                            EventPoolRefs eventPoolRefs)
 {
     EventPool<EntityEvent> events;

@@ -40,9 +40,9 @@ WuskkogelStateID WuskkogelAttackState::update(const UpdateContext &context)
 
     if (std::abs(dx) + std::abs(dy) < 10 && !m_bit)
     {
-        auto damageEvent    = std::make_unique<EntityDamageEvent>(context.context.id);
-        damageEvent->target = target;
-        damageEvent->damage = 5;
+        auto damageEvent           = std::make_unique<EntityDamageEvent>(context.context.id);
+        damageEvent->target        = target;
+        damageEvent->source.amount = 5;
         context.events.emit(std::move(damageEvent));
         m_bit = true;
     }

@@ -20,7 +20,7 @@ class ParticleHandler
     {
     }
 
-    void update(TimeInfo time, Vec2i origin);
+    void update(TimeHandler::Info time, Vec2i origin);
 
     const ChunkMap<Particle> &getParticles() const { return m_particles; }
     ChunkMap<Particle> &getParticles() { return m_particles; }

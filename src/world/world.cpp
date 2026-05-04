@@ -1,7 +1,8 @@
 #include "world.hpp"
+
 #include "backend/viewport/render_command.hpp"
 
-void World::update(TimeInfo time, Vec2i origin, EventPool<BackendEvent> &backendEvents)
+void World::update(TimeHandler::Info time, Vec2i origin, EventPool<BackendEvent> &backendEvents)
 {
     m_particleHandler.update(time, origin);
     m_entityHandler.update(m_particleHandler, time, origin, {backendEvents, m_particleHandler.getEvents()});

@@ -25,6 +25,11 @@ class DashHandler
 
     void update(EntityBody &body, EventPool<EntityEvent> &eventsOut, const EntityUpdateContext &context);
 
+    State getState() const { return m_state; }
+
+  private:
+    void dash_update_velocity(EntityBody &body);
+
   private:
     State m_state = State::Idle;
 

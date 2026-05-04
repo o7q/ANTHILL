@@ -26,7 +26,7 @@ void EntityHandler::handleEvents(EventPool<EntityEvent> &events, EventPoolRefs e
                 break;
             }
 
-            it->second->damage(e->damage);
+            it->second->damage(e->source);
         }
         break;
         case EntityEventType::EntitySpawn:

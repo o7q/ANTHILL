@@ -10,7 +10,7 @@ class Entity;
 struct EntityUpdateContext
 {
     const uint64_t id = 0;
-    const TimeInfo time;
+    const TimeHandler::Info time;
     const ParticleHandler &particleHandler;
     const std::unordered_map<uint64_t, const Entity *> &nearbyEntities;
 };

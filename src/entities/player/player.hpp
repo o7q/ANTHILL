@@ -4,7 +4,6 @@
 #include "backend/input/input_handler.hpp"
 #include "backend/viewport/render_command.hpp"
 #include "entities/player/dash/dash_handler.hpp"
-#include "entities/player/jetpack/jetpack.hpp"
 #include "entities/player/sprite/player_sprite.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
@@ -21,7 +20,6 @@ class Player : public Entity
     Inventory &getInventory() { return m_inventory; }
 
     void update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) override;
-
     void render(const Camera &camera, std::vector<RenderCommand> &commandsOut) override;
 
     void updateAimPosition(Vec2i aimPos)
@@ -49,6 +47,5 @@ class Player : public Entity
 
     PlayerSprite m_sprite;
 
-    Jetpack m_jetpack;
     DashHandler m_dashHandler;
 };

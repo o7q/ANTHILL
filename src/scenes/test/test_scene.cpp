@@ -44,7 +44,7 @@ void TestScene::onTick()
         body.addForce(vel);
     }
 
-    for (int i = 0; i < m_bodies.size(); ++i)
+    for (size_t i = 0; i < m_bodies.size(); ++i)
     {
         if (i == 0)
         {
@@ -53,7 +53,7 @@ void TestScene::onTick()
         // m_bodies[i].addForce({0, 1});
     }
 
-    for (int i = 0; i < m_bodies.size(); ++i)
+    for (size_t i = 0; i < m_bodies.size(); ++i)
     {
         m_bodies[i].integrate(r_window.getTime().getInfo().dt);
     }

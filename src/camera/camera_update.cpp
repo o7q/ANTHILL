@@ -1,6 +1,6 @@
 #include "camera.hpp"
 
-void Camera::update(TimeInfo time)
+void Camera::update(TimeHandler::Info time)
 {
     if (!m_goalSet)
     {

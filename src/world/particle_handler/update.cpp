@@ -2,7 +2,7 @@
 
 #include "events/particle/events.hpp"
 
-void ParticleHandler::update(TimeInfo time, Vec2i origin)
+void ParticleHandler::update(TimeHandler::Info time, Vec2i origin)
 {
     for (auto &event : m_events.getEvents())
     {

@@ -38,6 +38,4 @@ void Player::update_movement(const EntityUpdateContext &context, EventPool<Entit
     }
 
     m_dashHandler.update(m_body, eventsOut, context);
-
-    m_bodyHandler.update(context);
 }

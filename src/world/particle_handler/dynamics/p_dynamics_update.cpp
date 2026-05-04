@@ -4,7 +4,7 @@
 #include "world/particle_handler/particle.hpp"
 #include <limits>
 
-void PDynamicsHandler::update(TimeInfo timeInfo, Vec2i origin)
+void PDynamicsHandler::update(TimeHandler::Info timeInfo, Vec2i origin)
 {
     Index2D lastNavmeshChunkIndex(std::numeric_limits<int>::max(), std::numeric_limits<int>::max());
 

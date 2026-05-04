@@ -1,15 +1,12 @@
 #include "dash_handler.hpp"
 
-#include "events/entity/events.hpp"
-#include "events/particle/events.hpp"
 #include "math/angle.hpp"
 #include "math/interpolation.hpp"
 #include <algorithm>
-#include <memory>
 
 DashHandler::DashHandler()
 {
-    m_startTimer.setDurationInMilliseconds(80);
+    m_startTimer.setDurationInMilliseconds(0);
     m_dashTimer.setDurationInMilliseconds(500);
 }
 
@@ -49,26 +46,7 @@ void DashHandler::update(EntityBody &body, EventPool<EntityEvent> &eventsOut,
     break;
     case State::Dashing:
     {
-        Vec2f dir = {std::cosf(m_dashAngle), std::sinf(m_dashAngle)};
-
-        Vec2f startVel = dir * 10.0f;
-        Vec2f endVel   = dir * 1.0f;
-
-        float velX = Math::Interpolation::easeOutCubic(startVel.x, endVel.x,
-                                                       std::clamp(m_dashTimer.getProgress(), 0.0f, 1.0f));
-        float velY = Math::Interpolation::easeOutCubic(startVel.y, endVel.y,
-                                                       std::clamp(m_dashTimer.getProgress(), 0.0f, 1.0f));
-
-        body.setVelocity({velX, velY});
-
-        auto event      = std::make_unique<ParticleDrawEvent>();
-        event->particle = Particle();
-        event->radius   = 18;
-        event->position = body.getPosition() + Vec2i(velX, velY);
-
-        auto entityEvent = std::make_unique<EntityParticleEvent>(context.id, std::move(event));
-
-        eventsOut.emit(std::move(entityEvent));
+        dash_update_velocity(body);
 
         m_dashTimer.update(context.time.dt);
 
@@ -81,4 +59,19 @@ void DashHandler::update(EntityBody &body, EventPool<EntityEvent> &eventsOut,
     default:
         break;
     }
+}
+
+void DashHandler::dash_update_velocity(EntityBody &body)
+{
+    Vec2f dir = {std::cosf(m_dashAngle), std::sinf(m_dashAngle)};
+
+    Vec2f startVel = dir * 10.0f;
+    Vec2f endVel   = dir * 1.0f;
+
+    float velX = Math::Interpolation::easeOutCubic(startVel.x, endVel.x,
+                                                   std::clamp(m_dashTimer.getProgress(), 0.0f, 1.0f));
+    float velY = Math::Interpolation::easeOutCubic(startVel.y, endVel.y,
+                                                   std::clamp(m_dashTimer.getProgress(), 0.0f, 1.0f));
+
+    body.setVelocity({velX, velY});
 }

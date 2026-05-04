@@ -26,8 +26,11 @@ class Wuskkogel : public Entity
         data.flipX    = m_body.getVelocity().x < 0;
 
         commandsOut.push_back({1, data});
+    }
 
-        // DEBUG_renderAISightPoints(m_aiPerception, camera, commandsOut);
+    void damage(DamageSource source) override
+    {
+        m_damageSources.push_back(source);
     }
 
   private:
@@ -41,4 +44,6 @@ class Wuskkogel : public Entity
 
     float m_lookAngle = 0.0f;
     Vec2i m_headPos   = {0, -5};
+
+    std::vector<DamageSource> m_damageSources;
 };

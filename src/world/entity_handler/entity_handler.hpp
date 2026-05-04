@@ -1,5 +1,6 @@
 #pragma once
 
+#include "backend/time/time_handler.hpp"
 #include "backend/viewport/render_command.hpp"
 #include "entities/player/player.hpp"
 #include "entity/entity.hpp"
@@ -26,7 +27,8 @@ class EntityHandler
     EntityHandler &operator=(const EntityHandler &other) = delete;
     virtual ~EntityHandler()                             = default;
 
-    void update(const ParticleHandler &world, TimeInfo time, Vec2i origin, EventPoolRefs eventPoolRefs);
+    void update(const ParticleHandler &world, TimeHandler::Info time, Vec2i origin,
+                EventPoolRefs eventPoolRefs);
     void handleEvents(EventPool<EntityEvent> &events, EventPoolRefs eventPoolRefs);
 
     void render(const Camera &camera, std::vector<RenderCommand> &commandsOut);

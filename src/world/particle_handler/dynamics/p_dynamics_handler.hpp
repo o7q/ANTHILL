@@ -20,7 +20,7 @@ class PDynamicsHandler
     {
     }
 
-    void update(TimeInfo timeInfo, Vec2i origin);
+    void update(TimeHandler::Info timeInfo, Vec2i origin);
 
     void setGravity(float gravity) { m_gravity = gravity; }
     void addGravity(float gravity) { m_gravity += gravity; }
@@ -52,6 +52,6 @@ class PDynamicsHandler
 
     float m_gravity = 0.1f;
 
-    // Vec2u m_updateRadius = {160, 90};
-    Vec2u m_updateRadius = {0, 0};
+    Vec2u m_updateRadius = {160, 90};
+    // Vec2u m_updateRadius = {0, 0};
 };
