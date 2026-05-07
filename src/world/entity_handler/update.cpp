@@ -12,7 +12,7 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
 
     for (auto &[id, entity] : m_entities)
     {
-        std::unordered_map<uint64_t, const Entity *> nearby = getNearbyEntities(id);
+        std::unordered_map<uint64_t, const Entity *> nearby = get_nearby_entities(id);
         EntityUpdateContext context{id, time, particleHandler, nearby};
 
         entity->update(context, events);
@@ -27,7 +27,7 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
         }
     }
 
-    handleEvents(events, eventPoolRefs);
+    handle_events(events, eventPoolRefs);
 
     for (uint64_t id : m_entitiesToRemove)
     {

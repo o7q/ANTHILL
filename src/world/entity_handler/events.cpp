@@ -4,7 +4,7 @@
 #include "events/event_pool.hpp"
 #include <memory>
 
-void EntityHandler::handleEvents(EventPool<EntityEvent> &events, EventPoolRefs eventPoolRefs)
+void EntityHandler::handle_events(EventPool<EntityEvent> &events, EventPoolRefs eventPoolRefs)
 {
     for (auto &event : events.getEvents())
     {
@@ -41,10 +41,10 @@ void EntityHandler::handleEvents(EventPool<EntityEvent> &events, EventPoolRefs e
             eventPoolRefs.particle.emit(std::move(e->payload));
         }
         break;
-        case EntityEventType::Backend:
+        case EntityEventType::Scene:
         {
-            auto e = static_cast<EntityBackendEvent *>(event.get());
-            eventPoolRefs.backend.emit(std::move(e->payload));
+            auto e = static_cast<EntitySceneEvent *>(event.get());
+            eventPoolRefs.scene.emit(std::move(e->payload));
         }
         break;
         }

@@ -4,8 +4,8 @@
 #include "backend/viewport/render_command.hpp"
 #include "entities/player/player.hpp"
 #include "entity/entity.hpp"
-#include "events/backend/base.hpp"
 #include "events/event_pool.hpp"
+#include "events/scene/base.hpp"
 #include "world/entity_handler/id.hpp"
 #include <cstdint>
 #include <memory>
@@ -17,7 +17,7 @@ class EntityHandler
   public:
     struct EventPoolRefs
     {
-        EventPool<BackendEvent> &backend;
+        EventPool<SceneEvent> &scene;
         EventPool<ParticleEvent> &particle;
     };
 
@@ -29,7 +29,6 @@ class EntityHandler
 
     void update(const ParticleHandler &world, TimeHandler::Info time, Vec2i origin,
                 EventPoolRefs eventPoolRefs);
-    void handleEvents(EventPool<EntityEvent> &events, EventPoolRefs eventPoolRefs);
 
     void render(const Camera &camera, std::vector<RenderCommand> &commandsOut);
 
@@ -40,11 +39,13 @@ class EntityHandler
     Entity *getLatestEntity();
     Entity *getEntity(uint64_t id);
 
-    const std::unordered_map<uint64_t, const Entity *> getNearbyEntities(uint64_t nearID);
-
     EntityIDHandler &getIDHandler() { return m_idHandler; }
 
     size_t getEntityCount() const { return m_entities.size(); }
+
+  private:
+    void handle_events(EventPool<EntityEvent> &events, EventPoolRefs eventPoolRefs);
+    const std::unordered_map<uint64_t, const Entity *> get_nearby_entities(uint64_t nearID);
 
   private:
     EntityIDHandler m_idHandler;

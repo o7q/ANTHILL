@@ -2,6 +2,7 @@
 
 #include "base.hpp"
 #include "entity/entity.hpp"
+#include "events/scene/base.hpp"
 
 struct EntitySpawnEvent : public EntityEvent
 {
@@ -32,13 +33,13 @@ struct EntityParticleEvent : public EntityEvent
     std::unique_ptr<ParticleEvent> payload;
 };
 
-struct EntityBackendEvent : public EntityEvent
+struct EntitySceneEvent : public EntityEvent
 {
 
-    EntityBackendEvent(const uint64_t caller_, std::unique_ptr<BackendEvent> payload_)
-        : EntityEvent(caller_, EntityEventType::Backend), payload(std::move(payload_))
+    EntitySceneEvent(const uint64_t caller_, std::unique_ptr<SceneEvent> payload_)
+        : EntityEvent(caller_, EntityEventType::Scene), payload(std::move(payload_))
     {
     }
 
-    std::unique_ptr<BackendEvent> payload;
+    std::unique_ptr<SceneEvent> payload;
 };

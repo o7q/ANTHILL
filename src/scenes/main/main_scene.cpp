@@ -2,8 +2,8 @@
 
 #include "backend/time/time_handler.hpp"
 #include "backend/viewport/render_command.hpp"
+#include "events/scene/events.hpp"
 #include "math/random.hpp"
-#include <iostream>
 #include <memory>
 
 void MainScene::onStart()
@@ -69,7 +69,9 @@ void MainScene::onTick()
 
     if (r_window.getInput().getInput(InputID::AltAction5)->isDown())
     {
-        loadScene(SceneID::Test);
+        auto loadScene = std::make_unique<SceneLoadEvent>();
+        loadScene->id  = SceneID::Test;
+        m_events.emit(std::move(loadScene));
     }
 
     Player *player = m_world.getEntityHandler().getCurrentPlayer();
@@ -81,7 +83,7 @@ void MainScene::onTick()
     }
 
     m_generator.generate(updatePos.toInt(), {10, 10});
-    m_world.update(r_window.getTime().getInfo(), updatePos, m_backendEvents);
+    m_world.update(r_window.getTime().getInfo(), updatePos, m_events);
 
     if (player)
     {

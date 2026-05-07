@@ -3,8 +3,8 @@
 #include "assets/assets.hpp"
 #include "backend/timer/timer.hpp"
 #include "entities/simple_projectile/simple_projectile.hpp"
-#include "events/backend/events.hpp"
 #include "events/entity/events.hpp"
+#include "events/scene/events.hpp"
 #include "identifiers/assets/sounds.hpp"
 #include "identifiers/assets/spritesheet.hpp"
 #include "item/context.hpp"
@@ -49,7 +49,7 @@ class Shotgun : public Gun, public IRenderable
             m_fireCooldownTimer.restart();
             m_animator.restart();
 
-            auto shootSoundEvent = std::make_unique<BackendPlaySoundEvent>();
+            auto shootSoundEvent = std::make_unique<ScenePlaySoundEvent>();
 
             constexpr SoundID sounds[3] = {SoundID::WeaponShotgunFire1, SoundID::WeaponShotgunFire2,
                                            SoundID::WeaponShotgunFire3};
@@ -58,7 +58,7 @@ class Shotgun : public Gun, public IRenderable
             shootSoundEvent->settings.volume = 0.2f;
             shootSoundEvent->settings.pitch  = 100.0f / Math::Random::unseededRandomInt(95, 100);
 
-            eventsOut.emit(std::make_unique<EntityBackendEvent>(context.ownerID, std::move(shootSoundEvent)));
+            eventsOut.emit(std::make_unique<EntitySceneEvent>(context.ownerID, std::move(shootSoundEvent)));
 
             return true;
         }
@@ -72,13 +72,12 @@ class Shotgun : public Gun, public IRenderable
     {
         if (restock_ammo())
         {
-            auto reloadSoundEvent             = std::make_unique<BackendPlaySoundEvent>();
+            auto reloadSoundEvent             = std::make_unique<ScenePlaySoundEvent>();
             reloadSoundEvent->soundID         = SoundID::WeaponShotgunReload1;
             reloadSoundEvent->settings.volume = 0.2f;
             reloadSoundEvent->settings.pitch  = 100.0f / Math::Random::unseededRandomInt(95, 100);
 
-            eventsOut.emit(
-                std::make_unique<EntityBackendEvent>(context.ownerID, std::move(reloadSoundEvent)));
+            eventsOut.emit(std::make_unique<EntitySceneEvent>(context.ownerID, std::move(reloadSoundEvent)));
 
             return true;
         }

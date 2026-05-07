@@ -1,6 +1,6 @@
 #include "entity_handler.hpp"
 
-const std::unordered_map<uint64_t, const Entity *> EntityHandler::getNearbyEntities(uint64_t nearID)
+const std::unordered_map<uint64_t, const Entity *> EntityHandler::get_nearby_entities(uint64_t nearID)
 {
     std::unordered_map<uint64_t, const Entity *> nearby;
     for (auto &[id, entity] : m_entities)

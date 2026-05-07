@@ -2,8 +2,8 @@
 
 #include "assets/assets.hpp"
 #include "backend/window/window.hpp"
-#include "events/backend/base.hpp"
 #include "events/event_pool.hpp"
+#include "events/scene/base.hpp"
 #include "identifiers/scene.hpp"
 
 class Scene
@@ -27,19 +27,13 @@ class Scene
     virtual void onStart() = 0;
     virtual void onTick()  = 0;
 
-    void loadScene(SceneIDKey id)
-    {
-        m_result.load = true;
-        m_result.id   = id;
-    }
-
   private:
-    void handleBackendEvents();
+    void handle_events();
 
   protected:
     Window &r_window;
     const Assets &r_assets;
-    EventPool<BackendEvent> m_backendEvents;
+    EventPool<SceneEvent> m_events;
 
   private:
     bool m_firstTick = true;
