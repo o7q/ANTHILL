@@ -11,9 +11,12 @@ void PlayerSprite::update(UpdateData data, float dt)
         m_legs.restartAll();
     }
 
-    update_head(state, data.lookAngle, dt);
-    update_torso(state, dt);
-    update_legs(state, dt);
+    if (!data.dashing)
+    {
+        update_head(state, data.lookAngle, dt);
+        update_torso(state, dt);
+        update_legs(state, dt);
+    }
 
     m_lastState = state;
 }

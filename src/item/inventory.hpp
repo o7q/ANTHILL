@@ -59,6 +59,6 @@ class Inventory
 
   private:
     std::unordered_map<int, std::unique_ptr<Item>> m_items;
-    unsigned int m_inventorySlots = 10;
-    unsigned int m_selectedSlot   = 0;
+    const unsigned int m_inventorySlots = 10;
+    unsigned int m_selectedSlot         = 0;
 };

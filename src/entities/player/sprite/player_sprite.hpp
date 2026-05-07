@@ -42,10 +42,9 @@ class PlayerSprite
     struct UpdateData
     {
         const EntityBody &body;
-        float lookAngle   = 0.0f;
-        bool dashing      = false;
-        bool usingJetpack = false;
-        bool jumping      = false;
+        float lookAngle = 0.0f;
+        bool dashing    = false;
+        bool jumping    = false;
     };
 
   public:

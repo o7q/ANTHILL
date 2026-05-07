@@ -2,7 +2,7 @@
 
 #include "entity/world_interaction/against.hpp"
 
-void Player::update_movement(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
+void Player::update_movement_and_jump(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
     float velX = 0.0f;
     if (r_input.getInput(InputID::Left)->isDown())
@@ -14,6 +14,7 @@ void Player::update_movement(const EntityUpdateContext &context, EventPool<Entit
         velX += 3.0f;
     }
     m_body.setVelocityTargetX(velX);
+    
     if (r_input.getInput(InputID::Jump)->wasPressed())
     {
         m_jumpHandler.requestJump();
@@ -26,16 +27,10 @@ void Player::update_movement(const EntityUpdateContext &context, EventPool<Entit
     bool onGround = EntityWorldInteraction::againstSolidSurface(
         m_body.getPosition(), m_boundingBox, context.particleHandler, RectangleSide::Bottom);
 
-    m_jumpHandler.update(m_body, context.time.dt, onGround);
+    m_jumpHandler.update(context.time.dt, onGround);
 
-    if (r_input.getInput(InputID::Dash)->isDown())
+    if (m_jumpHandler.canApplyJumpPower())
     {
-        m_dashHandler.start(m_angle);
+        m_body.setVelocityY(-m_jumpHandler.getJumpPower());
     }
-    else
-    {
-        m_dashHandler.stop();
-    }
-
-    m_dashHandler.update(m_body, eventsOut, context);
 }

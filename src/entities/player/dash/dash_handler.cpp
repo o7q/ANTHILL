@@ -28,14 +28,13 @@ void DashHandler::stop()
     m_dashTimer.stop();
 }
 
-void DashHandler::update(EntityBody &body, EventPool<EntityEvent> &eventsOut,
-                         const EntityUpdateContext &context)
+void DashHandler::update(const EntityUpdateContext &context)
 {
     switch (m_state)
     {
     case State::Charging:
     {
-        body.setVelocity({0, 0});
+        m_dashVelocity = {0, 0};
         m_startTimer.update(context.time.dt);
 
         if (m_startTimer.completed())
@@ -46,13 +45,13 @@ void DashHandler::update(EntityBody &body, EventPool<EntityEvent> &eventsOut,
     break;
     case State::Dashing:
     {
-        dash_update_velocity(body);
+        dash_update_velocity();
 
         m_dashTimer.update(context.time.dt);
 
         if (m_dashTimer.completed())
         {
-            m_state = State::Drained;
+            m_state = State::Idle;
         }
     }
     break;
@@ -61,7 +60,7 @@ void DashHandler::update(EntityBody &body, EventPool<EntityEvent> &eventsOut,
     }
 }
 
-void DashHandler::dash_update_velocity(EntityBody &body)
+void DashHandler::dash_update_velocity()
 {
     Vec2f dir = {std::cosf(m_dashAngle), std::sinf(m_dashAngle)};
 
@@ -73,5 +72,5 @@ void DashHandler::dash_update_velocity(EntityBody &body)
     float velY = Math::Interpolation::easeOutCubic(startVel.y, endVel.y,
                                                    std::clamp(m_dashTimer.getProgress(), 0.0f, 1.0f));
 
-    body.setVelocity({velX, velY});
+    m_dashVelocity = {velX, velY};
 }

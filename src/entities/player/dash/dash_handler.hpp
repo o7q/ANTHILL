@@ -1,10 +1,7 @@
 #pragma once
 
 #include "backend/timer/timer.hpp"
-#include "entity/body/entity_body.hpp"
 #include "entity/update_context.hpp"
-#include "events/entity/base.hpp"
-#include "events/event_pool.hpp"
 
 class DashHandler
 {
@@ -13,8 +10,7 @@ class DashHandler
     {
         Idle,
         Charging,
-        Dashing,
-        Drained
+        Dashing
     };
 
   public:
@@ -23,15 +19,17 @@ class DashHandler
     void start(float angle);
     void stop();
 
-    void update(EntityBody &body, EventPool<EntityEvent> &eventsOut, const EntityUpdateContext &context);
+    void update(const EntityUpdateContext &context);
 
     State getState() const { return m_state; }
+    Vec2f getDashVelocity() const { return m_dashVelocity; }
 
   private:
-    void dash_update_velocity(EntityBody &body);
+    void dash_update_velocity();
 
   private:
     State m_state = State::Idle;
+    Vec2f m_dashVelocity;
 
     Timer m_startTimer;
     Timer m_dashTimer;

@@ -56,7 +56,7 @@ class StaticGridRectangle
     int m_area = 0;
 };
 
-class GridRectangle : public StaticGridRectangle
+class PositionalGridRectangle : public StaticGridRectangle
 {
   public:
     void setPosition(Vec2i pos)
@@ -64,6 +64,8 @@ class GridRectangle : public StaticGridRectangle
         m_position = pos;
         recalculateAB();
     }
+
+    Vec2i getPosition() const { return m_position; }
 
   protected:
     virtual void recalculateAB() override

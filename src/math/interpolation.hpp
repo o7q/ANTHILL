@@ -6,23 +6,17 @@ namespace Math
 {
 namespace Interpolation
 {
-enum class Type
-{
-    Linear,
-    EaseOutCubic
-};
-
 inline float lerp(float a, float b, float t) { return a + t * (b - a); }
-
-inline float easeOutCubic(float a, float b, float t)
-{
-    t = 1.0f - std::pow(1.0f - t, t);
-    return lerp(a, b, t);
-}
 
 inline float smoothStep(float a, float b, float t)
 {
     t = t * t * (3.0f - 2.0f * t);
+    return lerp(a, b, t);
+}
+
+inline float easeOutCubic(float a, float b, float t)
+{
+    t = 1.0f - std::pow(1.0f - t, 3.0f);
     return lerp(a, b, t);
 }
 

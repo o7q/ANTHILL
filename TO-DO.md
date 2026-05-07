@@ -9,3 +9,6 @@ World
 
 Physics
 - Optimize physics
+
+Window
+- Turn backend events into window events, so it's entirely contained within the Window class

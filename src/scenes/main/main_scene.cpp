@@ -1,7 +1,9 @@
 #include "main_scene.hpp"
 
+#include "backend/time/time_handler.hpp"
 #include "backend/viewport/render_command.hpp"
 #include "math/random.hpp"
+#include <iostream>
 #include <memory>
 
 void MainScene::onStart()
@@ -10,8 +12,6 @@ void MainScene::onStart()
         m_world.getEntityHandler().getIDHandler().getNext(), r_window.getInput(), r_assets));
 
     m_world.getEntityHandler().getCurrentPlayer()->getBody().setPosition({0, -200});
-
-    m_slowTimer.setDurationInSeconds(2);
 }
 
 void MainScene::onTick()
@@ -30,7 +30,6 @@ void MainScene::onTick()
 
     if (r_window.getInput().getInput(InputID::AltAction1)->isDown())
     {
-
         Particle stone;
         float mult = Math::Random::unseededRandomInt(80, 100) / 100.0f;
         stone.setColor(Color(200 * mult, 205 * mult, 200 * mult));
@@ -57,22 +56,20 @@ void MainScene::onTick()
     }
     if (r_window.getInput().getInput(InputID::AltAction4)->isDown())
     {
-        m_slowTimer.restart();
+        SpeedChanger::Settings s;
+        s.startLength = 0.5f;
+
+        s.holdLength = 0.2f;
+        s.holdSpeed  = 0.01f;
+
+        s.endLength = 0.4f;
+
+        r_window.getTime().getSpeedChanger().startTransition(s);
     }
+
     if (r_window.getInput().getInput(InputID::AltAction5)->isDown())
     {
-        requestSceneChange(SceneID::Test);
-    }
-
-    m_slowTimer.update(r_window.getTime().getInfo().dt_raw);
-
-    if (m_slowTimer.active())
-    {
-        r_window.getTime().setSpeedMultiplier(m_slowTimer.getProgress());
-    }
-    else
-    {
-        r_window.getTime().setSpeedMultiplier(1);
+        loadScene(SceneID::Test);
     }
 
     Player *player = m_world.getEntityHandler().getCurrentPlayer();

@@ -26,5 +26,8 @@ void TimeHandler::frameEnd()
 
     m_info.fps    = 1.0f / total_frame_seconds;
     m_info.dt_raw = std::clamp(m_dt_base_fps / m_info.fps, 0.0f, m_max_dt);
-    m_info.dt     = m_info.dt_raw * m_speed_multiplier;
+
+    m_speedChanger.update(m_info.dt_raw);
+    m_info.speed_multiplier = m_speedChanger.getCurrentSpeed();
+    m_info.dt               = m_info.dt_raw * m_info.speed_multiplier;
 }

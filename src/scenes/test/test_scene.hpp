@@ -8,7 +8,7 @@
 class TestScene : public Scene
 {
   public:
-    TestScene(Window &window, const Assets &assets) : Scene(SceneID::Test, window, assets)
+    TestScene(Window &window, const Assets &assets) : Scene(window, assets)
     {
         m_drawTex = Texture(r_window.getViewport().getSize());
     }

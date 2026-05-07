@@ -35,7 +35,7 @@ GenerateResult generate_desert_layer1(Vec2i pos, uint32_t seed, const Assets &as
         color      = Color();
     }
 
-    if (p0 >= 0.67f && p0 < 0.68f && Math::Random::unseededRandomInt(0, 15000) == 0)
+    if (p0 >= 0.67f && p0 < 0.68f && Math::Random::unseededRandomInt(0, 10000) == 0)
     {
         auto wuskkogel = std::make_unique<Wuskkogel>(assets);
         wuskkogel->getBody().setPosition(pos);
@@ -76,7 +76,7 @@ GenerateResult generate_desert_layer2(Vec2i pos, uint32_t seed, const Assets &as
         color      = Color();
     }
 
-    if (p0 > 0.65f && p0 < 0.70f && Math::Random::unseededRandomInt(0, 15000) == 0)
+    if (p0 > 0.65f && p0 < 0.70f && Math::Random::unseededRandomInt(0, 10000) == 0)
     {
         auto wuskkogel = std::make_unique<Wuskkogel>(assets);
         wuskkogel->getBody().setPosition(pos);

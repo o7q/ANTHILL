@@ -1,7 +1,6 @@
 #pragma once
 
 #include "backend/timer/timer.hpp"
-#include "entity/body/entity_body.hpp"
 
 class JumpHandler
 {
@@ -14,10 +13,13 @@ class JumpHandler
     }
     virtual ~JumpHandler() = default;
 
-    void update(EntityBody &body, float dt, bool onGround);
+    void update(float dt, bool onGround);
 
     void requestJump() { m_jumpRequested = true; }
     void cancelJump() { m_holdJumpTimer.stop(); }
+
+    float getJumpPower() const { return m_jumpPower; }
+    bool canApplyJumpPower() const { return m_holdJumpTimer.active(); }
 
   private:
     float m_jumpPower    = 4.5f;

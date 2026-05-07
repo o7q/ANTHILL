@@ -1,7 +1,7 @@
 #include "scene.hpp"
 #include "events/backend/events.hpp"
 
-SceneIDKey Scene::update()
+Scene::Result Scene::update()
 {
     if (m_firstTick)
     {
@@ -12,7 +12,7 @@ SceneIDKey Scene::update()
     onTick();
     handleBackendEvents();
 
-    return m_sceneSwitchID;
+    return m_result;
 }
 
 void Scene::handleBackendEvents()
@@ -30,5 +30,5 @@ void Scene::handleBackendEvents()
         }
     }
 
-    m_backendEvents.clear();
+    m_backendEvents.flush();
 }

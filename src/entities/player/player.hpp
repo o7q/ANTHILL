@@ -10,14 +10,13 @@
 #include "entity/jump_handler/jump_handler.hpp"
 #include "item/inventory.hpp"
 #include "math/angle.hpp"
+#include "math/rectangle.hpp"
 
 class Player : public Entity
 {
   public:
     Player(uint64_t id, InputHandler &input, const Assets &assets);
     virtual ~Player() = default;
-
-    Inventory &getInventory() { return m_inventory; }
 
     void update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) override;
     void render(const Camera &camera, std::vector<RenderCommand> &commandsOut) override;
@@ -30,22 +29,34 @@ class Player : public Entity
                        .degrees();
     }
 
+    virtual void damage(DamageSource source) override
+    {
+        // i-frames
+        if (m_dashHandler.getState() == DashHandler::State::Dashing)
+        {
+            return;
+        }
+
+        m_health -= source.amount;
+    }
+
   private:
-    void update_movement(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut);
+    void update_movement_and_jump(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut);
     void update_items(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut);
 
   private:
     InputHandler &r_input;
     const Assets &r_assets;
     BodyUpdateHandler m_bodyHandler;
-    JumpHandler m_jumpHandler;
+    PlayerSprite m_sprite;
+
     Inventory m_inventory;
+
+    JumpHandler m_jumpHandler;
+    DashHandler m_dashHandler;
 
     Vec2i m_aimPos;
     float m_angle                = 0.0f;
     Vec2i m_relativeHeadPosition = {0, -6};
-
-    PlayerSprite m_sprite;
-
-    DashHandler m_dashHandler;
+    std::vector<PositionalGridRectangle> m_highlightRects;
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "speed_changer.hpp"
 #include <chrono>
 
 class TimeHandler
@@ -7,9 +8,10 @@ class TimeHandler
   public:
     struct Info
     {
-        float dt     = 1.0f;
-        float dt_raw = 1.0f;
-        float fps    = 60.0f;
+        float dt               = 1.0f;
+        float dt_raw           = 1.0f;
+        float fps              = 60.0f;
+        float speed_multiplier = 1.0f;
     };
 
   public:
@@ -21,7 +23,8 @@ class TimeHandler
     void frameStart();
     void frameEnd();
 
-    void setSpeedMultiplier(float speed_multiplier) { m_speed_multiplier = speed_multiplier; }
+    SpeedChanger &getSpeedChanger() { return m_speedChanger; }
+
     void setMaxFPS(float max_fps) { m_max_fps = max_fps; }
 
     Info getInfo() const { return m_info; }
@@ -35,5 +38,5 @@ class TimeHandler
     float m_max_fps = 60.0f;
     Info m_info;
 
-    float m_speed_multiplier = 1.0f;
+    SpeedChanger m_speedChanger;
 };

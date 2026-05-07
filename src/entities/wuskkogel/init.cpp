@@ -8,7 +8,7 @@ Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
 {
     m_metadata.name = "Wuskkogel";
 
-    m_boundingBox.setSize({12, 16});
+    m_boundingBox.setSize({18, 24});
     m_body.setGravity(0.0f);
     m_body.setTargetDamping({0.92f, 0.92f});
 

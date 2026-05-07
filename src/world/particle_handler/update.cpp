@@ -14,6 +14,6 @@ void ParticleHandler::update(TimeHandler::Info time, Vec2i origin)
             break;
         }
     }
-    m_events.clear();
+    m_events.flush();
     m_dynamicsHandler.update(time, origin);
 }

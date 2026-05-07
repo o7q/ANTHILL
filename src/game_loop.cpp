@@ -14,9 +14,9 @@ void Game::update_loop()
         return;
     }
 
-    SceneIDKey resultID = m_scene->update();
+    Scene::Result result = m_scene->update();
 
-    if (resultID == m_scene->getID())
+    if (!result.load)
     {
         return;
     }
@@ -37,5 +37,5 @@ void Game::update_loop()
                           },
                           [](const std::string &id)
                           { Logger::info("Game::update_loop()", "Recieved custom scene change: " + id); }},
-               resultID);
+               result.id);
 }

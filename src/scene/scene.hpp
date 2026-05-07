@@ -9,22 +9,29 @@
 class Scene
 {
   public:
-    Scene(SceneIDKey selfID, Window &window, const Assets &assets)
-        : r_window(window), r_assets(assets), m_selfID(selfID), m_sceneSwitchID(selfID)
+    struct Result
     {
-    }
+        SceneIDKey id = "n/a";
+        bool load     = false;
+    };
+
+  public:
+    Scene(Window &window, const Assets &assets) : r_window(window), r_assets(assets) {}
     Scene(const Scene &other)            = delete;
     Scene &operator=(const Scene &other) = delete;
     virtual ~Scene()                     = default;
 
-    SceneIDKey update();
-    SceneIDKey getID() { return m_selfID; }
+    Result update();
 
   protected:
     virtual void onStart() = 0;
     virtual void onTick()  = 0;
 
-    void requestSceneChange(SceneIDKey id) { m_sceneSwitchID = id; }
+    void loadScene(SceneIDKey id)
+    {
+        m_result.load = true;
+        m_result.id   = id;
+    }
 
   private:
     void handleBackendEvents();
@@ -35,7 +42,6 @@ class Scene
     EventPool<BackendEvent> m_backendEvents;
 
   private:
-    bool m_firstTick           = true;
-    const SceneIDKey m_selfID  = SceneID::None;
-    SceneIDKey m_sceneSwitchID = SceneID::None;
+    bool m_firstTick = true;
+    Result m_result;
 };
