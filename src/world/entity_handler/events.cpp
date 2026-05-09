@@ -41,10 +41,10 @@ void EntityHandler::handle_events(EventPool<EntityEvent> &events, EventPoolRefs 
             eventPoolRefs.particle.emit(std::move(e->payload));
         }
         break;
-        case EntityEventType::Scene:
+        case EntityEventType::External:
         {
-            auto e = static_cast<EntitySceneEvent *>(event.get());
-            eventPoolRefs.scene.emit(std::move(e->payload));
+            auto e = static_cast<EntityExternalEvent *>(event.get());
+            eventPoolRefs.external.emit(std::move(e->payload));
         }
         break;
         }

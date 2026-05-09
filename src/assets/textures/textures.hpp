@@ -10,5 +10,5 @@ struct TextureLoadData
     std::string path = "";
 };
 
-void initTextures(AssetPool<TextureIDKey, Texture> &assets);
-void initBackgrounds(std::unordered_map<TextureIDKey, TextureLoadData> &v);
+void initTextures(AssetPool<TextureID, Texture> &assets);
+void initBackgrounds(std::unordered_map<TextureID, TextureLoadData> &v);

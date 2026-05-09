@@ -1,6 +1,6 @@
 #pragma once
 
-#include "events/scene/base.hpp"
+#include "events/external/base.hpp"
 #include <cstdint>
 
 enum class EntityEventType
@@ -8,7 +8,7 @@ enum class EntityEventType
     EntityDamage,
     EntitySpawn,
     Particle,
-    Scene
+    External
 };
 
 struct EntityEvent

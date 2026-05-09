@@ -1,6 +1,6 @@
 #include "spritesheets.hpp"
 
-void initItems(std::unordered_map<SpriteSheetIDKey, SpriteSheetLoadData> &v)
+void initItems(std::unordered_map<SpriteSheetID, SpriteSheetLoadData> &v)
 {
     const std::string base = "assets/spritesheets/items/";
 

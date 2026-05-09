@@ -3,6 +3,7 @@
 #include "assets/assets.hpp"
 #include "backend/viewport/render_command.hpp"
 #include "camera/camera.hpp"
+#include "entities/player/dash/player_dash.hpp"
 #include "entity/body/entity_body.hpp"
 #include "sprite/sprite_system.hpp"
 
@@ -42,9 +43,8 @@ class PlayerSprite
     struct UpdateData
     {
         const EntityBody &body;
+        const PlayerDash &dash;
         float lookAngle = 0.0f;
-        bool dashing    = false;
-        bool jumping    = false;
     };
 
   public:

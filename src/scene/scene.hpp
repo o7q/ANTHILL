@@ -3,16 +3,17 @@
 #include "assets/assets.hpp"
 #include "backend/window/window.hpp"
 #include "events/event_pool.hpp"
-#include "events/scene/base.hpp"
+#include "events/external/base.hpp"
 #include "identifiers/scene.hpp"
+#include <optional>
 
 class Scene
 {
   public:
     struct Result
     {
-        SceneIDKey id = "n/a";
-        bool load     = false;
+        std::optional<SceneID> id;
+        bool load = false;
     };
 
   public:
@@ -33,7 +34,7 @@ class Scene
   protected:
     Window &r_window;
     const Assets &r_assets;
-    EventPool<SceneEvent> m_events;
+    EventPool<ExternalEvent> m_events;
 
   private:
     bool m_firstTick = true;

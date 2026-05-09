@@ -2,48 +2,49 @@
 
 void JumpHandler::update(float dt, bool onGround)
 {
+    m_jumped = false;
+
     if (onGround)
     {
         m_coyoteTimer.restart();
-        m_allowCoyoteJump   = true;
-        m_doubleJumpCounter = 0;
+        m_allowCoyoteJump = true;
     }
+
+    if (!onGround && m_jumpRequested)
+    {
+        m_bufferTimer.restart();
+    }
+
+    bool allowJump = false;
 
     if (onGround && m_jumpRequested)
     {
-        m_holdJumpTimer.restart();
+        allowJump         = true;
         m_allowCoyoteJump = false;
     }
 
     if (!onGround && m_jumpRequested)
     {
-        m_jumpBufferTimer.restart();
-    }
-
-    if (!onGround && m_jumpRequested)
-    {
-        bool coyoteJumped = false;
         if (m_allowCoyoteJump && m_coyoteTimer.active())
         {
-            m_holdJumpTimer.restart();
+            allowJump = true;
             m_coyoteTimer.stop();
-            coyoteJumped = true;
-        }
-
-        if (m_doubleJumpCounter < m_doubleJumpAmount && !coyoteJumped)
-        {
-            m_holdJumpTimer.restart();
-            m_doubleJumpCounter++;
         }
     }
 
-    if (onGround && m_jumpBufferTimer.active())
+    if (onGround && m_bufferTimer.active())
     {
-        m_holdJumpTimer.restart();
+        allowJump = true;
+    }
+
+    if (allowJump)
+    {
+        m_jumped = true;
+        m_holdTimer.restart();
     }
 
     m_coyoteTimer.update(dt);
-    m_holdJumpTimer.update(dt);
-    m_jumpBufferTimer.update(dt);
+    m_holdTimer.update(dt);
+    m_bufferTimer.update(dt);
     m_jumpRequested = false;
 }

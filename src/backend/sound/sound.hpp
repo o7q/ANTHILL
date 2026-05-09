@@ -19,8 +19,8 @@ class Sound
     const void *getData() const { return p_data; }
 
   private:
-    void *p_data           = nullptr;
-    ma_format m_format     = ma_format_f32;
-    ma_uint64 m_frameCount = 0;
-    ma_uint32 m_channels   = 0;
+    void *p_data             = nullptr;
+    const ma_format m_format = ma_format_f32;
+    ma_uint64 m_frameCount   = 0;
+    ma_uint32 m_channels     = 0;
 };

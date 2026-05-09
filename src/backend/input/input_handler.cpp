@@ -1,47 +1,5 @@
 #include "input_handler.hpp"
 
-#include "math/vec.hpp"
-#include "utils/data.hpp"
-#include <SDL3/SDL_events.h>
-#include <SDL3/SDL_keycode.h>
-#include <SDL3/SDL_mouse.h>
-#include <optional>
-#include <unordered_map>
-#include <vector>
-
-void Input::poll(Bind bind, bool isDown)
-{
-    if (Utils::Data::doesVectorContain(m_binds, bind))
-    {
-        m_down = isDown;
-    }
-}
-
-void Input::update()
-{
-    m_pressed   = m_down && !m_wasDown;
-    m_unpressed = m_wasDown && !m_down;
-
-    m_wasDown = m_down;
-}
-
-void Input::assignBind(const Bind &bind) { m_binds.push_back(bind); }
-void Input::removeBind(const Bind &bind) { Utils::Data::removeItemFromVector(m_binds, bind); }
-void Input::removeBindsOfType(ButtonType type)
-{
-    for (auto it = m_binds.begin(); it != m_binds.end(); ++it)
-    {
-        if (it->type == type)
-        {
-            it = m_binds.erase(it);
-        }
-        else
-        {
-            ++it;
-        }
-    }
-}
-
 void InputHandler::poll(SDL_Event &event)
 {
     const auto poll_inputs = [&](Input::Bind bind, bool isDown)
@@ -79,7 +37,7 @@ void InputHandler::update()
     }
 }
 
-void InputHandler::addInput(InputIDKey key, const std::vector<Input::Bind> &binds)
+void InputHandler::assignInput(InputID key, const std::vector<Input::Bind> &binds)
 {
     Input input;
     for (const Input::Bind &bind : binds)
@@ -90,7 +48,7 @@ void InputHandler::addInput(InputIDKey key, const std::vector<Input::Bind> &bind
     m_inputs[key] = input;
 }
 
-const std::optional<Input> InputHandler::getInput(InputIDKey key)
+const std::optional<Input> InputHandler::getInput(InputID key)
 {
     if (m_inputs.count(key))
     {

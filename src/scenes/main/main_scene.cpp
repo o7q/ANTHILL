@@ -2,14 +2,14 @@
 
 #include "backend/time/time_handler.hpp"
 #include "backend/viewport/render_command.hpp"
-#include "events/scene/events.hpp"
+#include "entities/wuskkogel/wuskkogel.hpp"
+#include "events/external/events.hpp"
 #include "math/random.hpp"
 #include <memory>
 
 void MainScene::onStart()
 {
-    m_world.getEntityHandler().addPlayer(std::make_unique<Player>(
-        m_world.getEntityHandler().getIDHandler().getNext(), r_window.getInput(), r_assets));
+    m_world.getEntityHandler().addPlayer(std::make_unique<Player>(r_window.getInput(), r_assets));
 
     m_world.getEntityHandler().getCurrentPlayer()->getBody().setPosition({0, -200});
 }
@@ -54,24 +54,21 @@ void MainScene::onTick()
 
         m_world.getParticleHandler().getEditor().draw(worldMousePos, sandstone, 5);
     }
+
     if (r_window.getInput().getInput(InputID::AltAction4)->isDown())
     {
-        SpeedChanger::Settings s;
-        s.startLength = 0.5f;
-
-        s.holdLength = 0.2f;
-        s.holdSpeed  = 0.01f;
-
-        s.endLength = 0.4f;
-
-        r_window.getTime().getSpeedChanger().startTransition(s);
+        auto loadScene = std::make_unique<ExternalLoadSceneEvent>();
+        loadScene->id  = SceneID::Test;
+        m_events.emit(std::move(loadScene));
     }
 
     if (r_window.getInput().getInput(InputID::AltAction5)->isDown())
     {
-        auto loadScene = std::make_unique<SceneLoadEvent>();
-        loadScene->id  = SceneID::Test;
-        m_events.emit(std::move(loadScene));
+        auto BIRD = std::make_unique<Wuskkogel>(r_assets);
+
+        BIRD->getBody().setPosition(worldMousePos);
+
+        m_world.getEntityHandler().addEntity(std::move(BIRD));
     }
 
     Player *player = m_world.getEntityHandler().getCurrentPlayer();

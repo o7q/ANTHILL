@@ -14,7 +14,7 @@ class Item
     std::string getName() { return m_name; }
 
     virtual void update(float dt)                                                      = 0;
-    virtual bool use(const ItemUseContext &context, EventPool<EntityEvent> &eventsOut) = 0;
+    virtual void use(const ItemUseContext &context, EventPool<EntityEvent> &eventsOut) = 0;
 
   protected:
     const std::string m_name = "";

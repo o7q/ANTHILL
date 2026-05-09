@@ -4,9 +4,9 @@
 
 void Player::update_items(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
-    Item *current = m_inventory.getSelectedItem();
+    Item *currentItem = m_inventory.getSelectedItem();
 
-    if (!current)
+    if (!currentItem)
     {
         return;
     }
@@ -18,15 +18,15 @@ void Player::update_items(const EntityUpdateContext &context, EventPool<EntityEv
 
     if (r_input.getInput(InputID::Shoot)->isDown())
     {
-        current->use(itemContext, eventsOut);
+        currentItem->use(itemContext, eventsOut);
     }
     if (r_input.getInput(InputID::Reload)->wasPressed())
     {
-        if (auto *reloadable = dynamic_cast<IReloadable *>(current))
+        if (auto *reloadableItem = dynamic_cast<IReloadable *>(currentItem))
         {
-            reloadable->reload(itemContext, eventsOut);
+            reloadableItem->reload();
         }
     }
 
-    current->update(context.time.dt);
+    currentItem->update(context.time.dt);
 }

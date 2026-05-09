@@ -1,8 +1,8 @@
 #include "spritesheets.hpp"
 
-void initSpriteSheets(AssetPool<SpriteSheetIDKey, SpriteSheet> &assets)
+void initSpriteSheets(AssetPool<SpriteSheetID, SpriteSheet> &assets)
 {
-    std::unordered_map<SpriteSheetIDKey, SpriteSheetLoadData> v;
+    std::unordered_map<SpriteSheetID, SpriteSheetLoadData> v;
 
     initSumi(v);
     initEntities(v);

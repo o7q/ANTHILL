@@ -1,12 +1,11 @@
 #pragma once
 
-#include "identifiers/identifier.hpp"
-
 enum class SoundID
 {
-    WeaponShotgunFire1,
-    WeaponShotgunFire2,
-    WeaponShotgunFire3,
-    WeaponShotgunReload1
+    WalkSound1,
+    WalkSound2,
+    WalkSound3,
+    WalkSound4,
+    WalkSound5,
+    WalkSound6
 };
-using SoundIDKey = Identifier<SoundID>;

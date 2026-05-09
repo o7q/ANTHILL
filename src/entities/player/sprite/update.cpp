@@ -1,5 +1,7 @@
 #include "player_sprite.hpp"
 
+#include "entities/player/dash/player_dash.hpp"
+
 void PlayerSprite::update(UpdateData data, float dt)
 {
     State state = determine_state(data.body);
@@ -11,7 +13,7 @@ void PlayerSprite::update(UpdateData data, float dt)
         m_legs.restartAll();
     }
 
-    if (!data.dashing)
+    if (data.dash.getState() != PlayerDash::State::Dashing)
     {
         update_head(state, data.lookAngle, dt);
         update_torso(state, dt);

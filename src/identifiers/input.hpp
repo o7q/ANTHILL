@@ -1,7 +1,5 @@
 #pragma once
 
-#include "identifier.hpp"
-
 enum class InputID
 {
     Left,
@@ -26,4 +24,3 @@ enum class InputID
     AltAction9,
     AltAction10
 };
-using InputIDKey = Identifier<InputID>;

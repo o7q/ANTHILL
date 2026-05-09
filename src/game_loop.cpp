@@ -4,8 +4,6 @@
 #include "identifiers/scene.hpp"
 #include "scenes/main/main_scene.hpp"
 #include "scenes/test/test_scene.hpp"
-#include "utils/variant_bp.hpp"
-#include <variant>
 
 void Game::update_loop()
 {
@@ -16,26 +14,21 @@ void Game::update_loop()
 
     Scene::Result result = m_scene->update();
 
-    if (!result.load)
+    if (!result.load || !result.id.has_value())
     {
         return;
     }
 
-    std::visit(overloaded{[&](SceneID id)
-                          {
-                              switch (id)
-                              {
-                              case SceneID::Main:
-                                  m_scene = std::make_unique<MainScene>(m_window, m_assets);
-                                  break;
-                              case SceneID::Test:
-                                  m_scene = std::make_unique<TestScene>(m_window, m_assets);
-                                  break;
-                              default:
-                                  break;
-                              }
-                          },
-                          [](const std::string &id)
-                          { Logger::info("Game::update_loop()", "Recieved custom scene change: " + id); }},
-               result.id);
+    switch (result.id.value())
+    {
+    case SceneID::Main:
+        m_scene = std::make_unique<MainScene>(m_window, m_assets);
+        break;
+    case SceneID::Test:
+        m_scene = std::make_unique<TestScene>(m_window, m_assets);
+        break;
+    default:
+        Logger::error("Game::update_loop()", "Recieved unsupported scene change!");
+        break;
+    }
 }

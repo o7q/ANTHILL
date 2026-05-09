@@ -2,19 +2,19 @@
 
 #include "entity/world_interaction/against.hpp"
 
-void Player::update_movement_and_jump(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
+void Player::update_movement_and_jump(const EntityUpdateContext &context)
 {
-    float velX = 0.0f;
+    float velocityX = 0.0f;
     if (r_input.getInput(InputID::Left)->isDown())
     {
-        velX -= 3.0f;
+        velocityX -= 3.0f;
     }
     if (r_input.getInput(InputID::Right)->isDown())
     {
-        velX += 3.0f;
+        velocityX += 3.0f;
     }
-    m_body.setVelocityTargetX(velX);
-    
+    m_body.setVelocityTargetX(velocityX);
+
     if (r_input.getInput(InputID::Jump)->wasPressed())
     {
         m_jumpHandler.requestJump();

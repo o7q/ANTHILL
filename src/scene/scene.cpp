@@ -1,6 +1,6 @@
 #include "scene.hpp"
-#include "events/scene/base.hpp"
-#include "events/scene/events.hpp"
+#include "events/external/base.hpp"
+#include "events/external/events.hpp"
 
 Scene::Result Scene::update()
 {
@@ -22,25 +22,27 @@ void Scene::handle_events()
     {
         switch (e->type)
         {
-        case SceneEventType::PlaySound:
+        case ExternalEventType::PlaySound:
         {
-            auto event = static_cast<ScenePlaySoundEvent *>(e.get());
+            auto event = static_cast<ExternalPlaySoundEvent *>(e.get());
             r_window.getSound().playSound(r_assets.sounds().get(event->soundID), event->settings);
         }
         break;
-        case SceneEventType::ChangeSpeed:
+        case ExternalEventType::ChangeSpeed:
         {
-            auto event = static_cast<SceneChangeSpeedEvent *>(e.get());
+            auto event = static_cast<ExternalChangeSpeedEvent *>(e.get());
             r_window.getTime().getSpeedChanger().startTransition(event->settings);
         }
         break;
-        case SceneEventType::Load:
+        case ExternalEventType::LoadScene:
         {
-            auto event    = static_cast<SceneLoadEvent *>(e.get());
+            auto event    = static_cast<ExternalLoadSceneEvent *>(e.get());
             m_result.load = true;
             m_result.id   = event->id;
         }
         break;
+        case ExternalEventType::ShakeCamera:
+            break;
         }
     }
 

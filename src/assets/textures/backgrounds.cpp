@@ -1,6 +1,6 @@
 #include "textures.hpp"
 
-void initBackgrounds(std::unordered_map<TextureIDKey, TextureLoadData> &v)
+void initBackgrounds(std::unordered_map<TextureID, TextureLoadData> &v)
 {
     const std::string base = "assets/textures/backgrounds/";
 

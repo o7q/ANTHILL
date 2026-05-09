@@ -1,12 +1,12 @@
 #include "world.hpp"
 
 #include "backend/viewport/render_command.hpp"
-#include "events/scene/base.hpp"
+#include "events/external/base.hpp"
 
-void World::update(TimeHandler::Info time, Vec2i origin, EventPool<SceneEvent> &sceneEvents)
+void World::update(TimeHandler::Info time, Vec2i origin, EventPool<ExternalEvent> &externalEvents)
 {
     m_particleHandler.update(time, origin);
-    m_entityHandler.update(m_particleHandler, time, origin, {sceneEvents, m_particleHandler.getEvents()});
+    m_entityHandler.update(m_particleHandler, time, origin, {externalEvents, m_particleHandler.getEvents()});
 }
 
 void World::render(const Camera &camera, const Assets &assets, std::vector<RenderCommand> &commandsOut)

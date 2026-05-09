@@ -10,4 +10,4 @@ struct FontLoadData
     std::string path = "";
 };
 
-void initFonts(AssetPool<FontIDKey, Font> &assets);
+void initFonts(AssetPool<FontID, Font> &assets);

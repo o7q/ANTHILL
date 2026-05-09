@@ -1,6 +1,6 @@
 #include "spritesheets.hpp"
 
-void initSumi(std::unordered_map<SpriteSheetIDKey, SpriteSheetLoadData> &v)
+void initSumi(std::unordered_map<SpriteSheetID, SpriteSheetLoadData> &v)
 {
     const std::string base = "assets/spritesheets/entities/sumi/";
 

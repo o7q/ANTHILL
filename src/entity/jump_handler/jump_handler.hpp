@@ -8,29 +8,30 @@ class JumpHandler
     JumpHandler()
     {
         m_coyoteTimer.setDurationInSeconds(0.1f);
-        m_holdJumpTimer.setDurationInSeconds(0.2f);
-        m_jumpBufferTimer.setDurationInSeconds(0.1f);
+        m_holdTimer.setDurationInSeconds(0.2f);
+        m_bufferTimer.setDurationInSeconds(0.1f);
     }
     virtual ~JumpHandler() = default;
 
     void update(float dt, bool onGround);
 
     void requestJump() { m_jumpRequested = true; }
-    void cancelJump() { m_holdJumpTimer.stop(); }
+    void cancelJump() { m_holdTimer.stop(); }
+
+    bool jumped() const { return m_jumped; }
 
     float getJumpPower() const { return m_jumpPower; }
-    bool canApplyJumpPower() const { return m_holdJumpTimer.active(); }
+    bool canApplyJumpPower() const { return m_holdTimer.active(); }
 
   private:
+    bool m_jumped = false;
+
     float m_jumpPower    = 4.5f;
     bool m_jumpRequested = false;
 
-    Timer m_holdJumpTimer;
-    Timer m_jumpBufferTimer;
+    Timer m_holdTimer;
+    Timer m_bufferTimer;
 
     Timer m_coyoteTimer;
     bool m_allowCoyoteJump = false;
-
-    int m_doubleJumpAmount  = 0;
-    int m_doubleJumpCounter = 0;
 };

@@ -15,14 +15,14 @@ class Assets
   public:
     Assets();
 
-    const AssetPool<TextureIDKey, Texture> &textures() const { return m_textures; }
-    const AssetPool<SpriteSheetIDKey, SpriteSheet> &spriteSheets() const { return m_spriteSheets; }
-    const AssetPool<FontIDKey, Font> &fonts() const { return m_fonts; }
-    const AssetPool<SoundIDKey, Sound> &sounds() const { return m_sounds; }
+    const AssetPool<TextureID, Texture> &textures() const { return m_textures; }
+    const AssetPool<SpriteSheetID, SpriteSheet> &spriteSheets() const { return m_spriteSheets; }
+    const AssetPool<FontID, Font> &fonts() const { return m_fonts; }
+    const AssetPool<SoundID, Sound> &sounds() const { return m_sounds; }
 
   private:
-    AssetPool<TextureIDKey, Texture> m_textures;
-    AssetPool<SpriteSheetIDKey, SpriteSheet> m_spriteSheets;
-    AssetPool<FontIDKey, Font> m_fonts;
-    AssetPool<SoundIDKey, Sound> m_sounds;
+    AssetPool<TextureID, Texture> m_textures;
+    AssetPool<SpriteSheetID, SpriteSheet> m_spriteSheets;
+    AssetPool<FontID, Font> m_fonts;
+    AssetPool<SoundID, Sound> m_sounds;
 };

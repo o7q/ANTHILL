@@ -5,7 +5,7 @@
 #include "entities/player/player.hpp"
 #include "entity/entity.hpp"
 #include "events/event_pool.hpp"
-#include "events/scene/base.hpp"
+#include "events/external/base.hpp"
 #include "world/entity_handler/id.hpp"
 #include <cstdint>
 #include <memory>
@@ -17,7 +17,7 @@ class EntityHandler
   public:
     struct EventPoolRefs
     {
-        EventPool<SceneEvent> &scene;
+        EventPool<ExternalEvent> &external;
         EventPool<ParticleEvent> &particle;
     };
 
@@ -38,8 +38,6 @@ class EntityHandler
     Player *getCurrentPlayer();
     Entity *getLatestEntity();
     Entity *getEntity(uint64_t id);
-
-    EntityIDHandler &getIDHandler() { return m_idHandler; }
 
     size_t getEntityCount() const { return m_entities.size(); }
 

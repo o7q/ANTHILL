@@ -1,7 +1,5 @@
 #pragma once
 
-#include "identifiers/identifier.hpp"
-
 enum class SpriteSheetID
 {
     Entity_SumiStaticHead,
@@ -22,4 +20,3 @@ enum class SpriteSheetID
 
     Item_Shotgun
 };
-using SpriteSheetIDKey = Identifier<SpriteSheetID>;

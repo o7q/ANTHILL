@@ -1,8 +1,8 @@
 #include "fonts.hpp"
 
-void initFonts(AssetPool<FontIDKey, Font> &assets)
+void initFonts(AssetPool<FontID, Font> &assets)
 {
-    std::unordered_map<FontIDKey, FontLoadData> v;
+    std::unordered_map<FontID, FontLoadData> v;
 
     v[FontID::Default] = {"assets/fonts/default.png"};
 

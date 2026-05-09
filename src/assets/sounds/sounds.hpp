@@ -10,4 +10,4 @@ struct SoundLoadData
     std::string path = "";
 };
 
-void initSounds(AssetPool<SoundIDKey, Sound> &assets);
+void initSounds(AssetPool<SoundID, Sound> &assets);

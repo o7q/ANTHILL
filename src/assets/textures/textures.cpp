@@ -1,8 +1,8 @@
 #include "textures.hpp"
 
-void initTextures(AssetPool<TextureIDKey, Texture> &assets)
+void initTextures(AssetPool<TextureID, Texture> &assets)
 {
-    std::unordered_map<TextureIDKey, TextureLoadData> v;
+    std::unordered_map<TextureID, TextureLoadData> v;
 
     initBackgrounds(v);
 
