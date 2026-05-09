@@ -1,5 +1,6 @@
 #include "world_generator.hpp"
-#include "math/random.hpp"
+
+#include "core/math/random.hpp"
 
 WorldGenerator::WorldGenerator(World &world, const Assets &assets) : r_world(world), r_assets(assets)
 {

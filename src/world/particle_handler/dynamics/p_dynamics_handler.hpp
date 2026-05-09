@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/time/time_handler.hpp"
-#include "utils/data_structures/chunk_map.hpp"
+#include "core/time/time_handler.hpp"
+#include "core/utils/data_structures/chunk_map.hpp"
 #include "world/particle_handler/navmesh/navmesh.hpp"
 #include "world/particle_handler/particle.hpp"
 

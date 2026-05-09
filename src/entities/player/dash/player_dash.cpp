@@ -1,7 +1,7 @@
 #include "player_dash.hpp"
 
-#include "math/angle.hpp"
-#include "math/interpolation.hpp"
+#include "core/math/angle.hpp"
+#include "core/math/interpolation.hpp"
 #include <algorithm>
 
 PlayerDash::PlayerDash()

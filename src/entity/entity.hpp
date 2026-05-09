@@ -1,12 +1,12 @@
 #pragma once
 
-#include "backend/viewport/render_command.hpp"
+#include "core/math/rectangle.hpp"
+#include "core/viewport/render_command.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/metadata.hpp"
 #include "entity/update_context.hpp"
 #include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
-#include "math/rectangle.hpp"
 
 class Entity
 {

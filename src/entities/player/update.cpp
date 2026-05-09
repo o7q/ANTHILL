@@ -1,11 +1,11 @@
 #include "player.hpp"
 
+#include "core/math/distance.hpp"
+#include "core/math/line.hpp"
+#include "core/math/rectangle.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entity/world_interaction/against.hpp"
 #include "events/entity/events.hpp"
-#include "math/distance.hpp"
-#include "math/line.hpp"
-#include "math/rectangle.hpp"
 #include <memory>
 
 void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)

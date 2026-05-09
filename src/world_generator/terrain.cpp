@@ -1,6 +1,7 @@
-#include "biomes/desert.hpp"
-#include "utils/data.hpp"
 #include "world_generator.hpp"
+
+#include "biomes/desert.hpp"
+#include "core/utils/data.hpp"
 #include "world_generator/generate_result.hpp"
 
 void WorldGenerator::place_terrain(Vec2i origin, Vec2i radius)

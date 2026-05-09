@@ -1,7 +1,7 @@
 #pragma once
 
-#include "math/color.hpp"
-#include "math/verlet/verlet.hpp"
+#include "core/math/color.hpp"
+#include "core/math/verlet/verlet.hpp"
 
 class Particle
 {

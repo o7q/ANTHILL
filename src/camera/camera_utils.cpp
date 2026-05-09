@@ -1,5 +1,5 @@
 #include "camera.hpp"
-#include "math/angle.hpp"
+#include "core/math/angle.hpp"
 
 void Camera::jerk(Angle angle, float amount)
 {

@@ -1,9 +1,9 @@
 #pragma once
 
+#include "core/math/rectangle.hpp"
+#include "core/math/vec.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/update_context.hpp"
-#include "math/rectangle.hpp"
-#include "math/vec.hpp"
 
 class BodyUpdateHandler
 {

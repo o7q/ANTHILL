@@ -1,9 +1,9 @@
 #pragma once
 
-#include "asset_pool/asset_pool.hpp"
-#include "backend/sprite_sheet/sprite_sheet.hpp"
+#include "core/asset_pool/asset_pool.hpp"
+#include "core/math/vec.hpp"
+#include "core/sprite_sheet/sprite_sheet.hpp"
 #include "identifiers/assets/spritesheet.hpp"
-#include "math/vec.hpp"
 #include <string>
 
 struct SpriteSheetLoadData

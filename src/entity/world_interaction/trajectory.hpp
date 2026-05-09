@@ -1,7 +1,7 @@
 #pragma once
 
-#include "math/rectangle.hpp"
-#include "math/vec.hpp"
+#include "core/math/rectangle.hpp"
+#include "core/math/vec.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 
 namespace EntityWorldInteraction

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "assets/assets.hpp"
-#include "backend/viewport/render_command.hpp"
 #include "camera/camera.hpp"
-#include "utils/data_structures/chunk_map.hpp"
+#include "core/utils/data_structures/chunk_map.hpp"
+#include "core/viewport/render_command.hpp"
 #include "world/particle_handler/biome.hpp"
 #include "world/particle_handler/particle.hpp"
 

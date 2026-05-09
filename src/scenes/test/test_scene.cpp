@@ -1,7 +1,7 @@
 #include "test_scene.hpp"
 
-#include "backend/texture/texture.hpp"
-#include "backend/viewport/render_command.hpp"
+#include "core/texture/texture.hpp"
+#include "core/viewport/render_command.hpp"
 
 void TestScene::onStart() {}
 

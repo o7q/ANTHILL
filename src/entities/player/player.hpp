@@ -1,8 +1,10 @@
 #pragma once
 
 #include "assets/assets.hpp"
-#include "backend/input/input_handler.hpp"
-#include "backend/viewport/render_command.hpp"
+#include "core/input/input_handler.hpp"
+#include "core/math/angle.hpp"
+#include "core/math/rectangle.hpp"
+#include "core/viewport/render_command.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entities/player/sound/player_sound.hpp"
 #include "entities/player/sprite/player_sprite.hpp"
@@ -10,8 +12,6 @@
 #include "entity/entity.hpp"
 #include "entity/jump_handler/jump_handler.hpp"
 #include "item/inventory.hpp"
-#include "math/angle.hpp"
-#include "math/rectangle.hpp"
 
 class Player : public Entity
 {

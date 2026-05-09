@@ -1,6 +1,6 @@
 #include "p_dynamics_handler.hpp"
 
-#include "math/random.hpp"
+#include "core/math/random.hpp"
 
 void PDynamicsHandler::update_sandstone_particle(ParticleObject po, float dt)
 {

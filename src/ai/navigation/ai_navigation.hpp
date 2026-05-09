@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ai/a_star.hpp"
+#include "core/utils/data_structures/index_2d.hpp"
 #include "entity/update_context.hpp"
-#include "utils/data_structures/index_2d.hpp"
 #include <functional>
 
 class AINavigation

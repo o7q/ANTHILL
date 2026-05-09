@@ -1,5 +1,6 @@
-#include "backend/viewport/render_command.hpp"
 #include "entity_handler.hpp"
+
+#include "core/viewport/render_command.hpp"
 
 void EntityHandler::render(const Camera &camera, std::vector<RenderCommand> &commandsOut)
 {

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ai/perception/ai_perception.hpp"
-#include "backend/viewport/render_command.hpp"
 #include "camera/camera.hpp"
-#include "math/rectangle.hpp"
+#include "core/math/rectangle.hpp"
+#include "core/viewport/render_command.hpp"
 #include <vector>
 
 inline void DEBUG_renderBoundingBox(Vec2i pos, const StaticGridRectangle &bb, const Camera &camera,

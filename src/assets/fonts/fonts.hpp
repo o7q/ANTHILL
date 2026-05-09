@@ -1,7 +1,7 @@
 #pragma once
 
-#include "asset_pool/asset_pool.hpp"
-#include "backend/font/font.hpp"
+#include "core/asset_pool/asset_pool.hpp"
+#include "core/font/font.hpp"
 #include "identifiers/assets/fonts.hpp"
 #include <string>
 

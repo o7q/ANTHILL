@@ -1,10 +1,10 @@
 #pragma once
 
-#include "asset_pool/asset_pool.hpp"
-#include "backend/font/font.hpp"
-#include "backend/sound/sound.hpp"
-#include "backend/sprite_sheet/sprite_sheet.hpp"
-#include "backend/texture/texture.hpp"
+#include "core/asset_pool/asset_pool.hpp"
+#include "core/font/font.hpp"
+#include "core/sound/sound.hpp"
+#include "core/sprite_sheet/sprite_sheet.hpp"
+#include "core/texture/texture.hpp"
 #include "identifiers/assets/fonts.hpp"
 #include "identifiers/assets/sounds.hpp"
 #include "identifiers/assets/spritesheet.hpp"

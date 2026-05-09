@@ -1,7 +1,7 @@
 #pragma once
 
 #include "assets/assets.hpp"
-#include "backend/window/window.hpp"
+#include "core/window/window.hpp"
 #include "events/event_pool.hpp"
 #include "events/external/base.hpp"
 #include "identifiers/scene.hpp"

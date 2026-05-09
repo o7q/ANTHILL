@@ -1,8 +1,9 @@
 #include "body_update_handler.hpp"
+
+#include "core/math/rectangle.hpp"
 #include "entity/world_interaction/against.hpp"
 #include "entity/world_interaction/step.hpp"
 #include "entity/world_interaction/trajectory.hpp"
-#include "math/rectangle.hpp"
 
 void BodyUpdateHandler::update(const EntityUpdateContext &context)
 {

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "assets/assets.hpp"
-#include "backend/window/window.hpp"
-#include "math/vec.hpp"
+#include "core/math/vec.hpp"
+#include "core/window/window.hpp"
 #include "scene/scene.hpp"
 #include <memory>
 

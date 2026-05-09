@@ -1,9 +1,9 @@
 #pragma once
 
-#include "backend/time/time_handler.hpp"
+#include "core/time/time_handler.hpp"
+#include "core/utils/data_structures/chunk_map.hpp"
 #include "events/event_pool.hpp"
 #include "events/particle/base.hpp"
-#include "utils/data_structures/chunk_map.hpp"
 #include "world/particle_handler/biome.hpp"
 #include "world/particle_handler/dynamics/p_dynamics_handler.hpp"
 #include "world/particle_handler/editor/particle_editor.hpp"

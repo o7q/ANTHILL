@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/time/time_handler.hpp"
-#include "backend/viewport/render_command.hpp"
+#include "core/time/time_handler.hpp"
+#include "core/viewport/render_command.hpp"
 #include "events/event_pool.hpp"
 #include "events/external/base.hpp"
 #include "world/entity_handler/entity_handler.hpp"

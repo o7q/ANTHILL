@@ -1,7 +1,7 @@
 #pragma once
 
-#include "asset_pool/asset_pool.hpp"
-#include "backend/sound/sound.hpp"
+#include "core/asset_pool/asset_pool.hpp"
+#include "core/sound/sound.hpp"
 #include "identifiers/assets/sounds.hpp"
 #include <string>
 

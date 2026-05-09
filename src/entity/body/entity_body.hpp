@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math/vec.hpp"
+#include "core/math/vec.hpp"
 
 class EntityBody
 {

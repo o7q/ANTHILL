@@ -1,7 +1,7 @@
 #pragma once
 
-#include "math/verlet/verlet.hpp"
-#include "math/verlet/verlet_link.hpp"
+#include "core/math/verlet/verlet.hpp"
+#include "core/math/verlet/verlet_link.hpp"
 #include "scene/scene.hpp"
 #include <vector>
 

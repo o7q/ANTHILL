@@ -1,8 +1,8 @@
 #include "roam.hpp"
 
+#include "core/math/random.hpp"
 #include "entity/entity.hpp"
 #include "entity/metadata.hpp"
-#include "math/random.hpp"
 
 WuskkogelStateID WuskkogelRoamState::update(const UpdateContext &context)
 {

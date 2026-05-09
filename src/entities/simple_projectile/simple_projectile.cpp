@@ -1,9 +1,9 @@
 #include "simple_projectile.hpp"
 
+#include "core/math/line.hpp"
+#include "core/math/random.hpp"
 #include "events/entity/events.hpp"
 #include "events/particle/events.hpp"
-#include "math/line.hpp"
-#include "math/random.hpp"
 #include "world/particle_handler/particle.hpp"
 #include <memory>
 

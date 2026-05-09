@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utils/data_structures/index_2d.hpp"
+#include "core/utils/data_structures/index_2d.hpp"
 #include "world/particle_handler/particle.hpp"
 #include <unordered_map>
 

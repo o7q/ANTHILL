@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/sprite_sheet/sprite_sheet.hpp"
-#include "backend/timer/timer.hpp"
+#include "core/sprite_sheet/sprite_sheet.hpp"
+#include "core/timer/timer.hpp"
 
 class SpriteAnimator
 {

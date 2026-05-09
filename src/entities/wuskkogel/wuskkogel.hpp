@@ -3,7 +3,7 @@
 #include "ai/navigation/ai_navigation.hpp"
 #include "ai/perception/ai_perception.hpp"
 #include "assets/assets.hpp"
-#include "backend/viewport/render_command.hpp"
+#include "core/viewport/render_command.hpp"
 #include "entities/wuskkogel/ai/state_machine.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
@@ -28,10 +28,7 @@ class Wuskkogel : public Entity
         commandsOut.push_back({1, data});
     }
 
-    void damage(DamageSource source) override
-    {
-        m_damageSources.push_back(source);
-    }
+    void damage(DamageSource source) override { m_damageSources.push_back(source); }
 
   private:
     BodyUpdateHandler m_bodyHandler;

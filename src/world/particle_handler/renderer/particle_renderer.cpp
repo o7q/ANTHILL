@@ -1,6 +1,7 @@
 #include "particle_renderer.hpp"
-#include "backend/viewport/render_command.hpp"
+
 #include "camera/camera.hpp"
+#include "core/viewport/render_command.hpp"
 
 void ParticleRenderer::render(const ChunkMap<Particle> &particles, const ChunkMap<BiomeID> &biomeMarkers,
                               const Camera &camera, const Assets &assets,

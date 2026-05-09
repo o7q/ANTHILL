@@ -1,7 +1,8 @@
 #pragma once
 
 #include "assets/assets.hpp"
-#include "backend/timer/timer.hpp"
+#include "core/math/angle.hpp"
+#include "core/timer/timer.hpp"
 #include "entities/simple_projectile/simple_projectile.hpp"
 #include "events/entity/base.hpp"
 #include "events/entity/events.hpp"
@@ -9,7 +10,6 @@
 #include "identifiers/assets/spritesheet.hpp"
 #include "item/context.hpp"
 #include "items/weapons/gun/gun.hpp"
-#include "math/angle.hpp"
 #include "sprite/sprite_animator.hpp"
 #include <memory>
 

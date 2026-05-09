@@ -1,6 +1,6 @@
 #include "game.hpp"
 
-#include "backend/logger/logger.hpp"
+#include "core/logger/logger.hpp"
 #include "identifiers/scene.hpp"
 #include "scenes/main/main_scene.hpp"
 #include "scenes/test/test_scene.hpp"

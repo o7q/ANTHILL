@@ -1,7 +1,7 @@
-#include "math/rectangle.hpp"
 #include "player.hpp"
 
-#include "backend/viewport/render_command.hpp"
+#include "core/math/rectangle.hpp"
+#include "core/viewport/render_command.hpp"
 
 void Player::render(const Camera &camera, std::vector<RenderCommand> &commandsOut)
 {

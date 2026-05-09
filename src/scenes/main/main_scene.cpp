@@ -1,16 +1,15 @@
 #include "main_scene.hpp"
 
-#include "backend/time/time_handler.hpp"
-#include "backend/viewport/render_command.hpp"
+#include "core/math/random.hpp"
+#include "core/time/time_handler.hpp"
+#include "core/viewport/render_command.hpp"
 #include "entities/wuskkogel/wuskkogel.hpp"
 #include "events/external/events.hpp"
-#include "math/random.hpp"
 #include <memory>
 
 void MainScene::onStart()
 {
     m_world.getEntityHandler().addPlayer(std::make_unique<Player>(r_window.getInput(), r_assets));
-
     m_world.getEntityHandler().getCurrentPlayer()->getBody().setPosition({0, -200});
 }
 

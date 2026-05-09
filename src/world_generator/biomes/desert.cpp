@@ -1,5 +1,5 @@
+#include "core/math/perlin.hpp"
 #include "entities/wuskkogel/wuskkogel.hpp"
-#include "math/perlin.hpp"
 #include "world/particle_handler/particle.hpp"
 #include "world_generator/generate_result.hpp"
 #include <cstdint>

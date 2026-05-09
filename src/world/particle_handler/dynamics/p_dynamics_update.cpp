@@ -1,6 +1,6 @@
 #include "p_dynamics_handler.hpp"
 
-#include "math/verlet/verlet.hpp"
+#include "core/math/verlet/verlet.hpp"
 #include "world/particle_handler/particle.hpp"
 #include <limits>
 

@@ -1,14 +1,11 @@
 #pragma once
 
-#include "backend/timer/timer.hpp"
+#include "core/math/random.hpp"
+#include "core/timer/timer.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/update_context.hpp"
-#include "events/entity/base.hpp"
-#include "events/entity/events.hpp"
-#include "events/event_pool.hpp"
 #include "events/external/events.hpp"
 #include "identifiers/assets/sounds.hpp"
-#include "math/random.hpp"
 #include <memory>
 
 class PlayerSound

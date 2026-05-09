@@ -1,6 +1,6 @@
 #pragma once
 
-#include "backend/time/time_handler.hpp"
+#include "core/time/time_handler.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 #include <cstdint>
 #include <unordered_map>

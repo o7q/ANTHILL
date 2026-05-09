@@ -1,5 +1,6 @@
 #include "trajectory.hpp"
-#include "math/line.hpp"
+
+#include "core/math/line.hpp"
 
 EntityWorldInteraction::TrajectoryCollisionResponse EntityWorldInteraction::calculateCollisionFromTrajectory(
     Vec2i start, Vec2i end, const StaticGridRectangle &boundingBox, const ParticleHandler &particleHandler)

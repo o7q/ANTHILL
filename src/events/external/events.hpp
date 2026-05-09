@@ -1,7 +1,7 @@
 #pragma once
 
-#include "backend/sound/sound_handler.hpp"
-#include "backend/time/speed_changer.hpp"
+#include "core/sound/sound_handler.hpp"
+#include "core/time/speed_changer.hpp"
 #include "events/external/base.hpp"
 #include "identifiers/assets/sounds.hpp"
 #include "identifiers/scene.hpp"
