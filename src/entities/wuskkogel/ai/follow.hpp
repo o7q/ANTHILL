@@ -7,7 +7,7 @@
 class WuskkogelFollowState : public State<WuskkogelStateID, UpdateContext>
 {
   public:
-    WuskkogelFollowState(uint64_t &targetID) : State(WuskkogelStateID::Follow), r_targetID(targetID)
+    WuskkogelFollowState() : State(WuskkogelStateID::Follow)
     {
         m_targetLostTimer.setDurationInSeconds(5.0f);
         m_targetLostTimer.restart();
@@ -16,7 +16,5 @@ class WuskkogelFollowState : public State<WuskkogelStateID, UpdateContext>
     WuskkogelStateID update(const UpdateContext &context);
 
   private:
-    uint64_t &r_targetID;
-
     Timer m_targetLostTimer;
 };

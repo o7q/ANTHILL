@@ -61,7 +61,7 @@ void MainScene::onTick()
         m_events.emit(std::move(loadScene));
     }
 
-    if (r_window.getInput().getInput(InputID::AltAction5)->isDown())
+    if (r_window.getInput().getInput(InputID::AltAction5)->wasPressed())
     {
         auto BIRD = std::make_unique<Wuskkogel>(r_assets);
 

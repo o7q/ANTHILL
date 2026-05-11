@@ -1,6 +1,6 @@
 #include "follow.hpp"
 
-#include "entity/entity.hpp"
+#include "entities/player/player.hpp"
 
 WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
 {
@@ -11,27 +11,19 @@ WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
 
     m_targetLostTimer.update(context.context.time.dt);
 
-    const Entity *targetEntity = nullptr;
-    for (auto &[id, entity] : context.context.nearbyEntities)
-    {
-        if (id == r_targetID)
-        {
-            targetEntity = entity;
-        }
-    }
+    const Player *player = context.context.currentPlayer;
 
-    if (!targetEntity)
+    if (!player)
     {
         return WuskkogelStateID::Roam;
     }
 
-    Vec2i targetPos     = targetEntity->getBody().getPosition();
-    Vec2i targetLastPos = targetEntity->getBody().getLastPosition();
+    Vec2i targetPos = player->getBody().getPosition();
 
     context.perception.scan(context.body.getPosition() + context.headPos, context.lookAngle,
                             [&](Vec2i pos)
                             {
-                                if (targetEntity->pointInside(pos))
+                                if (player->pointInside(pos))
                                 {
                                     m_targetLostTimer.restart();
                                     return true;
@@ -49,10 +41,7 @@ WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
                                 return false;
                             });
 
-    if (targetPos != targetLastPos)
-    {
-        context.navigation.setGoal(targetPos);
-    }
+    context.navigation.setGoal(targetPos);
 
     context.navigation.update(context.body.getPosition(), context.context);
     auto result = context.navigation.getMoveVector();

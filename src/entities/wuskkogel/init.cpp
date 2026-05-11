@@ -17,11 +17,12 @@ Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
     m_aiPerception.setSightDistance(500);
 
     AINavigation::Config cfg;
-    cfg.astarIterationsPerFrame    = 100;
-    cfg.stuckTemper                = 100;
-    cfg.astarTerminationDistance   = 0;
-    cfg.astarMaxIterations         = 10000000;
+    cfg.iterationsPerFrame         = 10;
+    cfg.satisfactoryDistance       = 20.0f;
+    cfg.maxStuckTime               = 0.5f;
     cfg.checkpointEatRadius        = 10;
+    cfg.astar.endCutoffAmount      = 5;
+    cfg.astar.maxIterations        = 100000;
     cfg.astarNeighborCheckFunction = [&](const EntityUpdateContext &context, Index2D index)
     {
         auto data = context.particleHandler.getNavmesh().getChunkFromIndex(index);

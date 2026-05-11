@@ -33,7 +33,7 @@ void SimpleProjectile::update(const EntityUpdateContext &context, EventPool<Enti
                 return true;
             }
 
-            for (auto &[id, entity] : context.nearbyEntities)
+            for (auto &[id, entity] : context.otherEntities)
             {
                 if (entity->pointInside(pos) && entity->getMetadata().type != m_metadata.type &&
                     id != getParent())

@@ -8,8 +8,7 @@ void MainScene::renderText(std::vector<RenderCommand> &renderCommands)
     {
         healthText = r_assets.fonts()
                          .get(FontID::Default)
-                         .generateStringTexture(std::to_string((int)player->getHealth()),
-                                                Color(255, 100, 100), 5, 1, 8);
+                         .generateTexture({std::to_string((int)player->getHealth()), Color(255, 100, 100)});
 
         TextureRenderCommandData healthRenderData;
         healthRenderData.texture  = &healthText;
@@ -20,8 +19,7 @@ void MainScene::renderText(std::vector<RenderCommand> &renderCommands)
 
     fpsText = r_assets.fonts()
                   .get(FontID::Default)
-                  .generateStringTexture(std::to_string((int)r_window.getTime().getInfo().fps),
-                                         Color(0, 255, 0), 5, 1, 8);
+                  .generateTexture({std::to_string((int)r_window.getTime().getInfo().fps), Color(0, 255, 0)});
 
     TextureRenderCommandData fpsRenderData;
     fpsRenderData.texture  = &fpsText;
@@ -31,19 +29,19 @@ void MainScene::renderText(std::vector<RenderCommand> &renderCommands)
 
     entitiesText = r_assets.fonts()
                        .get(FontID::Default)
-                       .generateStringTexture(std::to_string(m_world.getEntityHandler().getEntityCount()),
-                                              Color(255, 100, 255), 5, 1, 8);
+                       .generateTexture({std::to_string(m_world.getEntityHandler().getEntityCount()),
+                                         Color(255, 100, 255)});
 
     TextureRenderCommandData entitiesRenderData;
     entitiesRenderData.texture  = &entitiesText;
     entitiesRenderData.position = {5, 15};
     entitiesRenderData.origin   = {0, 0};
 
-    chunksText = r_assets.fonts()
-                     .get(FontID::Default)
-                     .generateStringTexture(
-                         std::to_string(m_world.getParticleHandler().getParticles().getChunks().size()),
-                         Color(255, 100, 0), 5, 1, 8);
+    chunksText =
+        r_assets.fonts()
+            .get(FontID::Default)
+            .generateTexture({std::to_string(m_world.getParticleHandler().getParticles().getChunks().size()),
+                              Color(255, 100, 0)});
     renderCommands.push_back({1000, entitiesRenderData});
 
     TextureRenderCommandData chunkRenderData;

@@ -2,6 +2,7 @@
 
 #include "events/event_pool.hpp"
 #include "world/particle_handler/particle_handler.hpp"
+#include <cstdint>
 #include <memory>
 #include <unordered_map>
 
@@ -10,10 +11,12 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
 {
     EventPool<EntityEvent> events;
 
+    const Player *currentPlayer = getCurrentPlayer();
+
     for (auto &[id, entity] : m_entities)
     {
-        std::unordered_map<uint64_t, const Entity *> nearby = get_nearby_entities(id);
-        EntityUpdateContext context{id, time, particleHandler, nearby};
+        EntityUpdateContext context{
+            id, time, particleHandler, get_other_entities(id), m_currentPlayerID, currentPlayer};
 
         entity->update(context, events);
 
@@ -41,4 +44,22 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
 
     m_entitiesToRemove.clear();
     m_entitiesToAdd.clear();
+}
+
+std::unordered_map<uint64_t, const Entity *> EntityHandler::get_other_entities(uint64_t base)
+{
+    std::unordered_map<uint64_t, const Entity *> entities;
+    entities.reserve(m_entities.size() - 1);
+
+    for (auto &[id, entity] : m_entities)
+    {
+        if (id == base)
+        {
+            continue;
+        }
+
+        entities[id] = entity.get();
+    }
+
+    return entities;
 }

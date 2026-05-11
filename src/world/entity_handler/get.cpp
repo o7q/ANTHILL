@@ -2,8 +2,8 @@
 
 Player *EntityHandler::getCurrentPlayer()
 {
-    Entity *e = getEntity(m_currentPlayerID);
-    return e ? static_cast<Player *>(e) : nullptr;
+    Entity *playerEntity = getEntity(m_currentPlayerID);
+    return playerEntity ? static_cast<Player *>(playerEntity) : nullptr;
 }
 
 Entity *EntityHandler::getLatestEntity() { return getEntity(m_latestEntityID); }

@@ -10,11 +10,11 @@ class AINavigation
   public:
     struct Config
     {
-        int astarMaxIterations       = 100000;
-        int astarTerminationDistance = 0;
-        int astarIterationsPerFrame  = 100;
-        int checkpointEatRadius      = 4;
-        int stuckTemper              = 100;
+        AStarSolver::Config astar;
+        int iterationsPerFrame     = 100;
+        int checkpointEatRadius    = 4;
+        float maxStuckTime         = 1.0f;
+        float satisfactoryDistance = 20.0f;
         std::function<bool(const EntityUpdateContext &, Index2D)> astarNeighborCheckFunction;
     };
 
@@ -46,13 +46,13 @@ class AINavigation
     virtual ~AINavigation() = default;
 
     void update(Vec2i currentPos, const EntityUpdateContext &context);
-    void setGoal(Vec2i end) { m_astarGoalPosition = end; }
+    void setGoal(Vec2i goal) { m_astarGoalPosition = goal; }
 
     void setConfig(Config config)
     {
         m_config = config;
-        m_astar.setMaxIterations(config.astarMaxIterations);
-        m_astar.setTerminateDistance(config.astarTerminationDistance);
+        m_astar.setConfig(config.astar);
+        m_stuckTimer.setDurationInSeconds(config.maxStuckTime);
     }
 
     std::optional<Vec2i> getMoveVector() const { return m_moveVector; }
@@ -76,8 +76,6 @@ class AINavigation
     std::vector<Checkpoint> m_checkpoints;
 
     Checkpoint m_previousCheckpoint;
-    int m_stuckCounter      = 0;
-    int m_stuckRetryCounter = 0;
-    bool m_isStuck          = false;
+    Timer m_stuckTimer;
     std::optional<Vec2i> m_moveVector;
 };

@@ -4,6 +4,9 @@
 #include "core/timer/timer.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/update_context.hpp"
+#include "events/entity/base.hpp"
+#include "events/entity/events.hpp"
+#include "events/event_pool.hpp"
 #include "events/external/events.hpp"
 #include "identifiers/assets/sounds.hpp"
 #include <memory>
@@ -20,21 +23,24 @@ class PlayerSound
   public:
     PlayerSound()
     {
-        m_timer.setMode(Timer::Mode::Repeat);
-        m_timer.setDurationInMilliseconds(300);
-        m_timer.restart();
+        m_strideTimer.setMode(Timer::Mode::Repeat);
+        m_strideTimer.setDurationInMilliseconds(300);
+        m_strideTimer.restart();
+
+        m_groundTimer.setDurationInMilliseconds(200);
     }
 
-    std::vector<std::unique_ptr<ExternalPlaySoundEvent>> update(const EntityUpdateContext &context,
-                                                                const UpdateData &data)
+    void update(const EntityUpdateContext &context, const UpdateData &data, EventPool<EntityEvent> &eventsOut)
     {
-        std::vector<std::unique_ptr<ExternalPlaySoundEvent>> events;
+        if (data.grounded)
+        {
+            m_groundTimer.restart();
+        }
 
         if (std::abs(data.body.getVelocity().x) > 0.2f &&
-            data.body.getPosition().x - data.body.getLastPosition().x != 0 &&
-            (data.grounded || m_timer.active()))
+            data.body.getPosition().x - data.body.getLastPosition().x != 0 && m_groundTimer.active())
         {
-            if (m_timer.completed())
+            if (m_strideTimer.completed())
             {
                 auto soundEvent = std::make_unique<ExternalPlaySoundEvent>();
 
@@ -44,18 +50,19 @@ class PlayerSound
                 soundEvent->soundID         = ids[Math::Random::unseededRandomInt(0, 6)];
                 soundEvent->settings.volume = 0.1f;
 
-                events.push_back(std::move(soundEvent));
+                eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(soundEvent)));
             }
-            m_timer.update(context.time.dt);
         }
         else
         {
-            m_timer.restart();
+            m_strideTimer.restart();
         }
 
-        return events;
+        m_strideTimer.update(context.time.dt);
+        m_groundTimer.update(context.time.dt);
     }
 
   private:
-    Timer m_timer;
+    Timer m_groundTimer;
+    Timer m_strideTimer;
 };

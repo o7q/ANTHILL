@@ -7,9 +7,9 @@
 class WuskkogelRoamState : public State<WuskkogelStateID, UpdateContext>
 {
   public:
-    WuskkogelRoamState(uint64_t &targetID) : State(WuskkogelStateID::Roam), r_targetID(targetID)
+    WuskkogelRoamState() : State(WuskkogelStateID::Roam)
     {
-        m_roamMoveTimer.setDurationInSeconds(1.0f);
+        m_roamMoveTimer.setDurationInSeconds(0.5f);
         m_roamMoveTimer.setMode(Timer::Mode::Repeat);
         m_roamMoveTimer.restart();
     }
@@ -17,8 +17,6 @@ class WuskkogelRoamState : public State<WuskkogelStateID, UpdateContext>
     WuskkogelStateID update(const UpdateContext &context);
 
   private:
-    uint64_t &r_targetID;
-
-    Vec2i moveDir;
+    Vec2i m_randomMoveDirection;
     Timer m_roamMoveTimer;
 };

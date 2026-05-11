@@ -2,6 +2,5 @@
 
 enum class TextureID
 {
-    SandBackground,
-    SandBackground2
+    SandBackground
 };

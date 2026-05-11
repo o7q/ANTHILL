@@ -22,6 +22,13 @@ class Particle
         Gas
     };
 
+    enum class MaterialDescriptor
+    {
+        None,
+        Sandy,
+        Metallic
+    };
+
   public:
     Particle() = default;
 
@@ -33,6 +40,12 @@ class Particle
 
     void setMatterType(MatterType matterType) { m_matterType = matterType; }
     MatterType getMatterType() const { return m_matterType; }
+
+    void setMaterialDescriptor(MaterialDescriptor materialDescriptor)
+    {
+        m_materialDescriptor = materialDescriptor;
+    }
+    MaterialDescriptor getMaterialDescriptor() const { return m_materialDescriptor; }
 
     bool isBlank() const
     {
@@ -60,8 +73,9 @@ class Particle
 
   private:
     Color m_color;
-    PhysicsType m_physicsType = PhysicsType::None;
-    MatterType m_matterType   = MatterType::Gas;
+    PhysicsType m_physicsType               = PhysicsType::None;
+    MatterType m_matterType                 = MatterType::Gas;
+    MaterialDescriptor m_materialDescriptor = MaterialDescriptor::None;
 
     VerletBody m_verletBody;
     float m_restitution = 0.0f;

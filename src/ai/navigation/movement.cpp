@@ -60,18 +60,9 @@ void AINavigation::update_movement(Vec2i currentPos)
 
     AINavigation::Checkpoint current = current_opt.value();
 
-    if (m_stuckCounter >= m_config.stuckTemper)
+    if (current != m_previousCheckpoint)
     {
-        m_isStuck = true;
-    }
-
-    if (current == m_previousCheckpoint)
-    {
-        m_stuckCounter++;
-    }
-    else
-    {
-        m_stuckCounter = 0;
+        m_stuckTimer.restart();
     }
 
     m_previousCheckpoint = current;

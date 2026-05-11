@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ai/navigation/ai_navigation.hpp"
 #include "ai/perception/ai_perception.hpp"
 #include "camera/camera.hpp"
 #include "core/math/rectangle.hpp"
@@ -27,6 +28,25 @@ inline void DEBUG_renderAISightPoints(const AIPerception &perception, const Came
     for (Vec2i &p : points)
     {
         p = camera.cameraToViewport(p);
+    }
+
+    PointsRenderCommandData data;
+    data.points = points;
+    data.color  = color;
+
+    commandsOut.push_back({index, data});
+}
+
+inline void DEBUG_renderAINavigation(const AINavigation &navigation, const Camera &camera,
+                                     std::vector<RenderCommand> &commandsOut,
+                                     Color color = Color(15, 255, 207), unsigned int index = 1)
+{
+    std::vector<AINavigation::Checkpoint> checkpoints = navigation.getCheckpoints();
+    std::vector<Vec2i> points;
+
+    for (AINavigation::Checkpoint &checkpoint : checkpoints)
+    {
+        points.push_back(camera.cameraToViewport(checkpoint.pos));
     }
 
     PointsRenderCommandData data;

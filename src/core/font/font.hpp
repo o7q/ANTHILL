@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/texture/texture.hpp"
+#include <string>
 #include <unordered_map>
 
 class Font
@@ -14,6 +15,16 @@ class Font
     };
 
   public:
+    struct TextureGenerateSettings
+    {
+        const std::string &text;
+        Color color           = Color(255, 255, 255);
+        int spaceWidth        = 5;
+        int horizontalSpacing = 1;
+        int verticalSpacing   = 8;
+    };
+
+  public:
     Font() = default;
     Font(const std::filesystem::path &path);
     Font(const Font &other)            = delete;
@@ -22,8 +33,7 @@ class Font
 
     GlyphInfo createGlyphIndex(unsigned int atlasXIndex);
 
-    Texture generateStringTexture(const std::string &text, Color color, int spaceWidth, int horizontalSpacing,
-                                  int verticalSpacing) const;
+    Texture generateTexture(TextureGenerateSettings settings) const;
 
   private:
     Texture m_atlas;

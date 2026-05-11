@@ -8,4 +8,6 @@ void AINavigation::update(Vec2i currentPos, const EntityUpdateContext &context)
     {
         update_movement(currentPos);
     }
+
+    m_stuckTimer.update(context.time.dt);
 }

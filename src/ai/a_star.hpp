@@ -1,48 +1,20 @@
 #pragma once
 
 #include "a_star_neighbors.hpp"
+#include "ai/a_star_node.hpp"
 #include "core/math/vec.hpp"
 #include "core/utils/data_structures/index_2d.hpp"
 #include <cstdlib>
-#include <optional>
 #include <queue>
 #include <vector>
 
 class AStarSolver
 {
-  private:
-    enum class State
+  public:
+    struct Config
     {
-        Open,
-        Closed,
-        Unvisited
-    };
-
-    struct AStarNode
-    {
-        Index2D index;
-        Index2D parentIndex;
-        bool hasParent = false;
-
-        State state = State::Unvisited;
-
-        float gCost       = 0.0f; // distance from starting node
-        float hCost       = 0.0f; // distance from end node
-        float fCostCached = 0.0f;
-        void calculateFCost() { fCostCached = gCost + hCost; }
-    };
-
-    struct AStarNodeCompare
-    {
-        bool operator()(const AStarNode &a, const AStarNode &b) const
-        {
-            if (std::abs(a.fCostCached - b.fCostCached) > 0.000001f)
-            {
-                return a.fCostCached > b.fCostCached;
-            }
-
-            return a.hCost > b.hCost;
-        }
+        int maxIterations   = 50000;
+        int endCutoffAmount = 0;
     };
 
   public:
@@ -55,9 +27,9 @@ class AStarSolver
     void iteratePath(int amount, NeighborCheckFunction &&checkFunction)
     {
         int localIterations = 0;
-        while (!m_toSearch.empty() && localIterations < amount && !m_endReached)
+        while (!m_toSearch.empty() && localIterations < amount && !m_pathFound)
         {
-            if (m_iterationCount > m_maxIterations)
+            if (m_iterationCount > m_config.maxIterations)
             {
                 return;
             }
@@ -65,21 +37,21 @@ class AStarSolver
             m_current = m_toSearch.top();
             m_toSearch.pop();
 
-            if (m_nodes[m_current.index].state == State::Closed)
+            if (m_nodes[m_current.index].state == AStarNode::State::Closed)
             {
                 continue;
             }
 
-            m_nodes[m_current.index].state = State::Closed;
+            m_nodes[m_current.index].state = AStarNode::State::Closed;
 
             bool terminate = false;
 
-            if (m_terminateDistance.has_value())
+            if (m_config.endCutoffAmount > 0)
             {
-                int terminateDistTest =
+                int distanceToEnd =
                     std::abs(m_current.index.x - m_end.x) + std::abs(m_current.index.y - m_end.y);
 
-                if (terminateDistTest < m_terminateDistance)
+                if (distanceToEnd < m_config.endCutoffAmount)
                 {
                     terminate = true;
                 }
@@ -87,7 +59,7 @@ class AStarSolver
 
             if (m_current.index == Index2D(m_end.x, m_end.y) || terminate)
             {
-                m_endReached = true;
+                m_pathFound = true;
                 return;
             }
 
@@ -104,13 +76,13 @@ class AStarSolver
                 AStarNode &neighbor  = m_nodes[neighborIndex];
                 float costToNeighbor = m_current.gCost + dist(m_current.index, neighborIndex);
 
-                if (neighbor.state == State::Unvisited || costToNeighbor < neighbor.gCost)
+                if (neighbor.state == AStarNode::State::Unvisited || costToNeighbor < neighbor.gCost)
                 {
                     AStarNode next;
                     next.index       = neighborIndex;
                     next.parentIndex = m_current.index;
                     next.hasParent   = true;
-                    next.state       = State::Open;
+                    next.state       = AStarNode::State::Open;
                     next.gCost       = costToNeighbor;
                     next.hCost       = dist(neighborIndex, {m_end.x, m_end.y});
                     next.calculateFCost();
@@ -126,11 +98,8 @@ class AStarSolver
     }
     std::vector<Vec2i> generatePath();
 
-    bool endReached() const { return m_endReached; }
-    void setMaxIterations(int maxIterations) { m_maxIterations = maxIterations; }
-
-    void setTerminateDistance(int distance) { m_terminateDistance = distance; }
-    void removeTerminateDistance() { m_terminateDistance = std::nullopt; }
+    bool pathFound() const { return m_pathFound; }
+    void setConfig(Config config) { m_config = config; }
 
     Vec2i getStart() const { return m_start; }
     Vec2i getEnd() const { return m_end; }
@@ -139,6 +108,8 @@ class AStarSolver
     float dist(Index2D start, Index2D end);
 
   private:
+    Config m_config;
+
     std::unordered_map<Index2D, AStarNode, Index2DHash> m_nodes;
     std::priority_queue<AStarNode, std::vector<AStarNode>, AStarNodeCompare> m_toSearch;
 
@@ -146,10 +117,6 @@ class AStarSolver
 
     Vec2i m_start, m_end;
 
-    int m_maxIterations  = 50000;
     int m_iterationCount = 0;
-
-    bool m_endReached = false;
-
-    std::optional<int> m_terminateDistance = 0;
+    bool m_pathFound     = false;
 };

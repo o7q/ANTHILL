@@ -7,17 +7,12 @@
 class WuskkogelAttackState : public State<WuskkogelStateID, UpdateContext>
 {
   public:
-    WuskkogelAttackState(uint64_t &targetID) : State(WuskkogelStateID::Attack), r_targetID(targetID)
-    {
-        m_attackTimer.setDurationInSeconds(0.5f);
-    }
+    WuskkogelAttackState() : State(WuskkogelStateID::Attack) { m_attackTimer.setDurationInSeconds(0.5f); }
 
     WuskkogelStateID update(const UpdateContext &context);
 
   private:
-    uint64_t &r_targetID;
-
-    bool m_bit = false;
+    bool m_attacked = false;
 
     Timer m_attackTimer;
 };

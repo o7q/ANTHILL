@@ -10,7 +10,4 @@ class WuskkogelStateMachine : public StateMachine<WuskkogelStateID, UpdateContex
 
   protected:
     void switch_state(WuskkogelStateID state) override;
-
-  private:
-    uint64_t m_targetID = 0;
 };

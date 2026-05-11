@@ -11,7 +11,6 @@
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
 #include "entity/jump_handler/jump_handler.hpp"
-#include "item/inventory.hpp"
 
 class Player : public Entity
 {
@@ -43,7 +42,6 @@ class Player : public Entity
 
   private:
     void update_movement_and_jump(const EntityUpdateContext &context);
-    void update_items(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut);
 
   private:
     InputHandler &r_input;
@@ -51,8 +49,6 @@ class Player : public Entity
     BodyUpdateHandler m_bodyHandler;
     PlayerSprite m_sprite;
     PlayerSound m_sound;
-
-    Inventory m_inventory;
 
     JumpHandler m_jumpHandler;
     PlayerDash m_dash;

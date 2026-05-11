@@ -3,8 +3,7 @@
 #include "core/math/index.hpp"
 #include <limits>
 
-Texture Font::generateStringTexture(const std::string &text, Color color, int spaceWidth,
-                                    int horizontalSpacing, int verticalSpacing) const
+Texture Font::generateTexture(TextureGenerateSettings settings) const
 {
     std::vector<Vec2i> sparseRaster;
 
@@ -12,17 +11,17 @@ Texture Font::generateStringTexture(const std::string &text, Color color, int sp
     Vec2i a = {std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
     Vec2i b = {std::numeric_limits<int>::min(), std::numeric_limits<int>::min()};
 
-    for (char c : text)
+    for (char c : settings.text)
     {
         bool skip = true;
         switch (c)
         {
         case '\n':
             current.x = 0;
-            current.y += verticalSpacing;
+            current.y += settings.verticalSpacing;
             break;
         case ' ':
-            current.x += spaceWidth;
+            current.x += settings.spaceWidth;
             break;
         default:
             skip = false;
@@ -67,7 +66,7 @@ Texture Font::generateStringTexture(const std::string &text, Color color, int sp
             }
         }
 
-        current.x += info.size.x + horizontalSpacing;
+        current.x += info.size.x + settings.horizontalSpacing;
     }
 
     if (sparseRaster.empty())
@@ -86,7 +85,7 @@ Texture Font::generateStringTexture(const std::string &text, Color color, int sp
         unsigned int x = i.x - a.x;
         unsigned int y = i.y - a.y;
 
-        pixels[Math::Index::index_2dto1d({x, y}, size.x)] = color;
+        pixels[Math::Index::index_2dto1d({x, y}, size.x)] = settings.color;
     }
 
     Texture texture(pixels, size);

@@ -1,32 +1,22 @@
 #include "roam.hpp"
 
 #include "core/math/random.hpp"
-#include "entity/entity.hpp"
-#include "entity/metadata.hpp"
+#include "entities/player/player.hpp"
 
 WuskkogelStateID WuskkogelRoamState::update(const UpdateContext &context)
 {
     if (m_roamMoveTimer.completed())
     {
-        moveDir.x = Math::Random::unseededRandomInt(-2, 3);
-        moveDir.y = Math::Random::unseededRandomInt(-2, 3);
+        m_randomMoveDirection.x = Math::Random::unseededRandomInt(-1, 2);
+        m_randomMoveDirection.y = Math::Random::unseededRandomInt(-1, 2);
     }
 
+    context.body.setVelocityTarget(m_randomMoveDirection.toFloat());
     m_roamMoveTimer.update(context.context.time.dt);
-    context.body.setVelocityTarget(moveDir.toFloat());
 
-    uint64_t target            = 0;
-    const Entity *targetEntity = nullptr;
-    for (auto &[id, entity] : context.context.nearbyEntities)
-    {
-        if (entity->getMetadata().type == EntityType::Player)
-        {
-            target       = id;
-            targetEntity = entity;
-        }
-    }
+    const Player *player = context.context.currentPlayer;
 
-    if (target == 0)
+    if (!player)
     {
         return WuskkogelStateID::Roam;
     }
@@ -35,10 +25,9 @@ WuskkogelStateID WuskkogelRoamState::update(const UpdateContext &context)
     context.perception.scan(context.body.getPosition() + context.headPos, context.lookAngle,
                             [&](Vec2i pos)
                             {
-                                if (targetEntity->pointInside(pos))
+                                if (player->pointInside(pos))
                                 {
                                     scanResultID = WuskkogelStateID::Follow;
-                                    r_targetID   = target;
                                     return true;
                                 }
 

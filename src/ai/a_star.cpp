@@ -40,7 +40,7 @@ void AStarSolver::reset(Vec2i start, Vec2i end)
     m_start = start;
     m_end   = end;
 
-    m_endReached = false;
+    m_pathFound = false;
 
     m_iterationCount = 0;
 
@@ -48,7 +48,7 @@ void AStarSolver::reset(Vec2i start, Vec2i end)
     startNode.index = Index2D(start.x, start.y);
     startNode.hCost = dist({start.x, start.y}, {end.x, end.y});
     startNode.calculateFCost();
-    startNode.state = State::Open;
+    startNode.state = AStarNode::State::Open;
 
     m_nodes[startNode.index] = startNode;
     m_toSearch.push(startNode);

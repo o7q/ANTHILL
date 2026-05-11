@@ -20,6 +20,9 @@ class Wuskkogel : public Entity
 
     void render(const Camera &camera, std::vector<RenderCommand> &commandsOut) override
     {
+        // DEBUG_renderAISightPoints(m_aiPerception, camera, commandsOut);
+        // DEBUG_renderAINavigation(m_aiNavigation, camera, commandsOut);
+
         TextureRenderCommandData data;
         data.texture  = m_animator.getCurrentFrame();
         data.position = camera.cameraToViewport(m_body.getPosition());

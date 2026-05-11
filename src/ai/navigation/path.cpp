@@ -1,16 +1,20 @@
 #include "ai_navigation.hpp"
 
+#include "core/math/distance.hpp"
+
 void AINavigation::update_path(Vec2i currentPos, const EntityUpdateContext &context)
 {
-    Index2D end = context.particleHandler.getNavmesh().getIndexFromWorldPosition(m_astarGoalPosition);
-    if (Vec2i(end.x, end.y) != m_astar.getEnd() || m_isStuck)
+    Index2D endIndex = context.particleHandler.getNavmesh().getIndexFromWorldPosition(m_astarGoalPosition);
+    Vec2i end        = {endIndex.x, endIndex.y};
+
+    float goalDist = Math::Distance::euclidian(currentPos.toFloat(), m_astarGoalPosition.toFloat());
+    if (end != m_astar.getEnd() || (m_stuckTimer.completed() && goalDist > m_config.satisfactoryDistance))
     {
         Index2D start = context.particleHandler.getNavmesh().getIndexFromWorldPosition(currentPos);
-        m_astar.reset(Vec2i(start.x, start.y), {end.x, end.y});
+        m_astar.reset(Vec2i(start.x, start.y), end);
         m_checkpoints.clear();
+        m_stuckTimer.restart();
         m_astarPathState = PathState::Iterating;
-        m_isStuck        = false;
-        m_stuckCounter   = 0;
     }
 
     if (m_astarPathState != PathState::Iterating)
@@ -18,21 +22,19 @@ void AINavigation::update_path(Vec2i currentPos, const EntityUpdateContext &cont
         return;
     }
 
-    if (!m_astar.endReached())
-    {
-        m_astar.iteratePath(m_config.astarIterationsPerFrame,
-                            [context, check = m_config.astarNeighborCheckFunction](int x, int y)
-                            { return check(context, Index2D(x, y)); });
-    }
-    else
-    {
-        std::vector<Vec2i> positions = m_astar.generatePath();
+    m_astar.iteratePath(m_config.iterationsPerFrame,
+                        [context, check = m_config.astarNeighborCheckFunction](int x, int y)
+                        { return check(context, Index2D(x, y)); });
 
-        Vec2i last;
-        for (Vec2i pos : positions)
+    if (m_astar.pathFound())
+    {
+        std::vector<Vec2i> checkpointPositions = m_astar.generatePath();
+
+        Vec2i lastCheckpointPos;
+        for (Vec2i checkpointPos : checkpointPositions)
         {
-            int dx = std::abs(pos.x - last.x);
-            int dy = std::abs(pos.y - last.y);
+            int dx = std::abs(checkpointPos.x - lastCheckpointPos.x);
+            int dy = std::abs(checkpointPos.y - lastCheckpointPos.y);
 
             bool xChanged = dx != 0;
             bool yChanged = dy != 0;
@@ -44,8 +46,8 @@ void AINavigation::update_path(Vec2i currentPos, const EntityUpdateContext &cont
             }
 
             m_checkpoints.push_back(
-                {pos * context.particleHandler.getNavmesh().getResolution().toInt(), axis});
-            last = pos;
+                {checkpointPos * context.particleHandler.getNavmesh().getResolution().toInt(), axis});
+            lastCheckpointPos = checkpointPos;
         }
 
         m_astarPathState = PathState::Ready;
