@@ -12,6 +12,8 @@ Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
     m_body.setGravity(0.0f);
     m_body.setTargetDamping({0.92f, 0.92f});
 
+    m_idleSoundTimer.restart();
+
     m_aiPerception.setSightFOV(120);
     m_aiPerception.setSightRayAmount(20);
     m_aiPerception.setSightDistance(500);

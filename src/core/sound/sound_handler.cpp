@@ -22,10 +22,15 @@ SoundHandler::~SoundHandler()
     }
 }
 
-void SoundHandler::update()
+void SoundHandler::update(TimeHandler::Info time)
 {
     for (auto it = m_instancePool.begin(); it != m_instancePool.end();)
     {
+        if (it->sound)
+        {
+            ma_sound_set_pitch(it->sound, it->settings.pitch * time.speed_multiplier);
+        }
+
         if (!it->buffer || !it->sound || ma_sound_at_end(it->sound))
         {
             destroy_instance(*it);
@@ -46,8 +51,9 @@ void SoundHandler::playSound(const Sound &s, const SoundPlaySettings settings)
     }
 
     SoundInstance instance;
-    instance.buffer = (ma_audio_buffer *)malloc(sizeof(ma_audio_buffer));
-    instance.sound  = (ma_sound *)malloc(sizeof(ma_sound));
+    instance.settings = settings;
+    instance.buffer   = (ma_audio_buffer *)malloc(sizeof(ma_audio_buffer));
+    instance.sound    = (ma_sound *)malloc(sizeof(ma_sound));
 
     ma_audio_buffer_config bufferConfig =
         ma_audio_buffer_config_init(s.getFormat(), s.getChannels(), s.getFrameCount(), s.getData(), NULL);
@@ -69,6 +75,7 @@ void SoundHandler::playSound(const Sound &s, const SoundPlaySettings settings)
 
     ma_sound_set_volume(instance.sound, settings.volume);
     ma_sound_set_pitch(instance.sound, settings.pitch);
+    ma_sound_set_position(instance.sound, settings.position.x, settings.position.y, -1);
     ma_sound_start(instance.sound);
 
     m_instancePool.push_back(instance);

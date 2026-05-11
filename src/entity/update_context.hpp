@@ -16,4 +16,6 @@ struct EntityUpdateContext
     const std::unordered_map<uint64_t, const Entity *> &otherEntities;
     uint64_t currentPlayerID    = 0;
     const Player *currentPlayer = nullptr;
+    const float distanceToCurrentPlayer;
+    const Vec2f vectorTowardsCurrentPlayer;
 };

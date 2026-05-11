@@ -1,3 +1,4 @@
+#include "core/math/distance.hpp"
 #include "entity_handler.hpp"
 
 #include "events/event_pool.hpp"
@@ -15,8 +16,26 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
 
     for (auto &[id, entity] : m_entities)
     {
-        EntityUpdateContext context{
-            id, time, particleHandler, get_other_entities(id), m_currentPlayerID, currentPlayer};
+        float distanceToCurrentPlayer = 0.0f;
+        Vec2f vectorTowardsCurrentPlayer;
+
+        if (currentPlayer)
+        {
+            distanceToCurrentPlayer = Math::Distance::euclidian(currentPlayer->getBody().getPositionFloat(),
+                                                                entity->getBody().getPositionFloat());
+            vectorTowardsCurrentPlayer =
+                (currentPlayer->getBody().getPositionFloat() - entity->getBody().getPositionFloat())
+                    .normalize();
+        }
+
+        EntityUpdateContext context{id,
+                                    time,
+                                    particleHandler,
+                                    get_other_entities(id),
+                                    m_currentPlayerID,
+                                    currentPlayer,
+                                    distanceToCurrentPlayer,
+                                    vectorTowardsCurrentPlayer};
 
         entity->update(context, events);
 

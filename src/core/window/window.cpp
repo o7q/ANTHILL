@@ -20,7 +20,7 @@ void Window::frameEnd() { m_time.frameEnd(); }
 
 void Window::update()
 {
-    m_sound.update();
+    m_sound.update(m_time.getInfo());
 
     SDL_Event event;
     while (SDL_PollEvent(&event))

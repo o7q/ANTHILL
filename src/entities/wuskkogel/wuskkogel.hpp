@@ -46,4 +46,6 @@ class Wuskkogel : public Entity
     Vec2i m_headPos   = {0, -5};
 
     std::vector<DamageSource> m_damageSources;
+
+    Timer m_idleSoundTimer;
 };

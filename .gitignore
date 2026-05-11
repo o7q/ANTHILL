@@ -1,4 +1,4 @@
-.cache
-build
-package
-ANTHILL
+/.cache
+/build
+/package
+/ANTHILL
