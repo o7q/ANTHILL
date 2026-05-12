@@ -44,7 +44,7 @@ class PlayerSprite
     {
         const EntityBody &body;
         const PlayerDash &dash;
-        float lookAngle = 0.0f;
+        Angle lookAngle;
     };
 
   public:
@@ -56,7 +56,7 @@ class PlayerSprite
   private:
     State determine_state(const EntityBody &body);
 
-    void update_head(State state, float lookAngle, float dt);
+    void update_head(State state, Angle lookAngle, float dt);
     void update_torso(State state, float dt);
     void update_legs(State state, float dt);
 

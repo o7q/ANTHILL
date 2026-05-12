@@ -1,20 +1,21 @@
 #pragma once
 
+#include "core/math/angle.hpp"
 #include "core/viewport/render_command.hpp"
 #include "entity/entity.hpp"
 #include "entity/metadata.hpp"
 
-class SimpleProjectile : public Entity
+class PlayerProjectile : public Entity
 {
   public:
-    SimpleProjectile(uint64_t parent, Vec2i startPos, float startAngle, float speed) : Entity(parent)
+    PlayerProjectile(uint64_t parent, Vec2i startPos, Angle startAngle, float speed) : Entity(parent)
     {
         m_body.setPosition(startPos);
-        m_constantVelocity = Vec2f(std::cosf(startAngle), std::sinf(startAngle)) * speed;
+        m_constantVelocity = Vec2f(std::cosf(startAngle.radians()), std::sinf(startAngle.radians())) * speed;
 
         m_boundingBox.setSize({3, 3});
 
-        m_metadata.name = "Simple Projectile";
+        m_metadata.name = "Player Projectile";
         m_metadata.type = EntityType::Projectile;
     }
 
@@ -24,7 +25,7 @@ class SimpleProjectile : public Entity
     {
         PointsRenderCommandData data;
         data.points = {camera.cameraToViewport(m_body.getPosition())};
-        data.color  = Color(232, 147, 28);
+        data.color  = Color(71, 255, 212);
 
         commandsOut.push_back({1, data});
     }

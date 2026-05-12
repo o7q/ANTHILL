@@ -17,7 +17,8 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
     {
         float dist =
             Math::Distance::euclidian(entity.second->getBody().getPositionFloat(), m_aimPos.toFloat());
-        if (dist < closestDistance && dist < 150.0f)
+        if (dist < closestDistance && dist < 150.0f &&
+            entity.second->getMetadata().type != EntityType::Projectile)
         {
             PositionalGridRectangle rect;
             rect.setSize(entity.second->getBoundingBox().getSize());
@@ -45,9 +46,9 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
 
                                               auto slowmoEvent = std::make_unique<ExternalChangeSpeedEvent>();
                                               slowmoEvent->settings.startLength = 0;
-                                              slowmoEvent->settings.holdLength  = 0.5f;
-                                              slowmoEvent->settings.holdSpeed   = 0.2f;
-                                              slowmoEvent->settings.endLength   = 1.0f;
+                                              slowmoEvent->settings.holdLength  = 0.3f;
+                                              slowmoEvent->settings.holdSpeed   = 0.8f;
+                                              slowmoEvent->settings.endLength   = 0.3f;
 
                                               eventsOut.emit(std::make_unique<EntityExternalEvent>(
                                                   context.id, std::move(slowmoEvent)));
@@ -64,6 +65,10 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
         {
             Vec2i pos = m_dashTarget.value().getPosition();
             m_dash.start(Math::Angles::vectorsToAngle(m_body.getPositionFloat(), pos.toFloat()));
+        }
+        else
+        {
+            m_dash.start(Math::Angles::vectorsToAngle(m_body.getPositionFloat(), m_aimPos.toFloat()));
         }
     }
 
@@ -83,6 +88,12 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
         update_movement_and_jump(context);
     }
 
+    if (r_input.getInput(InputID::Shoot)->isDown())
+    {
+        m_gun.shoot(m_body.getPosition(), m_angle, context.id, eventsOut);
+    }
+
+    m_gun.update(context.time.dt);
     m_bodyHandler.update(context);
     m_sprite.update({m_body, m_dash, m_angle}, context.time.dt);
 

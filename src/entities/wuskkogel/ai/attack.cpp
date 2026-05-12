@@ -3,7 +3,6 @@
 #include "core/math/random.hpp"
 #include "entities/player/player.hpp"
 #include "events/entity/events.hpp"
-#include "events/external/base.hpp"
 #include "events/external/events.hpp"
 #include <memory>
 
@@ -16,13 +15,7 @@ WuskkogelStateID WuskkogelAttackState::update(const UpdateContext &context)
         return WuskkogelStateID::Roam;
     }
 
-    Vec2f currentPosition = context.body.getPositionFloat();
-    Vec2f targetPos       = player->getBody().getPositionFloat();
-
-    float dx = targetPos.x - currentPosition.x;
-    float dy = targetPos.y - currentPosition.y;
-
-    Vec2f vec = Vec2f(dx, dy).normalize() * 8.0f;
+    Vec2f vec = context.context.vectorTowardsCurrentPlayer * 8.0f;
 
     if (!m_attackTimer.active())
     {
@@ -45,7 +38,7 @@ WuskkogelStateID WuskkogelAttackState::update(const UpdateContext &context)
 
     m_attackTimer.update(context.context.time.dt);
 
-    if (std::abs(dx) + std::abs(dy) < 10 && !m_attacked)
+    if (context.context.distanceToCurrentPlayer < 10.0f && !m_attacked)
     {
         auto damageEvent           = std::make_unique<EntityDamageEvent>(context.context.id);
         damageEvent->target        = context.context.currentPlayerID;
@@ -55,7 +48,7 @@ WuskkogelStateID WuskkogelAttackState::update(const UpdateContext &context)
         m_attacked = true;
     }
 
-    if (std::abs(dx) + std::abs(dy) > 100)
+    if (context.context.distanceToCurrentPlayer > 100.0f)
     {
         return WuskkogelStateID::Follow;
     }

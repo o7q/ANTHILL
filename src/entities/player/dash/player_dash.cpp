@@ -7,7 +7,7 @@
 PlayerDash::PlayerDash()
 {
     m_startTimer.setDurationInMilliseconds(0);
-    m_dashTimer.setDurationInMilliseconds(500);
+    m_dashTimer.setDurationInMilliseconds(250);
 }
 
 void PlayerDash::start(Angle angle)
@@ -64,8 +64,8 @@ void PlayerDash::dash_update_velocity()
 {
     Vec2f dir = {std::cosf(m_dashAngle), std::sinf(m_dashAngle)};
 
-    Vec2f startVel = dir * 10.0f;
-    Vec2f endVel   = dir * 5.0f;
+    Vec2f startVel = dir * 20.0f;
+    Vec2f endVel   = dir * 8.0f;
 
     float velX = Math::Interpolation::easeOutCubic(startVel.x, endVel.x,
                                                    std::clamp(m_dashTimer.getProgress(), 0.0f, 1.0f));

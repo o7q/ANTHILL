@@ -14,6 +14,8 @@ Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
 
     m_idleSoundTimer.restart();
 
+    m_health = 40.0f;
+
     m_aiPerception.setSightFOV(120);
     m_aiPerception.setSightRayAmount(20);
     m_aiPerception.setSightDistance(500);

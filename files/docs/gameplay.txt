@@ -5,7 +5,8 @@ Example for Ultrakill:
 
 Ideas for ANTHILL:
 - The gameplay consists of exploration, killing and looting enemies, and upgrading your character.
-- Fixed width of world, you dig down
+- Fixed width of world, you dig down.
+- Spelunky like rooms.
 
 ---------------------------------------------
 

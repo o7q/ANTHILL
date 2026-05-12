@@ -7,7 +7,7 @@ void Game::start()
 
     m_scene = std::make_unique<MainScene>(m_window, m_assets);
 
-    m_window.getTime().setMaxFPS(144);
+    m_window.getTime().setMaxFPS(60);
     while (m_window.isRunning())
     {
         m_window.frameStart();

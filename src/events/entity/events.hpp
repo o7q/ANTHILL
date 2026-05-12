@@ -3,10 +3,14 @@
 #include "base.hpp"
 #include "entity/entity.hpp"
 #include "events/external/base.hpp"
+#include <memory>
 
 struct EntitySpawnEvent : public EntityEvent
 {
-    EntitySpawnEvent(const uint64_t caller_) : EntityEvent(caller_, EntityEventType::EntitySpawn) {}
+    EntitySpawnEvent(const uint64_t caller_, std::unique_ptr<Entity> entity_)
+        : EntityEvent(caller_, EntityEventType::EntitySpawn), entity(std::move(entity_))
+    {
+    }
 
     std::unique_ptr<Entity> entity = nullptr;
 };

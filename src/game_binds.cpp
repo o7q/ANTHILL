@@ -12,7 +12,6 @@ void Game::init_binds()
     input.assignInput(InputID::Up, {{Input::ButtonType::Key, SDLK_W}});
     input.assignInput(InputID::Down, {{Input::ButtonType::Key, SDLK_S}});
     input.assignInput(InputID::Jump, {{Input::ButtonType::Key, SDLK_SPACE}});
-    input.assignInput(InputID::Reload, {{Input::ButtonType::Key, SDLK_R}});
     input.assignInput(InputID::Shoot, {{Input::ButtonType::Mouse, SDL_BUTTON_LEFT}});
     input.assignInput(InputID::Dash, {{Input::ButtonType::Key, SDLK_LSHIFT}});
 

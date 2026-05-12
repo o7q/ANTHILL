@@ -4,7 +4,6 @@
 #include "events/external/events.hpp"
 #include "events/particle/events.hpp"
 #include "wuskkogel.hpp"
-#include <iostream>
 #include <memory>
 
 void Wuskkogel::update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)

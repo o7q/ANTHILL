@@ -15,4 +15,3 @@ struct SpriteSheetLoadData
 void initSpriteSheets(AssetPool<SpriteSheetID, SpriteSheet> &assets);
 void initSumi(std::unordered_map<SpriteSheetID, SpriteSheetLoadData> &v);
 void initEntities(std::unordered_map<SpriteSheetID, SpriteSheetLoadData> &v);
-void initItems(std::unordered_map<SpriteSheetID, SpriteSheetLoadData> &v);

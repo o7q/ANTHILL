@@ -21,6 +21,9 @@ void initSounds(AssetPool<SoundID, Sound> &assets)
     v[SoundID::WuskkogelChirp3]  = {"assets/sounds/entities/wuskkogel/chirp3.wav"};
     v[SoundID::WuskkogelChirp4]  = {"assets/sounds/entities/wuskkogel/chirp4.wav"};
 
+    v[SoundID::SumiGunShoot1] = {"assets/sounds/entities/sumi/gun/shoot1.wav"};
+    v[SoundID::SumiGunHit1]   = {"assets/sounds/entities/sumi/gun/hit1.wav"};
+
     for (auto &[id, data] : v)
     {
         assets.add(id, std::make_unique<Sound>(data.path));

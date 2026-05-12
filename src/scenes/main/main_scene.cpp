@@ -69,7 +69,7 @@ void MainScene::onTick()
         SpeedChanger::Settings speedSettings;
         speedSettings.startLength = 1.0f;
         speedSettings.holdLength  = 2.0f;
-        speedSettings.holdSpeed   = 0.1f;
+        speedSettings.holdSpeed   = 0.5f;
         speedSettings.endLength   = 1.0f;
         r_window.getTime().getSpeedChanger().startTransition(speedSettings);
     }

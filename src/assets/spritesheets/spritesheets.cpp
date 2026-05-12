@@ -6,7 +6,6 @@ void initSpriteSheets(AssetPool<SpriteSheetID, SpriteSheet> &assets)
 
     initSumi(v);
     initEntities(v);
-    initItems(v);
 
     for (auto &[id, data] : v)
     {

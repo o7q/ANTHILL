@@ -6,6 +6,8 @@
 #include "core/math/rectangle.hpp"
 #include "core/viewport/render_command.hpp"
 #include "entities/player/dash/player_dash.hpp"
+#include "entities/player/gun/player_gun.hpp"
+#include "entities/player/jetpack/player_jetpack.hpp"
 #include "entities/player/sound/player_sound.hpp"
 #include "entities/player/sprite/player_sprite.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
@@ -25,8 +27,7 @@ class Player : public Entity
     {
         m_aimPos = aimPos;
         m_angle  = Math::Angles::vectorsToAngle((m_body.getPosition() + m_relativeHeadPosition).toFloat(),
-                                                aimPos.toFloat())
-                       .degrees();
+                                                aimPos.toFloat());
     }
 
     virtual void damage(DamageSource source) override
@@ -47,14 +48,16 @@ class Player : public Entity
     InputHandler &r_input;
     const Assets &r_assets;
     BodyUpdateHandler m_bodyHandler;
+    JumpHandler m_jumpHandler;
+
     PlayerSprite m_sprite;
     PlayerSound m_sound;
-
-    JumpHandler m_jumpHandler;
+    PlayerGun m_gun;
     PlayerDash m_dash;
-    std::optional<PositionalGridRectangle> m_dashTarget;
 
     Vec2i m_aimPos;
-    float m_angle                = 0.0f;
+    Angle m_angle;
     Vec2i m_relativeHeadPosition = {0, -6};
+
+    std::optional<PositionalGridRectangle> m_dashTarget;
 };

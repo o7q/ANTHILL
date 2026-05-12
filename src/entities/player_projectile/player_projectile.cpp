@@ -1,13 +1,14 @@
-#include "simple_projectile.hpp"
+#include "player_projectile.hpp"
 
 #include "core/math/line.hpp"
 #include "core/math/random.hpp"
 #include "events/entity/events.hpp"
+#include "events/external/events.hpp"
 #include "events/particle/events.hpp"
 #include "world/particle_handler/particle.hpp"
 #include <memory>
 
-void SimpleProjectile::update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
+void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
     m_body.setVelocity(m_constantVelocity);
 
@@ -45,6 +46,11 @@ void SimpleProjectile::update(const EntityUpdateContext &context, EventPool<Enti
                     event->source.direction =
                         (m_body.getPositionFloat() - m_body.getLastPositionFloat()).normalize() * 1.0f;
                     eventsOut.emit(std::move(event));
+
+                    auto soundEvent             = std::make_unique<ExternalPlaySoundEvent>();
+                    soundEvent->soundID         = SoundID::SumiGunHit1;
+                    soundEvent->settings.volume = 0.3f;
+                    eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(soundEvent)));
 
                     kill();
                     return true;
