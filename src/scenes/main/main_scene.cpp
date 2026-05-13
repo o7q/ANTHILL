@@ -4,6 +4,7 @@
 #include "core/time/speed_changer.hpp"
 #include "core/time/time_handler.hpp"
 #include "core/viewport/render_command.hpp"
+#include "entities/player_point/player_point.hpp"
 #include "entities/wuskkogel/wuskkogel.hpp"
 #include "events/external/events.hpp"
 #include <memory>
@@ -57,11 +58,11 @@ void MainScene::onTick()
 
     if (r_window.getInput().getInput(InputID::AltAction4)->wasPressed())
     {
-        auto BIRD = std::make_unique<Wuskkogel>(r_assets);
+        auto entity = std::make_unique<PlayerPoint>(worldMousePos);
 
-        BIRD->getBody().setPosition(worldMousePos);
+        entity->getBody().setPosition(worldMousePos);
 
-        m_world.getEntityHandler().addEntity(std::move(BIRD));
+        m_world.getEntityHandler().addEntity(std::move(entity));
     }
 
     if (r_window.getInput().getInput(InputID::AltAction5)->wasPressed())

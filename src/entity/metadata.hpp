@@ -6,7 +6,8 @@ enum class EntityType
 {
     Generic,
     Player,
-    Projectile
+    Projectile,
+    Collectible
 };
 
 struct EntityMetadata

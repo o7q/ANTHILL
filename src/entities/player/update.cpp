@@ -18,7 +18,8 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
         float dist =
             Math::Distance::euclidian(entity.second->getBody().getPositionFloat(), m_aimPos.toFloat());
         if (dist < closestDistance && dist < 150.0f &&
-            entity.second->getMetadata().type != EntityType::Projectile)
+            entity.second->getMetadata().type != EntityType::Projectile &&
+            entity.second->getMetadata().type != EntityType::Collectible)
         {
             PositionalGridRectangle rect;
             rect.setSize(entity.second->getBoundingBox().getSize());

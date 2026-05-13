@@ -7,7 +7,6 @@
 #include "core/viewport/render_command.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entities/player/gun/player_gun.hpp"
-#include "entities/player/jetpack/player_jetpack.hpp"
 #include "entities/player/sound/player_sound.hpp"
 #include "entities/player/sprite/player_sprite.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
