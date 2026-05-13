@@ -3,8 +3,7 @@
 
 EntityWorldInteraction::StepResponse
 EntityWorldInteraction::calculateStep(Vec2i resolvedPosition, Vec2i originalEnd,
-                                      const StaticGridRectangle &boundingBox,
-                                      const ParticleHandler &particleHandler)
+                                      const EntityCollider &collider, const ParticleHandler &particleHandler)
 {
     StepResponse response;
 
@@ -24,16 +23,16 @@ EntityWorldInteraction::calculateStep(Vec2i resolvedPosition, Vec2i originalEnd,
         Vec2i downwardsCheckPos = {resolvedPosition.x + step, resolvedPosition.y + stepDownwards.sum.y};
 
         MTVIntersectionResponse upwardsCheck =
-            calculateWorldIntersection_MTV(upwardsCheckPos, boundingBox, particleHandler);
+            calculateWorldIntersection_MTV(upwardsCheckPos, collider, particleHandler);
 
         MTVIntersectionResponse downwardsCheck =
-            calculateWorldIntersection_MTV(downwardsCheckPos, boundingBox, particleHandler);
+            calculateWorldIntersection_MTV(downwardsCheckPos, collider, particleHandler);
 
         Vec2i upwardsNextPos   = upwardsCheckPos + Vec2i(0, -upwardsCheck.bottom);
         Vec2i downwardsNextPos = downwardsCheckPos + Vec2i(0, downwardsCheck.top);
 
         if (upwardsCheck.bottom <= maxStepAmount &&
-            calculateWorldIntersection_MTV(upwardsNextPos, boundingBox, particleHandler).resolveDistance == 0)
+            calculateWorldIntersection_MTV(upwardsNextPos, collider, particleHandler).resolveDistance == 0)
         {
             stepUpwards.sum.x = step;
             stepUpwards.sum.y -= upwardsCheck.bottom;
@@ -42,7 +41,7 @@ EntityWorldInteraction::calculateStep(Vec2i resolvedPosition, Vec2i originalEnd,
         }
 
         if (downwardsCheck.top <= maxStepAmount &&
-            calculateWorldIntersection_MTV(downwardsNextPos, boundingBox, particleHandler).resolveDistance ==
+            calculateWorldIntersection_MTV(downwardsNextPos, collider, particleHandler).resolveDistance ==
                 0)
         {
             stepDownwards.sum.x = step;

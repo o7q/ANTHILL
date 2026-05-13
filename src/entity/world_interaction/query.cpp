@@ -1,7 +1,7 @@
 #include "query.hpp"
 
 EntityWorldInteraction::LocalWorldQuery
-EntityWorldInteraction::generateLocalWorldQuery(Vec2i pos, const StaticGridRectangle &boundingBox,
+EntityWorldInteraction::generateLocalWorldQuery(Vec2i pos, const EntityCollider &collider,
                                                 const ParticleHandler &particleHandler)
 {
     LocalWorldQuery out;
@@ -16,7 +16,7 @@ EntityWorldInteraction::generateLocalWorldQuery(Vec2i pos, const StaticGridRecta
         return false;
     };
 
-    particleHandler.query(boundingBox.getA() + pos, boundingBox.getB() + pos, query);
+    particleHandler.query(collider.getPrimary().getA() + pos, collider.getPrimary().getB() + pos, query);
 
     return out;
 }

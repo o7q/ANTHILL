@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/math/rectangle.hpp"
 #include "core/math/vec.hpp"
+#include "entity/collider/entity_collider.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 
 namespace EntityWorldInteraction
@@ -18,9 +18,9 @@ struct MTVIntersectionResponse
     Vec2i moveVector;
 };
 
-MTVIntersectionResponse calculateWorldIntersection_MTV(Vec2i pos, const StaticGridRectangle &boundingBox,
+MTVIntersectionResponse calculateWorldIntersection_MTV(Vec2i pos, const EntityCollider &collider,
                                                        const ParticleHandler &particleHandler);
 
-Vec2f calculateWorldIntersection_averageDirection(Vec2i pos, const StaticGridRectangle &boundingBox,
+Vec2f calculateWorldIntersection_averageDirection(Vec2i pos, const EntityCollider &collider,
                                                   const ParticleHandler &particleHandler);
 } // namespace EntityWorldInteraction

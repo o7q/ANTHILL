@@ -25,7 +25,7 @@ void Player::update_movement_and_jump(const EntityUpdateContext &context)
     }
 
     bool onGround = EntityWorldInteraction::againstSolidSurface(
-        m_body.getPosition(), m_boundingBox, context.particleHandler, RectangleSide::Bottom);
+        m_body.getPosition(), m_collider, context.particleHandler, RectangleSide::Bottom);
 
     m_jumpHandler.update(context.time.dt, onGround);
 

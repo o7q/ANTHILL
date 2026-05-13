@@ -5,7 +5,6 @@
 #include "core/time/time_handler.hpp"
 #include "core/viewport/render_command.hpp"
 #include "entities/player_point/player_point.hpp"
-#include "entities/wuskkogel/wuskkogel.hpp"
 #include "events/external/events.hpp"
 #include <memory>
 

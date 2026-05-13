@@ -1,11 +1,11 @@
 #include "intersection.hpp"
 
 EntityWorldInteraction::MTVIntersectionResponse
-EntityWorldInteraction::calculateWorldIntersection_MTV(Vec2i pos, const StaticGridRectangle &boundingBox,
+EntityWorldInteraction::calculateWorldIntersection_MTV(Vec2i pos, const EntityCollider &collider,
                                                        const ParticleHandler &particleHandler)
 {
-    const Vec2i size    = boundingBox.getSize().toGrid();
-    const Vec2i topLeft = boundingBox.getA() + pos;
+    const Vec2i size    = collider.getPrimary().getSize().toGrid();
+    const Vec2i topLeft = collider.getPrimary().getA() + pos;
 
     //    0
     // 3 [-] 1
@@ -83,10 +83,10 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(Vec2i pos, const StaticGr
 }
 
 Vec2f EntityWorldInteraction::calculateWorldIntersection_averageDirection(
-    Vec2i pos, const StaticGridRectangle &boundingBox, const ParticleHandler &particleHandler)
+    Vec2i pos, const EntityCollider &collider, const ParticleHandler &particleHandler)
 {
-    const Vec2u size    = boundingBox.getSize();
-    const Vec2i topLeft = pos + boundingBox.getA();
+    const Vec2u size    = collider.getPrimary().getSize();
+    const Vec2i topLeft = pos + collider.getPrimary().getA();
 
     Vec2i sum = Vec2i(0, 0);
     int count = 0;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/math/rectangle.hpp"
 #include "core/math/vec.hpp"
+#include "entity/collider/entity_collider.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 
 namespace EntityWorldInteraction
@@ -18,6 +18,6 @@ struct StepDirectionalData
     bool moved   = false;
 };
 
-StepResponse calculateStep(Vec2i resolvedPosition, Vec2i originalEnd, const StaticGridRectangle &boundingBox,
+StepResponse calculateStep(Vec2i resolvedPosition, Vec2i originalEnd, const EntityCollider &collider,
                            const ParticleHandler &particleHandler);
 } // namespace EntityWorldInteraction

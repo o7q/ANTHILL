@@ -22,26 +22,26 @@ WuskkogelStateID WuskkogelRoamState::update(const UpdateContext &context)
     }
 
     WuskkogelStateID scanResultID = WuskkogelStateID::Roam;
-    context.perception.scan(context.body.getPosition() + context.headPos, context.lookAngle,
-                            [&](Vec2i pos)
-                            {
-                                if (player->pointInside(pos))
-                                {
-                                    scanResultID = WuskkogelStateID::Follow;
-                                    return true;
-                                }
+    context.perception.scan(
+        context.body.getPosition() + context.headPos, context.lookAngle,
+        [&](Vec2i pos)
+        {
+            if (player->getCollider().pointInsideAny(player->getBody().getPosition(), pos))
+            {
+                scanResultID = WuskkogelStateID::Follow;
+                return true;
+            }
 
-                                if (const Particle *p =
-                                        context.context.particleHandler.getParticles().get(pos))
-                                {
-                                    if (p->isSolid())
-                                    {
-                                        return true;
-                                    }
-                                }
+            if (const Particle *p = context.context.particleHandler.getParticles().get(pos))
+            {
+                if (p->isSolid())
+                {
+                    return true;
+                }
+            }
 
-                                return false;
-                            });
+            return false;
+        });
 
     return scanResultID;
 }

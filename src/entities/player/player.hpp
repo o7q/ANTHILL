@@ -58,5 +58,5 @@ class Player : public Entity
     Angle m_angle;
     Vec2i m_relativeHeadPosition = {0, -6};
 
-    std::optional<PositionalGridRectangle> m_dashTarget;
+    std::optional<GridRectangle> m_dashTarget;
 };

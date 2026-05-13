@@ -23,7 +23,7 @@ WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
     context.perception.scan(context.body.getPosition() + context.headPos, context.lookAngle,
                             [&](Vec2i pos)
                             {
-                                if (player->pointInside(pos))
+                                if (player->getCollider().pointInsideAny(targetPos, pos))
                                 {
                                     m_targetLostTimer.restart();
                                     return true;

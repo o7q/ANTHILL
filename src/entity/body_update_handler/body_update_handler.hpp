@@ -1,15 +1,14 @@
 #pragma once
 
-#include "core/math/rectangle.hpp"
 #include "core/math/vec.hpp"
 #include "entity/body/entity_body.hpp"
+#include "entity/collider/entity_collider.hpp"
 #include "entity/update_context.hpp"
 
 class BodyUpdateHandler
 {
   public:
-    BodyUpdateHandler(EntityBody &body, const StaticGridRectangle &boundingBox)
-        : r_body(body), r_boundingBox(boundingBox)
+    BodyUpdateHandler(EntityBody &body, const EntityCollider &collider) : r_body(body), r_collider(collider)
     {
     }
     virtual ~BodyUpdateHandler() = default;
@@ -22,5 +21,5 @@ class BodyUpdateHandler
 
   private:
     EntityBody &r_body;
-    const StaticGridRectangle &r_boundingBox;
+    const EntityCollider &r_collider;
 };

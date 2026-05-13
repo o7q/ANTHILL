@@ -3,7 +3,7 @@
 #include "core/math/line.hpp"
 
 EntityWorldInteraction::TrajectoryCollisionResponse EntityWorldInteraction::calculateCollisionFromTrajectory(
-    Vec2i start, Vec2i end, const StaticGridRectangle &boundingBox, const ParticleHandler &particleHandler)
+    Vec2i start, Vec2i end, const EntityCollider &collider, const ParticleHandler &particleHandler)
 {
     bool collided     = false;
     Vec2i currentPos  = start;
@@ -13,8 +13,8 @@ EntityWorldInteraction::TrajectoryCollisionResponse EntityWorldInteraction::calc
     {
         currentPos = pos;
 
-        Vec2i a = boundingBox.getA() + pos;
-        Vec2i b = boundingBox.getB() + pos;
+        Vec2i a = collider.getPrimary().getA() + pos;
+        Vec2i b = collider.getPrimary().getB() + pos;
 
         bool collidedThisIteration = false;
         auto query                 = [&](const Particle *p)
@@ -51,28 +51,28 @@ EntityWorldInteraction::TrajectoryCollisionResponse EntityWorldInteraction::calc
 
 EntityWorldInteraction::TrajectoryCollisionResponse
 EntityWorldInteraction::calculateCollisionFromTrajectorySlide(Vec2i start, Vec2i end,
-                                                              const StaticGridRectangle &boundingBox,
+                                                              const EntityCollider &collider,
                                                               const ParticleHandler &particleHandler)
 {
     TrajectoryCollisionResponse out;
 
     TrajectoryCollisionResponse xy_response =
-        calculateCollisionFromTrajectory(start, end, boundingBox, particleHandler);
+        calculateCollisionFromTrajectory(start, end, collider, particleHandler);
 
     // all axis
     if (xy_response.collided)
     {
         // horizontal axis
-        Vec2i end_x                            = {end.x, xy_response.resolvePosition.y};
-        TrajectoryCollisionResponse x_response = calculateCollisionFromTrajectory(
-            xy_response.resolvePosition, end_x, boundingBox, particleHandler);
+        Vec2i end_x = {end.x, xy_response.resolvePosition.y};
+        TrajectoryCollisionResponse x_response =
+            calculateCollisionFromTrajectory(xy_response.resolvePosition, end_x, collider, particleHandler);
 
         if (x_response.collided)
         {
             // vertical axis
             Vec2i end_y                            = {xy_response.resolvePosition.x, end.y};
             TrajectoryCollisionResponse y_response = calculateCollisionFromTrajectory(
-                xy_response.resolvePosition, end_y, boundingBox, particleHandler);
+                xy_response.resolvePosition, end_y, collider, particleHandler);
 
             out.resolvePosition = y_response.resolvePosition;
         }

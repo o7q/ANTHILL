@@ -17,13 +17,12 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
     {
         float dist =
             Math::Distance::euclidian(entity.second->getBody().getPositionFloat(), m_aimPos.toFloat());
-        if (dist < closestDistance && dist < 150.0f &&
+        if (dist < closestDistance && dist < 30.0f &&
             entity.second->getMetadata().type != EntityType::Projectile &&
             entity.second->getMetadata().type != EntityType::Collectible)
         {
-            PositionalGridRectangle rect;
-            rect.setSize(entity.second->getBoundingBox().getSize());
-            rect.setPosition(entity.second->getBody().getPosition());
+            GridRectangle rect(entity.second->getBody().getPosition(),
+                               entity.second->getCollider().getPrimary().getSize());
 
             m_dashTarget    = rect;
             closestDistance = dist;
@@ -31,32 +30,33 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
 
         if (m_dash.getState() == PlayerDash::State::Dashing)
         {
-            Math::Line::bresenhamLine(m_body.getPosition(), m_body.getLastPosition(),
-                                      [&](Vec2i p)
-                                      {
-                                          if (entity.second->pointInside(p))
-                                          {
-                                              auto entityDamageEvent =
-                                                  std::make_unique<EntityDamageEvent>(context.id);
-                                              entityDamageEvent->target           = entity.first;
-                                              entityDamageEvent->source.amount    = 20;
-                                              entityDamageEvent->source.position  = m_body.getPosition();
-                                              entityDamageEvent->source.direction = m_body.getVelocity();
+            Math::Line::bresenhamLine(
+                m_body.getPosition(), m_body.getLastPosition(),
+                [&](Vec2i p)
+                {
+                    if (entity.second->getCollider().overlappingAny(entity.second->getBody().getPosition(), p,
+                                                                    m_collider))
+                    {
+                        auto entityDamageEvent              = std::make_unique<EntityDamageEvent>(context.id);
+                        entityDamageEvent->target           = entity.first;
+                        entityDamageEvent->source.amount    = 20;
+                        entityDamageEvent->source.position  = p;
+                        entityDamageEvent->source.direction = m_body.getVelocity();
 
-                                              eventsOut.emit(std::move(entityDamageEvent));
+                        eventsOut.emit(std::move(entityDamageEvent));
 
-                                              auto slowmoEvent = std::make_unique<ExternalChangeSpeedEvent>();
-                                              slowmoEvent->settings.startLength = 0;
-                                              slowmoEvent->settings.holdLength  = 0.3f;
-                                              slowmoEvent->settings.holdSpeed   = 0.8f;
-                                              slowmoEvent->settings.endLength   = 0.3f;
+                        auto slowmoEvent                  = std::make_unique<ExternalChangeSpeedEvent>();
+                        slowmoEvent->settings.startLength = 0;
+                        slowmoEvent->settings.holdLength  = 0.3f;
+                        slowmoEvent->settings.holdSpeed   = 0.8f;
+                        slowmoEvent->settings.endLength   = 0.3f;
 
-                                              eventsOut.emit(std::make_unique<EntityExternalEvent>(
-                                                  context.id, std::move(slowmoEvent)));
-                                          }
+                        eventsOut.emit(
+                            std::make_unique<EntityExternalEvent>(context.id, std::move(slowmoEvent)));
+                    }
 
-                                          return false;
-                                      });
+                    return false;
+                });
         }
     }
 
@@ -100,7 +100,7 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
 
     m_sound.update(
         context,
-        {m_body, EntityWorldInteraction::againstSolidSurface(m_body.getPosition(), m_boundingBox,
+        {m_body, EntityWorldInteraction::againstSolidSurface(m_body.getPosition(), m_collider,
                                                              context.particleHandler, RectangleSide::Bottom)},
         eventsOut);
 }

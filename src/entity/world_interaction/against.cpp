@@ -1,10 +1,10 @@
 #include "against.hpp"
 
-bool EntityWorldInteraction::againstSolidSurface(Vec2i pos, const StaticGridRectangle &boundingBox,
+bool EntityWorldInteraction::againstSolidSurface(Vec2i pos, const EntityCollider &collider,
                                                  const ParticleHandler &particleHandler, RectangleSide side)
 {
-    Vec2u size    = boundingBox.getSize();
-    Vec2i topLeft = pos + boundingBox.getA();
+    Vec2u size    = collider.getPrimary().getSize();
+    Vec2i topLeft = pos + collider.getPrimary().getA();
 
     bool collided = false;
 
@@ -53,12 +53,12 @@ bool EntityWorldInteraction::againstSolidSurface(Vec2i pos, const StaticGridRect
     return collided;
 }
 
-bool EntityWorldInteraction::againstSolidCorner(Vec2i pos, const StaticGridRectangle &boundingBox,
+bool EntityWorldInteraction::againstSolidCorner(Vec2i pos, const EntityCollider &collider,
                                                 const ParticleHandler &particleHandler,
                                                 RectangleCorner corner)
 {
-    Vec2i size    = boundingBox.getSize().toInt();
-    Vec2i topLeft = pos + boundingBox.getA();
+    Vec2i size    = collider.getPrimary().getSize().toInt();
+    Vec2i topLeft = pos + collider.getPrimary().getA();
 
     bool collided = false;
     switch (corner)

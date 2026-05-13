@@ -12,10 +12,10 @@
 class PlayerPoint : public Entity
 {
   public:
-    PlayerPoint(Vec2i pos) : m_bodyHandler(m_body, m_boundingBox)
+    PlayerPoint(Vec2i pos) : m_bodyHandler(m_body, m_collider)
     {
         m_body.setPosition(pos);
-        m_boundingBox.setSize({4, 4});
+        m_collider.addRect({}, {4, 4});
         m_metadata.type = EntityType::Collectible;
     }
 
@@ -27,8 +27,8 @@ class PlayerPoint : public Entity
     void render(const Camera &camera, std::vector<RenderCommand> &commandsOut)
     {
         RectangleRenderCommandData data;
-        data.a     = camera.cameraToViewport(m_body.getPosition() + m_boundingBox.getA());
-        data.b     = camera.cameraToViewport(m_body.getPosition() + m_boundingBox.getB());
+        data.a     = camera.cameraToViewport(m_body.getPosition() + m_collider.getPrimary().getA());
+        data.b     = camera.cameraToViewport(m_body.getPosition() + m_collider.getPrimary().getB());
         data.color = Color(31, 255, 191);
         data.fill  = true;
         commandsOut.push_back({3, data});

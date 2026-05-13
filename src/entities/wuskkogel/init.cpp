@@ -3,12 +3,12 @@
 #include "identifiers/assets/spritesheet.hpp"
 
 Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
-    : Entity(id), m_bodyHandler(m_body, m_boundingBox),
+    : Entity(id), m_bodyHandler(m_body, m_collider),
       m_animator(assets.spriteSheets().get(SpriteSheetID::Entity_Wuskkogel))
 {
     m_metadata.name = "Wuskkogel";
 
-    m_boundingBox.setSize({18, 24});
+    m_collider.addRect({}, {18, 24});
     m_body.setGravity(0.0f);
     m_body.setTargetDamping({0.92f, 0.92f});
 
@@ -33,8 +33,8 @@ Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
 
         Vec2i pos = Vec2i(index.x, index.y) * context.particleHandler.getNavmesh().getResolution().toInt();
 
-        Vec2i a = m_boundingBox.getA();
-        Vec2i b = m_boundingBox.getB();
+        Vec2i a = m_collider.getPrimary().getA();
+        Vec2i b = m_collider.getPrimary().getB();
 
         Vec2i topLeft     = pos + Vec2i(a.x, a.y);
         Vec2i topRight    = pos + Vec2i(b.x, a.y);

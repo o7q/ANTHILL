@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/math/rectangle.hpp"
 #include "core/viewport/render_command.hpp"
 #include "entity/body/entity_body.hpp"
+#include "entity/collider/entity_collider.hpp"
 #include "entity/metadata.hpp"
 #include "entity/update_context.hpp"
 #include "events/entity/base.hpp"
@@ -34,18 +34,16 @@ class Entity
 
     EntityBody &getBody() { return m_body; }
     const EntityBody &getBody() const { return m_body; }
-    StaticGridRectangle &getBoundingBox() { return m_boundingBox; }
-    const StaticGridRectangle &getBoundingBox() const { return m_boundingBox; }
-
-    bool pointInside(Vec2i point) const { return m_boundingBox.pointInside(point - m_body.getPosition()); }
+    EntityCollider &getCollider() { return m_collider; }
+    const EntityCollider &getCollider() const { return m_collider; }
 
     EntityMetadata getMetadata() const { return m_metadata; }
 
     uint64_t getParent() const { return m_parentID; }
 
   protected:
-    StaticGridRectangle m_boundingBox;
     EntityBody m_body;
+    EntityCollider m_collider;
 
     EntityMetadata m_metadata;
 

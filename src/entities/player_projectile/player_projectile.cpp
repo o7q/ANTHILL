@@ -36,8 +36,8 @@ void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<Enti
 
             for (auto &[id, entity] : context.otherEntities)
             {
-                if (entity->pointInside(pos) && entity->getMetadata().type != m_metadata.type &&
-                    id != getParent())
+                if (entity->getCollider().pointInsideAny(entity->getBody().getPosition(), pos) &&
+                    entity->getMetadata().type != m_metadata.type && id != getParent())
                 {
                     auto event             = std::make_unique<EntityDamageEvent>(context.id);
                     event->target          = id;

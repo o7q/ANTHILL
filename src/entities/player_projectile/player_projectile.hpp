@@ -13,7 +13,7 @@ class PlayerProjectile : public Entity
         m_body.setPosition(startPos);
         m_constantVelocity = Vec2f(std::cosf(startAngle.radians()), std::sinf(startAngle.radians())) * speed;
 
-        m_boundingBox.setSize({3, 3});
+        m_collider.addRect({}, {3, 3});
 
         m_metadata.name = "Player Projectile";
         m_metadata.type = EntityType::Projectile;
