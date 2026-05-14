@@ -43,7 +43,7 @@ class EntityHandler
 
   private:
     void handle_events(EventPool<EntityEvent> &events, EventPoolRefs eventPoolRefs);
-    std::unordered_map<uint64_t, const Entity *> get_other_entities(uint64_t base);
+    void get_other_entities(std::unordered_map<uint64_t, const Entity *> &out, uint64_t base);
 
   private:
     EntityIDHandler m_idHandler;

@@ -28,10 +28,13 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
                     .normalize();
         }
 
+        std::unordered_map<uint64_t, const Entity *> otherEntities;
+        get_other_entities(otherEntities, id);
+
         EntityUpdateContext context{id,
                                     time,
                                     particleHandler,
-                                    get_other_entities(id),
+                                    otherEntities,
                                     m_currentPlayerID,
                                     currentPlayer,
                                     distanceToCurrentPlayer,
@@ -41,11 +44,20 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
 
         Vec2i pos = entity->getBody().getPosition();
 
-        if (entity->getHealth() <= 0.0f || pos.x < origin.x - m_globalKillRadius.x ||
+        if (entity->getHealth() <= 0 || pos.x < origin.x - m_globalKillRadius.x ||
             pos.x > origin.x + m_globalKillRadius.x || pos.y < origin.y - m_globalKillRadius.y ||
             pos.y > origin.y + m_globalKillRadius.y)
         {
             m_entitiesToRemove.push_back(id);
+
+            const Entity *deadEntity = m_entities.at(id).get();
+
+            auto onKillFunction = deadEntity->onKill();
+
+            if (onKillFunction)
+            {
+                onKillFunction(events, context);
+            }
         }
     }
 
@@ -65,10 +77,9 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
     m_entitiesToAdd.clear();
 }
 
-std::unordered_map<uint64_t, const Entity *> EntityHandler::get_other_entities(uint64_t base)
+void EntityHandler::get_other_entities(std::unordered_map<uint64_t, const Entity *> &out, uint64_t base)
 {
-    std::unordered_map<uint64_t, const Entity *> entities;
-    entities.reserve(m_entities.size() - 1);
+    out.reserve(m_entities.size() - 1);
 
     for (auto &[id, entity] : m_entities)
     {
@@ -77,8 +88,6 @@ std::unordered_map<uint64_t, const Entity *> EntityHandler::get_other_entities(u
             continue;
         }
 
-        entities[id] = entity.get();
+        out[id] = entity.get();
     }
-
-    return entities;
 }

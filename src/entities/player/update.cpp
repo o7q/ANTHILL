@@ -1,64 +1,12 @@
 #include "player.hpp"
 
-#include "core/math/distance.hpp"
-#include "core/math/line.hpp"
 #include "core/math/rectangle.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entity/world_interaction/against.hpp"
-#include "events/entity/events.hpp"
-#include <limits>
-#include <memory>
 
 void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
-    m_dashTarget          = std::nullopt;
-    float closestDistance = std::numeric_limits<float>::max();
-    for (auto &entity : context.otherEntities)
-    {
-        float dist =
-            Math::Distance::euclidian(entity.second->getBody().getPositionFloat(), m_aimPos.toFloat());
-        if (dist < closestDistance && dist < 30.0f &&
-            entity.second->getMetadata().type != EntityType::Projectile &&
-            entity.second->getMetadata().type != EntityType::Collectible)
-        {
-            GridRectangle rect(entity.second->getBody().getPosition(),
-                               entity.second->getCollider().getPrimary().getSize());
-
-            m_dashTarget    = rect;
-            closestDistance = dist;
-        }
-
-        if (m_dash.getState() == PlayerDash::State::Dashing)
-        {
-            Math::Line::bresenhamLine(
-                m_body.getPosition(), m_body.getLastPosition(),
-                [&](Vec2i p)
-                {
-                    if (entity.second->getCollider().overlappingAny(entity.second->getBody().getPosition(), p,
-                                                                    m_collider))
-                    {
-                        auto entityDamageEvent              = std::make_unique<EntityDamageEvent>(context.id);
-                        entityDamageEvent->target           = entity.first;
-                        entityDamageEvent->source.amount    = 20;
-                        entityDamageEvent->source.position  = p;
-                        entityDamageEvent->source.direction = m_body.getVelocity();
-
-                        eventsOut.emit(std::move(entityDamageEvent));
-
-                        auto slowmoEvent                  = std::make_unique<ExternalChangeSpeedEvent>();
-                        slowmoEvent->settings.startLength = 0;
-                        slowmoEvent->settings.holdLength  = 0.3f;
-                        slowmoEvent->settings.holdSpeed   = 0.8f;
-                        slowmoEvent->settings.endLength   = 0.3f;
-
-                        eventsOut.emit(
-                            std::make_unique<EntityExternalEvent>(context.id, std::move(slowmoEvent)));
-                    }
-
-                    return false;
-                });
-        }
-    }
+    update_entity_interaction(context, eventsOut);
 
     if (r_input.getInput(InputID::Dash)->wasPressed())
     {
@@ -93,11 +41,11 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
     {
         m_gun.shoot(m_body.getPosition(), m_angle, context.id, eventsOut);
     }
-
     m_gun.update(context.time.dt);
-    m_bodyHandler.update(context);
-    m_sprite.update({m_body, m_dash, m_angle}, context.time.dt);
 
+    m_bodyHandler.update(context);
+    
+    m_sprite.update({m_body, m_dash, m_angle}, context.time.dt);
     m_sound.update(
         context,
         {m_body, EntityWorldInteraction::againstSolidSurface(m_body.getPosition(), m_collider,

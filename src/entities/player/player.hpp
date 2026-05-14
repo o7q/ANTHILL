@@ -41,6 +41,7 @@ class Player : public Entity
     }
 
   private:
+    void update_entity_interaction(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut);
     void update_movement_and_jump(const EntityUpdateContext &context);
 
   private:
@@ -48,6 +49,8 @@ class Player : public Entity
     const Assets &r_assets;
     BodyUpdateHandler m_bodyHandler;
     JumpHandler m_jumpHandler;
+
+    int score = 0;
 
     PlayerSprite m_sprite;
     PlayerSound m_sound;
