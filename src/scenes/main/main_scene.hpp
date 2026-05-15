@@ -4,6 +4,8 @@
 #include "scene/scene.hpp"
 #include "world/world.hpp"
 #include "world_generator/world_generator.hpp"
+#include <string>
+#include <unordered_map>
 
 class MainScene : public Scene
 {
@@ -21,8 +23,10 @@ class MainScene : public Scene
     WorldGenerator m_generator;
     Camera m_camera;
 
-    Texture healthText;
-    Texture fpsText;
-    Texture entitiesText;
-    Texture chunksText;
+    Texture m_healthText;
+    Texture m_energyText;
+    
+    Texture m_fpsText;
+    Texture m_entitiesText;
+    Texture m_chunksText;
 };

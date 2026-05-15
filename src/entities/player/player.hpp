@@ -64,4 +64,7 @@ class Player : public Entity
     Vec2i m_relativeHeadPosition = {0, -6};
 
     std::optional<GridRectangle> m_dashTarget;
+
+    Timer m_comboTimer;
+    int m_comboCounter = 0;
 };

@@ -7,4 +7,6 @@ Player::Player(InputHandler &input, const Assets &assets)
     m_metadata.type = EntityType::Player;
 
     m_metadata.name = "Player";
+
+    m_comboTimer.setDurationInSeconds(1.0f);
 }

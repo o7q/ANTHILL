@@ -97,7 +97,7 @@ void MainScene::onTick()
         player->updateAimPosition(worldMousePos);
         updatePos = player->getBody().getPosition();
     }
-    m_camera.setGoal(updatePos + (viewportMousePosCenterNormalized * 80.0f).toInt());
+    m_camera.setGoal(updatePos + (viewportMousePosCenterNormalized * 60.0f).toInt());
     m_camera.update(r_window.getTime().getInfo());
 
     m_world.render(m_camera, r_assets, renderCommands);

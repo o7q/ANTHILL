@@ -6,38 +6,38 @@ void MainScene::renderText(std::vector<RenderCommand> &renderCommands)
 
     if (player)
     {
-        healthText = r_assets.fonts()
+        m_healthText = r_assets.fonts()
                          .get(FontID::Default)
                          .generateTexture({std::to_string((int)player->getHealth()), Color(255, 100, 100)});
 
         TextureRenderCommandData healthRenderData;
-        healthRenderData.texture  = &healthText;
+        healthRenderData.texture  = &m_healthText;
         healthRenderData.position = {5, 25};
         healthRenderData.origin   = {0, 0};
         renderCommands.push_back({1000, healthRenderData});
     }
 
-    fpsText = r_assets.fonts()
+    m_fpsText = r_assets.fonts()
                   .get(FontID::Default)
                   .generateTexture({std::to_string((int)r_window.getTime().getInfo().fps), Color(0, 255, 0)});
 
     TextureRenderCommandData fpsRenderData;
-    fpsRenderData.texture  = &fpsText;
+    fpsRenderData.texture  = &m_fpsText;
     fpsRenderData.position = {5, 5};
     fpsRenderData.origin   = {0, 0};
     renderCommands.push_back({1000, fpsRenderData});
 
-    entitiesText = r_assets.fonts()
+    m_entitiesText = r_assets.fonts()
                        .get(FontID::Default)
                        .generateTexture({std::to_string(m_world.getEntityHandler().getEntityCount()),
                                          Color(255, 100, 255)});
 
     TextureRenderCommandData entitiesRenderData;
-    entitiesRenderData.texture  = &entitiesText;
+    entitiesRenderData.texture  = &m_entitiesText;
     entitiesRenderData.position = {5, 15};
     entitiesRenderData.origin   = {0, 0};
 
-    chunksText =
+    m_chunksText =
         r_assets.fonts()
             .get(FontID::Default)
             .generateTexture({std::to_string(m_world.getParticleHandler().getParticles().getChunks().size()),
@@ -45,7 +45,7 @@ void MainScene::renderText(std::vector<RenderCommand> &renderCommands)
     renderCommands.push_back({1000, entitiesRenderData});
 
     TextureRenderCommandData chunkRenderData;
-    chunkRenderData.texture  = &chunksText;
+    chunkRenderData.texture  = &m_chunksText;
     chunkRenderData.position = {5, 35};
     chunkRenderData.origin   = {0, 0};
 

@@ -15,7 +15,7 @@ void Player::update_entity_interaction(const EntityUpdateContext &context, Event
         EntityMetadata metadata = entity->getMetadata();
 
         float dist = Math::Distance::euclidian(entity->getBody().getPositionFloat(), m_aimPos.toFloat());
-        if (dist < closestDistance && dist < 30.0f && metadata.type != EntityType::Projectile &&
+        if (dist < closestDistance && dist < 60.0f && metadata.type != EntityType::Projectile &&
             metadata.type != EntityType::Energy)
         {
             GridRectangle rect(entity->getBody().getPosition(), entity->getCollider().getPrimary().getSize());
@@ -34,9 +34,16 @@ void Player::update_entity_interaction(const EntityUpdateContext &context, Event
                     {
                         auto entityDamageEvent              = std::make_unique<EntityDamageEvent>(context.id);
                         entityDamageEvent->target           = id;
-                        entityDamageEvent->source.amount    = 20;
+                        entityDamageEvent->source.amount    = 50;
                         entityDamageEvent->source.position  = p;
                         entityDamageEvent->source.direction = m_body.getVelocity();
+
+                        m_comboTimer.restart();
+
+                        if (entity->getHealth() <= 50)
+                        {
+                            m_comboCounter++;
+                        }
 
                         eventsOut.emit(std::move(entityDamageEvent));
                         return true;

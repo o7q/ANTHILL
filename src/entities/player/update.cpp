@@ -3,6 +3,10 @@
 #include "core/math/rectangle.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entity/world_interaction/against.hpp"
+#include "events/entity/base.hpp"
+#include "events/entity/events.hpp"
+#include "events/external/events.hpp"
+#include <memory>
 
 void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
@@ -51,4 +55,23 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
         {m_body, EntityWorldInteraction::againstSolidSurface(m_body.getPosition(), m_collider,
                                                              context.particleHandler, RectangleSide::Bottom)},
         eventsOut);
+
+    m_comboTimer.update(context.time.dt);
+
+    if (m_comboTimer.completed())
+    {
+        m_comboCounter = 0;
+    }
+
+    if (m_comboCounter >= 3)
+    {
+        auto slowmoEvent                  = std::make_unique<ExternalChangeSpeedEvent>();
+        slowmoEvent->settings.startLength = 0;
+        slowmoEvent->settings.holdLength  = 1;
+        slowmoEvent->settings.holdSpeed   = 0.3;
+        slowmoEvent->settings.endLength   = 0.5;
+
+        eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(slowmoEvent)));
+        m_comboCounter = 0;
+    }
 }

@@ -20,7 +20,7 @@ void Wuskkogel::update(const EntityUpdateContext &context, EventPool<EntityEvent
         blood.setColor(Color(255, 0, 0, 220));
         blood.getVerlet().setVelocity(dd.direction * 10, context.time.dt);
         pBleedEvent->particle = blood;
-        pBleedEvent->radius   = dd.amount / 2;
+        pBleedEvent->radius   = 10;
         pBleedEvent->position = dd.position;
 
         auto eBleedEvent = std::make_unique<EntityParticleEvent>(context.id, std::move(pBleedEvent));
