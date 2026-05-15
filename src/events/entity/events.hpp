@@ -26,6 +26,13 @@ struct EntityDamageEvent : public EntityEvent
     uint64_t target = 0;
 };
 
+struct EntityKillEvent : public EntityEvent
+{
+    EntityKillEvent(const uint64_t caller_) : EntityEvent(caller_, EntityEventType::EntityKill) {}
+
+    uint64_t target = 0;
+};
+
 struct EntityParticleEvent : public EntityEvent
 {
 

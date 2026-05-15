@@ -55,7 +55,7 @@ void MainScene::onTick()
         m_world.getParticleHandler().getEditor().draw(worldMousePos, sandstone, 5);
     }
 
-    if (r_window.getInput().getInput(InputID::AltAction4)->wasPressed())
+    if (r_window.getInput().getInput(InputID::AltAction4)->isDown())
     {
         auto entity = std::make_unique<PlayerPoint>(worldMousePos);
 
@@ -74,7 +74,7 @@ void MainScene::onTick()
         r_window.getTime().getSpeedChanger().startTransition(speedSettings);
     }
 
-    if (r_window.getInput().getInput(InputID::AltAction6)->isDown())
+    if (r_window.getInput().getInput(InputID::AltAction6)->wasPressed())
     {
         auto loadScene = std::make_unique<ExternalLoadSceneEvent>();
         loadScene->id  = SceneID::Test;
@@ -97,7 +97,7 @@ void MainScene::onTick()
         player->updateAimPosition(worldMousePos);
         updatePos = player->getBody().getPosition();
     }
-    m_camera.setGoal(updatePos + (viewportMousePosCenterNormalized * 60.0f).toInt());
+    m_camera.setGoal(updatePos + (viewportMousePosCenterNormalized * 80.0f).toInt());
     m_camera.update(r_window.getTime().getInfo());
 
     m_world.render(m_camera, r_assets, renderCommands);

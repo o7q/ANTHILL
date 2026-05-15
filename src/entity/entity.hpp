@@ -7,7 +7,6 @@
 #include "entity/update_context.hpp"
 #include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
-#include <functional>
 
 class Entity
 {
@@ -42,10 +41,7 @@ class Entity
 
     uint64_t getParent() const { return m_parentID; }
 
-    const std::function<void(EventPool<EntityEvent> &, const EntityUpdateContext &)> &onKill() const
-    {
-        return m_onKillFunction;
-    }
+    virtual void onKill(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) const {}
 
   protected:
     EntityBody m_body;
@@ -54,8 +50,6 @@ class Entity
     EntityMetadata m_metadata;
 
     int m_health = 100;
-
-    std::function<void(EventPool<EntityEvent> &, const EntityUpdateContext &)> m_onKillFunction;
 
   private:
     const uint64_t m_parentID = 0;

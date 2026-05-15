@@ -29,7 +29,7 @@ class Player : public Entity
                                                 aimPos.toFloat());
     }
 
-    virtual void damage(DamageSource source) override
+    void damage(DamageSource source) override
     {
         // i-frames
         if (m_dash.getState() == PlayerDash::State::Dashing)
@@ -39,6 +39,8 @@ class Player : public Entity
 
         m_health -= source.amount;
     }
+
+    int getEnergy() const { return m_energy; }
 
   private:
     void update_entity_interaction(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut);
@@ -50,7 +52,7 @@ class Player : public Entity
     BodyUpdateHandler m_bodyHandler;
     JumpHandler m_jumpHandler;
 
-    int score = 0;
+    int m_energy = 0;
 
     PlayerSprite m_sprite;
     PlayerSound m_sound;

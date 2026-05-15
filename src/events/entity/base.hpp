@@ -6,6 +6,7 @@
 enum class EntityEventType
 {
     EntityDamage,
+    EntityKill,
     EntitySpawn,
     Particle,
     External

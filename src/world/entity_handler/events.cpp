@@ -26,7 +26,33 @@ void EntityHandler::handle_events(EventPool<EntityEvent> &events, EventPoolRefs 
                 break;
             }
 
-            it->second->damage(e->source);
+            Entity *entity = it->second.get();
+
+            entity->damage(e->source);
+
+            if (entity->getHealth() <= 0)
+            {
+                it->second.reset();
+            }
+        }
+        break;
+        case EntityEventType::EntityKill:
+        {
+            auto e = static_cast<EntityKillEvent *>(event.get());
+
+            uint64_t target = e->target;
+            if (target == 0)
+            {
+                break;
+            }
+
+            auto it = m_entities.find(target);
+            if (it == m_entities.end())
+            {
+                break;
+            }
+
+            it->second.reset();
         }
         break;
         case EntityEventType::EntitySpawn:

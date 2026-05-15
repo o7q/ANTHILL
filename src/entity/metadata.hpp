@@ -7,7 +7,7 @@ enum class EntityType
     Generic,
     Player,
     Projectile,
-    Collectible
+    Energy
 };
 
 struct EntityMetadata

@@ -52,7 +52,6 @@ class EntityHandler
     uint64_t m_latestEntityID  = 0;
     std::unordered_map<uint64_t, std::unique_ptr<Entity>> m_entities;
     std::vector<std::unique_ptr<Entity>> m_entitiesToAdd;
-    std::vector<uint64_t> m_entitiesToRemove;
 
     Vec2i m_globalKillRadius = {2000, 2000};
 };

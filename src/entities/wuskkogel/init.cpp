@@ -1,10 +1,6 @@
 #include "wuskkogel.hpp"
 
-#include "entities/player_point/player_point.hpp"
-#include "events/entity/events.hpp"
-#include "events/event_pool.hpp"
 #include "identifiers/assets/spritesheet.hpp"
-#include <memory>
 
 Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
     : Entity(id), m_bodyHandler(m_body, m_collider),
@@ -79,11 +75,4 @@ Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
 
     m_animator.setFPS(12);
     m_animator.restart();
-
-    m_onKillFunction = [&](EventPool<EntityEvent> &eventsOut, const EntityUpdateContext &context)
-    {
-        auto pointSpawn      = std::make_unique<PlayerPoint>(m_body.getPosition());
-        auto pointSpawnEvent = std::make_unique<EntitySpawnEvent>(context.id, std::move(pointSpawn));
-        eventsOut.emit(std::move(pointSpawnEvent));
-    };
 }

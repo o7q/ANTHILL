@@ -4,12 +4,17 @@
 #include "ai/perception/ai_perception.hpp"
 #include "assets/assets.hpp"
 #include "core/viewport/render_command.hpp"
+#include "entities/player_point/player_point.hpp"
 #include "entities/wuskkogel/ai/state_machine.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
+#include "entity/update_context.hpp"
+#include "events/entity/base.hpp"
+#include "events/entity/events.hpp"
 #include "events/event_pool.hpp"
 #include "sprite/sprite_animator.hpp"
+#include <memory>
 
 class Wuskkogel : public Entity
 {
@@ -32,6 +37,12 @@ class Wuskkogel : public Entity
     }
 
     void damage(DamageSource source) override { m_damageSources.push_back(source); }
+
+    void onKill(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) const override
+    {
+        auto playerPoint = std::make_unique<PlayerPoint>(m_body.getPosition());
+        eventsOut.emit(std::make_unique<EntitySpawnEvent>(context.id, std::move(playerPoint)));
+    }
 
   private:
     BodyUpdateHandler m_bodyHandler;

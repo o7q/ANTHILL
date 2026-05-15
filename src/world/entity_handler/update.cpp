@@ -1,6 +1,6 @@
-#include "core/math/distance.hpp"
 #include "entity_handler.hpp"
 
+#include "core/math/distance.hpp"
 #include "events/event_pool.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 #include <cstdint>
@@ -10,12 +10,17 @@
 void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::Info time, Vec2i origin,
                            EventPoolRefs eventPoolRefs)
 {
-    EventPool<EntityEvent> events;
-
     const Player *currentPlayer = getCurrentPlayer();
 
     for (auto &[id, entity] : m_entities)
     {
+        if (!entity)
+        {
+            continue;
+        }
+
+        EventPool<EntityEvent> events;
+
         float distanceToCurrentPlayer = 0.0f;
         Vec2f vectorTowardsCurrentPlayer;
 
@@ -48,24 +53,23 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
             pos.x > origin.x + m_globalKillRadius.x || pos.y < origin.y - m_globalKillRadius.y ||
             pos.y > origin.y + m_globalKillRadius.y)
         {
-            m_entitiesToRemove.push_back(id);
-
-            const Entity *deadEntity = m_entities.at(id).get();
-
-            auto onKillFunction = deadEntity->onKill();
-
-            if (onKillFunction)
-            {
-                onKillFunction(events, context);
-            }
+            entity->onKill(context, events);
+            entity.reset();
         }
+
+        handle_events(events, eventPoolRefs);
     }
 
-    handle_events(events, eventPoolRefs);
-
-    for (uint64_t id : m_entitiesToRemove)
+    for (auto it = m_entities.begin(); it != m_entities.end();)
     {
-        m_entities.erase(id);
+        if (!it->second)
+        {
+            it = m_entities.erase(it);
+        }
+        else
+        {
+            it++;
+        }
     }
 
     for (std::unique_ptr<Entity> &newEntity : m_entitiesToAdd)
@@ -73,7 +77,6 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
         m_entities[m_idHandler.getNext()] = std::move(newEntity);
     }
 
-    m_entitiesToRemove.clear();
     m_entitiesToAdd.clear();
 }
 
@@ -83,7 +86,7 @@ void EntityHandler::get_other_entities(std::unordered_map<uint64_t, const Entity
 
     for (auto &[id, entity] : m_entities)
     {
-        if (id == base)
+        if (id == base || !entity)
         {
             continue;
         }

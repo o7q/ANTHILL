@@ -44,7 +44,7 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
     m_gun.update(context.time.dt);
 
     m_bodyHandler.update(context);
-    
+
     m_sprite.update({m_body, m_dash, m_angle}, context.time.dt);
     m_sound.update(
         context,

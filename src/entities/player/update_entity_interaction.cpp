@@ -1,46 +1,60 @@
+#include "player.hpp"
+
 #include "core/math/distance.hpp"
 #include "core/math/line.hpp"
-#include "player.hpp"
+#include "entity/metadata.hpp"
 
 void Player::update_entity_interaction(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
     m_dashTarget          = std::nullopt;
     float closestDistance = std::numeric_limits<float>::max();
-    for (auto &entity : context.otherEntities)
+    for (auto &e : context.otherEntities)
     {
-        float dist =
-            Math::Distance::euclidian(entity.second->getBody().getPositionFloat(), m_aimPos.toFloat());
-        if (dist < closestDistance && dist < 30.0f &&
-            entity.second->getMetadata().type != EntityType::Projectile &&
-            entity.second->getMetadata().type != EntityType::Collectible)
+        uint64_t id             = e.first;
+        const Entity *entity    = e.second;
+        EntityMetadata metadata = entity->getMetadata();
+
+        float dist = Math::Distance::euclidian(entity->getBody().getPositionFloat(), m_aimPos.toFloat());
+        if (dist < closestDistance && dist < 30.0f && metadata.type != EntityType::Projectile &&
+            metadata.type != EntityType::Energy)
         {
-            GridRectangle rect(entity.second->getBody().getPosition(),
-                               entity.second->getCollider().getPrimary().getSize());
+            GridRectangle rect(entity->getBody().getPosition(), entity->getCollider().getPrimary().getSize());
 
             m_dashTarget    = rect;
             closestDistance = dist;
         }
 
-        if (m_dash.getState() == PlayerDash::State::Dashing)
-        {
-            Math::Line::bresenhamLine(m_body.getPosition(), m_body.getLastPosition(),
-                                      [&](Vec2i p)
-                                      {
-                                          if (entity.second->getCollider().overlappingAny(
-                                                  entity.second->getBody().getPosition(), p, m_collider))
-                                          {
-                                              auto entityDamageEvent =
-                                                  std::make_unique<EntityDamageEvent>(context.id);
-                                              entityDamageEvent->target           = entity.first;
-                                              entityDamageEvent->source.amount    = 20;
-                                              entityDamageEvent->source.position  = p;
-                                              entityDamageEvent->source.direction = m_body.getVelocity();
+        Math::Line::bresenhamLine(
+            m_body.getLastPosition(), m_body.getPosition(),
+            [&](Vec2i p)
+            {
+                if (m_collider.overlappingAny(p, entity->getBody().getPosition(), entity->getCollider()))
+                {
+                    if (m_dash.getState() == PlayerDash::State::Dashing)
+                    {
+                        auto entityDamageEvent              = std::make_unique<EntityDamageEvent>(context.id);
+                        entityDamageEvent->target           = id;
+                        entityDamageEvent->source.amount    = 20;
+                        entityDamageEvent->source.position  = p;
+                        entityDamageEvent->source.direction = m_body.getVelocity();
 
-                                              eventsOut.emit(std::move(entityDamageEvent));
-                                          }
+                        eventsOut.emit(std::move(entityDamageEvent));
+                        return true;
+                    }
 
-                                          return false;
-                                      });
-        }
+                    if (entity->getMetadata().type == EntityType::Energy)
+                    {
+                        auto entityKillEvent    = std::make_unique<EntityKillEvent>(context.id);
+                        entityKillEvent->target = id;
+
+                        eventsOut.emit(std::move(entityKillEvent));
+
+                        m_energy++;
+                        return true;
+                    }
+                }
+
+                return false;
+            });
     }
 }

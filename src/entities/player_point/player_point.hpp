@@ -16,7 +16,7 @@ class PlayerPoint : public Entity
     {
         m_body.setPosition(pos);
         m_collider.addRect({}, {4, 4});
-        m_metadata.type = EntityType::Collectible;
+        m_metadata.type = EntityType::Energy;
     }
 
     void update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)

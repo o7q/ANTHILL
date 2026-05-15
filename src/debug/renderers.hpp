@@ -5,18 +5,21 @@
 #include "camera/camera.hpp"
 #include "core/math/rectangle.hpp"
 #include "core/viewport/render_command.hpp"
+#include "entity/collider/entity_collider.hpp"
 #include <vector>
 
-inline void DEBUG_renderBoundingBox(Vec2i pos, const StaticGridRectangle &bb, const Camera &camera,
+inline void DEBUG_renderBoundingBox(Vec2i pos, const EntityCollider &collider, const Camera &camera,
                                     std::vector<RenderCommand> &commandsOut, Color color = Color(255, 0, 0),
                                     unsigned int index = 1)
 {
-    RectangleRenderCommandData data;
-    data.a     = camera.cameraToViewport(bb.getA() + pos);
-    data.b     = camera.cameraToViewport(bb.getB() + pos);
-    data.color = color;
-
-    commandsOut.push_back({index, data});
+    for (const GridRectangle &rect : collider.getAll())
+    {
+        RectangleRenderCommandData data;
+        data.a     = camera.cameraToViewport(rect.getA() + pos);
+        data.b     = camera.cameraToViewport(rect.getB() + pos);
+        data.color = color;
+        commandsOut.push_back({index, data});
+    }
 }
 
 inline void DEBUG_renderAISightPoints(const AIPerception &perception, const Camera &camera,
