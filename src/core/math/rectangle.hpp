@@ -21,6 +21,7 @@ enum class RectangleCorner
 class GridRectangle
 {
   public:
+    GridRectangle() = default;
     GridRectangle(Vec2i pos, Vec2u size)
     {
         setPosition(pos);

@@ -19,6 +19,12 @@ enum class SoundID
     WuskkogelChirp3,
     WuskkogelChirp4,
 
-    SumiGunShoot1,
-    SumiGunHit1
+    SumiShoot1,
+    SumiHitmarker1,
+    SumiDash1,
+    SumiDash2,
+    SumiDash3,
+    SumiDashKill1,
+
+    MusicAction
 };

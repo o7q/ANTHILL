@@ -21,8 +21,15 @@ void initSounds(AssetPool<SoundID, Sound> &assets)
     v[SoundID::WuskkogelChirp3]  = {"assets/sounds/entities/wuskkogel/chirp3.wav"};
     v[SoundID::WuskkogelChirp4]  = {"assets/sounds/entities/wuskkogel/chirp4.wav"};
 
-    v[SoundID::SumiGunShoot1] = {"assets/sounds/entities/sumi/gun/shoot1.wav"};
-    v[SoundID::SumiGunHit1]   = {"assets/sounds/entities/sumi/gun/hit1.wav"};
+    v[SoundID::SumiShoot1]     = {"assets/sounds/entities/sumi/gun/shoot1.wav"};
+    v[SoundID::SumiHitmarker1] = {"assets/sounds/entities/sumi/gun/hitmarker1.wav"};
+
+    v[SoundID::SumiDash1]     = {"assets/sounds/entities/sumi/dash/dash1.wav"};
+    v[SoundID::SumiDash2]     = {"assets/sounds/entities/sumi/dash/dash2.wav"};
+    v[SoundID::SumiDash3]     = {"assets/sounds/entities/sumi/dash/dash3.wav"};
+    v[SoundID::SumiDashKill1] = {"assets/sounds/entities/sumi/dash/dash_kill1.wav"};
+
+    v[SoundID::MusicAction] = {"assets/music/boss lepuex of poo.wav"};
 
     for (auto &[id, data] : v)
     {

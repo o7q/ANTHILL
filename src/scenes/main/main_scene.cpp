@@ -1,17 +1,17 @@
 #include "main_scene.hpp"
 
 #include "core/math/random.hpp"
-#include "core/time/speed_changer.hpp"
 #include "core/time/time_handler.hpp"
 #include "core/viewport/render_command.hpp"
 #include "entities/player_point/player_point.hpp"
-#include "events/external/events.hpp"
 #include <memory>
 
 void MainScene::onStart()
 {
     m_world.getEntityHandler().addPlayer(std::make_unique<Player>(r_window.getInput(), r_assets));
     m_world.getEntityHandler().getCurrentPlayer()->getBody().setPosition({0, -200});
+
+    r_window.getSound().playSound(r_assets.sounds().get(SoundID::MusicAction), {0.1f, 1.0f, {}});
 }
 
 void MainScene::onTick()
@@ -47,38 +47,9 @@ void MainScene::onTick()
     }
     if (r_window.getInput().getInput(InputID::AltAction3)->isDown())
     {
-        Particle sandstone;
-        sandstone.setColor(Color(255, 255, 0));
-        sandstone.setPhysicsType(Particle::PhysicsType::Sandstone);
-        sandstone.setMatterType(Particle::MatterType::Solid);
-
-        m_world.getParticleHandler().getEditor().draw(worldMousePos, sandstone, 5);
-    }
-
-    if (r_window.getInput().getInput(InputID::AltAction4)->isDown())
-    {
         auto entity = std::make_unique<PlayerPoint>(worldMousePos);
-
         entity->getBody().setPosition(worldMousePos);
-
         m_world.getEntityHandler().addEntity(std::move(entity));
-    }
-
-    if (r_window.getInput().getInput(InputID::AltAction5)->wasPressed())
-    {
-        SpeedChanger::Settings speedSettings;
-        speedSettings.startLength = 1.0f;
-        speedSettings.holdLength  = 2.0f;
-        speedSettings.holdSpeed   = 0.5f;
-        speedSettings.endLength   = 1.0f;
-        r_window.getTime().getSpeedChanger().startTransition(speedSettings);
-    }
-
-    if (r_window.getInput().getInput(InputID::AltAction6)->wasPressed())
-    {
-        auto loadScene = std::make_unique<ExternalLoadSceneEvent>();
-        loadScene->id  = SceneID::Test;
-        m_events.emit(std::move(loadScene));
     }
 
     Player *player = m_world.getEntityHandler().getCurrentPlayer();
@@ -103,5 +74,6 @@ void MainScene::onTick()
     m_world.render(m_camera, r_assets, renderCommands);
 
     renderText(renderCommands);
+
     r_window.getViewport().render(renderCommands);
 }

@@ -1,5 +1,6 @@
 #include "player.hpp"
 
+#include "core/math/random.hpp"
 #include "core/math/rectangle.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entity/world_interaction/against.hpp"
@@ -23,6 +24,14 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
         {
             m_dash.start(Math::Angles::vectorsToAngle(m_body.getPositionFloat(), m_aimPos.toFloat()));
         }
+
+        SoundID dashSounds[3] = {SoundID::SumiDash1, SoundID::SumiDash2, SoundID::SumiDash3};
+
+        auto dashSoundEvent             = std::make_unique<ExternalPlaySoundEvent>();
+        dashSoundEvent->soundID         = dashSounds[Math::Random::unseededRandomInt(0, 3)];
+        dashSoundEvent->settings.volume = 0.1f;
+        dashSoundEvent->settings.pitch  = Math::Random::unseededRandomInt(180, 200) / 100.0f;
+        eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(dashSoundEvent)));
     }
 
     if (r_input.getInput(InputID::Dash)->wasUnpressed())
@@ -66,10 +75,10 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
     if (m_comboCounter >= 3)
     {
         auto slowmoEvent                  = std::make_unique<ExternalChangeSpeedEvent>();
-        slowmoEvent->settings.startLength = 0;
-        slowmoEvent->settings.holdLength  = 1;
-        slowmoEvent->settings.holdSpeed   = 0.3;
-        slowmoEvent->settings.endLength   = 0.5;
+        slowmoEvent->settings.startLength = 0.0f;
+        slowmoEvent->settings.holdLength  = 0.5f;
+        slowmoEvent->settings.holdSpeed   = 0.3f;
+        slowmoEvent->settings.endLength   = 0.5f;
 
         eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(slowmoEvent)));
         m_comboCounter = 0;

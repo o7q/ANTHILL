@@ -1,0 +1,49 @@
+
+--- ANTHILL -------------------------------------
+A power-packed retro-roguelike set inside an alien planet.
+
+
+
+--- STORY ---------------------------------------
+
+You play as SUMI, short for SÆRLIG-UDGRAVNING MK.IV (SPECIAL-EXCAVATION MK.IV)
+An advanced military mining robot equipped with a combat module.
+
+Story Summary:
+You are a part of a small military operation to look for new energy sources in space, you discover a new planet that seems uninhabited, as you approach the planet a small burst of energy causes your ship to crash. This planet is inhabited and is run by an alien cult, this cult's goal is to create a god. They experiment on all of the inhabitants and the most failed subjects get kicked to the outer layers of the planet. As you get deeper, people become richer and stronger. The core of the earth houses the cult leaders, and your goal is either to destroy them, or join them. As you explore the planet you are able to harvest energy from the aliens you kill that were injected by the godmaker serum.
+
+Intro:
+You crash land on a remote alien planet, you have no recollection of who you are or where you came from. Leaving this planet is impossible, the surface temperature is near absolute zero. Your only option is down.
+
+What is the focus?
+Plot, Character, or Lore?
+
+
+
+--- ARTSTYLE ------------------------------------
+
+I want the game to be visually impressive, the game will give the vibe of a retro arcade game, but have extremely interactive physics.
+
+
+
+--- GAMEPLAY ------------------------------------
+
+What will people be doing for 90% of the game? (gameplay loop)
+
+Example for Ultrakill:
+- You walk into a room, enemies spawn, you shoot the enemies, and avoid getting killed using fun mechanics.
+
+Ideas for ANTHILL:
+- The gameplay consists of exploration, killing and looting enemies, and upgrading your character.
+- Fixed width of world, you dig down.
+- Spelunky like rooms.
+- The planet is split into layers, getting more high tech and rich as you approach the core.
+
+Principles of Game Feel (from GAME FEEL by Steve Swink):
+- Predictable results: When players take action, they get the response they expect.
+- Instantaneous response: The player feels the response to their input is immediate.
+- Easy but deep: The game takes minutes to learn but a lifetime to master.
+- Novelty: Though the result of an input is predictable, there is enough subtlety and expressiveness to keep the controls feeling fresh and interesting through hours and hours of play.
+- Appealing response: The sensation of control is aesthetically appealing and compelling, separate from context.
+- Organic motion: Controlling the avatar creates appealing arcs of motion.
+- Harmony: Each element of a game's feel supports a single, cohesive perception of a unique physical reality for the player.

@@ -6,7 +6,7 @@ Sound::Sound(const std::filesystem::path &path)
 {
     const std::string pathString = path.string();
 
-    ma_decoder_config decoderConfig = ma_decoder_config_init(m_format, 0, 0);
+    ma_decoder_config decoderConfig = ma_decoder_config_init(m_format, 0, 48000);
     ma_decoder decoder;
     if (ma_decoder_init_file(pathString.c_str(), &decoderConfig, &decoder) != MA_SUCCESS)
     {

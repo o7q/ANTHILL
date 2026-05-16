@@ -30,6 +30,11 @@ void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<Enti
 
                 eventsOut.emit(std::make_unique<EntityParticleEvent>(context.id, std::move(event)));
 
+                auto soundEvent             = std::make_unique<ExternalPlaySoundEvent>();
+                soundEvent->soundID         = SoundID::SumiHitmarker1;
+                soundEvent->settings.volume = 0.6f;
+                eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(soundEvent)));
+
                 kill();
                 return true;
             }
@@ -48,8 +53,8 @@ void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<Enti
                     eventsOut.emit(std::move(event));
 
                     auto soundEvent             = std::make_unique<ExternalPlaySoundEvent>();
-                    soundEvent->soundID         = SoundID::SumiGunHit1;
-                    soundEvent->settings.volume = 0.3f;
+                    soundEvent->soundID         = SoundID::SumiHitmarker1;
+                    soundEvent->settings.volume = 0.6f;
                     eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(soundEvent)));
 
                     kill();

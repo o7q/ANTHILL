@@ -22,7 +22,7 @@ void PlayerGun::shoot(Vec2i pos, Angle aimPos, uint64_t id, EventPool<EntityEven
         eventsOut.emit(std::move(projectileSpawnEvent));
 
         auto soundEvent             = std::make_unique<ExternalPlaySoundEvent>();
-        soundEvent->soundID         = SoundID::SumiGunShoot1;
+        soundEvent->soundID         = SoundID::SumiShoot1;
         soundEvent->settings.volume = 0.3f;
         soundEvent->settings.pitch  = Math::Random::unseededRandomInt(95, 100) / 100.0f;
         eventsOut.emit(std::make_unique<EntityExternalEvent>(id, std::move(soundEvent)));

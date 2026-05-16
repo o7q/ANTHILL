@@ -2,7 +2,12 @@
 
 #include "core/math/distance.hpp"
 #include "core/math/line.hpp"
+#include "core/math/random.hpp"
 #include "entity/metadata.hpp"
+#include "events/entity/events.hpp"
+#include "events/external/events.hpp"
+#include "identifiers/assets/sounds.hpp"
+#include <memory>
 
 void Player::update_entity_interaction(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
@@ -42,6 +47,13 @@ void Player::update_entity_interaction(const EntityUpdateContext &context, Event
 
                         if (entity->getHealth() <= 50)
                         {
+                            auto entityKillSoundEvent     = std::make_unique<ExternalPlaySoundEvent>();
+                            entityKillSoundEvent->soundID = SoundID::SumiDashKill1;
+                            entityKillSoundEvent->settings.volume = 0.2f;
+                            entityKillSoundEvent->settings.pitch =
+                                Math::Random::unseededRandomInt(90, 100) / 100.0f;
+                            eventsOut.emit(std::make_unique<EntityExternalEvent>(
+                                context.id, std::move(entityKillSoundEvent)));
                             m_comboCounter++;
                         }
 
