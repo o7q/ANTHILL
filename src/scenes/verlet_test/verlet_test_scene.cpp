@@ -1,11 +1,11 @@
-#include "test_scene.hpp"
+#include "verlet_test_scene.hpp"
 
 #include "core/texture/texture.hpp"
 #include "core/viewport/render_command.hpp"
 
-void TestScene::onStart() {}
+void VerletTestScene::onStart() {}
 
-void TestScene::onTick()
+void VerletTestScene::onTick()
 {
     std::vector<RenderCommand> renderCommands;
 

@@ -5,10 +5,10 @@
 #include "scene/scene.hpp"
 #include <vector>
 
-class TestScene : public Scene
+class VerletTestScene : public Scene
 {
   public:
-    TestScene(Window &window, const Assets &assets) : Scene(window, assets)
+    VerletTestScene(Window &window, const Assets &assets) : Scene(window, assets)
     {
         m_drawTex = Texture(r_window.getViewport().getSize());
     }

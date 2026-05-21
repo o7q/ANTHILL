@@ -21,6 +21,14 @@ enum class RectangleCorner
 class GridRectangle
 {
   public:
+    struct OverlapResult
+    {
+        bool overlapping = false;
+        Vec2i amount;
+        Vec2i direction;
+    };
+
+  public:
     GridRectangle() = default;
     GridRectangle(Vec2i pos, Vec2u size)
     {
@@ -40,6 +48,13 @@ class GridRectangle
         m_position = pos;
         recalculateAB();
     }
+
+    void move(Vec2i amount)
+    {
+        m_position += amount;
+        recalculateAB();
+    }
+
     Vec2i getPosition() const { return m_position; }
 
     Vec2u getSize() const { return m_size; }
@@ -53,11 +68,26 @@ class GridRectangle
         return pos.x >= m_a.x && pos.x <= m_b.x && pos.y >= m_a.y && pos.y <= m_b.y;
     }
 
-    bool overlapping(const GridRectangle &other) const
+    OverlapResult overlapping(const GridRectangle &other) const
+    {
+        OverlapResult result;
+
+        Vec2i otherPos      = other.getPosition();
+        Vec2i otherHalfSize = other.getHalfSize().toInt();
+        Vec2i delta         = otherPos - m_position;
+
+        result.amount      = otherHalfSize + m_halfSize.toInt() - delta.abs();
+        result.overlapping = result.amount.x > 0 && result.amount.y > 0;
+        result.direction   = delta.sign();
+
+        return result;
+    }
+
+    bool contains(const GridRectangle &other)
     {
         Vec2i otherA = other.getA();
         Vec2i otherB = other.getB();
-        return m_b.x >= otherA.x && m_a.x <= otherB.x && m_b.y >= otherA.y && m_a.y <= otherB.y;
+        return otherA.x >= m_a.x && otherA.y >= m_a.y && otherB.x <= m_b.x && otherB.y <= m_b.y;
     }
 
   protected:

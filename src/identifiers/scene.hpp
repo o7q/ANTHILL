@@ -4,5 +4,7 @@ enum class SceneID
 {
     None,
     Main,
-    Test
+
+    VerletTest,
+    DungeonTest
 };

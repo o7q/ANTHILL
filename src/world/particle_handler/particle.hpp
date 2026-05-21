@@ -71,6 +71,9 @@ class Particle
     void setMass(float mass) { m_mass = mass; }
     float getMass() const { return m_mass; }
 
+    void setDurability(int durability) { m_durability = durability; }
+    int getDurability() const { return m_durability; }
+
   private:
     Color m_color;
     PhysicsType m_physicsType               = PhysicsType::None;
@@ -80,6 +83,8 @@ class Particle
     VerletBody m_verletBody;
     float m_restitution = 0.0f;
     float m_mass        = 1.0f;
+
+    int m_durability = 0;
 
     bool m_updateSwapID = 0;
 };

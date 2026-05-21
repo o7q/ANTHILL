@@ -27,6 +27,7 @@ void SpriteAnimator::restart()
     m_timer.restart();
     seek(0);
 }
+
 void SpriteAnimator::stop()
 {
     m_timer.stop();

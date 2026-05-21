@@ -105,6 +105,8 @@ template <typename T> struct Vec2
     {
         return {std::clamp(x, min.x, max.x), std::clamp(y, min.y, max.y)};
     }
+    Vec2 abs() { return Vec2(std::abs(x), std::abs(y)); }
+    Vec2 sign() { return Vec2(Math::Numbers::sign(x), Math::Numbers::sign(y)); }
     Vec2<int> direction() { return {Math::Numbers::sign(x), Math::Numbers::sign(y)}; }
 
     Vec2<int> toGrid() const { return {static_cast<int>(std::floor(x)), static_cast<int>(std::floor(y))}; }

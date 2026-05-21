@@ -4,14 +4,11 @@
 #include "core/time/time_handler.hpp"
 #include "core/viewport/render_command.hpp"
 #include "entities/player_point/player_point.hpp"
-#include <memory>
 
 void MainScene::onStart()
 {
     m_world.getEntityHandler().addPlayer(std::make_unique<Player>(r_window.getInput(), r_assets));
     m_world.getEntityHandler().getCurrentPlayer()->getBody().setPosition({0, -200});
-
-    r_window.getSound().playSound(r_assets.sounds().get(SoundID::MusicAction), {0.1f, 1.0f, {}});
 }
 
 void MainScene::onTick()
@@ -68,7 +65,7 @@ void MainScene::onTick()
         player->updateAimPosition(worldMousePos);
         updatePos = player->getBody().getPosition();
     }
-    m_camera.setGoal(updatePos + (viewportMousePosCenterNormalized * 60.0f).toInt());
+    m_camera.setGoal(updatePos + (viewportMousePosCenterNormalized * 60.0f).toGrid());
     m_camera.update(r_window.getTime().getInfo());
 
     m_world.render(m_camera, r_assets, renderCommands);

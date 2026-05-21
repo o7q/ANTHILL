@@ -17,7 +17,10 @@ class Game
   private:
     void start();
     void update_loop();
+
     void init_binds();
+
+    void load_scene(SceneID id);
 
   private:
     Assets m_assets;

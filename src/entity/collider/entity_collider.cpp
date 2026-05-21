@@ -47,7 +47,7 @@ bool EntityCollider::overlappingAny(Vec2i bodyPos, Vec2i otherBodyPos, const Ent
         for (GridRectangle otherRect : other.getAll())
         {
             otherRect.setPosition(otherRect.getPosition() + otherBodyPos);
-            if (rect.overlapping(otherRect))
+            if (rect.overlapping(otherRect).overlapping)
             {
                 return true;
             }

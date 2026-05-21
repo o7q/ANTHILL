@@ -1,11 +1,10 @@
 #include "game.hpp"
-#include "scenes/main/main_scene.hpp"
 
 void Game::start()
 {
     init_binds();
 
-    m_scene = std::make_unique<MainScene>(m_window, m_assets);
+    load_scene(SceneID::DungeonTest);
 
     m_window.getTime().setMaxFPS(60);
     while (m_window.isRunning())
