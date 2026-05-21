@@ -6,7 +6,7 @@
 
 template <typename T> struct Vec2
 {
-    T x = 0, y = 0;
+    T x{}, y{};
 
     Vec2() = default;
     Vec2(T x_, T y_) : x(x_), y(y_) {}

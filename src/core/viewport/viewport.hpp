@@ -25,14 +25,15 @@ class Viewport
     Vec2i windowToViewportPosition(Vec2f windowPosition);
 
     void render(std::vector<RenderCommand> &commands);
-    void renderDirect(const RenderCommandData &data);
 
   private:
     void set_pixel(Vec2u pos, Color color);
     Color get_pixel(Vec2u pos);
 
     void render_points(const PointsRenderCommandData &data);
+    void render_circle(const CircleRenderCommandData &data);
     void render_segment(const SegmentRenderCommandData &data);
+    void render_triangle(const TriangleRenderCommandData &data);
     void render_rect(const RectangleRenderCommandData &data);
     void render_rect_outline(const RectangleRenderCommandData &data);
     void render_rect_fill(const RectangleRenderCommandData &data);

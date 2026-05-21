@@ -1,8 +1,9 @@
 #pragma once
 
-#include "core/math/rectangle.hpp"
+#include "core/math/triangle.hpp"
+#include "core/math/vec.hpp"
 #include "scene/scene.hpp"
-#include "world_dungeon/dungeon_generator.hpp"
+#include <vector>
 
 class DungeonTestScene : public Scene
 {
@@ -14,8 +15,6 @@ class DungeonTestScene : public Scene
     void onTick() override;
 
   private:
-    DungeonGenerator m_generator;
-
-    GridRectangle a;
-    GridRectangle b;
+    std::vector<Vec2i> m_points;
+    std::vector<Triangle2f> m_triangulated;
 };

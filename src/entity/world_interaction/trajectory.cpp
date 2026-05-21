@@ -1,6 +1,6 @@
 #include "trajectory.hpp"
 
-#include "core/math/line.hpp"
+#include "core/math/bresenham.hpp"
 
 EntityWorldInteraction::TrajectoryCollisionResponse EntityWorldInteraction::calculateCollisionFromTrajectory(
     Vec2i start, Vec2i end, const EntityCollider &collider, const ParticleHandler &particleHandler)
@@ -40,7 +40,7 @@ EntityWorldInteraction::TrajectoryCollisionResponse EntityWorldInteraction::calc
         return false;
     };
 
-    Math::Line::bresenhamLine(start, end, check);
+    Math::Bresenham::line(start, end, check);
 
     TrajectoryCollisionResponse response;
     response.collided        = collided;

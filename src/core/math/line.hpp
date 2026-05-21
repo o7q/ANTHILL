@@ -1,63 +1,32 @@
 #pragma once
 
-#include "core/math/angle.hpp"
 #include "core/math/vec.hpp"
-#include <cmath>
 
-namespace Math
+struct Line
 {
-namespace Line
-{
-// https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
-template <typename Function> inline void bresenhamLine(Vec2i p1, const Vec2i &p2, Function &&function)
-{
-    int dx = std::abs(p2.x - p1.x);
-    int dy = -std::abs(p2.y - p1.y);
-    int sx = p1.x < p2.x ? 1 : -1;
-    int sy = p1.y < p2.y ? 1 : -1;
+    // form: y = ax + b;
+    float a = 0.0f, b = 0.0f;
 
-    int error = dx + dy;
-
-    while (true)
+    Line perpendicular()
     {
-        if (function(p1))
-        {
-            break;
-        }
-
-        int e2 = 2 * error;
-        if (e2 >= dy)
-        {
-            if (p1.x == p2.x)
-            {
-                break;
-            }
-            error = error + dy;
-            p1.x += sx;
-        }
-        if (e2 <= dx)
-        {
-            if (p1.y == p2.y)
-            {
-                break;
-            }
-
-            error = error + dx;
-            p1.y += sy;
-        }
+        Line out;
+        out.a = -a / 2.0f;
+        out.b = b;
+        return out;
     }
-}
 
-template <typename HitCheckFunction>
-inline void bresenhamRaycast(const Vec2i &start, Angle angle, HitCheckFunction &&function,
-                             int maxDistance = 100)
-{
-    float radians = angle.radians();
+    // https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
+    Vec2f intersect(const Line &other)
+    {
+        Vec2f out;
+        out.x = (other.b - b) / (a - other.a);
+        out.y = a * (out.x) + b;
+        return out;
+    }
 
-    int endX  = start.x + static_cast<int>(std::floor(std::cosf(radians) * maxDistance));
-    int endY  = start.y + static_cast<int>(std::floor(std::sinf(radians) * maxDistance));
-    Vec2i end = Vec2i(endX, endY).toGrid();
-    bresenhamLine(start, end, function);
-}
-} // namespace Line
-} // namespace Math
+    void createFromPoints(Vec2f p1, Vec2f p2)
+    {
+        a = (p2.y - p1.y) / (p2.x - p1.x);
+        b = p1.y - a * p1.x;
+    }
+};

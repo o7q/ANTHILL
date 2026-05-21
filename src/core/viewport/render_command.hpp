@@ -1,10 +1,43 @@
 #pragma once
 
 #include "core/math/angle.hpp"
+#include "core/math/vec.hpp"
 #include "core/texture/texture.hpp"
 #include <optional>
 #include <utility>
 #include <variant>
+
+struct PointsRenderCommandData
+{
+    std::vector<Vec2i> points;
+    Color color;
+};
+
+struct CircleRenderCommandData
+{
+    Vec2i pos;
+    int radius = 5;
+    Color color;
+};
+
+struct SegmentRenderCommandData
+{
+    Vec2i a, b;
+    Color color;
+};
+
+struct TriangleRenderCommandData
+{
+    Vec2i v0, v1, v2;
+    Color color;
+};
+
+struct RectangleRenderCommandData
+{
+    Vec2i a, b;
+    Color color;
+    bool fill = false;
+};
 
 struct TextureRenderCommandData
 {
@@ -21,27 +54,9 @@ struct TextureRenderCommandData
     std::optional<RotateSettings> rotateSettings;
 };
 
-struct SegmentRenderCommandData
-{
-    Vec2i a, b;
-    Color color;
-};
-
-struct RectangleRenderCommandData
-{
-    Vec2i a, b;
-    Color color;
-    bool fill = false;
-};
-
-struct PointsRenderCommandData
-{
-    std::vector<Vec2i> points;
-    Color color;
-};
-
-using RenderCommandData = std::variant<TextureRenderCommandData, SegmentRenderCommandData,
-                                       RectangleRenderCommandData, PointsRenderCommandData>;
+using RenderCommandData =
+    std::variant<PointsRenderCommandData, CircleRenderCommandData, SegmentRenderCommandData,
+                 TriangleRenderCommandData, RectangleRenderCommandData, TextureRenderCommandData>;
 
 struct RenderCommand
 {

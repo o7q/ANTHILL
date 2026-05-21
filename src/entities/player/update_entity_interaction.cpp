@@ -1,7 +1,7 @@
 #include "player.hpp"
 
+#include "core/math/bresenham.hpp"
 #include "core/math/distance.hpp"
-#include "core/math/line.hpp"
 #include "core/math/random.hpp"
 #include "entity/metadata.hpp"
 #include "events/entity/events.hpp"
@@ -29,7 +29,7 @@ void Player::update_entity_interaction(const EntityUpdateContext &context, Event
             closestDistance = dist;
         }
 
-        Math::Line::bresenhamLine(
+        Math::Bresenham::line(
             m_body.getLastPosition(), m_body.getPosition(),
             [&](Vec2i p)
             {

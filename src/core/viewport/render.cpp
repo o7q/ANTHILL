@@ -1,6 +1,7 @@
 #include "viewport.hpp"
 
-#include "core/math/line.hpp"
+#include "core/math/bresenham.hpp"
+#include "core/math/triangle.hpp"
 #include "core/utils/variant_bp.hpp"
 #include "core/viewport/render_command.hpp"
 #include <algorithm>
@@ -14,17 +15,14 @@ void Viewport::render(std::vector<RenderCommand> &commands)
 
     for (const RenderCommand &command : commands)
     {
-        renderDirect(command.data);
+        std::visit(overloaded{[this](const PointsRenderCommandData &data) { this->render_points(data); },
+                              [this](const CircleRenderCommandData &data) { this->render_circle(data); },
+                              [this](const SegmentRenderCommandData &data) { this->render_segment(data); },
+                              [this](const TriangleRenderCommandData &data) { this->render_triangle(data); },
+                              [this](const RectangleRenderCommandData &data) { this->render_rect(data); },
+                              [this](const TextureRenderCommandData &data) { this->render_texture(data); }},
+                   command.data);
     }
-}
-
-void Viewport::renderDirect(const RenderCommandData &data_)
-{
-    std::visit(overloaded{[this](const PointsRenderCommandData &data) { this->render_points(data); },
-                          [this](const SegmentRenderCommandData &data) { this->render_segment(data); },
-                          [this](const RectangleRenderCommandData &data) { this->render_rect(data); },
-                          [this](const TextureRenderCommandData &data) { this->render_texture(data); }},
-               data_);
 }
 
 void Viewport::render_points(const PointsRenderCommandData &data)
@@ -41,14 +39,53 @@ void Viewport::render_points(const PointsRenderCommandData &data)
     }
 }
 
+void Viewport::render_circle(const CircleRenderCommandData &data)
+{
+    int radiusSq = data.radius * data.radius;
+
+    for (int ry = -data.radius; ry <= data.radius; ++ry)
+    {
+        for (int rx = -data.radius; rx <= data.radius; ++rx)
+        {
+            if (rx * rx + ry * ry <= radiusSq)
+            {
+                Vec2u viewportPos = (data.pos + Vec2i(rx, ry)).toUnsignedInt();
+                set_pixel(viewportPos, data.color);
+            }
+        }
+    }
+}
+
 void Viewport::render_segment(const SegmentRenderCommandData &data)
 {
-    Math::Line::bresenhamLine(data.a, data.b,
-                              [this, color = data.color](Vec2i pos)
-                              {
-                                  this->set_pixel(pos.toUnsignedInt(), color);
-                                  return false;
-                              });
+    Math::Bresenham::line(data.a, data.b,
+                          [this, color = data.color](Vec2i pos)
+                          {
+                              this->set_pixel(pos.toUnsignedInt(), color);
+                              return false;
+                          });
+}
+
+void Viewport::render_triangle(const TriangleRenderCommandData &data)
+{
+    SegmentRenderCommandData e[3];
+
+    e[0].a     = data.v0;
+    e[0].b     = data.v1;
+    e[0].color = data.color;
+
+    e[1].a     = data.v1;
+    e[1].b     = data.v2;
+    e[1].color = data.color;
+
+    e[2].a     = data.v2;
+    e[2].b     = data.v0;
+    e[2].color = data.color;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        render_segment(e[i]);
+    }
 }
 
 void Viewport::render_rect(const RectangleRenderCommandData &data)
