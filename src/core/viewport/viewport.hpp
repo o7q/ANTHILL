@@ -2,7 +2,7 @@
 
 #include "core/math/color.hpp"
 #include "core/math/vec.hpp"
-#include "core/viewport/render_command.hpp"
+#include "render_command.hpp"
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 

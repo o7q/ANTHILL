@@ -15,12 +15,10 @@ Window::Window(const std::string &name, Vec2u windowSize, Vec2u viewportSize)
 
 Window::~Window() { SDL_DestroyWindow(m_window); }
 
-void Window::frameStart() { m_time.frameStart(); }
-void Window::frameEnd() { m_time.frameEnd(); }
-
-void Window::update()
+void Window::frameStart()
 {
-    m_sound.update(m_time.getInfo());
+    m_time.frameStart();
+    m_viewport.clear();
 
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -34,15 +32,19 @@ void Window::update()
     }
 
     m_input.update();
+    m_sound.update(m_time.getInfo());
 
-    int winX, winY;
-    SDL_GetWindowSizeInPixels(m_window, &winX, &winY);
-    m_size = Vec2i(winX, winY).toUnsignedInt();
+    int winSizeX, winSizeY;
+    SDL_GetWindowSizeInPixels(m_window, &winSizeX, &winSizeY);
+    m_size = Vec2i(winSizeX, winSizeY).toUnsignedInt();
 
-    m_aspectRatio = static_cast<float>(winX) / winY;
+    m_aspectRatio = static_cast<float>(winSizeX) / winSizeY;
 
     m_viewport.recalculatePresentRect(m_size, m_aspectRatio);
 }
 
-void Window::clear() { m_viewport.clear(); }
-void Window::present() { m_viewport.present(); }
+void Window::frameEnd()
+{
+    m_viewport.present();
+    m_time.frameEnd();
+}

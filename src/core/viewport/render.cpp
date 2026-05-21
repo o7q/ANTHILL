@@ -1,7 +1,6 @@
 #include "viewport.hpp"
 
 #include "core/math/bresenham.hpp"
-#include "core/math/triangle.hpp"
 #include "core/utils/variant_bp.hpp"
 #include "core/viewport/render_command.hpp"
 #include <algorithm>

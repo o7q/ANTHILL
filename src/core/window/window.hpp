@@ -18,10 +18,6 @@ class Window
     void frameStart();
     void frameEnd();
 
-    void update();
-    void clear();
-    void present();
-
     Viewport &getViewport() { return m_viewport; }
     SoundHandler &getSound() { return m_sound; }
     InputHandler &getInput() { return m_input; }

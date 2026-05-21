@@ -9,3 +9,6 @@ World
 
 Physics
 - Optimize physics
+
+Input
+- Overlook input handler and see if there are improvements to be made
