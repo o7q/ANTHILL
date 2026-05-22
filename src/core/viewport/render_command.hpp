@@ -28,7 +28,7 @@ struct SegmentRenderCommandData
 
 struct TriangleRenderCommandData
 {
-    Vec2i v0, v1, v2;
+    Vec2i vertices[3];
     Color color;
 };
 

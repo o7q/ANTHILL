@@ -69,16 +69,16 @@ void Viewport::render_triangle(const TriangleRenderCommandData &data)
 {
     SegmentRenderCommandData e[3];
 
-    e[0].a     = data.v0;
-    e[0].b     = data.v1;
+    e[0].a     = data.vertices[0];
+    e[0].b     = data.vertices[1];
     e[0].color = data.color;
 
-    e[1].a     = data.v1;
-    e[1].b     = data.v2;
+    e[1].a     = data.vertices[1];
+    e[1].b     = data.vertices[2];
     e[1].color = data.color;
 
-    e[2].a     = data.v2;
-    e[2].b     = data.v0;
+    e[2].a     = data.vertices[2];
+    e[2].b     = data.vertices[0];
     e[2].color = data.color;
 
     for (int i = 0; i < 3; ++i)

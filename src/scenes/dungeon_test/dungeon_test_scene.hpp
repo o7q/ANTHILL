@@ -16,5 +16,5 @@ class DungeonTestScene : public Scene
 
   private:
     std::vector<Vec2i> m_points;
-    std::vector<Triangle2f> m_triangulated;
+    std::vector<Triangle2i> m_triangulated;
 };

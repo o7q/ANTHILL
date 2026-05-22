@@ -1,47 +1,36 @@
 #pragma once
 
 #include "core/math/circle.hpp"
+#include "core/math/edge.hpp"
 #include "core/math/vec.hpp"
 #include <cmath>
+#include <vector>
 
-template <typename T> class Triangle2
+template <typename T> struct Triangle2
 {
-  public:
-    void setV0(Vec2<T> v)
+    bool operator==(const Triangle2 &other)
     {
-        return m_v[0] = v;
-        recalculate_area();
-    }
-    void setV1(Vec2<T> v)
-    {
-        return m_v[1] = v;
-        recalculate_area();
-    }
-    void setV2(Vec2<T> v)
-    {
-        return m_v[2] = v;
-        recalculate_area();
-    }
-    void setVertices(Vec2<T> v0, Vec2<T> v1, Vec2<T> v2)
-    {
-        m_v[0] = v0;
-        m_v[1] = v1;
-        m_v[2] = v2;
-        recalculate_area();
+        int matches = 0;
+        for (int i = 0; i < 3; ++i)
+        {
+            for (int j = 0; j < 3; ++j)
+            {
+                if (verts[i] == other.verts[j])
+                {
+                    matches++;
+                    break;
+                }
+            }
+        }
+        return matches == 3;
     }
 
-    const Vec2<T> getV0() const { return m_v[0]; }
-    const Vec2<T> getV1() const { return m_v[1]; }
-    const Vec2<T> getV2() const { return m_v[2]; }
-
-    const Vec2<T> *getVertices() const { return m_v; }
-
-    Circle2f calculateCircumcircle()
+    Circle2f generateCircumcircle()
     {
         // https://en.wikipedia.org/wiki/Circumcircle#Cartesian_coordinates_2
-        Vec2i a = m_v[0];
-        Vec2i b = m_v[1];
-        Vec2i c = m_v[2];
+        Vec2i a = verts[0];
+        Vec2i b = verts[1];
+        Vec2i c = verts[2];
 
         int axsq = a.x * a.x;
         int aysq = a.y * a.y;
@@ -66,22 +55,16 @@ template <typename T> class Triangle2
         return out;
     }
 
-    float getArea() const { return m_area; }
-
-  private:
-    void recalculate_area()
+    std::vector<Edge2<T>> generateEdges() const
     {
-        // heron's formula
-        float a = (m_v[0] - m_v[1]).length();
-        float b = (m_v[1] - m_v[2]).length();
-        float c = (m_v[2] - m_v[0]).length();
-        float s = (a + b + c) / 2.0f;
-        m_area  = std::sqrt(s * (s - a) * (s - b) * (s - c));
+        std::vector<Edge2<T>> edges;
+        edges.push_back({verts[0], verts[1]});
+        edges.push_back({verts[1], verts[2]});
+        edges.push_back({verts[2], verts[0]});
+        return edges;
     }
 
-  private:
-    Vec2<T> m_v[3];
-    float m_area = 0.0f;
+    Vec2<T> verts[3];
 };
 
 using Triangle2i = Triangle2<int>;

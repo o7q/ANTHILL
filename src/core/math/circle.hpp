@@ -6,6 +6,8 @@ template <typename T> struct Circle2
 {
     Vec2<T> pos;
     T radius{};
+
+    bool pointInside(Vec2<T> point) const { return (point - pos).length() <= radius; }
 };
 
 using Circle2i = Circle2<int>;
