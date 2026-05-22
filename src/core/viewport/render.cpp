@@ -1,6 +1,6 @@
 #include "viewport.hpp"
 
-#include "core/math/bresenham.hpp"
+#include "core/math/line.hpp"
 #include "core/utils/variant_bp.hpp"
 #include "core/viewport/render_command.hpp"
 #include <algorithm>
@@ -57,12 +57,12 @@ void Viewport::render_circle(const CircleRenderCommandData &data)
 
 void Viewport::render_segment(const SegmentRenderCommandData &data)
 {
-    Math::Bresenham::line(data.a, data.b,
-                          [this, color = data.color](Vec2i pos)
-                          {
-                              this->set_pixel(pos.toUnsignedInt(), color);
-                              return false;
-                          });
+    Math::Line::bresenhamLine(data.a, data.b,
+                              [this, color = data.color](Vec2i pos)
+                              {
+                                  this->set_pixel(pos.toUnsignedInt(), color);
+                                  return false;
+                              });
 }
 
 void Viewport::render_triangle(const TriangleRenderCommandData &data)

@@ -1,6 +1,5 @@
 #include "dungeon_test_scene.hpp"
 
-#include "core/math/delaunay.hpp"
 #include "core/math/triangle.hpp"
 #include "core/viewport/render_command.hpp"
 
@@ -15,11 +14,11 @@ void DungeonTestScene::onTick()
     if (r_window.getInput().getInput(InputID::Shoot)->wasPressed())
     {
         m_points.push_back(mousePos);
+        m_triangulated = Math::Triangle::generateTriangulation(m_points);
     }
 
     if (r_window.getInput().getInput(InputID::Jump)->wasPressed())
     {
-        m_triangulated = generateDelaunayTriangle(m_points);
     }
 
     PointsRenderCommandData pointsRenderData;

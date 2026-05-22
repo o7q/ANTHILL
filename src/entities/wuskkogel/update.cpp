@@ -9,7 +9,7 @@
 void Wuskkogel::update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
     m_lookAngle =
-        Math::Angles::vectorsToAngle(m_body.getLastPositionFloat(), m_body.getPositionFloat()).degrees();
+        Math::Angle::vectorsToAngle(m_body.getLastPositionFloat(), m_body.getPositionFloat()).degrees();
 
     for (DamageSource dd : m_damageSources)
     {

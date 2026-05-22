@@ -1,6 +1,6 @@
 #include "p_dynamics_handler.hpp"
 
-#include "core/math/bresenham.hpp"
+#include "core/math/line.hpp"
 #include "core/math/physics.hpp"
 
 void PDynamicsHandler::handle_particle_trajectory(ParticleObject po, Vec2f start, Vec2f end, float dt)
@@ -54,7 +54,7 @@ void PDynamicsHandler::handle_particle_trajectory(ParticleObject po, Vec2f start
         return false;
     };
 
-    Math::Bresenham::line(start.toGrid(), end.toGrid(), function);
+    Math::Line::bresenhamLine(start.toGrid(), end.toGrid(), function);
 
     if (!hit)
     {

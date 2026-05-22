@@ -18,11 +18,11 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
         if (m_dashTarget.has_value())
         {
             Vec2i pos = m_dashTarget.value().getPosition();
-            m_dash.start(Math::Angles::vectorsToAngle(m_body.getPositionFloat(), pos.toFloat()));
+            m_dash.start(Math::Angle::vectorsToAngle(m_body.getPositionFloat(), pos.toFloat()));
         }
         else
         {
-            m_dash.start(Math::Angles::vectorsToAngle(m_body.getPositionFloat(), m_aimPos.toFloat()));
+            m_dash.start(Math::Angle::vectorsToAngle(m_body.getPositionFloat(), m_aimPos.toFloat()));
         }
 
         SoundID dashSounds[3] = {SoundID::SumiDash1, SoundID::SumiDash2, SoundID::SumiDash3};

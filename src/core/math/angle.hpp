@@ -27,15 +27,15 @@ struct Radians : public Angle
 
 namespace Math
 {
-namespace Angles
+namespace Angle
 {
-inline Angle vectorsToAngle(Vec2f a, Vec2f b)
+inline struct Angle vectorsToAngle(Vec2f a, Vec2f b)
 {
     Vec2f d = b - a;
     return Radians(std::atan2(d.y, d.x));
 }
 
-inline Vec2f rotatePoint(Vec2f origin, Vec2f point, Angle angle)
+inline Vec2f rotatePoint(Vec2f origin, Vec2f point, struct Angle angle)
 {
     float radians = angle.radians();
 
@@ -53,5 +53,5 @@ inline Vec2f rotatePoint(Vec2f origin, Vec2f point, Angle angle)
 
     return out;
 }
-} // namespace Angles
+} // namespace Angle
 } // namespace Math

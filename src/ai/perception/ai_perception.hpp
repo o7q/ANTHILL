@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/math/angle.hpp"
-#include "core/math/bresenham.hpp"
+#include "core/math/line.hpp"
 #include <vector>
 
 class AIPerception
@@ -22,7 +22,7 @@ class AIPerception
         {
             Angle angle = Degrees(angleTop + i * increment);
 
-            Math::Bresenham::raycast(
+            Math::Line::bresenhamRaycast(
                 headPos, angle,
                 [&](Vec2i pos)
                 {

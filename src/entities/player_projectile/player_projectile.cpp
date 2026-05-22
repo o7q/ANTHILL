@@ -1,6 +1,6 @@
 #include "player_projectile.hpp"
 
-#include "core/math/bresenham.hpp"
+#include "core/math/line.hpp"
 #include "core/math/random.hpp"
 #include "events/entity/events.hpp"
 #include "events/external/events.hpp"
@@ -16,7 +16,7 @@ void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<Enti
     m_body.update(context.time.dt);
     Vec2i end = m_body.getPosition();
 
-    Math::Bresenham::line(
+    Math::Line::bresenhamLine(
         start, end,
         [&](Vec2i pos)
         {

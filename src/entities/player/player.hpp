@@ -25,8 +25,8 @@ class Player : public Entity
     void updateAimPosition(Vec2i aimPos)
     {
         m_aimPos = aimPos;
-        m_angle  = Math::Angles::vectorsToAngle((m_body.getPosition() + m_relativeHeadPosition).toFloat(),
-                                                aimPos.toFloat());
+        m_angle  = Math::Angle::vectorsToAngle((m_body.getPosition() + m_relativeHeadPosition).toFloat(),
+                                               aimPos.toFloat());
     }
 
     void damage(DamageSource source) override
