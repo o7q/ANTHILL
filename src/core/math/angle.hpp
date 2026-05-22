@@ -1,7 +1,7 @@
 #pragma once
 
 #include "constants.hpp"
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include <cmath>
 
 struct Angle

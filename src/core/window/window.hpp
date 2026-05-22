@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/input/input_handler.hpp"
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "core/sound/sound_handler.hpp"
 #include "core/time/time_handler.hpp"
 #include "core/viewport/viewport.hpp"

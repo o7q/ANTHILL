@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "entity/collider/entity_collider.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 

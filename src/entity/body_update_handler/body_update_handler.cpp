@@ -1,6 +1,6 @@
 #include "body_update_handler.hpp"
 
-#include "core/math/rectangle.hpp"
+#include "core/math/geometry/rectangle.hpp"
 #include "entity/world_interaction/against.hpp"
 #include "entity/world_interaction/step.hpp"
 #include "entity/world_interaction/trajectory.hpp"

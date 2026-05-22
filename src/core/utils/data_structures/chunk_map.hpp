@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/math/index.hpp"
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "core/utils/data_structures/index_2d.hpp"
 #include <unordered_map>
 #include <vector>

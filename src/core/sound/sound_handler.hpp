@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "core/sound/sound.hpp"
 #include "core/time/time_handler.hpp"
 #include <miniaudio/miniaudio.h>

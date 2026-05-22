@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/math/angle.hpp"
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "core/timer/timer.hpp"
 #include "events/entity/base.hpp"
 #include "events/event_pool.hpp"

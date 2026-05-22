@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "core/texture/texture.hpp"
 #include <filesystem>
 #include <vector>

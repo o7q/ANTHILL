@@ -1,7 +1,7 @@
 
 #include "dungeon_generator.hpp"
+#include "core/math/geometry/rectangle.hpp"
 #include "core/math/random.hpp"
-#include "core/math/rectangle.hpp"
 
 DungeonGenerator::DungeonGenerator()
 {
@@ -67,7 +67,7 @@ void DungeonGenerator::generate_purge_bad_rooms()
     size_t current = 0;
     for (auto it = m_rooms.begin(); it != m_rooms.end();)
     {
-        GridRectangle& currentRoom = *it;
+        GridRectangle &currentRoom = *it;
 
         bool purge = false;
         for (size_t i = 0; i < m_rooms.size(); ++i)

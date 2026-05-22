@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/math/rectangle.hpp"
+#include "core/math/geometry/rectangle.hpp"
 #include <vector>
 
 class EntityCollider

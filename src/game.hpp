@@ -1,7 +1,7 @@
 #pragma once
 
 #include "assets/assets.hpp"
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "core/window/window.hpp"
 #include "scene/scene.hpp"
 #include <memory>

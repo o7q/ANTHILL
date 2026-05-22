@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/math/angle.hpp"
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "core/time/time_handler.hpp"
 
 class Camera

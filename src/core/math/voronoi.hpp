@@ -2,7 +2,7 @@
 
 #include "core/math/distance.hpp"
 #include "core/math/random.hpp"
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include <cstdint>
 #include <limits>
 

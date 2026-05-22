@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/math/rectangle.hpp"
-#include "core/math/vec.hpp"
+#include "core/math/geometry/rectangle.hpp"
+#include "core/math/geometry/vec.hpp"
 #include <vector>
 
 class DungeonGenerator

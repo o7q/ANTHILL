@@ -1,7 +1,7 @@
 #include "player.hpp"
 
+#include "core/math/geometry/rectangle.hpp"
 #include "core/math/random.hpp"
-#include "core/math/rectangle.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entity/world_interaction/against.hpp"
 #include "events/entity/base.hpp"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "identifiers/input.hpp"
 #include "input.hpp"
 #include <SDL3/SDL_events.h>

@@ -1,6 +1,7 @@
 #include "dungeon_test_scene.hpp"
 
-#include "core/math/triangle.hpp"
+#include "core/math/geometry/triangle.hpp"
+#include "core/math/mesh.hpp"
 #include "core/viewport/render_command.hpp"
 
 void DungeonTestScene::onStart() {}
@@ -14,11 +15,7 @@ void DungeonTestScene::onTick()
     if (r_window.getInput().getInput(InputID::Shoot)->wasPressed())
     {
         m_points.push_back(mousePos);
-        m_triangulated = Math::Triangle::generateTriangulation(m_points);
-    }
-
-    if (r_window.getInput().getInput(InputID::Jump)->wasPressed())
-    {
+        m_triangulated = Math::Mesh::generateTriangulation(m_points);
     }
 
     PointsRenderCommandData pointsRenderData;

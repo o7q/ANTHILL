@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/math/color.hpp"
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include <filesystem>
 #include <stb/stb_image.h>
 #include <vector>

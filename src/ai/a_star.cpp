@@ -1,6 +1,6 @@
 #include "a_star.hpp"
 
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "core/utils/data_structures/index_2d.hpp"
 #include <algorithm>
 #include <unordered_map>

@@ -2,7 +2,7 @@
 
 #include "a_star_neighbors.hpp"
 #include "ai/a_star_node.hpp"
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "core/utils/data_structures/index_2d.hpp"
 #include <cstdlib>
 #include <queue>

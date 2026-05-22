@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/math/triangle.hpp"
-#include "core/math/vec.hpp"
+#include "core/math/geometry/triangle.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "scene/scene.hpp"
 #include <vector>
 

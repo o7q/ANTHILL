@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/asset_pool/asset_pool.hpp"
-#include "core/math/vec.hpp"
+#include "core/math/geometry/vec.hpp"
 #include "core/sprite_sheet/sprite_sheet.hpp"
 #include "identifiers/assets/spritesheet.hpp"
 #include <string>

@@ -1,6 +1,6 @@
 #include "player.hpp"
 
-#include "core/math/rectangle.hpp"
+#include "core/math/geometry/rectangle.hpp"
 #include "core/viewport/render_command.hpp"
 
 void Player::render(const Camera &camera, std::vector<RenderCommand> &commandsOut)
