@@ -12,7 +12,7 @@ inline void DEBUG_renderBoundingBox(Vec2i pos, const EntityCollider &collider, c
                                     std::vector<RenderCommand> &commandsOut, Color color = Color(255, 0, 0),
                                     unsigned int index = 1)
 {
-    for (const GridRectangle &rect : collider.getAll())
+    for (const Rectangle_i &rect : collider.getAll())
     {
         RectangleRenderCommandData data;
         data.a     = camera.cameraToViewport(rect.getA() + pos);

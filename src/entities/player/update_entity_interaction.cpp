@@ -23,7 +23,7 @@ void Player::update_entity_interaction(const EntityUpdateContext &context, Event
         if (dist < closestDistance && dist < 60.0f && metadata.type != EntityType::Projectile &&
             metadata.type != EntityType::Energy)
         {
-            GridRectangle rect(entity->getBody().getPosition(), entity->getCollider().getPrimary().getSize());
+            Rectangle_i rect(entity->getBody().getPosition(), entity->getCollider().getPrimary().getSize());
 
             m_dashTarget    = rect;
             closestDistance = dist;

@@ -2,7 +2,7 @@
 
 #include "core/math/geometry/vec.hpp"
 
-template <typename T> struct Circle2
+template <typename T> struct Circle
 {
     Vec2<T> pos;
     T radius{};
@@ -10,7 +10,7 @@ template <typename T> struct Circle2
     bool pointInside(Vec2<T> point) const { return (point - pos).length() <= radius; }
 };
 
-using Circle2i = Circle2<int>;
-using Circle2u = Circle2<unsigned int>;
-using Circle2f = Circle2<float>;
-using Circle2d = Circle2<double>;
+using Circle_i = Circle<int>;
+using Circle_u = Circle<unsigned int>;
+using Circle_f = Circle<float>;
+using Circle_d = Circle<double>;

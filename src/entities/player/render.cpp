@@ -7,7 +7,7 @@ void Player::render(const Camera &camera, std::vector<RenderCommand> &commandsOu
 {
     if (m_dashTarget.has_value())
     {
-        GridRectangle dashTarget = m_dashTarget.value();
+        Rectangle_i dashTarget = m_dashTarget.value();
 
         RectangleRenderCommandData rectRenderData;
         rectRenderData.a     = camera.cameraToViewport(dashTarget.getA());

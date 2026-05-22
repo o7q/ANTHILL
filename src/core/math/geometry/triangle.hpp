@@ -6,9 +6,9 @@
 #include <cmath>
 #include <vector>
 
-template <typename T> struct Triangle2
+template <typename T> struct Triangle
 {
-    bool operator==(const Triangle2 &other)
+    bool operator==(const Triangle &other)
     {
         int matches = 0;
         for (int i = 0; i < 3; ++i)
@@ -25,7 +25,7 @@ template <typename T> struct Triangle2
         return matches == 3;
     }
 
-    Circle2f generateCircumcircle()
+    Circle<T> generateCircumcircle()
     {
         // https://en.wikipedia.org/wiki/Circumcircle#Cartesian_coordinates_2
         Vec2i a = verts[0];
@@ -49,15 +49,15 @@ template <typename T> struct Triangle2
         float dy = y - a.y;
         float r  = std::sqrt(dx * dx + dy * dy);
 
-        Circle2f out;
-        out.pos    = {x, y};
+        Circle<T> out;
+        out.pos    = Vec2<T>(x, y);
         out.radius = r;
         return out;
     }
 
-    std::vector<Segment2<T>> generateSegments() const
+    std::vector<Segment<T>> generateSegments() const
     {
-        std::vector<Segment2<T>> segments;
+        std::vector<Segment<T>> segments;
         segments.push_back({verts[0], verts[1]});
         segments.push_back({verts[1], verts[2]});
         segments.push_back({verts[2], verts[0]});
@@ -67,7 +67,7 @@ template <typename T> struct Triangle2
     Vec2<T> verts[3];
 };
 
-using Triangle2i = Triangle2<int>;
-using Triangle2u = Triangle2<unsigned int>;
-using Triangle2f = Triangle2<float>;
-using Triangle2d = Triangle2<double>;
+using Triangle_i = Triangle<int>;
+using Triangle_u = Triangle<unsigned int>;
+using Triangle_f = Triangle<float>;
+using Triangle_d = Triangle<double>;

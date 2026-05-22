@@ -34,13 +34,13 @@ class UIButton : public UIElement
 
     void setOnClickFunction(std::function<void()> onClickFunction) { m_onClickFunction = onClickFunction; }
 
-    void setRect(GridRectangle rect) { m_rect = rect; }
+    void setRect(Rectangle_i rect) { m_rect = rect; }
 
   protected:
     virtual void update_internal() {}
 
   private:
-    GridRectangle m_rect;
+    Rectangle_i m_rect;
 
     bool m_clicked  = false;
     bool m_hovering = false;

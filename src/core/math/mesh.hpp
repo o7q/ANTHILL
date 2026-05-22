@@ -8,11 +8,11 @@ namespace Math
 namespace Mesh
 {
 // https://www.gorillasun.de/blog/bowyer-watson-algorithm-for-delaunay-triangulation/#an-intuitive-explanation-of-the-algorithm
-inline std::vector<Triangle2i> generateTriangulation(const std::vector<Vec2i> &points)
+inline std::vector<Triangle_i> generateTriangulation(const std::vector<Vec2i> &points)
 {
-    std::vector<Triangle2i> triangulation;
+    std::vector<Triangle_i> triangulation;
 
-    Triangle2i superTri;
+    Triangle_i superTri;
 
     int minX = std::numeric_limits<int>::max();
     int minY = std::numeric_limits<int>::max();
@@ -37,21 +37,21 @@ inline std::vector<Triangle2i> generateTriangulation(const std::vector<Vec2i> &p
 
     for (Vec2i p : points)
     {
-        std::vector<Triangle2i> badTris;
+        std::vector<Triangle_i> badTris;
 
-        for (Triangle2i tri : triangulation)
+        for (Triangle_i tri : triangulation)
         {
-            Circle2f c = tri.generateCircumcircle();
-            if (c.pointInside(p.toFloat()))
+            Circle_i c = tri.generateCircumcircle();
+            if (c.pointInside(p))
             {
                 badTris.push_back(tri);
             }
         }
 
-        std::vector<Segment2i> poly;
+        std::vector<Segment_i> poly;
         for (size_t i = 0; i < badTris.size(); ++i)
         {
-            for (Segment2i edge1 : badTris[i].generateSegments())
+            for (Segment_i edge1 : badTris[i].generateSegments())
             {
                 bool sharedWithBad = false;
 
@@ -62,7 +62,7 @@ inline std::vector<Triangle2i> generateTriangulation(const std::vector<Vec2i> &p
                         continue;
                     }
 
-                    for (Segment2i edge2 : badTris[j].generateSegments())
+                    for (Segment_i edge2 : badTris[j].generateSegments())
                     {
                         if (edge1 == edge2)
                         {
@@ -85,7 +85,7 @@ inline std::vector<Triangle2i> generateTriangulation(const std::vector<Vec2i> &p
         }
 
         // remove bad tris
-        for (Triangle2i badTri : badTris)
+        for (Triangle_i badTri : badTris)
         {
             for (auto it = triangulation.begin(); it != triangulation.end();)
             {
@@ -101,9 +101,9 @@ inline std::vector<Triangle2i> generateTriangulation(const std::vector<Vec2i> &p
         }
 
         // create new tris
-        for (Segment2i edge : poly)
+        for (Segment_i edge : poly)
         {
-            Triangle2i tri;
+            Triangle_i tri;
             tri.verts[0] = edge.a;
             tri.verts[1] = edge.b;
             tri.verts[2] = p;

@@ -7,10 +7,10 @@ EntityWorldInteraction::calculateStep(Vec2i resolvedPosition, Vec2i originalEnd,
 {
     StepResponse response;
 
-    int amount = originalEnd.x - resolvedPosition.x;
-    int dir    = Math::Numbers::sign(amount);
+    const int amount = originalEnd.x - resolvedPosition.x;
+    const int dir    = Math::Numbers::sign(amount);
 
-    int maxStepAmount = 4;
+    const int maxStepAmount = 4;
 
     StepDirectionalData stepUpwards;
     StepDirectionalData stepDownwards;
@@ -41,8 +41,7 @@ EntityWorldInteraction::calculateStep(Vec2i resolvedPosition, Vec2i originalEnd,
         }
 
         if (downwardsCheck.top <= maxStepAmount &&
-            calculateWorldIntersection_MTV(downwardsNextPos, collider, particleHandler).resolveDistance ==
-                0)
+            calculateWorldIntersection_MTV(downwardsNextPos, collider, particleHandler).resolveDistance == 0)
         {
             stepDownwards.sum.x = step;
             stepDownwards.sum.y += downwardsCheck.top;

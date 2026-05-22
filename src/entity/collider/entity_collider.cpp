@@ -1,6 +1,6 @@
 #include "entity_collider.hpp"
 
-void EntityCollider::addRect(Vec2i offset, Vec2u size) { m_rects.push_back(GridRectangle(offset, size)); }
+void EntityCollider::addRect(Vec2i offset, Vec2i size) { m_rects.push_back(Rectangle_i(offset, size)); }
 
 bool EntityCollider::pointInsidePrimary(Vec2i bodyPos, Vec2i point) const
 {
@@ -9,7 +9,7 @@ bool EntityCollider::pointInsidePrimary(Vec2i bodyPos, Vec2i point) const
         return false;
     }
 
-    GridRectangle rect = m_rects[0];
+    Rectangle_i rect = m_rects[0];
     rect.setPosition(rect.getPosition() + bodyPos);
     if (rect.pointInside(point))
     {
@@ -26,7 +26,7 @@ bool EntityCollider::pointInsideAny(Vec2i bodyPos, Vec2i point) const
         return false;
     }
 
-    for (GridRectangle rect : m_rects)
+    for (Rectangle_i rect : m_rects)
     {
         rect.setPosition(rect.getPosition() + bodyPos);
 
@@ -41,10 +41,10 @@ bool EntityCollider::pointInsideAny(Vec2i bodyPos, Vec2i point) const
 
 bool EntityCollider::overlappingAny(Vec2i bodyPos, Vec2i otherBodyPos, const EntityCollider &other) const
 {
-    for (GridRectangle rect : m_rects)
+    for (Rectangle_i rect : m_rects)
     {
         rect.setPosition(rect.getPosition() + bodyPos);
-        for (GridRectangle otherRect : other.getAll())
+        for (Rectangle_i otherRect : other.getAll())
         {
             otherRect.setPosition(otherRect.getPosition() + otherBodyPos);
             if (rect.overlapping(otherRect).overlapping)

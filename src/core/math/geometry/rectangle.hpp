@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/math/geometry/vec.hpp"
+#include <type_traits>
 
 enum class RectangleSide
 {
@@ -18,91 +19,102 @@ enum class RectangleCorner
     BottomRight
 };
 
-class GridRectangle
+template <typename T> class Rectangle
 {
   public:
     struct OverlapResult
     {
         bool overlapping = false;
-        Vec2i amount;
-        Vec2i direction;
+        Vec2<T> amount;
+        Vec2<T> direction;
     };
 
   public:
-    GridRectangle() = default;
-    GridRectangle(Vec2i pos, Vec2u size)
+    Rectangle() = default;
+    Rectangle(Vec2<T> pos, Vec2<T> size)
     {
         setPosition(pos);
         setSize(size);
     }
 
-    void setSize(Vec2u size)
+    void setSize(Vec2<T> size)
     {
-        m_size     = size;
-        m_area     = size.x * size.y;
-        m_halfSize = (m_size / 2.0f).toGrid().toUnsignedInt();
+        m_size = size;
+        m_area = size.x * size.y;
+        if constexpr (std::is_floating_point<T>())
+        {
+            m_halfSize = m_size / 2.0f;
+        }
+        else
+        {
+            m_halfSize = (m_size / 2.0f).toGrid();
+        }
         recalculateAB();
     }
-    void setPosition(Vec2i pos)
+    void setPosition(Vec2<T> pos)
     {
         m_position = pos;
         recalculateAB();
     }
 
-    void move(Vec2i amount)
+    void move(Vec2<T> amount)
     {
         m_position += amount;
         recalculateAB();
     }
 
-    Vec2i getPosition() const { return m_position; }
+    Vec2<T> getPosition() const { return m_position; }
 
-    Vec2u getSize() const { return m_size; }
-    Vec2u getHalfSize() const { return m_halfSize; }
-    Vec2i getA() const { return m_a; }
-    Vec2i getB() const { return m_b; }
-    int getArea() const { return m_area; }
+    Vec2<T> getSize() const { return m_size; }
+    Vec2<T> getHalfSize() const { return m_halfSize; }
+    Vec2<T> getA() const { return m_a; }
+    Vec2<T> getB() const { return m_b; }
+    T getArea() const { return m_area; }
 
-    bool pointInside(Vec2i pos) const
+    bool pointInside(Vec2<T> pos) const
     {
         return pos.x >= m_a.x && pos.x <= m_b.x && pos.y >= m_a.y && pos.y <= m_b.y;
     }
 
-    OverlapResult overlapping(const GridRectangle &other) const
+    OverlapResult overlapping(const Rectangle<T> &other) const
     {
         OverlapResult result;
 
-        Vec2i otherPos      = other.getPosition();
-        Vec2i otherHalfSize = other.getHalfSize().toInt();
-        Vec2i delta         = otherPos - m_position;
+        Vec2<T> otherPos      = other.getPosition();
+        Vec2<T> otherHalfSize = other.getHalfSize();
+        Vec2<T> delta         = otherPos - m_position;
 
-        result.amount      = otherHalfSize + m_halfSize.toInt() - delta.abs();
+        result.amount      = otherHalfSize + m_halfSize - delta.abs();
         result.overlapping = result.amount.x > 0 && result.amount.y > 0;
         result.direction   = delta.sign();
 
         return result;
     }
 
-    bool contains(const GridRectangle &other)
+    bool contains(const Rectangle<T> &other)
     {
-        Vec2i otherA = other.getA();
-        Vec2i otherB = other.getB();
+        Vec2<T> otherA = other.getA();
+        Vec2<T> otherB = other.getB();
         return otherA.x >= m_a.x && otherA.y >= m_a.y && otherB.x <= m_b.x && otherB.y <= m_b.y;
     }
 
   protected:
     void recalculateAB()
     {
-        m_a = -(m_halfSize.toInt()) + m_position;
-        m_b = m_a + (m_size.toInt()) - 1;
+        m_a = -m_halfSize + m_position;
+        m_b = m_a + m_size - 1;
     }
 
   protected:
-    Vec2i m_position;
+    Vec2<T> m_position;
 
-    Vec2u m_size;
-    Vec2u m_halfSize;
-    Vec2i m_a;
-    Vec2i m_b;
-    int m_area = 0;
+    Vec2<T> m_size;
+    Vec2<T> m_halfSize;
+    Vec2<T> m_a, m_b;
+    T m_area = 0;
 };
+
+using Rectangle_i = Rectangle<int>;
+using Rectangle_u = Rectangle<unsigned int>;
+using Rectangle_f = Rectangle<float>;
+using Rectangle_d = Rectangle<double>;

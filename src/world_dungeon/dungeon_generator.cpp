@@ -21,10 +21,13 @@ void DungeonGenerator::generate_place_rooms()
 {
     for (int i = 0; i < m_roomCount; ++i)
     {
-        m_rooms.push_back(GridRectangle(
-            {100 + Math::Random::unseededRandomInt(-10, 10), 80 + Math::Random::unseededRandomInt(-10, 10)},
-            Vec2u(Math::Random::unseededRandomInt(m_minRoomSize.x, m_maxRoomSize.x),
-                  Math::Random::unseededRandomInt(m_minRoomSize.y, m_maxRoomSize.y))));
+        Vec2i randomInitialPos = {m_bounds.getPosition().x + Math::Random::unseededRandomInt(-20, 20),
+                                  m_bounds.getPosition().y + Math::Random::unseededRandomInt(-20, 20)};
+
+        Vec2i randomSize = {Math::Random::unseededRandomInt(m_minRoomSize.x, m_maxRoomSize.x),
+                            Math::Random::unseededRandomInt(m_minRoomSize.y, m_maxRoomSize.y)};
+
+        m_rooms.push_back(Rectangle_i(randomInitialPos, randomSize));
     }
 }
 
@@ -34,7 +37,7 @@ void DungeonGenerator::generate_fix_room_intersection()
     {
         for (size_t j = 0; j < m_rooms.size(); ++j)
         {
-            GridRectangle &room_a = m_rooms[j];
+            Rectangle_i &room_a = m_rooms[j];
             for (size_t k = 0; k < m_rooms.size(); ++k)
             {
                 if (j == k)
@@ -42,9 +45,9 @@ void DungeonGenerator::generate_fix_room_intersection()
                     continue;
                 }
 
-                GridRectangle &room_b = m_rooms[k];
+                Rectangle_i &room_b = m_rooms[k];
 
-                GridRectangle::OverlapResult result = room_a.overlapping(room_b);
+                Rectangle_i::OverlapResult result = room_a.overlapping(room_b);
                 if (result.overlapping)
                 {
                     int randomOffset = Math::Random::unseededRandomInt(m_roomMinSpacing, m_roomMaxSpacing);
@@ -67,7 +70,7 @@ void DungeonGenerator::generate_purge_bad_rooms()
     size_t current = 0;
     for (auto it = m_rooms.begin(); it != m_rooms.end();)
     {
-        GridRectangle &currentRoom = *it;
+        Rectangle_i &currentRoom = *it;
 
         bool purge = false;
         for (size_t i = 0; i < m_rooms.size(); ++i)
@@ -77,7 +80,7 @@ void DungeonGenerator::generate_purge_bad_rooms()
                 continue;
             }
 
-            GridRectangle &otherRoom = m_rooms[i];
+            Rectangle_i &otherRoom = m_rooms[i];
 
             if (currentRoom.overlapping(otherRoom).overlapping || !m_bounds.contains(currentRoom))
             {

@@ -4,11 +4,11 @@ Sumi
 - Implement a jetpack
 - Make Sumi properly hold weapons
 
+Entity
+- Fix entity phasing through walls at high speeds, it is caused by faulty body step calculations
+
 World
 - Implement structure spawning
-
-Physics
-- Optimize physics
 
 Input
 - Overlook input handler and see if there are improvements to be made

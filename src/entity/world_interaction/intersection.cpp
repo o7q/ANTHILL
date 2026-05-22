@@ -85,15 +85,15 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(Vec2i pos, const EntityCo
 Vec2f EntityWorldInteraction::calculateWorldIntersection_averageDirection(
     Vec2i pos, const EntityCollider &collider, const ParticleHandler &particleHandler)
 {
-    const Vec2u size    = collider.getPrimary().getSize();
+    const Vec2i size    = collider.getPrimary().getSize();
     const Vec2i topLeft = pos + collider.getPrimary().getA();
 
     Vec2i sum = Vec2i(0, 0);
     int count = 0;
 
-    for (unsigned int y = 0; y < size.y; ++y)
+    for (int y = 0; y < size.y; ++y)
     {
-        for (unsigned int x = 0; x < size.x; ++x)
+        for (int x = 0; x < size.x; ++x)
         {
             Vec2i worldPos = topLeft + Vec2i(x, y);
 
