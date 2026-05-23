@@ -1,8 +1,7 @@
 #pragma once
 
-#include "core/math/index.hpp"
 #include "core/math/geometry/vec.hpp"
-#include "core/utils/data_structures/index_2d.hpp"
+#include "core/math/index.hpp"
 #include <unordered_map>
 #include <vector>
 
@@ -43,7 +42,7 @@ template <typename T> class ChunkMap
 
     void set(Vec2i pos, T value)
     {
-        Index2D chunk_index = getChunkIndex(pos);
+        Vec2i chunk_index = getChunkIndex(pos);
 
         auto [it, _] = m_chunks.try_emplace(chunk_index, m_chunkSize);
 
@@ -53,7 +52,7 @@ template <typename T> class ChunkMap
 
     const T *get(Vec2i pos) const
     {
-        Index2D chunk_index = getChunkIndex(pos);
+        Vec2i chunk_index = getChunkIndex(pos);
 
         auto it = m_chunks.find(chunk_index);
         if (it == m_chunks.end())
@@ -71,7 +70,7 @@ template <typename T> class ChunkMap
         return const_cast<T *>(v);
     }
 
-    bool hasChunk(Index2D index) const
+    bool hasChunk(Vec2i index) const
     {
         auto it = m_chunks.find(index);
         return it != m_chunks.end();
@@ -79,7 +78,7 @@ template <typename T> class ChunkMap
 
     bool hasChunkAtPosition(Vec2i pos)
     {
-        Index2D chunk_index = getChunkIndex(pos);
+        Vec2i chunk_index = getChunkIndex(pos);
 
         auto it = m_chunks.find(chunk_index);
         return it != m_chunks.end();
@@ -110,21 +109,21 @@ template <typename T> class ChunkMap
         set(p2, v);
     }
 
-    const std::unordered_map<Index2D, Chunk, Index2DHash> &getChunks() const { return m_chunks; }
+    const std::unordered_map<Vec2i, Chunk, Vec2Hash<int>> &getChunks() const { return m_chunks; }
 
     Vec2u getChunkSize() const { return m_chunkSize; }
 
-    Index2D getChunkIndex(Vec2i pos) const
+    Vec2i getChunkIndex(Vec2i pos) const
     {
         int cw = static_cast<int>(m_chunkSize.x);
         int ch = static_cast<int>(m_chunkSize.y);
 
         int chunk_x = pos.x / cw - (pos.x % cw < 0);
         int chunk_y = pos.y / ch - (pos.y % ch < 0);
-        return Index2D(chunk_x, chunk_y);
+        return {chunk_x, chunk_y};
     }
 
-    Vec2u getInnerIndex(Vec2i pos, Index2D index) const
+    Vec2u getInnerIndex(Vec2i pos, Vec2i index) const
     {
         int cw = static_cast<int>(m_chunkSize.x);
         int ch = static_cast<int>(m_chunkSize.y);
@@ -136,5 +135,5 @@ template <typename T> class ChunkMap
 
   private:
     Vec2u m_chunkSize;
-    std::unordered_map<Index2D, Chunk, Index2DHash> m_chunks;
+    std::unordered_map<Vec2i, Chunk, Vec2Hash<int>> m_chunks;
 };

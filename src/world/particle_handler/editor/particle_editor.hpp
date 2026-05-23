@@ -1,7 +1,7 @@
 #pragma once
 
+#include "core/data_structures/chunk_map.hpp"
 #include "core/texture/texture.hpp"
-#include "core/utils/data_structures/chunk_map.hpp"
 #include "world/particle_handler/particle.hpp"
 
 class ParticleEditor

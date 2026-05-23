@@ -3,7 +3,6 @@
 #include "a_star_neighbors.hpp"
 #include "core/ai/a_star_node.hpp"
 #include "core/math/geometry/vec.hpp"
-#include "core/utils/data_structures/index_2d.hpp"
 #include <cstdlib>
 #include <queue>
 #include <vector>
@@ -57,7 +56,7 @@ class AStarSolver
                 }
             }
 
-            if (m_current.index == Index2D(m_end.x, m_end.y) || terminate)
+            if (m_current.index == m_end || terminate)
             {
                 m_pathFound = true;
                 return;
@@ -65,8 +64,8 @@ class AStarSolver
 
             for (int i = 0; i < 8; ++i)
             {
-                Index2D neighborIndex = {m_current.index.x + NEIGHBOR_INDICES[i].x,
-                                         m_current.index.y + NEIGHBOR_INDICES[i].y};
+                Vec2i neighborIndex = {m_current.index.x + NEIGHBOR_INDICES[i].x,
+                                       m_current.index.y + NEIGHBOR_INDICES[i].y};
 
                 if (!checkFunction(neighborIndex.x, neighborIndex.y))
                 {
@@ -105,12 +104,12 @@ class AStarSolver
     Vec2i getEnd() const { return m_end; }
 
   private:
-    float dist(Index2D start, Index2D end);
+    float dist(Vec2i start, Vec2i end);
 
   private:
     Config m_config;
 
-    std::unordered_map<Index2D, AStarNode, Index2DHash> m_nodes;
+    std::unordered_map<Vec2i, AStarNode, Vec2Hash<int>> m_nodes;
     std::priority_queue<AStarNode, std::vector<AStarNode>, AStarNodeCompare> m_toSearch;
 
     AStarNode m_current;

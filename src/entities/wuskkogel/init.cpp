@@ -27,11 +27,11 @@ Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
     cfg.checkpointEatRadius        = 10;
     cfg.astar.endCutoffAmount      = 5;
     cfg.astar.maxIterations        = 100000;
-    cfg.astarNeighborCheckFunction = [&](const EntityUpdateContext &context, Index2D index)
+    cfg.astarNeighborCheckFunction = [&](const EntityUpdateContext &context, Vec2i index)
     {
-        auto data = context.particleHandler.getNavmesh().getChunkFromIndex(index);
+        const Navmesh::ChunkData *data = context.particleHandler.getNavmesh().getChunkFromIndex(index);
 
-        Vec2i pos = Vec2i(index.x, index.y) * context.particleHandler.getNavmesh().getResolution().toInt();
+        Vec2i pos = index * context.particleHandler.getNavmesh().getResolution().toInt();
 
         Vec2i a = m_collider.getPrimary().getA();
         Vec2i b = m_collider.getPrimary().getB();

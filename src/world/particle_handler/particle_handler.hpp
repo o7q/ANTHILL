@@ -1,7 +1,7 @@
 #pragma once
 
+#include "core/data_structures/chunk_map.hpp"
 #include "core/time/time_handler.hpp"
-#include "core/utils/data_structures/chunk_map.hpp"
 #include "events/event_pool.hpp"
 #include "events/particle/base.hpp"
 #include "world/particle_handler/biome.hpp"

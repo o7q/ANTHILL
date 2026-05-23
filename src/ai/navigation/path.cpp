@@ -4,13 +4,12 @@
 
 void AINavigation::update_path(Vec2i currentPos, const EntityUpdateContext &context)
 {
-    Index2D endIndex = context.particleHandler.getNavmesh().getIndexFromWorldPosition(m_astarGoalPosition);
-    Vec2i end        = {endIndex.x, endIndex.y};
+    Vec2i end = context.particleHandler.getNavmesh().getIndexFromWorldPosition(m_astarGoalPosition);
 
     float goalDist = Math::Distance::euclidian(currentPos.toFloat(), m_astarGoalPosition.toFloat());
     if (end != m_astar.getEnd() || (m_stuckTimer.completed() && goalDist > m_config.satisfactoryDistance))
     {
-        Index2D start = context.particleHandler.getNavmesh().getIndexFromWorldPosition(currentPos);
+        Vec2i start = context.particleHandler.getNavmesh().getIndexFromWorldPosition(currentPos);
         m_astar.reset(Vec2i(start.x, start.y), end);
         m_checkpoints.clear();
         m_stuckTimer.restart();
@@ -22,9 +21,8 @@ void AINavigation::update_path(Vec2i currentPos, const EntityUpdateContext &cont
         return;
     }
 
-    m_astar.iteratePath(m_config.iterationsPerFrame,
-                        [context, check = m_config.astarNeighborCheckFunction](int x, int y)
-                        { return check(context, Index2D(x, y)); });
+    m_astar.iteratePath(m_config.iterationsPerFrame, [context, check = m_config.astarNeighborCheckFunction](
+                                                         int x, int y) { return check(context, {x, y}); });
 
     if (m_astar.pathFound())
     {

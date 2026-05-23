@@ -1,6 +1,6 @@
 #include "navmesh.hpp"
 
-void Navmesh::update(const Particle *p, Index2D index)
+void Navmesh::update(const Particle *p, Vec2i index)
 {
     if (p->isBlank() || p->isMoving())
     {
@@ -14,9 +14,9 @@ void Navmesh::update(const Particle *p, Index2D index)
     }
 }
 
-void Navmesh::resetChunk(Index2D index) { m_mesh[index] = ChunkData(); }
+void Navmesh::resetChunk(Vec2i index) { m_mesh[index] = ChunkData(); }
 
-const Navmesh::ChunkData *Navmesh::getChunkFromIndex(Index2D index) const
+const Navmesh::ChunkData *Navmesh::getChunkFromIndex(Vec2i index) const
 {
     auto it = m_mesh.find(index);
     if (it == m_mesh.end())
@@ -26,12 +26,12 @@ const Navmesh::ChunkData *Navmesh::getChunkFromIndex(Index2D index) const
     return &it->second;
 }
 
-Index2D Navmesh::getIndexFromWorldPosition(Vec2i pos) const
+Vec2i Navmesh::getIndexFromWorldPosition(Vec2i pos) const
 {
     int cw = static_cast<int>(m_resolution.x);
     int ch = static_cast<int>(m_resolution.y);
 
     int chunk_x = pos.x / cw - (pos.x % cw < 0);
     int chunk_y = pos.y / ch - (pos.y % ch < 0);
-    return Index2D(chunk_x, chunk_y);
+    return {chunk_x, chunk_y};
 }

@@ -6,7 +6,7 @@
 
 void PDynamicsHandler::update(TimeHandler::Info timeInfo, Vec2i origin)
 {
-    Index2D lastNavmeshChunkIndex(std::numeric_limits<int>::max(), std::numeric_limits<int>::max());
+    Vec2i lastNavmeshChunkIndex = {std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
 
     for (int y = origin.y + static_cast<int>(m_updateRadius.y);
          y >= origin.y - static_cast<int>(m_updateRadius.y); --y)
@@ -21,7 +21,7 @@ void PDynamicsHandler::update(TimeHandler::Info timeInfo, Vec2i origin)
                 continue;
             }
 
-            Index2D chunkIndex = r_navmesh.getIndexFromWorldPosition({x, y});
+            Vec2i chunkIndex = r_navmesh.getIndexFromWorldPosition({x, y});
             if (chunkIndex != lastNavmeshChunkIndex)
             {
                 r_navmesh.resetChunk(chunkIndex);

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/ai/a_star.hpp"
-#include "core/utils/data_structures/index_2d.hpp"
 #include "entity/update_context.hpp"
 #include <functional>
 
@@ -15,7 +14,7 @@ class AINavigation
         int checkpointEatRadius    = 4;
         float maxStuckTime         = 1.0f;
         float satisfactoryDistance = 20.0f;
-        std::function<bool(const EntityUpdateContext &, Index2D)> astarNeighborCheckFunction;
+        std::function<bool(const EntityUpdateContext &, Vec2i)> astarNeighborCheckFunction;
     };
 
     enum class PathState

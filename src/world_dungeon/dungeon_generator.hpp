@@ -26,8 +26,8 @@ class DungeonGenerator
     Vec2i m_minRoomSize = {10, 10};
     Vec2i m_maxRoomSize = {20, 20};
 
-    int m_roomCount              = 50;
+    int m_roomCount              = 10;
     int m_roomSeparateIterations = 10;
     int m_roomMinSpacing         = 0;
-    int m_roomMaxSpacing         = 2;
+    int m_roomMaxSpacing         = 30;
 };

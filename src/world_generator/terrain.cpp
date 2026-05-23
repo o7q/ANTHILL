@@ -6,14 +6,14 @@
 
 void WorldGenerator::place_terrain(Vec2i origin, Vec2i radius)
 {
-    Index2D chunkOrigin = r_world.getParticleHandler().getParticles().getChunkIndex(origin);
-    Vec2u chunkSize     = r_world.getParticleHandler().getParticles().getChunkSize();
+    Vec2i chunkOrigin = r_world.getParticleHandler().getParticles().getChunkIndex(origin);
+    Vec2u chunkSize   = r_world.getParticleHandler().getParticles().getChunkSize();
 
     for (int cy = chunkOrigin.y - radius.y; cy <= chunkOrigin.y + radius.y; ++cy)
     {
         for (int cx = chunkOrigin.x - radius.x; cx <= chunkOrigin.x + radius.x; ++cx)
         {
-            Index2D index(cx, cy);
+            Vec2i index = {cx, cy};
             if (Utils::Data::doesVectorContain(m_generatedChunkMarkers, index))
             {
                 continue;

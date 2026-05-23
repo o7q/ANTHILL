@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/utils/data_structures/index_2d.hpp"
-#include <cstdlib>
+#include "core/math/geometry/vec.hpp"
+#include <cmath>
 
 struct AStarNode
 {
@@ -12,8 +12,8 @@ struct AStarNode
         Unvisited
     };
 
-    Index2D index;
-    Index2D parentIndex;
+    Vec2i index;
+    Vec2i parentIndex;
     bool hasParent = false;
 
     State state = State::Unvisited;

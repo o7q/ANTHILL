@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/utils/data_structures/index_2d.hpp"
 #include "world/world.hpp"
 
 class WorldGenerator
@@ -26,7 +25,7 @@ class WorldGenerator
   private:
     World &r_world;
     const Assets &r_assets;
-    std::vector<Index2D> m_generatedChunkMarkers;
+    std::vector<Vec2i> m_generatedChunkMarkers;
 
     uint32_t m_seed = 0;
 };

@@ -1,12 +1,11 @@
 #include "a_star.hpp"
 
 #include "core/math/geometry/vec.hpp"
-#include "core/utils/data_structures/index_2d.hpp"
 #include <algorithm>
 #include <unordered_map>
 
 // https://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html#diagonal-distance
-float AStarSolver::dist(Index2D start, Index2D end)
+float AStarSolver::dist(Vec2i start, Vec2i end)
 {
     int dx   = std::abs(end.x - start.x);
     int dy   = std::abs(end.y - start.y);
@@ -45,7 +44,7 @@ void AStarSolver::reset(Vec2i start, Vec2i end)
     m_iterationCount = 0;
 
     AStarNode startNode;
-    startNode.index = Index2D(start.x, start.y);
+    startNode.index = start;
     startNode.hCost = dist({start.x, start.y}, {end.x, end.y});
     startNode.calculateFCost();
     startNode.state = AStarNode::State::Open;

@@ -1,5 +1,5 @@
 #pragma once
 
-#include "core/utils/data_structures/index_2d.hpp"
+#include "core/math/geometry/vec.hpp"
 
-extern const Index2D NEIGHBOR_INDICES[8];
+extern const Vec2i NEIGHBOR_INDICES[8];
