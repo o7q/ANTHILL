@@ -1,8 +1,6 @@
 #include "dungeon_test_scene.hpp"
 
-#include "core/math/geometry/triangle.hpp"
-#include "core/math/graph.hpp"
-#include "core/math/mesh.hpp"
+#include "core/math/geometry/rectangle.hpp"
 #include "core/viewport/render_command.hpp"
 #include <vector>
 
@@ -14,53 +12,34 @@ void DungeonTestScene::onTick()
 
     Vec2i mousePos = r_window.getViewport().windowToViewportPosition(r_window.getInput().getMousePosition());
 
-    if (r_window.getInput().getInput(InputID::Shoot)->wasPressed())
+    if (r_window.getInput().getInput(InputID::Shoot)->isDown())
     {
-        Node<Color> node;
-        node.value = Color(255, 0, 0);
-        m_triangulationGraph.set(mousePos, node);
-    }
-    if (r_window.getInput().getInput(InputID::Jump)->wasPressed())
-    {
-        std::vector<Vec2i> points;
-
-        for (auto &[index, node] : m_triangulationGraph.getNodes())
-        {
-            points.push_back(index);
-        }
-
-        std::vector<Triangle_i> triangulation = Math::Mesh::generateTriangulation(points);
-        Math::Graph::connectNodesFromTriangulation(triangulation, m_triangulationGraph);
-        m_minimumTreeGraph = Math::Graph::minimumSpanningTree(m_triangulationGraph);
+        m_roomGraph = m_generator.generate();
     }
 
-    for (auto &[index, node] : m_triangulationGraph.getNodes())
-    {
-        CircleRenderCommandData pdata;
-        pdata.pos    = index;
-        pdata.radius = 2;
-        pdata.color  = node.value;
-        renderCommands.push_back({2, pdata});
+    RectangleRenderCommandData boundsData;
+    boundsData.a     = m_generator.getBounds().getA();
+    boundsData.b     = m_generator.getBounds().getB();
+    boundsData.color = Color(255, 0, 0);
+    renderCommands.push_back({0, boundsData});
 
-        for (Vec2i connection : node.connections)
-        {
-            SegmentRenderCommandData sdata;
-            sdata.a     = index;
-            sdata.b     = connection;
-            sdata.color = Color(10);
-            renderCommands.push_back({0, sdata});
-        }
-    }
-
-    for (auto &[index, node] : m_minimumTreeGraph.getNodes())
+    for (auto &[index, node] : m_roomGraph.getNodes())
     {
+        Rectangle_i rect(index, node.value);
+
+        RectangleRenderCommandData rdata;
+        rdata.a     = rect.getA();
+        rdata.b     = rect.getB();
+        rdata.color = Color(255, 255, 0);
+        renderCommands.push_back({1, rdata});
+
         for (Vec2i connection : node.connections)
         {
             SegmentRenderCommandData sdata;
             sdata.a     = index;
             sdata.b     = connection;
             sdata.color = Color(255);
-            renderCommands.push_back({1, sdata});
+            renderCommands.push_back({0, sdata});
         }
     }
 

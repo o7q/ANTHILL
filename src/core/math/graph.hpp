@@ -36,7 +36,8 @@ template <typename T> inline NodeGraph<T> minimumSpanningTree(const NodeGraph<T>
     while (visited.size() < input.getNodes().size())
     {
         Vec2i bestStart, bestConnection;
-        float smallestDist = std::numeric_limits<float>::max();
+        float smallestDist   = std::numeric_limits<float>::max();
+        bool foundConnection = false;
         for (Vec2i visitedIndex : visited)
         {
             const Node<T> *neighbor = input.get(visitedIndex);
@@ -51,11 +52,17 @@ template <typename T> inline NodeGraph<T> minimumSpanningTree(const NodeGraph<T>
 
                 if (dist < smallestDist)
                 {
-                    bestStart      = visitedIndex;
-                    bestConnection = neighborIndex;
-                    smallestDist   = dist;
+                    bestStart       = visitedIndex;
+                    bestConnection  = neighborIndex;
+                    smallestDist    = dist;
+                    foundConnection = true;
                 }
             }
+        }
+
+        if (!foundConnection)
+        {
+            break;
         }
 
         tree.connect(bestStart, bestConnection);

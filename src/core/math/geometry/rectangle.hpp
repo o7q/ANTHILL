@@ -91,11 +91,18 @@ template <typename T> class Rectangle
         return result;
     }
 
-    bool contains(const Rectangle<T> &other)
+    bool contains(const Rectangle<T> &other, bool requireInsideBorder = false)
     {
         Vec2<T> otherA = other.getA();
         Vec2<T> otherB = other.getB();
-        return otherA.x >= m_a.x && otherA.y >= m_a.y && otherB.x <= m_b.x && otherB.y <= m_b.y;
+        if (requireInsideBorder)
+        {
+            return otherA.x > m_a.x && otherA.y > m_a.y && otherB.x < m_b.x && otherB.y < m_b.y;
+        }
+        else
+        {
+            return otherA.x >= m_a.x && otherA.y >= m_a.y && otherB.x <= m_b.x && otherB.y <= m_b.y;
+        }
     }
 
   protected:

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "core/data_structures/node_graph.hpp"
-#include "core/math/color.hpp"
 #include "scene/scene.hpp"
+#include "world_dungeon/dungeon_generator.hpp"
 
 class DungeonTestScene : public Scene
 {
@@ -14,6 +14,6 @@ class DungeonTestScene : public Scene
     void onTick() override;
 
   private:
-    NodeGraph<Color> m_triangulationGraph;
-    NodeGraph<Color> m_minimumTreeGraph;
+    NodeGraph<Vec2i> m_roomGraph;
+    DungeonGenerator m_generator;
 };
