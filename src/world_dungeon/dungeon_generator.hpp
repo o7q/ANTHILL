@@ -1,8 +1,8 @@
 #pragma once
 
+#include "core/data_structures/node_graph.hpp"
 #include "core/math/geometry/rectangle.hpp"
 #include "core/math/geometry/vec.hpp"
-#include <vector>
 
 class DungeonGenerator
 {
@@ -12,7 +12,7 @@ class DungeonGenerator
     void generate();
 
     Rectangle_i getBounds() const { return m_bounds; }
-    const std::vector<Rectangle_i> &getRooms() const { return m_rooms; }
+    const NodeGraph<Vec2i> &getRoomGraph() const { return m_roomGraph; }
 
   private:
     void generate_place_rooms();
@@ -21,7 +21,7 @@ class DungeonGenerator
 
   private:
     Rectangle_i m_bounds;
-    std::vector<Rectangle_i> m_rooms;
+    NodeGraph<Vec2i> m_roomGraph;
 
     Vec2i m_minRoomSize = {10, 10};
     Vec2i m_maxRoomSize = {20, 20};

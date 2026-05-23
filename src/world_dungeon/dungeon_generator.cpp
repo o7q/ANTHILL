@@ -1,5 +1,6 @@
 
 #include "dungeon_generator.hpp"
+#include "core/data_structures/node_graph.hpp"
 #include "core/math/geometry/rectangle.hpp"
 #include "core/math/random.hpp"
 
@@ -11,10 +12,10 @@ DungeonGenerator::DungeonGenerator()
 
 void DungeonGenerator::generate()
 {
-    m_rooms.clear();
+    m_roomGraph.clear();
     generate_place_rooms();
     generate_fix_room_intersection();
-    generate_purge_bad_rooms();
+    // generate_purge_bad_rooms();
 }
 
 void DungeonGenerator::generate_place_rooms()
@@ -27,7 +28,10 @@ void DungeonGenerator::generate_place_rooms()
         Vec2i randomSize = {Math::Random::unseededRandomInt(m_minRoomSize.x, m_maxRoomSize.x),
                             Math::Random::unseededRandomInt(m_minRoomSize.y, m_maxRoomSize.y)};
 
-        m_rooms.push_back(Rectangle_i(randomInitialPos, randomSize));
+        Node<Vec2i> node;
+        node.value = randomSize;
+
+        m_roomGraph.set(randomInitialPos, node);
     }
 }
 
@@ -35,17 +39,17 @@ void DungeonGenerator::generate_fix_room_intersection()
 {
     for (int i = 0; i < m_roomSeparateIterations; ++i)
     {
-        for (size_t j = 0; j < m_rooms.size(); ++j)
+        for (auto &[index_a, node_a] : m_roomGraph.getNodes())
         {
-            Rectangle_i &room_a = m_rooms[j];
-            for (size_t k = 0; k < m_rooms.size(); ++k)
+            Rectangle_i room_a(index_a, node_a.value);
+            for (auto &[index_b, node_b] : m_roomGraph.getNodes())
             {
-                if (j == k)
+                if (index_a == index_b)
                 {
                     continue;
                 }
 
-                Rectangle_i &room_b = m_rooms[k];
+                Rectangle_i room_b(index_b, node_b.value);
 
                 Rectangle_i::OverlapResult result = room_a.overlapping(room_b);
                 if (result.overlapping)
@@ -54,10 +58,12 @@ void DungeonGenerator::generate_fix_room_intersection()
                     if (result.amount.x < result.amount.y)
                     {
                         room_a.move({(result.amount.x + randomOffset) * -result.direction.x, 0});
+                        m_roomGraph.move(index_a, room_a.getPosition());
                     }
                     else
                     {
                         room_a.move({0, (result.amount.y + randomOffset) * -result.direction.y});
+                        m_roomGraph.move(index_a, room_a.getPosition());
                     }
                 }
             }
@@ -67,36 +73,36 @@ void DungeonGenerator::generate_fix_room_intersection()
 
 void DungeonGenerator::generate_purge_bad_rooms()
 {
-    size_t current = 0;
-    for (auto it = m_rooms.begin(); it != m_rooms.end();)
-    {
-        Rectangle_i &currentRoom = *it;
+    // size_t current = 0;
+    // for (auto it = m_rooms.begin(); it != m_rooms.end();)
+    // {
+    //     Rectangle_i &currentRoom = *it;
 
-        bool purge = false;
-        for (size_t i = 0; i < m_rooms.size(); ++i)
-        {
-            if (i == current)
-            {
-                continue;
-            }
+    //     bool purge = false;
+    //     for (size_t i = 0; i < m_rooms.size(); ++i)
+    //     {
+    //         if (i == current)
+    //         {
+    //             continue;
+    //         }
 
-            Rectangle_i &otherRoom = m_rooms[i];
+    //         Rectangle_i &otherRoom = m_rooms[i];
 
-            if (currentRoom.overlapping(otherRoom).overlapping || !m_bounds.contains(currentRoom))
-            {
-                purge = true;
-                break;
-            }
-        }
+    //         if (currentRoom.overlapping(otherRoom).overlapping || !m_bounds.contains(currentRoom))
+    //         {
+    //             purge = true;
+    //             break;
+    //         }
+    //     }
 
-        if (purge)
-        {
-            it = m_rooms.erase(it);
-        }
-        else
-        {
-            current++;
-            it++;
-        }
-    }
+    //     if (purge)
+    //     {
+    //         it = m_rooms.erase(it);
+    //     }
+    //     else
+    //     {
+    //         current++;
+    //         it++;
+    //     }
+    // }
 }

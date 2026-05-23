@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/math/geometry/triangle.hpp"
+#include "core/data_structures/node_graph.hpp"
+#include "core/math/color.hpp"
 #include "scene/scene.hpp"
-#include <vector>
 
 class DungeonTestScene : public Scene
 {
@@ -14,6 +14,6 @@ class DungeonTestScene : public Scene
     void onTick() override;
 
   private:
-    std::vector<Vec2i> m_points;
-    std::vector<Triangle_i> m_triangulation;
+    NodeGraph<Color> m_triangulationGraph;
+    NodeGraph<Color> m_minimumTreeGraph;
 };
