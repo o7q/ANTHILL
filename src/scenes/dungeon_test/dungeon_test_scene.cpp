@@ -10,14 +10,18 @@ void DungeonTestScene::onTick()
 {
     std::vector<RenderCommand> renderCommands;
 
+    Rectangle_i bounds;
+    bounds.setPosition({100, 100});
+    bounds.setSize({200, 200});
+
     if (r_window.getInput().getInput(InputID::Shoot)->isDown())
     {
-        m_roomGraph = m_generator.generate();
+        m_roomGraph = m_generator.generate(bounds);
     }
 
     RectangleRenderCommandData boundsData;
-    boundsData.a     = m_generator.getBounds().getA();
-    boundsData.b     = m_generator.getBounds().getB();
+    boundsData.a     = bounds.getA();
+    boundsData.b     = bounds.getB();
     boundsData.color = Color(255, 0, 0);
     renderCommands.push_back({0, boundsData});
 

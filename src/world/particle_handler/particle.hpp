@@ -71,8 +71,8 @@ class Particle
     void setMass(float mass) { m_mass = mass; }
     float getMass() const { return m_mass; }
 
-    void setDurability(int durability) { m_durability = durability; }
-    int getDurability() const { return m_durability; }
+    void setHardness(int hardness) { m_hardness = hardness; }
+    int getHardness() const { return m_hardness; }
 
   private:
     Color m_color;
@@ -84,7 +84,7 @@ class Particle
     float m_restitution = 0.0f;
     float m_mass        = 1.0f;
 
-    int m_durability = 0;
+    int m_hardness = 0;
 
     bool m_updateSwapID = 0;
 };

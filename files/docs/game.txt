@@ -47,3 +47,6 @@ Principles of Game Feel (from GAME FEEL by Steve Swink):
 - Appealing response: The sensation of control is aesthetically appealing and compelling, separate from context.
 - Organic motion: Controlling the avatar creates appealing arcs of motion.
 - Harmony: Each element of a game's feel supports a single, cohesive perception of a unique physical reality for the player.
+
+Upgrades and augments (on that CyberShit)
+- You can find 

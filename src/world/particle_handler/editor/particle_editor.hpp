@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/data_structures/chunk_map.hpp"
+#include "core/math/random.hpp"
 #include "core/texture/texture.hpp"
 #include "world/particle_handler/particle.hpp"
 
@@ -9,8 +10,28 @@ class ParticleEditor
   public:
     ParticleEditor(ChunkMap<Particle> &particles) : r_particles(particles) {}
 
-    void set(Vec2i pos, Particle p)
+    void set(Vec2i pos, Particle p, bool force = false)
     {
+        const Particle *existing = r_particles.get(pos);
+        if (existing)
+        {
+            int hardness = existing->getHardness();
+            bool canSet  = true;
+
+            if (hardness != 0 && !force)
+            {
+                if (hardness <= -1 || Math::Random::unseededRandomInt(0, hardness + 1) != 0)
+                {
+                    canSet = false;
+                }
+            }
+
+            if (!canSet)
+            {
+                return;
+            }
+        }
+
         p.getVerlet().setPosition(pos.toFloat());
         r_particles.set(pos, p);
     }

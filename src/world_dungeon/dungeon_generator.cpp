@@ -8,18 +8,12 @@
 #include "core/math/random.hpp"
 #include <vector>
 
-DungeonGenerator::DungeonGenerator()
-{
-    m_bounds.setPosition({0, 0});
-    m_bounds.setSize({3000, 600});
-}
-
-NodeGraph<Vec2i> DungeonGenerator::generate()
+NodeGraph<Vec2i> DungeonGenerator::generate(Rectangle_i bounds)
 {
     std::vector<Rectangle_i> roomRects;
-    generate_place_rooms(roomRects);
+    generate_place_rooms(roomRects, bounds);
     generate_fix_room_intersection(roomRects);
-    generate_purge_bad_rooms(roomRects);
+    generate_purge_bad_rooms(roomRects, bounds);
 
     NodeGraph<Vec2i> roomGraph;
     std::vector<Vec2i> roomPositions;
@@ -40,14 +34,14 @@ NodeGraph<Vec2i> DungeonGenerator::generate()
     return roomGraph;
 }
 
-void DungeonGenerator::generate_place_rooms(std::vector<Rectangle_i> &roomsOut)
+void DungeonGenerator::generate_place_rooms(std::vector<Rectangle_i> &roomsOut, Rectangle_i bounds)
 {
     for (int i = 0; i < m_initialRoomPlacementCount; ++i)
     {
         int biasX = Math::Random::unseededRandomInt(m_minRoomPositionBias.x, m_maxRoomPositionBias.x);
         int biasY = Math::Random::unseededRandomInt(m_minRoomPositionBias.y, m_maxRoomPositionBias.y);
 
-        Vec2i pos = {m_bounds.getPosition().x + biasX, m_bounds.getPosition().y + biasY};
+        Vec2i pos = {bounds.getPosition().x + biasX, bounds.getPosition().y + biasY};
 
         Vec2i size = {Math::Random::unseededRandomInt(m_minRoomSize.x, m_maxRoomSize.x),
                       Math::Random::unseededRandomInt(m_minRoomSize.y, m_maxRoomSize.y)};
@@ -75,14 +69,17 @@ void DungeonGenerator::generate_fix_room_intersection(std::vector<Rectangle_i> &
                 Rectangle_i::OverlapResult result = room_a.overlapping(room_b);
                 if (result.overlapping)
                 {
-                    int randomOffset = Math::Random::unseededRandomInt(m_roomMinSpacing, m_roomMaxSpacing);
+                    int randomOffsetX =
+                        Math::Random::unseededRandomInt(m_roomMinSpacing.x, m_roomMaxSpacing.x);
+                    int randomOffsetY =
+                        Math::Random::unseededRandomInt(m_roomMinSpacing.y, m_roomMaxSpacing.y);
                     if (result.amount.x < result.amount.y)
                     {
-                        room_a.move({(result.amount.x + randomOffset) * -result.direction.x, 0});
+                        room_a.move({(result.amount.x + randomOffsetX) * -result.direction.x, 0});
                     }
                     else
                     {
-                        room_a.move({0, (result.amount.y + randomOffset) * -result.direction.y});
+                        room_a.move({0, (result.amount.y + randomOffsetY) * -result.direction.y});
                     }
                 }
             }
@@ -90,7 +87,7 @@ void DungeonGenerator::generate_fix_room_intersection(std::vector<Rectangle_i> &
     }
 }
 
-void DungeonGenerator::generate_purge_bad_rooms(std::vector<Rectangle_i> &roomsOut)
+void DungeonGenerator::generate_purge_bad_rooms(std::vector<Rectangle_i> &roomsOut, Rectangle_i bounds)
 {
     size_t current = 0;
     for (auto it = roomsOut.begin(); it != roomsOut.end();)
@@ -107,7 +104,7 @@ void DungeonGenerator::generate_purge_bad_rooms(std::vector<Rectangle_i> &roomsO
 
             Rectangle_i &otherRoom = roomsOut[i];
 
-            if (currentRoom.overlapping(otherRoom).overlapping || !m_bounds.contains(currentRoom, true))
+            if (currentRoom.overlapping(otherRoom).overlapping || !bounds.contains(currentRoom, true))
             {
                 purge = true;
                 break;

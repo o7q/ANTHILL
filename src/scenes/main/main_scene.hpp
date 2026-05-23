@@ -3,12 +3,12 @@
 #include "assets/assets.hpp"
 #include "scene/scene.hpp"
 #include "world/world.hpp"
-#include "world_dungeon/dungeon_generator.hpp"
+#include "world_generator/world_generator.hpp"
 
 class MainScene : public Scene
 {
   public:
-    MainScene(Window &window, const Assets &assets) : Scene(window, assets) {}
+    MainScene(Window &window, const Assets &assets) : Scene(window, assets), m_generator(m_world, r_assets) {}
 
   protected:
     void onStart() override;
@@ -18,9 +18,8 @@ class MainScene : public Scene
 
   private:
     World m_world;
+    WorldGenerator m_generator;
     Camera m_camera;
-
-    DungeonGenerator m_dungeonGenerator;
 
     Texture m_healthText;
     Texture m_energyText;

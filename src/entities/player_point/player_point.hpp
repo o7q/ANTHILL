@@ -16,6 +16,7 @@ class PlayerPoint : public Entity
     {
         m_body.setPosition(pos);
         m_collider.addRect({}, {4, 4});
+        m_collider.addRect({}, {10, 10});
         m_metadata.type = EntityType::Energy;
     }
 
