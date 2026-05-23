@@ -25,32 +25,32 @@ template <typename T> struct Triangle
         return matches == 3;
     }
 
-    Circle<T> generateCircumcircle()
+    Circle<double> generateCircumcircle()
     {
         // https://en.wikipedia.org/wiki/Circumcircle#Cartesian_coordinates_2
-        Vec2i a = verts[0];
-        Vec2i b = verts[1];
-        Vec2i c = verts[2];
+        Vec2<double> a = verts[0].toDouble();
+        Vec2<double> b = verts[1].toDouble();
+        Vec2<double> c = verts[2].toDouble();
 
-        int axsq = a.x * a.x;
-        int aysq = a.y * a.y;
-        int bxsq = b.x * b.x;
-        int bysq = b.y * b.y;
-        int cxsq = c.x * c.x;
-        int cysq = c.y * c.y;
+        double axsq = a.x * a.x;
+        double aysq = a.y * a.y;
+        double bxsq = b.x * b.x;
+        double bysq = b.y * b.y;
+        double cxsq = c.x * c.x;
+        double cysq = c.y * c.y;
 
-        float d = 2 * (a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y));
-        float x =
+        double d = 2 * (a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y));
+        double x =
             ((axsq + aysq) * (b.y - c.y) + (bxsq + bysq) * (c.y - a.y) + (cxsq + cysq) * (a.y - b.y)) / d;
-        float y =
+        double y =
             ((axsq + aysq) * (c.x - b.x) + (bxsq + bysq) * (a.x - c.x) + (cxsq + cysq) * (b.x - a.x)) / d;
 
-        float dx = x - a.x;
-        float dy = y - a.y;
-        float r  = std::sqrt(dx * dx + dy * dy);
+        double dx = x - a.x;
+        double dy = y - a.y;
+        double r  = std::sqrt(dx * dx + dy * dy);
 
-        Circle<T> out;
-        out.pos    = Vec2<T>(x, y);
+        Circle<double> out;
+        out.pos    = Vec2<double>(x, y);
         out.radius = r;
         return out;
     }

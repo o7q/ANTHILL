@@ -4,6 +4,13 @@
 #include "core/math/geometry/rectangle.hpp"
 #include "core/math/geometry/vec.hpp"
 
+class Room
+{
+  public:
+  private:
+    Vec2i m_size;
+};
+
 class DungeonGenerator
 {
   public:
@@ -18,16 +25,19 @@ class DungeonGenerator
     void generate_fix_room_intersection(std::vector<Rectangle_i> &roomsOut);
     void generate_purge_bad_rooms(std::vector<Rectangle_i> &roomsOut);
 
-    void generate_convert_rooms_to_graph(NodeGraph<Vec2i>& graphOut);
+    void generate_convert_rooms_to_graph(NodeGraph<Vec2i> &graphOut);
 
   private:
     Rectangle_i m_bounds;
 
-    Vec2i m_minRoomSize = {10,10};
-    Vec2i m_maxRoomSize = {20, 20};
+    Vec2i m_minRoomSize = {120, 120};
+    Vec2i m_maxRoomSize = {200, 200};
 
-    int m_roomCount              = 100;
-    int m_roomSeparateIterations = 10;
-    int m_roomMinSpacing         = 0;
-    int m_roomMaxSpacing         = 100;
+    Vec2i m_minRoomPositionBias = {-20, -20};
+    Vec2i m_maxRoomPositionBias = {20, 20};
+
+    int m_initialRoomPlacementCount    = 100;
+    int m_roomMinSpacing               = 100;
+    int m_roomMaxSpacing               = 500;
+    const int m_roomSeparateIterations = 10;
 };

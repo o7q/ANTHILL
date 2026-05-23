@@ -30,7 +30,6 @@ template <typename T> inline NodeGraph<T> minimumSpanningTree(const NodeGraph<T>
     tree.clearConnections();
 
     std::unordered_set<Vec2i, Vec2Hash<int>> visited;
-
     visited.insert(input.getNodes().begin()->first);
 
     while (visited.size() < input.getNodes().size())

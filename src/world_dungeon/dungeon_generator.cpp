@@ -10,8 +10,8 @@
 
 DungeonGenerator::DungeonGenerator()
 {
-    m_bounds.setPosition({100, 80});
-    m_bounds.setSize({200, 160});
+    m_bounds.setPosition({0, 0});
+    m_bounds.setSize({3000, 600});
 }
 
 NodeGraph<Vec2i> DungeonGenerator::generate()
@@ -42,15 +42,17 @@ NodeGraph<Vec2i> DungeonGenerator::generate()
 
 void DungeonGenerator::generate_place_rooms(std::vector<Rectangle_i> &roomsOut)
 {
-    for (int i = 0; i < m_roomCount; ++i)
+    for (int i = 0; i < m_initialRoomPlacementCount; ++i)
     {
-        Vec2i randomInitialPos = {m_bounds.getPosition().x + Math::Random::unseededRandomInt(-20, 20),
-                                  m_bounds.getPosition().y + Math::Random::unseededRandomInt(-20, 20)};
+        int biasX = Math::Random::unseededRandomInt(m_minRoomPositionBias.x, m_maxRoomPositionBias.x);
+        int biasY = Math::Random::unseededRandomInt(m_minRoomPositionBias.y, m_maxRoomPositionBias.y);
 
-        Vec2i randomSize = {Math::Random::unseededRandomInt(m_minRoomSize.x, m_maxRoomSize.x),
-                            Math::Random::unseededRandomInt(m_minRoomSize.y, m_maxRoomSize.y)};
+        Vec2i pos = {m_bounds.getPosition().x + biasX, m_bounds.getPosition().y + biasY};
 
-        roomsOut.push_back(Rectangle_i(randomInitialPos, randomSize));
+        Vec2i size = {Math::Random::unseededRandomInt(m_minRoomSize.x, m_maxRoomSize.x),
+                      Math::Random::unseededRandomInt(m_minRoomSize.y, m_maxRoomSize.y)};
+
+        roomsOut.push_back(Rectangle_i(pos, size));
     }
 }
 

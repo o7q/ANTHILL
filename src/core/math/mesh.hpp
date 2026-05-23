@@ -41,8 +41,8 @@ inline std::vector<Triangle_i> generateTriangulation(const std::vector<Vec2i> &p
 
         for (Triangle_i tri : triangulation)
         {
-            Circle_i c = tri.generateCircumcircle();
-            if (c.pointInside(p))
+            Circle_d c = tri.generateCircumcircle();
+            if (c.pointInside(p.toDouble()))
             {
                 badTris.push_back(tri);
             }

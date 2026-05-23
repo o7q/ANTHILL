@@ -10,8 +10,6 @@ void DungeonTestScene::onTick()
 {
     std::vector<RenderCommand> renderCommands;
 
-    Vec2i mousePos = r_window.getViewport().windowToViewportPosition(r_window.getInput().getMousePosition());
-
     if (r_window.getInput().getInput(InputID::Shoot)->isDown())
     {
         m_roomGraph = m_generator.generate();

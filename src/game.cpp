@@ -4,8 +4,7 @@ void Game::start()
 {
     init_binds();
 
-    load_scene(SceneID::DungeonTest);
-
+    load_scene(SceneID::Main);
     m_window.getTime().setMaxFPS(60);
     while (m_window.isRunning())
     {
