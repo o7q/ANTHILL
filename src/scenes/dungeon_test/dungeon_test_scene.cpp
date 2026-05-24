@@ -27,7 +27,7 @@ void DungeonTestScene::onTick()
 
     for (auto &[index, node] : m_roomGraph.getNodes())
     {
-        Rectangle_i rect(index, node.value);
+        Rectangle_i rect(index, node.value.getSize());
 
         RectangleRenderCommandData rdata;
         rdata.a     = rect.getA();

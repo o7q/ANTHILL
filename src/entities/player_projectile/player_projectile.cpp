@@ -26,7 +26,7 @@ void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<Enti
                 auto event      = std::make_unique<ParticleDrawEvent>();
                 event->position = pos;
                 event->radius   = Math::Random::unseededRandomInt(3, 6);
-                event->particle = Particle();
+                event->particle = Particle{};
 
                 eventsOut.emit(std::make_unique<EntityParticleEvent>(context.id, std::move(event)));
 

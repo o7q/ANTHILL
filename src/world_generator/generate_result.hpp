@@ -14,6 +14,4 @@ struct StructureGenerateResult
 {
     Particle particle;
     bool overwriteTerrainParticle = false;
-    std::unique_ptr<Entity> spawnEntity;
-    bool overwriteTerrainEntity = false;
 };

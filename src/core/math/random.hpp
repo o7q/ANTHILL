@@ -47,7 +47,7 @@ template <typename T> struct WeightedValue
     int weight = 0;
 };
 template <typename T>
-inline T weightedSelect(const std::vector<WeightedValue<T>> &candidates, std::optional<uint32_t> seed)
+inline T weightedSelect(const std::vector<WeightedValue<T>> &candidates, std::optional<uint32_t> seed = std::nullopt)
 {
     if (candidates.empty())
     {

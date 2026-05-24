@@ -66,7 +66,7 @@ TerrainGenerateResult WorldGenerator::generate_desert_layer2(Vec2i pos)
     {
         color = Color(255, 197, 102);
     }
-    if (p0 > 0.60f && p0 < 0.75f)
+    if (p0 >= 0.68f && p0 <= 0.72f)
     {
         matterType = Particle::MatterType::Gas;
         color      = Color{};

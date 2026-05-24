@@ -14,6 +14,6 @@ class DungeonTestScene : public Scene
     void onTick() override;
 
   private:
-    NodeGraph<Vec2i> m_roomGraph;
+    NodeGraph<Room> m_roomGraph;
     DungeonGenerator m_generator;
 };

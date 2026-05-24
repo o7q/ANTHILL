@@ -62,10 +62,6 @@ void WorldGenerator::generate_place_at_pos(Vec2i pos)
         {
             particleToPlace = structureResult->particle;
         }
-        if (structureResult->overwriteTerrainEntity)
-        {
-            entityToPlace = std::move(structureResult->spawnEntity);
-        }
     }
 
     if (entityToPlace)
