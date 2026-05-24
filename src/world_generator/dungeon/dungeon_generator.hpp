@@ -7,6 +7,9 @@
 class Room
 {
   public:
+    void setSize(Vec2i size) { m_size = size; }
+    Vec2i getSize() const { return m_size; }
+
   private:
     Vec2i m_size;
 };

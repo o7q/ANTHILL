@@ -2,7 +2,7 @@
 
 #include "core/data_structures/node_graph.hpp"
 #include "scene/scene.hpp"
-#include "world_dungeon/dungeon_generator.hpp"
+#include "world_generator/dungeon/dungeon_generator.hpp"
 
 class DungeonTestScene : public Scene
 {

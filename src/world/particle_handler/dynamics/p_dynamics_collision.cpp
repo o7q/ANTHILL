@@ -23,8 +23,7 @@ void PDynamicsHandler::handle_particle_trajectory(ParticleObject po, Vec2f start
 
         if (!next)
         {
-            hit         = true;
-            hitParticle = next;
+            hit = true;
             return true;
         }
 

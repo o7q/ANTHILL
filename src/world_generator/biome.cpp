@@ -11,33 +11,15 @@ BiomeID WorldGenerator::get_biome(Vec2i pos)
     const Math::Voronoi::Sample sample = Math::Voronoi::sampleEx(
         pos.toFloat() + voronoiSmear * 200.0f, {150.0f, 150.0f}, m_seed, Math::Voronoi::Style::Normal);
 
-    std::vector<BiomeWeight> candidates;
+    std::vector<Math::Random::WeightedValue<BiomeID>> candidates;
     get_biome_candidates(pos, candidates);
 
-    // https://dev.to/jacktt/understanding-the-weighted-random-algorithm-581p
-    int totalWeight = 0;
-    for (const BiomeWeight &bw : candidates)
-    {
-        totalWeight += bw.weight;
-    }
-
     const uint32_t hash = Math::Random::hashFromPosition(sample.cell, m_seed);
-    const int random    = hash % totalWeight;
-
-    int cursor = 0;
-    for (const BiomeWeight &bw : candidates)
-    {
-        cursor += bw.weight;
-        if (cursor > random)
-        {
-            return bw.id;
-        }
-    }
-
-    return BiomeID::Void;
+    return Math::Random::weightedSelect(candidates, hash);
 }
 
-void WorldGenerator::get_biome_candidates(Vec2i pos, std::vector<BiomeWeight> &candidates)
+void WorldGenerator::get_biome_candidates(Vec2i pos,
+                                          std::vector<Math::Random::WeightedValue<BiomeID>> &candidates)
 {
     const float layerBlend_surface =
         Math::Perlin::sampleEx(pos.toFloat(), {100.0f, 100.0f}, 3, m_seed) - 0.5f;

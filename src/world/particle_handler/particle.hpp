@@ -47,10 +47,7 @@ class Particle
     }
     MaterialDescriptor getMaterialDescriptor() const { return m_materialDescriptor; }
 
-    bool isBlank() const
-    {
-        return m_physicsType == PhysicsType::None && m_matterType == MatterType::Gas && m_color.a == 0;
-    }
+    bool isBlank() const { return m_color.a == 0; }
     bool isSolid() const { return m_matterType == MatterType::Solid; }
     bool isLiquid() const { return m_matterType == MatterType::Liquid; }
     bool isGas() const { return m_matterType == MatterType::Gas; }

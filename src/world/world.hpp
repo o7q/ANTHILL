@@ -11,7 +11,7 @@
 class World
 {
   public:
-    World() {}
+    World(Vec2u chunkSize) : m_particleHandler(chunkSize) {}
     World(const World &other)            = delete;
     World &operator=(const World &other) = delete;
 

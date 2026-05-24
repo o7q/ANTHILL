@@ -70,9 +70,9 @@ template <typename T> class ChunkMap
         return const_cast<T *>(v);
     }
 
-    bool hasChunk(Vec2i index) const
+    bool hasChunk(Vec2i chunkPos) const
     {
-        auto it = m_chunks.find(index);
+        auto it = m_chunks.find(chunkPos);
         return it != m_chunks.end();
     }
 
@@ -84,10 +84,10 @@ template <typename T> class ChunkMap
         return it != m_chunks.end();
     }
 
-    void swap(Vec2i p1, Vec2i p2)
+    void swap(Vec2i pos1, Vec2i pos2)
     {
-        T *a = get(p1);
-        T *b = get(p2);
+        T *a = get(pos1);
+        T *b = get(pos2);
 
         if (!a || !b)
         {
@@ -105,7 +105,7 @@ template <typename T> class ChunkMap
             return;
         }
         T v = *a;
-        set(p1, T());
+        set(p1, T{});
         set(p2, v);
     }
 
@@ -123,15 +123,17 @@ template <typename T> class ChunkMap
         return {chunk_x, chunk_y};
     }
 
-    Vec2u getInnerIndex(Vec2i pos, Vec2i index) const
+    Vec2u getInnerIndex(Vec2i pos, Vec2i chunkPos) const
     {
         int cw = static_cast<int>(m_chunkSize.x);
         int ch = static_cast<int>(m_chunkSize.y);
 
-        unsigned int inner_x = pos.x - index.x * cw;
-        unsigned int inner_y = pos.y - index.y * ch;
+        unsigned int inner_x = pos.x - chunkPos.x * cw;
+        unsigned int inner_y = pos.y - chunkPos.y * ch;
         return Vec2u(inner_x, inner_y);
     }
+
+    void erase(Vec2i chunkPos) { m_chunks.erase(chunkPos); }
 
   private:
     Vec2u m_chunkSize;

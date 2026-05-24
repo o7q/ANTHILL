@@ -49,9 +49,8 @@ void MainScene::onTick()
         m_world.getEntityHandler().addEntity(std::move(entity));
     }
 
-    Player *player = m_world.getEntityHandler().getCurrentPlayer();
     Vec2i updatePos;
-    if (player)
+    if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
     {
         player->updateAimPosition(worldMousePos);
         updatePos = m_camera.getPosition();
@@ -60,13 +59,12 @@ void MainScene::onTick()
     m_generator.generate(updatePos.toInt(), {10, 10});
     m_world.update(r_window.getTime().getInfo(), updatePos, m_events);
 
-    if (player)
+    if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
     {
-        player->updateAimPosition(worldMousePos);
-        updatePos = player->getBody().getPosition();
+        m_camera.setGoal(player->getBody().getPosition() +
+                         (viewportMousePosCenterNormalized * 60.0f).toGrid());
+        m_camera.update(r_window.getTime().getInfo());
     }
-    m_camera.setGoal(updatePos + (viewportMousePosCenterNormalized * 60.0f).toGrid());
-    m_camera.update(r_window.getTime().getInfo());
 
     m_world.render(m_camera, r_assets, renderCommands);
 

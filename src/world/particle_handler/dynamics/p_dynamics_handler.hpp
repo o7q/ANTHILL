@@ -53,5 +53,4 @@ class PDynamicsHandler
     float m_gravity = 0.1f;
 
     Vec2u m_updateRadius = {140, 105};
-    // Vec2u m_updateRadius = {0, 0};
 };

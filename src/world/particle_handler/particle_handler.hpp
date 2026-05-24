@@ -14,9 +14,9 @@
 class ParticleHandler
 {
   public:
-    ParticleHandler()
-        : m_particles({32, 32}), m_biomeMarkers({32, 32}), m_navmesh({8, 8}),
-          m_dynamicsHandler(m_particles, m_navmesh), m_editor(m_particles)
+    ParticleHandler(Vec2u chunkSize)
+        : m_particles(chunkSize), m_biomeMarkers(chunkSize), m_particleBackgrounds(chunkSize),
+          m_navmesh({8, 8}), m_dynamicsHandler(m_particles, m_navmesh), m_editor(m_particles)
     {
     }
 
@@ -62,6 +62,7 @@ class ParticleHandler
   private:
     ChunkMap<Particle> m_particles;
     ChunkMap<BiomeID> m_biomeMarkers;
+    ChunkMap<Color> m_particleBackgrounds;
 
     Navmesh m_navmesh;
 

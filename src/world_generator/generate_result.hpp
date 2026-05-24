@@ -4,8 +4,16 @@
 #include "world/particle_handler/particle.hpp"
 #include <memory>
 
-struct GenerateResult
+struct TerrainGenerateResult
 {
     Particle particle;
     std::unique_ptr<Entity> spawnEntity;
+};
+
+struct StructureGenerateResult
+{
+    Particle particle;
+    bool overwriteTerrainParticle = false;
+    std::unique_ptr<Entity> spawnEntity;
+    bool overwriteTerrainEntity = false;
 };

@@ -8,7 +8,10 @@
 class MainScene : public Scene
 {
   public:
-    MainScene(Window &window, const Assets &assets) : Scene(window, assets), m_generator(m_world, r_assets) {}
+    MainScene(Window &window, const Assets &assets)
+        : Scene(window, assets), m_world({32, 32}), m_generator(m_world, r_assets)
+    {
+    }
 
   protected:
     void onStart() override;

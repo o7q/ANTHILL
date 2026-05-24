@@ -1,16 +1,17 @@
+#include "world_generator/world_generator.hpp"
+
 #include "core/math/perlin.hpp"
 #include "entities/wuskkogel/wuskkogel.hpp"
 #include "world/particle_handler/particle.hpp"
 #include "world_generator/generate_result.hpp"
-#include <cstdint>
 #include <memory>
 
-GenerateResult generate_desert_layer1(Vec2i pos, uint32_t seed, const Assets &assets)
+TerrainGenerateResult WorldGenerator::generate_desert_layer1(Vec2i pos)
 {
-    GenerateResult result;
+    TerrainGenerateResult result;
 
-    float p0 = Math::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, seed);
-    float p1 = Math::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 9, seed);
+    float p0 = Math::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, m_seed);
+    float p1 = Math::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 9, m_seed);
 
     Particle::MatterType matterType   = Particle::MatterType::Solid;
     Particle::PhysicsType physicsType = Particle::PhysicsType::Sandstone;
@@ -37,7 +38,7 @@ GenerateResult generate_desert_layer1(Vec2i pos, uint32_t seed, const Assets &as
 
     if (p0 >= 0.67f && p0 < 0.68f && Math::Random::unseededRandomInt(0, 10000) == 0)
     {
-        auto wuskkogel = std::make_unique<Wuskkogel>(assets);
+        auto wuskkogel = std::make_unique<Wuskkogel>(r_assets);
         wuskkogel->getBody().setPosition(pos);
         result.spawnEntity = std::move(wuskkogel);
     }
@@ -49,11 +50,11 @@ GenerateResult generate_desert_layer1(Vec2i pos, uint32_t seed, const Assets &as
     return result;
 }
 
-GenerateResult generate_desert_layer2(Vec2i pos, uint32_t seed, const Assets &assets)
+TerrainGenerateResult WorldGenerator::generate_desert_layer2(Vec2i pos)
 {
-    GenerateResult result;
+    TerrainGenerateResult result;
 
-    float p0 = Math::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, seed);
+    float p0 = Math::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, m_seed);
 
     Particle::MatterType matterType = Particle::MatterType::Solid;
     Color color(255, 159, 0);
@@ -68,17 +69,12 @@ GenerateResult generate_desert_layer2(Vec2i pos, uint32_t seed, const Assets &as
     if (p0 > 0.60f && p0 < 0.75f)
     {
         matterType = Particle::MatterType::Gas;
-        color      = Color();
-    }
-    if (p0 > 0.1f && p0 < 0.3f)
-    {
-        matterType = Particle::MatterType::Gas;
-        color      = Color();
+        color      = Color{};
     }
 
     if (p0 > 0.65f && p0 < 0.70f && Math::Random::unseededRandomInt(0, 10000) == 0)
     {
-        auto wuskkogel = std::make_unique<Wuskkogel>(assets);
+        auto wuskkogel = std::make_unique<Wuskkogel>(r_assets);
         wuskkogel->getBody().setPosition(pos);
         result.spawnEntity = std::move(wuskkogel);
     }

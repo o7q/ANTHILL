@@ -31,12 +31,13 @@ Font::GlyphInfo Font::createGlyphIndex(unsigned int atlasXIndex)
     GlyphInfo info;
     info.xIndex = atlasXIndex;
 
-    // _  0
+    // 0  
     // x[]
-    //    1
-    // 0: width marker
-    // 1: height marker
+    // 1  2  
+    // 0: char start marker
     // x: baseline marker
+    // 1: height marker
+    // 2: width marker
 
     unsigned int yIndex = 1;
     while (true)

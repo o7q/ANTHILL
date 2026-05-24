@@ -1,6 +1,9 @@
 #pragma once
 
+#include "core/data_structures/chunk_map.hpp"
 #include "world/world.hpp"
+#include "world_generator/generate_result.hpp"
+#include <unordered_set>
 
 class WorldGenerator
 {
@@ -17,15 +20,20 @@ class WorldGenerator
     void generate(Vec2i origin, Vec2i radius);
 
   private:
-    void place_terrain(Vec2i origin, Vec2i radius);
+    void generate_place(Vec2i origin, Vec2i radius);
+    void generate_place_at_pos(Vec2i pos);
 
     BiomeID get_biome(Vec2i pos);
-    void get_biome_candidates(Vec2i pos, std::vector<BiomeWeight> &candidates);
+    void get_biome_candidates(Vec2i pos, std::vector<Math::Random::WeightedValue<BiomeID>> &candidates);
+
+    TerrainGenerateResult generate_desert_layer1(Vec2i pos);
+    TerrainGenerateResult generate_desert_layer2(Vec2i pos);
 
   private:
     World &r_world;
     const Assets &r_assets;
-    std::vector<Vec2i> m_generatedChunkMarkers;
+    ChunkMap<StructureGenerateResult> m_structureLayer;
+    std::unordered_set<Vec2i, Vec2Hash<int>> m_generatedChunkMarkers;
 
     uint32_t m_seed = 0;
 };
