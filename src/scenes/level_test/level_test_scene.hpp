@@ -2,12 +2,12 @@
 
 #include "core/data_structures/node_graph.hpp"
 #include "scene/scene.hpp"
-#include "world_generator/dungeon/dungeon_generator.hpp"
+#include "world_generator/level_generator/room.hpp"
 
-class DungeonTestScene : public Scene
+class LevelTestScene : public Scene
 {
   public:
-    DungeonTestScene(Window &window, const Assets &assets) : Scene(window, assets) {}
+    LevelTestScene(Window &window, const Assets &assets) : Scene(window, assets) {}
 
   protected:
     void onStart() override;
@@ -15,5 +15,4 @@ class DungeonTestScene : public Scene
 
   private:
     NodeGraph<Room> m_roomGraph;
-    DungeonGenerator m_generator;
 };

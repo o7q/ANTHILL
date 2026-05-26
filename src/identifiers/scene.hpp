@@ -6,5 +6,5 @@ enum class SceneID
     Main,
 
     VerletTest,
-    DungeonTest
+    LevelTest
 };

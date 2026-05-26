@@ -3,7 +3,7 @@
 #include "core/asset_pool/asset_pool.hpp"
 #include "core/math/geometry/vec.hpp"
 #include "core/sprite_sheet/sprite_sheet.hpp"
-#include "identifiers/assets/spritesheet.hpp"
+#include "identifiers/spritesheet.hpp"
 #include <string>
 
 struct SpriteSheetLoadData

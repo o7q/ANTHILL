@@ -1,4 +1,4 @@
-#include "identifiers/assets/spritesheet.hpp"
+#include "identifiers/spritesheet.hpp"
 #include "player_sprite.hpp"
 #include "sprite/sprite_animator.hpp"
 #include <utility>

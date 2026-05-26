@@ -8,5 +8,7 @@ Player::Player(InputHandler &input, const Assets &assets)
 
     m_metadata.name = "Player";
 
+    m_body.setTargetDamping({0.5f, 0.9725f});
+
     m_comboTimer.setDurationInSeconds(1.0f);
 }

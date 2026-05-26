@@ -28,10 +28,5 @@ const Navmesh::ChunkData *Navmesh::getChunkFromIndex(Vec2i index) const
 
 Vec2i Navmesh::getIndexFromWorldPosition(Vec2i pos) const
 {
-    int cw = static_cast<int>(m_resolution.x);
-    int ch = static_cast<int>(m_resolution.y);
-
-    int chunk_x = pos.x / cw - (pos.x % cw < 0);
-    int chunk_y = pos.y / ch - (pos.y % ch < 0);
-    return {chunk_x, chunk_y};
+    return (pos.toFloat() / m_resolution.toFloat()).toGrid();
 }

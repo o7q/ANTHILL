@@ -1,6 +1,6 @@
 #include "wuskkogel.hpp"
 
-#include "identifiers/assets/spritesheet.hpp"
+#include "identifiers/spritesheet.hpp"
 
 Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
     : Entity(id), m_bodyHandler(m_body, m_collider),

@@ -6,7 +6,7 @@
 #include "entity/metadata.hpp"
 #include "events/entity/events.hpp"
 #include "events/external/events.hpp"
-#include "identifiers/assets/sounds.hpp"
+#include "identifiers/sounds.hpp"
 #include <memory>
 
 void Player::update_entity_interaction(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)

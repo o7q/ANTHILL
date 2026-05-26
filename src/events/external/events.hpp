@@ -3,7 +3,7 @@
 #include "core/sound/sound_handler.hpp"
 #include "core/time/speed_changer.hpp"
 #include "events/external/base.hpp"
-#include "identifiers/assets/sounds.hpp"
+#include "identifiers/sounds.hpp"
 #include "identifiers/scene.hpp"
 
 struct ExternalPlaySoundEvent : public ExternalEvent

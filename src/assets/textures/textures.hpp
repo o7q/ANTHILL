@@ -2,7 +2,7 @@
 
 #include "core/asset_pool/asset_pool.hpp"
 #include "core/texture/texture.hpp"
-#include "identifiers/assets/textures.hpp"
+#include "identifiers/textures.hpp"
 #include <string>
 
 struct TextureLoadData

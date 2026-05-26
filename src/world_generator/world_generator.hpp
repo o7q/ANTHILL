@@ -3,7 +3,6 @@
 #include "core/data_structures/chunk_map.hpp"
 #include "world/world.hpp"
 #include "world_generator/generate_result.hpp"
-#include <unordered_map>
 #include <unordered_set>
 
 class WorldGenerator
@@ -35,8 +34,6 @@ class WorldGenerator
     const Assets &r_assets;
     ChunkMap<StructureGenerateResult> m_structureLayer;
     std::unordered_set<Vec2i, Vec2Hash<int>> m_generatedChunkMarkers;
-
-    bool m_structureGenerated = false;
 
     uint32_t m_seed = 0;
 };

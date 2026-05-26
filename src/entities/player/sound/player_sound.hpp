@@ -8,7 +8,7 @@
 #include "events/entity/events.hpp"
 #include "events/event_pool.hpp"
 #include "events/external/events.hpp"
-#include "identifiers/assets/sounds.hpp"
+#include "identifiers/sounds.hpp"
 #include <memory>
 
 class PlayerSound

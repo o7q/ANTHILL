@@ -5,10 +5,10 @@
 #include "core/sound/sound.hpp"
 #include "core/sprite_sheet/sprite_sheet.hpp"
 #include "core/texture/texture.hpp"
-#include "identifiers/assets/fonts.hpp"
-#include "identifiers/assets/sounds.hpp"
-#include "identifiers/assets/spritesheet.hpp"
-#include "identifiers/assets/textures.hpp"
+#include "identifiers/fonts.hpp"
+#include "identifiers/sounds.hpp"
+#include "identifiers/spritesheet.hpp"
+#include "identifiers/textures.hpp"
 
 class Assets
 {
