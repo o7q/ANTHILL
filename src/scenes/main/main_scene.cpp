@@ -44,6 +44,29 @@ void MainScene::onTick()
     }
     if (r_window.getInput().getInput(InputID::AltAction3)->isDown())
     {
+        Particle sand;
+        float mult = Math::Random::unseededRandomInt(80, 100) / 100.0f;
+        sand.setColor(Color(255 * mult, 226 * mult, 145 * mult));
+        sand.setPhysicsType(Particle::PhysicsType::Sand);
+        sand.setMatterType(Particle::MatterType::Solid);
+        sand.setMass(1);
+
+        m_world.getParticleHandler().getEditor().draw(worldMousePos, sand, 5);
+    }
+    if (r_window.getInput().getInput(InputID::AltAction4)->isDown())
+    {
+        Particle bouncy;
+        float mult = Math::Random::unseededRandomInt(80, 100) / 100.0f;
+        bouncy.setColor(Color(92 * mult, 255, 225));
+        bouncy.setPhysicsType(Particle::PhysicsType::Sand);
+        bouncy.setMatterType(Particle::MatterType::Solid);
+        bouncy.setMass(1);
+        bouncy.setRestitution(0.9f);
+
+        m_world.getParticleHandler().getEditor().draw(worldMousePos, bouncy, 5);
+    }
+    if (r_window.getInput().getInput(InputID::AltAction5)->isDown())
+    {
         auto entity = std::make_unique<PlayerPoint>(worldMousePos);
         entity->getBody().setPosition(worldMousePos);
         m_world.getEntityHandler().addEntity(std::move(entity));

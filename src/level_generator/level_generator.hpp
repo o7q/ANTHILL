@@ -9,7 +9,7 @@
 
 struct RoomPlaceholder
 {
-    Room room;
+    const Room *room;
     Vec2i pos;
     bool special = false;
 };
@@ -21,7 +21,7 @@ class LevelGenerator
     {
         Rectangle_i bounds;
 
-        std::vector<Math::Random::WeightedValue<Room>> roomPool;
+        std::vector<Math::Random::WeightedValue<const Room *>> roomPool;
         std::vector<RoomPlaceholder> specialRooms;
 
         Vec2i roomSpread = {20, 20};
@@ -32,7 +32,7 @@ class LevelGenerator
     };
 
   public:
-    NodeGraph<Room> generate(uint32_t seed);
+    NodeGraph<const Room *> generate(uint32_t seed);
 
     void setConfig(const Config &config) { m_config = config; }
 

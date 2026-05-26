@@ -26,14 +26,16 @@ class WorldGenerator
     BiomeID get_biome(Vec2i pos);
     void get_biome_candidates(Vec2i pos, std::vector<Math::Random::WeightedValue<BiomeID>> &candidates);
 
-    TerrainGenerateResult generate_desert_layer1(Vec2i pos);
-    TerrainGenerateResult generate_desert_layer2(Vec2i pos);
+    GenerateResult generate_desert_layer1(Vec2i pos);
+    GenerateResult generate_desert_layer2(Vec2i pos);
 
   private:
     World &r_world;
     const Assets &r_assets;
-    ChunkMap<StructureGenerateResult> m_structureLayer;
+    ChunkMap<GenerateResult> m_structureLayer;
     std::unordered_set<Vec2i, Vec2Hash<int>> m_generatedChunkMarkers;
+
+    bool m_structureGenerated = false;
 
     uint32_t m_seed = 0;
 };

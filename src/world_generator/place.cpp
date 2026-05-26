@@ -34,41 +34,32 @@ void WorldGenerator::generate_place(Vec2i origin, Vec2i radius)
 
 void WorldGenerator::generate_place_at_pos(Vec2i pos)
 {
-    Particle particleToPlace;
-    std::unique_ptr<Entity> entityToPlace;
-
-    TerrainGenerateResult terrainResult;
+    GenerateResult result;
     BiomeID biomeID = get_biome(pos);
 
-    switch (biomeID)
+    // switch (biomeID)
+    // {
+    // case BiomeID::Void:
+    //     break;
+    // case BiomeID::DesertLayer1:
+    //     result = generate_desert_layer1(pos);
+    //     break;
+    // case BiomeID::DesertLayer2:
+    //     result = generate_desert_layer2(pos);
+    //     break;
+    // }
+
+    if (const GenerateResult *r = m_structureLayer.get(pos))
     {
-    case BiomeID::Void:
-        break;
-    case BiomeID::DesertLayer1:
-        terrainResult = generate_desert_layer1(pos);
-        break;
-    case BiomeID::DesertLayer2:
-        terrainResult = generate_desert_layer2(pos);
-        break;
+        result = *r;
     }
 
-    particleToPlace = terrainResult.particle;
-    entityToPlace   = std::move(terrainResult.spawnEntity);
+    // for (auto &entity : result.entities)
+    // {
+    //     r_world.getEntityHandler().addEntity(std::move(entity));
+    // }
 
-    StructureGenerateResult *structureResult = m_structureLayer.get(pos);
-    if (structureResult)
-    {
-        if (structureResult->overwriteTerrainParticle)
-        {
-            particleToPlace = structureResult->particle;
-        }
-    }
-
-    if (entityToPlace)
-    {
-        r_world.getEntityHandler().addEntity(std::move(entityToPlace));
-    }
-
-    r_world.getParticleHandler().getEditor().set(pos, particleToPlace);
+    r_world.getParticleHandler().getEditor().set(pos, result.particle);
+    r_world.getParticleHandler().getBackground().set(pos, result.backgroundColor);
     r_world.getParticleHandler().getBiomeMarkers().set(pos, biomeID);
 }

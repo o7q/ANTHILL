@@ -6,9 +6,9 @@
 #include "world_generator/generate_result.hpp"
 #include <memory>
 
-TerrainGenerateResult WorldGenerator::generate_desert_layer1(Vec2i pos)
+GenerateResult WorldGenerator::generate_desert_layer1(Vec2i pos)
 {
-    TerrainGenerateResult result;
+    GenerateResult result;
 
     float p0 = Math::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, m_seed);
     float p1 = Math::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 9, m_seed);
@@ -40,7 +40,7 @@ TerrainGenerateResult WorldGenerator::generate_desert_layer1(Vec2i pos)
     {
         auto wuskkogel = std::make_unique<Wuskkogel>(r_assets);
         wuskkogel->getBody().setPosition(pos);
-        result.spawnEntity = std::move(wuskkogel);
+        // result.entities.push_back(std::move(wuskkogel));
     }
 
     result.particle.setColor(color);
@@ -50,9 +50,9 @@ TerrainGenerateResult WorldGenerator::generate_desert_layer1(Vec2i pos)
     return result;
 }
 
-TerrainGenerateResult WorldGenerator::generate_desert_layer2(Vec2i pos)
+GenerateResult WorldGenerator::generate_desert_layer2(Vec2i pos)
 {
-    TerrainGenerateResult result;
+    GenerateResult result;
 
     float p0 = Math::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, m_seed);
 
@@ -76,7 +76,7 @@ TerrainGenerateResult WorldGenerator::generate_desert_layer2(Vec2i pos)
     {
         auto wuskkogel = std::make_unique<Wuskkogel>(r_assets);
         wuskkogel->getBody().setPosition(pos);
-        result.spawnEntity = std::move(wuskkogel);
+        // result.entities.push_back(std::move(wuskkogel));
     }
 
     result.particle.setColor(color);

@@ -8,7 +8,7 @@
 #include "core/math/random.hpp"
 #include <vector>
 
-NodeGraph<Room> LevelGenerator::generate(uint32_t seed)
+NodeGraph<const Room *> LevelGenerator::generate(uint32_t seed)
 {
     std::vector<RoomPlaceholder> rooms;
 
@@ -21,12 +21,12 @@ NodeGraph<Room> LevelGenerator::generate(uint32_t seed)
     generate_fix_room_intersection(rooms, seed);
     generate_purge_bad_rooms(rooms);
 
-    NodeGraph<Room> roomGraph;
+    NodeGraph<const Room *> roomGraph;
     std::vector<Vec2i> roomPositions;
     roomPositions.reserve(rooms.size());
     for (RoomPlaceholder room : rooms)
     {
-        Node<Room> roomNode;
+        Node<const Room *> roomNode;
         roomNode.value = room.room;
         roomGraph.set(room.pos, roomNode);
 
@@ -47,7 +47,7 @@ void LevelGenerator::generate_place_rooms(std::vector<RoomPlaceholder> &roomsOut
         int biasX = Math::Random::seededRandomInt(-m_config.roomSpread.x, m_config.roomSpread.x, seed++);
         int biasY = Math::Random::seededRandomInt(-m_config.roomSpread.y, m_config.roomSpread.y, seed++);
 
-         Room room = Math::Random::weightedSelect(m_config.roomPool, seed++);
+        const Room *room = Math::Random::weightedSelect(m_config.roomPool, seed++);
         Vec2i pos        = {m_config.bounds.getPosition().x + biasX, m_config.bounds.getPosition().y + biasY};
         roomsOut.push_back({room, pos});
     }
@@ -66,7 +66,7 @@ void LevelGenerator::generate_fix_room_intersection(std::vector<RoomPlaceholder>
                 continue;
             }
 
-            Rectangle_i dummy_rect_a(room_a.pos, room_a.room.getSize());
+            Rectangle_i dummy_rect_a(room_a.pos, room_a.room->getSize());
             for (size_t k = 0; k < roomsOut.size(); ++k)
             {
                 if (j == k)
@@ -75,7 +75,7 @@ void LevelGenerator::generate_fix_room_intersection(std::vector<RoomPlaceholder>
                 }
 
                 RoomPlaceholder room_b = roomsOut[k];
-                Rectangle_i dummy_rect_b(room_b.pos, room_b.room.getSize());
+                Rectangle_i dummy_rect_b(room_b.pos, room_b.room->getSize());
 
                 Rectangle_i::OverlapResult result = dummy_rect_a.overlapping(dummy_rect_b);
                 if (result.overlapping)
@@ -108,7 +108,7 @@ void LevelGenerator::generate_purge_bad_rooms(std::vector<RoomPlaceholder> &room
 
         if (!room.special)
         {
-            Rectangle_i dummy_rect_a(room.pos, room.room.getSize());
+            Rectangle_i dummy_rect_a(room.pos, room.room->getSize());
 
             for (size_t i = 0; i < roomsOut.size(); ++i)
             {
@@ -118,7 +118,7 @@ void LevelGenerator::generate_purge_bad_rooms(std::vector<RoomPlaceholder> &room
                 }
 
                 RoomPlaceholder room_b = roomsOut[i];
-                Rectangle_i dummy_rect_b(room_b.pos, room_b.room.getSize());
+                Rectangle_i dummy_rect_b(room_b.pos, room_b.room->getSize());
 
                 Vec2i overlapping = dummy_rect_a.overlapping(dummy_rect_b).amount + m_config.roomMinSpacing;
 

@@ -5,7 +5,7 @@ void Game::start()
     init_binds();
     m_window.getTime().setMaxFPS(60);
 
-    load_scene(SceneID::LevelTest);
+    load_scene(SceneID::Main);
 
     while (m_window.isRunning())
     {

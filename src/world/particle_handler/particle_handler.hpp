@@ -15,8 +15,8 @@ class ParticleHandler
 {
   public:
     ParticleHandler(Vec2u chunkSize)
-        : m_particles(chunkSize), m_biomeMarkers(chunkSize), m_particleBackgrounds(chunkSize),
-          m_navmesh({8, 8}), m_dynamicsHandler(m_particles, m_navmesh), m_editor(m_particles)
+        : m_particles(chunkSize), m_biomeMarkers(chunkSize), m_background(chunkSize), m_navmesh({8, 8}),
+          m_dynamicsHandler(m_particles, m_navmesh), m_editor(m_particles)
     {
     }
 
@@ -27,6 +27,9 @@ class ParticleHandler
 
     const ChunkMap<BiomeID> &getBiomeMarkers() const { return m_biomeMarkers; }
     ChunkMap<BiomeID> &getBiomeMarkers() { return m_biomeMarkers; }
+
+    const ChunkMap<Color> &getBackground() const { return m_background; }
+    ChunkMap<Color> &getBackground() { return m_background; }
 
     const Navmesh &getNavmesh() const { return m_navmesh; }
     Navmesh &getNavmesh() { return m_navmesh; }
@@ -62,7 +65,7 @@ class ParticleHandler
   private:
     ChunkMap<Particle> m_particles;
     ChunkMap<BiomeID> m_biomeMarkers;
-    ChunkMap<Color> m_particleBackgrounds;
+    ChunkMap<Color> m_background;
 
     Navmesh m_navmesh;
 

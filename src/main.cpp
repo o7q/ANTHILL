@@ -12,10 +12,10 @@ int main()
 {
     SDLFlagHandler flagHandler(SDL_INIT_VIDEO);
 
-    Vec2u windowSize   = {1280, 720};
-    Vec2u aspect       = {4, 3};
-    // unsigned int scale = 70;
-    unsigned int scale = 150;
+    Vec2u windowSize = {1280, 720};
+    Vec2u aspect     = {4, 3};
+    unsigned int scale = 70;
+    // unsigned int scale = 150;
     Vec2u renderSize   = aspect * scale;
     Game game(windowSize, renderSize);
 

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "core/data_structures/node_graph.hpp"
+#include "level_generator/room.hpp"
 #include "scene/scene.hpp"
-#include "world_generator/level_generator/room.hpp"
 
 class LevelTestScene : public Scene
 {
@@ -14,5 +14,5 @@ class LevelTestScene : public Scene
     void onTick() override;
 
   private:
-    NodeGraph<Room> m_roomGraph;
+    NodeGraph<const Room *> m_roomGraph;
 };

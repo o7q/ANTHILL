@@ -6,9 +6,11 @@
 #include "core/sprite_sheet/sprite_sheet.hpp"
 #include "core/texture/texture.hpp"
 #include "identifiers/fonts.hpp"
+#include "identifiers/rooms.hpp"
 #include "identifiers/sounds.hpp"
 #include "identifiers/spritesheet.hpp"
 #include "identifiers/textures.hpp"
+#include "level_generator/room.hpp"
 
 class Assets
 {
@@ -19,10 +21,12 @@ class Assets
     const AssetPool<SpriteSheetID, SpriteSheet> &spriteSheets() const { return m_spriteSheets; }
     const AssetPool<FontID, Font> &fonts() const { return m_fonts; }
     const AssetPool<SoundID, Sound> &sounds() const { return m_sounds; }
+    const AssetPool<RoomID, Room> &rooms() const { return m_rooms; }
 
   private:
     AssetPool<TextureID, Texture> m_textures;
     AssetPool<SpriteSheetID, SpriteSheet> m_spriteSheets;
     AssetPool<FontID, Font> m_fonts;
     AssetPool<SoundID, Sound> m_sounds;
+    AssetPool<RoomID, Room> m_rooms;
 };
