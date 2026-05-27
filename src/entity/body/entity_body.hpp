@@ -10,7 +10,7 @@ class EntityBody
 
     void update(float dt);
 
-    void applyGravity() { m_velocityTarget.y += m_gravity; }
+    void applyGravity() { m_velocityTarget.y = m_gravity; }
     void setGravity(float gravity) { m_gravity = gravity; }
 
     void setVelocity(Vec2f vel)

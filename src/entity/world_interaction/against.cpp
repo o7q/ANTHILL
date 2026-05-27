@@ -10,7 +10,7 @@ bool EntityWorldInteraction::againstSolidSurface(Vec2i pos, const EntityCollider
 
     auto query = [&](const Particle *p)
     {
-        if (p->isSolid() && !p->isMoving())
+        if (!p || (p->isSolid() && !p->isMoving()))
         {
             collided = true;
             return true;
@@ -24,28 +24,28 @@ bool EntityWorldInteraction::againstSolidSurface(Vec2i pos, const EntityCollider
     {
         const Vec2i start = Vec2i(topLeft.x, topLeft.y - 1);
         const Vec2i end   = Vec2i(topLeft.x + size.x - 1, topLeft.y - 1);
-        particleHandler.query(start, end, query);
+        particleHandler.query(start, end, query, false);
     }
     break;
     case RectangleSide::Right:
     {
         const Vec2i start = Vec2i(topLeft.x + size.x, topLeft.y);
         const Vec2i end   = Vec2i(topLeft.x + size.x, topLeft.y + size.y - 1);
-        particleHandler.query(start, end, query);
+        particleHandler.query(start, end, query, false);
     }
     break;
     case RectangleSide::Bottom:
     {
         const Vec2i start = Vec2i(topLeft.x, topLeft.y + size.y);
         const Vec2i end   = Vec2i(topLeft.x + size.x - 1, topLeft.y + size.y);
-        particleHandler.query(start, end, query);
+        particleHandler.query(start, end, query, false);
     }
     break;
     case RectangleSide::Left:
     {
         const Vec2i start = Vec2i(topLeft.x - 1, topLeft.y);
         const Vec2i end   = Vec2i(topLeft.x - 1, topLeft.y + size.y - 1);
-        particleHandler.query(start, end, query);
+        particleHandler.query(start, end, query, false);
     }
     break;
     }
@@ -65,45 +65,37 @@ bool EntityWorldInteraction::againstSolidCorner(Vec2i pos, const EntityCollider 
     {
     case RectangleCorner::TopLeft:
     {
-        if (const Particle *p = particleHandler.getParticles().get({topLeft.x + size.x, topLeft.y - 1}))
+        const Particle *p = particleHandler.getParticles().get({topLeft.x + size.x, topLeft.y - 1});
+        if (!p || (p->isSolid() && !p->isMoving()))
         {
-            if (p->isSolid() && !p->isMoving())
-            {
-                collided = true;
-            }
+            collided = true;
         }
     }
     break;
     case RectangleCorner::TopRight:
     {
-        if (const Particle *p = particleHandler.getParticles().get({topLeft.x - 1, topLeft.y - 1}))
+        const Particle *p = particleHandler.getParticles().get({topLeft.x - 1, topLeft.y - 1});
+        if (!p || (p->isSolid() && !p->isMoving()))
         {
-            if (p->isSolid() && !p->isMoving())
-            {
-                collided = true;
-            }
+            collided = true;
         }
     }
     break;
     case RectangleCorner::BottomLeft:
     {
-        if (const Particle *p = particleHandler.getParticles().get({topLeft.x - 1, topLeft.y + size.y}))
+        const Particle *p = particleHandler.getParticles().get({topLeft.x - 1, topLeft.y + size.y});
+        if (!p || (p->isSolid() && !p->isMoving()))
         {
-            if (p->isSolid() && !p->isMoving())
-            {
-                collided = true;
-            }
+            collided = true;
         }
     }
     break;
     case RectangleCorner::BottomRight:
     {
-        if (const Particle *p = particleHandler.getParticles().get({topLeft.x + size.x, topLeft.y + size.y}))
+        const Particle *p = particleHandler.getParticles().get({topLeft.x + size.x, topLeft.y + size.y});
+        if (!p || (p->isSolid() && !p->isMoving()))
         {
-            if (p->isSolid() && !p->isMoving())
-            {
-                collided = true;
-            }
+            collided = true;
         }
     }
     break;

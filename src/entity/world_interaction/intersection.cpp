@@ -19,13 +19,7 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(Vec2i pos, const EntityCo
             Vec2i worldPos = topLeft + Vec2i(x, y);
 
             const Particle *p = particleHandler.getParticles().get(worldPos);
-
-            if (!p)
-            {
-                continue;
-            }
-
-            if (p->isSolid() && !p->isMoving())
+            if (!p || (p->isSolid() && !p->isMoving()))
             {
                 intersection[0] = std::max(intersection[0], y + 1);
                 intersection[1] = std::max(intersection[1], size.x - x);
@@ -98,12 +92,7 @@ Vec2f EntityWorldInteraction::calculateWorldIntersection_averageDirection(
             Vec2i worldPos = topLeft + Vec2i(x, y);
 
             const Particle *p = particleHandler.getParticles().get(worldPos);
-            if (!p)
-            {
-                continue;
-            }
-
-            if (p->isSolid())
+            if (!p || (p->isSolid() && !p->isMoving()))
             {
                 sum += (pos - worldPos);
                 ++count;

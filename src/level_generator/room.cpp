@@ -2,14 +2,7 @@
 
 #include "core/logger/logger.hpp"
 #include "core/texture/texture.hpp"
-#include "entity/entity.hpp"
 #include "level_generator/particle_lookup.hpp"
-
-const std::unordered_map<Vec2i, std::vector<std::unique_ptr<Entity>>, Vec2Hash<int>>
-Room::createEntities() const
-{
-    return {};
-}
 
 void Room::init(InitConfig config)
 {
@@ -37,8 +30,9 @@ void Room::init(InitConfig config)
             Particle p = lookupParticleFromColor(lookupPixel);
             p.setColor(colorPixel);
 
-            m_particles[{x, y}]  = p;
-            m_background[{x, y}] = backgroundPixel;
+            PositionalSpawnData &data = m_data[{x, y}];
+            data.particle             = p;
+            data.backgroundColor      = backgroundPixel;
         }
     }
 }

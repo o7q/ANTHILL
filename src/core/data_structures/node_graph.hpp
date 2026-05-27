@@ -61,6 +61,8 @@ template <typename T> class NodeGraph
         }
     }
 
+    void reserve(size_t size) { m_nodes.reserve(size); }
+
     const std::unordered_map<Vec2i, Node<T>, Vec2Hash<int>> &getNodes() const { return m_nodes; }
 
   private:

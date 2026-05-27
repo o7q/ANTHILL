@@ -30,14 +30,14 @@ void ParticleRenderer::render(const ChunkMap<Particle> &particles, const ChunkMa
             render_background(biomeMarkers, assets, settings);
 
             const Particle *p = particles.get(worldPos);
-            if (p && !p->isBlank())
-            {
-                Color c = p->getColor();
 
-                if (c.a != 0)
-                {
-                    m_texture.setPixel({x, y}, c);
-                }
+            if (!p)
+            {
+                m_texture.setPixel({x, y}, Color(20, 0, 0));
+            }
+            else if (!p->isBlank())
+            {
+                m_texture.setPixel({x, y}, p->getColor());
             }
         }
     }

@@ -1,7 +1,7 @@
 #include "world_generator.hpp"
 
-#include "world_generator/generate_result.hpp"
-#include <memory>
+#include "world_generator/spawn_data.hpp"
+#include <optional>
 
 void WorldGenerator::generate_place(Vec2i origin, Vec2i radius)
 {
@@ -12,54 +12,62 @@ void WorldGenerator::generate_place(Vec2i origin, Vec2i radius)
     {
         for (int cx = chunkOrigin.x - radius.x; cx <= chunkOrigin.x + radius.x; ++cx)
         {
-            Vec2i index = {cx, cy};
-            if (m_generatedChunkMarkers.find(index) != m_generatedChunkMarkers.end())
+            Vec2i chunkPos = {cx, cy};
+            if (m_generatedChunkMarkers.find(chunkPos) != m_generatedChunkMarkers.end())
             {
                 continue;
             }
 
-            m_generatedChunkMarkers.insert(index);
+            m_generatedChunkMarkers.insert(chunkPos);
 
             for (unsigned int y = 0; y < chunkSize.y; ++y)
             {
                 for (unsigned int x = 0; x < chunkSize.x; ++x)
                 {
-                    Vec2i pos = Vec2i(cx, cy) * chunkSize.toInt() + Vec2i(x, y);
+                    Vec2i pos = chunkPos * chunkSize.toInt() + Vec2i(x, y);
                     generate_place_at_pos(pos);
                 }
             }
+
+            m_structureLayer.erase(chunkPos);
         }
     }
 }
 
 void WorldGenerator::generate_place_at_pos(Vec2i pos)
 {
-    GenerateResult result;
+    PositionalSpawnData data;
     BiomeID biomeID = get_biome(pos);
 
-    // switch (biomeID)
-    // {
-    // case BiomeID::Void:
-    //     break;
-    // case BiomeID::DesertLayer1:
-    //     result = generate_desert_layer1(pos);
-    //     break;
-    // case BiomeID::DesertLayer2:
-    //     result = generate_desert_layer2(pos);
-    //     break;
-    // }
-
-    if (const GenerateResult *r = m_structureLayer.get(pos))
+    const std::optional<PositionalSpawnData> *structureData = m_structureLayer.get(pos);
+    if (structureData && structureData->has_value())
     {
-        result = *r;
+        data = structureData->value();
+    }
+    else
+    {
+        switch (biomeID)
+        {
+        case BiomeID::Void:
+            break;
+        case BiomeID::DesertLayer1:
+            data = generate_desert_layer1(pos);
+            break;
+        case BiomeID::DesertLayer2:
+            data = generate_desert_layer2(pos);
+            break;
+        }
     }
 
-    // for (auto &entity : result.entities)
-    // {
-    //     r_world.getEntityHandler().addEntity(std::move(entity));
-    // }
+    if (data.entities)
+    {
+        for (auto &entity : data.entities(pos, r_assets))
+        {
+            r_world.getEntityHandler().addEntity(std::move(entity));
+        }
+    }
 
-    r_world.getParticleHandler().getEditor().set(pos, result.particle);
-    r_world.getParticleHandler().getBackground().set(pos, result.backgroundColor);
+    r_world.getParticleHandler().getEditor().set(pos, data.particle);
+    r_world.getParticleHandler().getBackground().set(pos, data.backgroundColor);
     r_world.getParticleHandler().getBiomeMarkers().set(pos, biomeID);
 }

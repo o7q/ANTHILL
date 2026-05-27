@@ -1,3 +1,4 @@
+#include "core/math/geometry/rectangle.hpp"
 #include "entity_handler.hpp"
 
 #include "core/math/distance.hpp"
@@ -11,6 +12,7 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
                            EventPoolRefs eventPoolRefs)
 {
     const Player *currentPlayer = getCurrentPlayer();
+    Rectangle_i killBox(origin, m_globalKillRadius);
 
     for (auto &[id, entity] : m_entities)
     {
@@ -49,9 +51,7 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
 
         Vec2i pos = entity->getBody().getPosition();
 
-        if (entity->getHealth() <= 0 || pos.x < origin.x - m_globalKillRadius.x ||
-            pos.x > origin.x + m_globalKillRadius.x || pos.y < origin.y - m_globalKillRadius.y ||
-            pos.y > origin.y + m_globalKillRadius.y)
+        if (entity->getHealth() <= 0 || !killBox.pointInside(pos) || !particleHandler.getParticles().get(pos))
         {
             entity->onKill(context, events);
             entity.reset();

@@ -23,6 +23,7 @@ NodeGraph<const Room *> LevelGenerator::generate(uint32_t seed)
 
     NodeGraph<const Room *> roomGraph;
     std::vector<Vec2i> roomPositions;
+    roomGraph.reserve(rooms.size());
     roomPositions.reserve(rooms.size());
     for (RoomPlaceholder room : rooms)
     {

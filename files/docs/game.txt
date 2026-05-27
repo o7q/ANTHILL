@@ -50,3 +50,6 @@ Principles of Game Feel (from GAME FEEL by Steve Swink):
 
 Upgrades and augments
 - You can find parts as loot to upgrade or augment body parts
+
+Minimap
+- Have a minimap that subtly guides the player where to go

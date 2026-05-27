@@ -8,7 +8,7 @@
 WorldGenerator::WorldGenerator(World &world, const Assets &assets)
     : r_world(world), r_assets(assets), m_structureLayer({32, 32})
 {
-    m_seed = Math::Random::unseededRandomInt(0, 10000000);
+    m_seed = Math::Random::unseededRandomInt(0, 1000000);
 }
 
 void WorldGenerator::generate(Vec2i origin, Vec2i radius)
@@ -16,7 +16,7 @@ void WorldGenerator::generate(Vec2i origin, Vec2i radius)
     if (!m_structureGenerated)
     {
         LevelGenerator::Config config;
-        config.bounds                    = {{0, 0}, {2000, 2000}};
+        config.bounds                    = {{0, 4000}, {8000, 8000}};
         config.initialRoomPlacementCount = 100;
         config.roomPool.push_back({&r_assets.rooms().get(RoomID::Test), 1});
         config.roomSpread     = {2, 100};
@@ -36,17 +36,12 @@ void WorldGenerator::generate(Vec2i origin, Vec2i radius)
             {
                 for (int x = 0; x < node.value->getSize().x; ++x)
                 {
-                    GenerateResult result;
-                    result.particle        = node.value->getParticles().at({x, y});
-                    result.backgroundColor = node.value->getBackground().at({x, y});
-
-                    m_structureLayer.set(a + Vec2i(x, y), result);
+                    m_structureLayer.set(a + Vec2i(x, y), node.value->getData().at({x, y}));
                 }
             }
         }
     }
 
     m_structureGenerated = true;
-
     generate_place(origin, radius);
 }

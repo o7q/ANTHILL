@@ -19,7 +19,7 @@ EntityWorldInteraction::TrajectoryCollisionResponse EntityWorldInteraction::calc
         bool collidedThisIteration = false;
         auto query                 = [&](const Particle *p)
         {
-            if (p->isSolid() && !p->isMoving())
+            if (!p || (p->isSolid() && !p->isMoving()))
             {
                 collidedThisIteration = true;
                 return true;
@@ -27,7 +27,7 @@ EntityWorldInteraction::TrajectoryCollisionResponse EntityWorldInteraction::calc
 
             return false;
         };
-        particleHandler.query(a, b, query);
+        particleHandler.query(a, b, query, false);
 
         if (collidedThisIteration)
         {

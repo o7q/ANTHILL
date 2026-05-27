@@ -3,7 +3,7 @@
 #include "core/math/random.hpp"
 #include "core/time/time_handler.hpp"
 #include "core/viewport/render_command.hpp"
-#include "entities/player_point/player_point.hpp"
+#include "entities/wuskkogel/wuskkogel.hpp"
 
 void MainScene::onStart()
 {
@@ -33,6 +33,7 @@ void MainScene::onTick()
         stone.setPhysicsType(Particle::PhysicsType::None);
         stone.setMatterType(Particle::MatterType::Solid);
         stone.setMass(200000000);
+        stone.setRestitution(1.0f);
 
         m_world.getParticleHandler().getEditor().draw(worldMousePos, stone, 20);
     }
@@ -65,9 +66,9 @@ void MainScene::onTick()
 
         m_world.getParticleHandler().getEditor().draw(worldMousePos, bouncy, 5);
     }
-    if (r_window.getInput().getInput(InputID::AltAction5)->isDown())
+    if (r_window.getInput().getInput(InputID::AltAction5)->wasPressed())
     {
-        auto entity = std::make_unique<PlayerPoint>(worldMousePos);
+        auto entity = std::make_unique<Wuskkogel>(r_assets);
         entity->getBody().setPosition(worldMousePos);
         m_world.getEntityHandler().addEntity(std::move(entity));
     }
