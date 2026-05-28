@@ -3,11 +3,9 @@
 #include "camera/camera.hpp"
 #include "core/viewport/render_command.hpp"
 
-void ParticleRenderer::render(const ChunkMap<Particle> &particles, const ChunkMap<BiomeID> &biomeMarkers,
-                              const Camera &camera, const Assets &assets,
-                              std::vector<RenderCommand> &commandsOut)
+void ParticleRenderer::render(const RenderData &data, std::vector<RenderCommand> &commandsOut)
 {
-    Vec2u size = camera.getViewSize();
+    Vec2u size = data.camera.getViewSize();
 
     if (m_texture.getSize() != size)
     {
@@ -20,16 +18,10 @@ void ParticleRenderer::render(const ChunkMap<Particle> &particles, const ChunkMa
         {
             m_texture.setPixel({x, y}, Color());
 
-            Vec2i cameraPos = camera.getPosition();
-            Vec2i worldPos  = camera.viewportToCamera(Vec2i(x, y));
+            Vec2i worldPos = data.camera.viewportToCamera(Vec2i(x, y));
 
-            BackgroundRenderSettings settings;
-            settings.cameraPos = cameraPos;
-            settings.worldPos  = worldPos;
-            settings.drawPos   = {x, y};
-            render_background(biomeMarkers, assets, settings);
-
-            const Particle *p = particles.get(worldPos);
+            const Particle *p            = data.particles.get(worldPos);
+            const Color *backgroundColor = data.background.get(worldPos);
 
             if (!p)
             {
@@ -39,54 +31,62 @@ void ParticleRenderer::render(const ChunkMap<Particle> &particles, const ChunkMa
             {
                 m_texture.setPixel({x, y}, p->getColor());
             }
+            else if (backgroundColor && backgroundColor->a != 0)
+            {
+                m_texture.setPixel({x, y}, *backgroundColor);
+            }
+            else
+            {
+                Vec2i cameraPos = data.camera.getPosition();
+                render_biome(data.biomeMarkers, data.assets, worldPos, cameraPos, {x, y});
+            }
         }
     }
 
-    TextureRenderCommandData data;
-    data.texture = &m_texture;
-    data.origin  = {0, 0};
+    TextureRenderCommandData renderData;
+    renderData.texture = &m_texture;
+    renderData.origin  = {0, 0};
 
     RenderCommand command;
     command.index = 0;
-    command.data  = data;
+    command.data  = renderData;
 
     commandsOut.push_back(command);
 }
 
-void ParticleRenderer::render_background(const ChunkMap<BiomeID> &biomeMarkers, const Assets &assets,
-                                         BackgroundRenderSettings settings)
+void ParticleRenderer::render_biome(const ChunkMap<BiomeID> &biomeMarkers, const Assets &assets,
+                                    Vec2i worldPos, Vec2i cameraPos, Vec2u screenPos)
 {
-    const BiomeID *a = biomeMarkers.get(settings.worldPos);
+    const BiomeID *biomeMarker = biomeMarkers.get(worldPos);
 
-    if (!a)
+    if (!biomeMarker)
     {
         return;
     }
 
-    const Texture *tex = nullptr;
-    float amount       = 0.0f;
-    switch (*a)
+    const Texture *texture = nullptr;
+    float amount           = 0.0f;
+    switch (*biomeMarker)
     {
     case BiomeID::DesertLayer1:
-        tex    = &assets.textures().get(TextureID::SandBackground);
-        amount = 0.0f;
+        texture = &assets.textures().get(TextureID::SandBackground);
+        amount  = 0.0f;
         break;
     case BiomeID::DesertLayer2:
-        tex    = &assets.textures().get(TextureID::SandBackground);
-        amount = 0.2f;
+        texture = &assets.textures().get(TextureID::SandBackground);
+        amount  = 0.2f;
         break;
     default:
         break;
     }
 
-    if (!tex)
+    if (!texture)
     {
         return;
     }
 
-    Vec2u size     = tex->getSize();
-    Vec2u parallax = calculate_parallax(settings.worldPos, settings.cameraPos, size, amount);
+    Vec2u parallax = (worldPos.toFloat() - cameraPos.toFloat() * amount).toUnsignedInt() % texture->getSize();
 
-    Color c = tex->getPixel(parallax);
-    m_texture.setPixel(settings.drawPos, c);
+    Color c = texture->getPixel(parallax);
+    m_texture.setPixel(screenPos, c);
 }

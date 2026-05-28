@@ -39,11 +39,11 @@ PositionalSpawnData WorldGenerator::generate_desert_layer1(Vec2i pos)
 
     if (p0 >= 0.67f && p0 < 0.68f && Math::Random::unseededRandomInt(0, 10000) == 0)
     {
-        data.entities = [](Vec2i pos, const Assets &assets)
+        data.entities = [](Vec2i position, const Assets &assets)
         {
             std::vector<std::unique_ptr<Entity>> entities;
             auto wuskkogel = std::make_unique<Wuskkogel>(assets);
-            wuskkogel->getBody().setPosition(pos);
+            wuskkogel->getBody().setPosition(position);
             entities.push_back(std::move(wuskkogel));
             return entities;
         };
@@ -80,11 +80,11 @@ PositionalSpawnData WorldGenerator::generate_desert_layer2(Vec2i pos)
 
     if (p0 > 0.65f && p0 < 0.70f && Math::Random::unseededRandomInt(0, 10000) == 0)
     {
-        data.entities = [](Vec2i pos, const Assets &assets)
+        data.entities = [](Vec2i position, const Assets &assets)
         {
             std::vector<std::unique_ptr<Entity>> entities;
             auto wuskkogel = std::make_unique<Wuskkogel>(assets);
-            wuskkogel->getBody().setPosition(pos);
+            wuskkogel->getBody().setPosition(position);
             entities.push_back(std::move(wuskkogel));
             return entities;
         };

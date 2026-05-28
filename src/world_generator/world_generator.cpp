@@ -16,11 +16,11 @@ void WorldGenerator::generate(Vec2i origin, Vec2i radius)
     if (!m_structureGenerated)
     {
         LevelGenerator::Config config;
-        config.bounds                    = {{0, 4000}, {8000, 8000}};
+        config.bounds                    = {{0, 1000}, {2000, 2000}};
         config.initialRoomPlacementCount = 100;
         config.roomPool.push_back({&r_assets.rooms().get(RoomID::Test), 1});
-        config.roomSpread     = {2, 100};
-        config.roomMinSpacing = {20, 20};
+        config.roomSpread     = {1, 1};
+        config.roomMinSpacing = {0, 0};
 
         LevelGenerator generator;
         generator.setConfig(config);

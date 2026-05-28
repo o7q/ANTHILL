@@ -11,7 +11,9 @@ void World::update(TimeHandler::Info time, Vec2i origin, EventPool<ExternalEvent
 
 void World::render(const Camera &camera, const Assets &assets, std::vector<RenderCommand> &commandsOut)
 {
-    m_particleHandler.getRenderer().render(m_particleHandler.getParticles(),
-                                           m_particleHandler.getBiomeMarkers(), camera, assets, commandsOut);
+    m_particleHandler.getRenderer().render({m_particleHandler.getParticles(),
+                                            m_particleHandler.getBiomeMarkers(),
+                                            m_particleHandler.getBackground(), camera, assets},
+                                           commandsOut);
     m_entityHandler.render(camera, commandsOut);
 }
