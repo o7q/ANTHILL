@@ -4,7 +4,7 @@
 
 enum class ParticleEventType
 {
-    Draw
+    SetRadius
 };
 
 struct ParticleEvent

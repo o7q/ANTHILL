@@ -29,5 +29,5 @@ const Texture *SpriteSheet::getSprite(unsigned int index) const
         return nullptr;
     }
 
-    return &m_frames[index];
+    return &m_frames.at(index);
 }

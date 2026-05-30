@@ -10,6 +10,7 @@ class Room
 {
   public:
     Room() = default;
+    Room(Vec2i size) { m_size = size; }
 
     Vec2i getSize() const { return m_size; }
     const std::unordered_map<Vec2i, PositionalSpawnData, Vec2Hash<int>> &getData() const { return m_data; }

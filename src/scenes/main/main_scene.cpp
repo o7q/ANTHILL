@@ -35,13 +35,13 @@ void MainScene::onTick()
         stone.setMass(200000000);
         stone.setRestitution(1.0f);
 
-        m_world.getParticleHandler().getEditor().draw(worldMousePos, stone, 20);
+        m_world.getParticleHandler().getEditor().setRadius(worldMousePos, stone, 20);
     }
     if (r_window.getInput().getInput(InputID::AltAction2)->isDown())
     {
         Particle air;
 
-        m_world.getParticleHandler().getEditor().draw(worldMousePos, air, 10);
+        m_world.getParticleHandler().getEditor().setRadius(worldMousePos, air, 10);
     }
     if (r_window.getInput().getInput(InputID::AltAction3)->isDown())
     {
@@ -52,7 +52,7 @@ void MainScene::onTick()
         sand.setMatterType(Particle::MatterType::Solid);
         sand.setMass(1);
 
-        m_world.getParticleHandler().getEditor().draw(worldMousePos, sand, 5);
+        m_world.getParticleHandler().getEditor().setRadius(worldMousePos, sand, 5);
     }
     if (r_window.getInput().getInput(InputID::AltAction4)->isDown())
     {
@@ -64,7 +64,7 @@ void MainScene::onTick()
         bouncy.setMass(1);
         bouncy.setRestitution(0.9f);
 
-        m_world.getParticleHandler().getEditor().draw(worldMousePos, bouncy, 5);
+        m_world.getParticleHandler().getEditor().setRadius(worldMousePos, bouncy, 5);
     }
     if (r_window.getInput().getInput(InputID::AltAction5)->wasPressed())
     {

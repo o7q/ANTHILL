@@ -5,7 +5,7 @@
 
 struct ParticleDrawEvent : public ParticleEvent
 {
-    ParticleDrawEvent() : ParticleEvent(ParticleEventType::Draw) {}
+    ParticleDrawEvent() : ParticleEvent(ParticleEventType::SetRadius) {}
     virtual ~ParticleDrawEvent() = default;
 
     Particle particle;

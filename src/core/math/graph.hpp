@@ -11,15 +11,17 @@ namespace Math
 namespace Graph
 {
 template <typename T>
-inline void connectNodesFromTriangulation(const std::vector<Triangle_i> &triangulation,
-                                          NodeGraph<T> &graphOut)
+inline NodeGraph<T> connectNodesFromTriangulation(const std::vector<Triangle_i> &triangulation,
+                                                  const NodeGraph<T> &input)
 {
+    NodeGraph<T> out = input;
     for (Triangle_i tri : triangulation)
     {
-        graphOut.connect(tri.verts[0], tri.verts[1]);
-        graphOut.connect(tri.verts[1], tri.verts[2]);
-        graphOut.connect(tri.verts[2], tri.verts[0]);
+        out.connect(tri.verts[0], tri.verts[1]);
+        out.connect(tri.verts[1], tri.verts[2]);
+        out.connect(tri.verts[2], tri.verts[0]);
     }
+    return out;
 }
 
 // prim's algorithm

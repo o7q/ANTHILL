@@ -10,7 +10,7 @@
 #include "identifiers/sounds.hpp"
 #include "identifiers/spritesheet.hpp"
 #include "identifiers/textures.hpp"
-#include "level_generator/room.hpp"
+#include "room/room.hpp"
 
 class Assets
 {

@@ -4,7 +4,7 @@
 #include "core/math/geometry/rectangle.hpp"
 #include "core/math/geometry/vec.hpp"
 #include "core/math/random.hpp"
-#include "room.hpp"
+#include "room/room.hpp"
 #include <vector>
 
 struct RoomPlaceholder
@@ -14,7 +14,7 @@ struct RoomPlaceholder
     bool special = false;
 };
 
-class LevelGenerator
+class LevelLayoutGenerator
 {
   public:
     struct Config

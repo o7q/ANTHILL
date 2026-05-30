@@ -3,7 +3,7 @@
 #include "core/data_structures/node_graph.hpp"
 #include "core/math/geometry/rectangle.hpp"
 #include "core/math/random.hpp"
-#include "level_generator/level_generator.hpp"
+#include "level_generator/layout_generator.hpp"
 
 WorldGenerator::WorldGenerator(World &world, const Assets &assets)
     : r_world(world), r_assets(assets), m_structureLayer({32, 32})
@@ -15,14 +15,14 @@ void WorldGenerator::generate(Vec2i origin, Vec2i radius)
 {
     if (!m_structureGenerated)
     {
-        LevelGenerator::Config config;
+        LevelLayoutGenerator::Config config;
         config.bounds                    = {{0, 1000}, {2000, 2000}};
         config.initialRoomPlacementCount = 100;
-        config.roomPool.push_back({&r_assets.rooms().get(RoomID::Test), 1});
-        config.roomSpread     = {1, 1};
+        config.roomPool.push_back({&r_assets.rooms().get(RoomID::Sand), 1});
+        config.roomSpread     = {10, 10};
         config.roomMinSpacing = {0, 0};
 
-        LevelGenerator generator;
+        LevelLayoutGenerator generator;
         generator.setConfig(config);
         NodeGraph<const Room *> roomGraph = generator.generate(m_seed);
 

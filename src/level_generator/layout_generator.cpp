@@ -1,14 +1,11 @@
 
-#include "level_generator.hpp"
+#include "layout_generator.hpp"
 #include "core/data_structures/node_graph.hpp"
 #include "core/math/geometry/rectangle.hpp"
-#include "core/math/geometry/triangle.hpp"
-#include "core/math/graph.hpp"
-#include "core/math/mesh.hpp"
 #include "core/math/random.hpp"
 #include <vector>
 
-NodeGraph<const Room *> LevelGenerator::generate(uint32_t seed)
+NodeGraph<const Room *> LevelLayoutGenerator::generate(uint32_t seed)
 {
     std::vector<RoomPlaceholder> rooms;
 
@@ -22,26 +19,18 @@ NodeGraph<const Room *> LevelGenerator::generate(uint32_t seed)
     generate_purge_bad_rooms(rooms);
 
     NodeGraph<const Room *> roomGraph;
-    std::vector<Vec2i> roomPositions;
     roomGraph.reserve(rooms.size());
-    roomPositions.reserve(rooms.size());
     for (RoomPlaceholder room : rooms)
     {
         Node<const Room *> roomNode;
         roomNode.value = room.room;
         roomGraph.set(room.pos, roomNode);
-
-        roomPositions.push_back(room.pos);
     }
-
-    std::vector<Triangle_i> triangulation = Math::Mesh::generateTriangulation(roomPositions);
-    Math::Graph::connectNodesFromTriangulation(triangulation, roomGraph);
-    roomGraph = Math::Graph::minimumSpanningTree(roomGraph);
 
     return roomGraph;
 }
 
-void LevelGenerator::generate_place_rooms(std::vector<RoomPlaceholder> &roomsOut, uint32_t &seed)
+void LevelLayoutGenerator::generate_place_rooms(std::vector<RoomPlaceholder> &roomsOut, uint32_t &seed)
 {
     for (int i = 0; i < m_config.initialRoomPlacementCount; ++i)
     {
@@ -54,7 +43,8 @@ void LevelGenerator::generate_place_rooms(std::vector<RoomPlaceholder> &roomsOut
     }
 }
 
-void LevelGenerator::generate_fix_room_intersection(std::vector<RoomPlaceholder> &roomsOut, uint32_t &seed)
+void LevelLayoutGenerator::generate_fix_room_intersection(std::vector<RoomPlaceholder> &roomsOut,
+                                                          uint32_t &seed)
 {
     for (int i = 0; i < m_config.roomSeparateIterations; ++i)
     {
@@ -99,7 +89,7 @@ void LevelGenerator::generate_fix_room_intersection(std::vector<RoomPlaceholder>
     }
 }
 
-void LevelGenerator::generate_purge_bad_rooms(std::vector<RoomPlaceholder> &roomsOut)
+void LevelLayoutGenerator::generate_purge_bad_rooms(std::vector<RoomPlaceholder> &roomsOut)
 {
     size_t current = 0;
     for (auto it = roomsOut.begin(); it != roomsOut.end();)

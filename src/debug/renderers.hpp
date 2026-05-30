@@ -3,7 +3,7 @@
 #include "ai/navigation/ai_navigation.hpp"
 #include "ai/perception/ai_perception.hpp"
 #include "camera/camera.hpp"
-#include "core/math/rectangle.hpp"
+#include "core/math/geometry/rectangle.hpp"
 #include "core/viewport/render_command.hpp"
 #include "entity/collider/entity_collider.hpp"
 #include <vector>

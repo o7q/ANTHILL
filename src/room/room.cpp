@@ -2,7 +2,7 @@
 
 #include "core/logger/logger.hpp"
 #include "core/texture/texture.hpp"
-#include "level_generator/particle_lookup.hpp"
+#include "world/particle_handler/particle_lookup.hpp"
 
 void Room::init(InitConfig config)
 {

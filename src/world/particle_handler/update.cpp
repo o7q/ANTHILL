@@ -8,9 +8,9 @@ void ParticleHandler::update(TimeHandler::Info time, Vec2i origin)
     {
         switch (event->type)
         {
-        case ParticleEventType::Draw:
+        case ParticleEventType::SetRadius:
             auto e = static_cast<ParticleDrawEvent *>(event.get());
-            m_editor.draw(e->position, e->particle, e->radius);
+            m_editor.setRadius(e->position, e->particle, e->radius);
             break;
         }
     }

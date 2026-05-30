@@ -68,6 +68,6 @@ void WorldGenerator::generate_place_at_pos(Vec2i pos)
     }
 
     r_world.getParticleHandler().getEditor().set(pos, data.particle);
-    r_world.getParticleHandler().getBackground().set(pos, data.backgroundColor);
-    r_world.getParticleHandler().getBiomeMarkers().set(pos, biomeID);
+    r_world.getParticleHandler().getEditor().setBackground(pos, data.backgroundColor);
+    r_world.getParticleHandler().getEditor().setBiome(pos, biomeID);
 }

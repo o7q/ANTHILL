@@ -3,12 +3,17 @@
 #include "core/data_structures/chunk_map.hpp"
 #include "core/math/random.hpp"
 #include "core/texture/texture.hpp"
+#include "world/particle_handler/biome.hpp"
 #include "world/particle_handler/particle.hpp"
 
 class ParticleEditor
 {
   public:
-    ParticleEditor(ChunkMap<Particle> &particles) : r_particles(particles) {}
+    ParticleEditor(ChunkMap<Particle> &particles, ChunkMap<BiomeID> &biomeMarkers,
+                   ChunkMap<Color> &background)
+        : r_particles(particles), r_biomeMarkers(biomeMarkers), r_background(background)
+    {
+    }
 
     void set(Vec2i pos, Particle p, bool force = false)
     {
@@ -36,7 +41,7 @@ class ParticleEditor
         r_particles.set(pos, p);
     }
 
-    void draw(Vec2i pos, Particle p, int radius = 5)
+    void setRadius(Vec2i pos, Particle p, int radius = 5)
     {
         for (int ry = -radius; ry <= radius; ++ry)
         {
@@ -49,6 +54,9 @@ class ParticleEditor
             }
         }
     }
+
+    void setBackground(Vec2i pos, Color color) { r_background.set(pos, color); }
+    void setBiome(Vec2i pos, BiomeID biome) { r_biomeMarkers.set(pos, biome); }
 
     void textureToParticles(const Texture &texture, Vec2i pos, Particle particleBase)
     {
@@ -69,4 +77,6 @@ class ParticleEditor
 
   private:
     ChunkMap<Particle> &r_particles;
+    ChunkMap<BiomeID> &r_biomeMarkers;
+    ChunkMap<Color> &r_background;
 };
