@@ -21,7 +21,7 @@ class ParticleHandler
     {
     }
 
-    void update(TimeHandler::Info time, Vec2i origin);
+    void update(TimeHandler::Info time, Rectangle_i updateRect);
 
     const ChunkMap<Particle> &getParticles() const { return m_particles; }
     const ChunkMap<BiomeID> &getBiomeMarkers() const { return m_biomeMarkers; }

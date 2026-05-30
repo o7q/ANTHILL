@@ -23,12 +23,17 @@ void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<Enti
             const Particle *p = context.particleHandler.getParticles().get(pos);
             if (p && p->isSolid())
             {
-                auto event      = std::make_unique<ParticleDrawEvent>();
-                event->position = pos;
-                event->radius   = Math::Random::unseededRandomInt(3, 6);
-                event->particle = Particle{};
+                auto setEvent      = std::make_unique<ParticleSetRadiusEvent>();
+                setEvent->position = pos;
+                setEvent->radius   = Math::Random::unseededRandomInt(3, 6);
+                setEvent->particle = Particle{};
+                eventsOut.emit(std::make_unique<EntityParticleEvent>(context.id, std::move(setEvent)));
 
-                eventsOut.emit(std::make_unique<EntityParticleEvent>(context.id, std::move(event)));
+                auto forceEvent      = std::make_unique<ParticleApplyForceEvent>();
+                forceEvent->position = pos;
+                forceEvent->radius   = 8;
+                forceEvent->power    = 2;
+                eventsOut.emit(std::make_unique<EntityParticleEvent>(context.id, std::move(forceEvent)));
 
                 auto soundEvent             = std::make_unique<ExternalPlaySoundEvent>();
                 soundEvent->soundID         = SoundID::SumiHitmarker1;

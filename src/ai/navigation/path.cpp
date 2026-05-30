@@ -10,7 +10,7 @@ void AINavigation::update_path(Vec2i currentPos, const EntityUpdateContext &cont
     if (end != m_astar.getEnd() || (m_stuckTimer.completed() && goalDist > m_config.satisfactoryDistance))
     {
         Vec2i start = context.particleHandler.getNavmesh().getIndexFromWorldPosition(currentPos);
-        m_astar.reset(Vec2i(start.x, start.y), end);
+        m_astar.reset(start, end);
         m_checkpoints.clear();
         m_stuckTimer.restart();
         m_astarPathState = PathState::Iterating;

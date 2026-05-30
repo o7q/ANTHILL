@@ -1,20 +1,33 @@
+#include "core/math/geometry/rectangle.hpp"
 #include "p_dynamics_handler.hpp"
 
 #include "core/math/verlet/verlet.hpp"
 #include "world/particle_handler/particle.hpp"
 #include <limits>
 
-void PDynamicsHandler::update(TimeHandler::Info timeInfo, Vec2i origin)
+void PDynamicsHandler::update(TimeHandler::Info timeInfo, Rectangle_i updateRect)
 {
     Vec2i lastNavmeshChunkIndex = {std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
 
-    for (int y = origin.y + static_cast<int>(m_updateRadius.y);
-         y >= origin.y - static_cast<int>(m_updateRadius.y); --y)
+    Vec2i a = updateRect.getA();
+    Vec2i b = updateRect.getB();
+
+    for (int y = b.y; y >= a.y; --y)
     {
-        for (int x = origin.x + static_cast<int>(m_updateRadius.x);
-             x >= origin.x - static_cast<int>(m_updateRadius.x); --x)
+        for (int x = b.x; x >= a.x; --x)
         {
-            Particle *p = r_particles.get({x, y});
+            Vec2i pos                   = {x, y};
+            Particle *p                 = r_particles.get(pos);
+            const uint8_t *swapStatePtr = m_swapStates.get(pos);
+            uint8_t swapState           = 0;
+            if (swapStatePtr)
+            {
+                swapState = *swapStatePtr;
+            }
+            else
+            {
+                m_swapStates.set(pos, 0);
+            }
 
             if (!p)
             {
@@ -28,7 +41,7 @@ void PDynamicsHandler::update(TimeHandler::Info timeInfo, Vec2i origin)
             }
             r_navmesh.update(p, chunkIndex);
             lastNavmeshChunkIndex = chunkIndex;
-            if (p->getUpdateSwapID() == m_updateSwapID || p->getPhysicsType() == Particle::PhysicsType::None)
+            if (swapState == m_globalSwapState || p->getPhysicsType() == Particle::PhysicsType::None)
             {
                 continue;
             }
@@ -38,7 +51,7 @@ void PDynamicsHandler::update(TimeHandler::Info timeInfo, Vec2i origin)
         }
     }
 
-    m_updateSwapID = !m_updateSwapID;
+    m_globalSwapState = ~m_globalSwapState;
 }
 
 void PDynamicsHandler::update_particle(ParticleObject po, float dt)
@@ -65,7 +78,6 @@ void PDynamicsHandler::update_particle(ParticleObject po, float dt)
 void PDynamicsHandler::finalize_particle(ParticleObject po)
 {
     Vec2i finalPos = po.particle->getVerlet().getPosition().toGrid();
-
-    po.particle->setUpdateSwapID(m_updateSwapID);
+    m_swapStates.set(finalPos, m_globalSwapState);
     r_particles.move(po.pos, finalPos);
 }

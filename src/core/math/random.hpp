@@ -13,7 +13,7 @@ inline int unseededRandomInt(int min, int max)
 {
     static std::minstd_rand gen(std::random_device{}());
     int range = max - min;
-    if (range == 0)
+    if (range <= 0)
     {
         return min;
     }
@@ -35,7 +35,7 @@ inline uint32_t hash(uint32_t v, uint32_t seed)
 inline int seededRandomInt(int min, int max, uint32_t seed)
 {
     int range = max - min;
-    if (range == 0)
+    if (range <= 0)
     {
         return min;
     }

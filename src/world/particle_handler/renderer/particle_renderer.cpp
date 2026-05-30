@@ -27,7 +27,7 @@ void ParticleRenderer::render(const RenderData &data, std::vector<RenderCommand>
             {
                 m_texture.setPixel({x, y}, Color(20, 0, 0));
             }
-            else if (!p->isBlank())
+            else if (p->getColor().a != 0)
             {
                 m_texture.setPixel({x, y}, p->getColor());
             }

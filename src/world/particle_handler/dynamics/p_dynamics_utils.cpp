@@ -1,5 +1,7 @@
 #include "p_dynamics_handler.hpp"
 
+#include "core/math/geometry/rectangle.hpp"
+
 bool PDynamicsHandler::can_solid_occupy(const Particle *p)
 {
     if (!p)
@@ -24,46 +26,37 @@ bool PDynamicsHandler::can_gas_occupy(const Particle *p)
     {
         return false;
     }
-    return p->isBlank();
+    return p->isAir();
 }
 
-void PDynamicsHandler::applyForce(int x, int y, float power, float dt)
+void PDynamicsHandler::applyForce(Vec2i origin, int radius, float power)
 {
-    for (auto &[chunkPos, chunk] : r_particles.getChunks())
+    Rectangle_i rect(origin, {radius * 2, radius * 2});
+    Vec2i a = rect.getA();
+    Vec2i b = rect.getB();
+
+    for (int y = a.y; y < b.y; ++y)
     {
-        Vec2u chunkSize = r_particles.getChunkSize();
-        for (unsigned int cy = 0; cy < chunkSize.y; ++cy)
+        for (int x = a.x; x < b.x; ++x)
         {
-            for (unsigned int cx = 0; cx < chunkSize.x; ++cx)
+            Particle *p = r_particles.get({x, y});
+
+            if (!p || p->getPhysicsType() == Particle::PhysicsType::None)
             {
-                const int px = chunkPos.x * chunkSize.x + cx;
-                const int py = chunkPos.y * chunkSize.y + cy;
-                Particle *p  = r_particles.get({px, py});
-
-                if (!p)
-                {
-                    continue;
-                }
-
-                if (p->getPhysicsType() == Particle::PhysicsType::None)
-                {
-                    continue;
-                }
-
-                Vec2f dir = p->getVerlet().getPosition() - Vec2f(x, y);
-
-                float distance = dir.length();
-
-                if (distance > 0.001f)
-                {
-                    dir = dir / distance;
-                }
-
-                float strength = power;
-                Vec2f force    = dir * strength;
-
-                p->getVerlet().setVelocity(force, dt);
+                continue;
             }
+
+            Vec2f dir = origin.toFloat() - p->getVerlet().getPosition();
+
+            if (dir.length() < 0.001f)
+            {
+                continue;
+            }
+
+            Vec2f normal = dir.normalize();
+            Vec2f vel    = normal * power;
+
+            p->getVerlet().setForce(vel);
         }
     }
 }

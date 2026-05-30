@@ -13,7 +13,7 @@ void Wuskkogel::update(const EntityUpdateContext &context, EventPool<EntityEvent
 
     for (DamageSource dd : m_damageSources)
     {
-        auto pBleedEvent = std::make_unique<ParticleDrawEvent>();
+        auto pBleedEvent = std::make_unique<ParticleSetRadiusEvent>();
         Particle blood;
         blood.setMatterType(Particle::MatterType::Liquid);
         blood.setPhysicsType(Particle::PhysicsType::Water);

@@ -1,9 +1,11 @@
 #pragma once
 
-#include "core/time/time_handler.hpp"
 #include "core/data_structures/chunk_map.hpp"
+#include "core/math/geometry/rectangle.hpp"
+#include "core/time/time_handler.hpp"
 #include "world/particle_handler/navmesh/navmesh.hpp"
 #include "world/particle_handler/particle.hpp"
+#include <cstdint>
 
 class PDynamicsHandler
 {
@@ -16,17 +18,17 @@ class PDynamicsHandler
 
   public:
     PDynamicsHandler(ChunkMap<Particle> &particles, Navmesh &navmesh)
-        : r_particles(particles), r_navmesh(navmesh)
+        : r_particles(particles), r_navmesh(navmesh), m_swapStates({32, 32})
     {
     }
 
-    void update(TimeHandler::Info timeInfo, Vec2i origin);
+    void update(TimeHandler::Info timeInfo, Rectangle_i updateRect);
 
     void setGravity(float gravity) { m_gravity = gravity; }
     void addGravity(float gravity) { m_gravity += gravity; }
     float getGravity() const { return m_gravity; }
 
-    void applyForce(int x, int y, float power, float dt);
+    void applyForce(Vec2i origin, int radius, float power);
 
   private:
     void update_particle(ParticleObject po, float dt);
@@ -48,9 +50,8 @@ class PDynamicsHandler
   private:
     ChunkMap<Particle> &r_particles;
     Navmesh &r_navmesh;
-    bool m_updateSwapID = 0;
+    ChunkMap<uint8_t> m_swapStates;
+    uint8_t m_globalSwapState = 0;
 
     float m_gravity = 0.1f;
-
-    Vec2u m_updateRadius = {140, 105};
 };

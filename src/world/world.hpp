@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/math/geometry/rectangle.hpp"
 #include "core/time/time_handler.hpp"
 #include "core/viewport/render_command.hpp"
 #include "events/event_pool.hpp"
@@ -15,7 +16,7 @@ class World
     World(const World &other)            = delete;
     World &operator=(const World &other) = delete;
 
-    void update(TimeHandler::Info time, Vec2i origin, EventPool<ExternalEvent> &externalEvents);
+    void update(TimeHandler::Info time, Rectangle_i updateRect, EventPool<ExternalEvent> &externalEvents);
     void render(const Camera &camera, const Assets &assets, std::vector<RenderCommand> &commandsOut);
 
     ParticleHandler &getParticleHandler() { return m_particleHandler; }

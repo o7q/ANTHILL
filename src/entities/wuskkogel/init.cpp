@@ -29,7 +29,8 @@ Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
     cfg.astar.maxIterations        = 100000;
     cfg.astarNeighborCheckFunction = [&](const EntityUpdateContext &context, Vec2i index)
     {
-        const Navmesh::ChunkData *data = context.particleHandler.getNavmesh().getChunkFromIndex(index);
+        const Navmesh::ChunkData *chunkData =
+            context.particleHandler.getNavmesh().getChunkDataFromIndex(index);
 
         Vec2i pos = index * context.particleHandler.getNavmesh().getResolution().toInt();
 
@@ -64,12 +65,12 @@ Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
             return false;
         }
 
-        if (!data)
+        if (!chunkData)
         {
             return true;
         }
 
-        return !data->containsSolid;
+        return !chunkData->containsSolid;
     };
     m_aiNavigation.setConfig(cfg);
 

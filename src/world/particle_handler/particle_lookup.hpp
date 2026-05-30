@@ -1,5 +1,6 @@
 #pragma once
 
 #include "world/particle_handler/particle.hpp"
+#include <optional>
 
-Particle lookupParticleFromColor(Color color);
+std::optional<Particle> lookupParticleFromColor(Color color);

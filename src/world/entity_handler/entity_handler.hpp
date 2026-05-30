@@ -27,7 +27,7 @@ class EntityHandler
     EntityHandler &operator=(const EntityHandler &other) = delete;
     virtual ~EntityHandler()                             = default;
 
-    void update(const ParticleHandler &world, TimeHandler::Info time, Vec2i origin,
+    void update(const ParticleHandler &world, TimeHandler::Info time, Rectangle_i updateRect,
                 EventPoolRefs eventPoolRefs);
 
     void render(const Camera &camera, std::vector<RenderCommand> &commandsOut);

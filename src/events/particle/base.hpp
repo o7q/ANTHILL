@@ -4,7 +4,8 @@
 
 enum class ParticleEventType
 {
-    SetRadius
+    SetRadius,
+    ApplyForce
 };
 
 struct ParticleEvent

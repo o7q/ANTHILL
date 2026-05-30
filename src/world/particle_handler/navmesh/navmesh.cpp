@@ -2,7 +2,7 @@
 
 void Navmesh::update(const Particle *p, Vec2i index)
 {
-    if (p->isBlank() || p->isMoving())
+    if (p->isAir() || p->isMoving())
     {
         return;
     }
@@ -16,7 +16,7 @@ void Navmesh::update(const Particle *p, Vec2i index)
 
 void Navmesh::resetChunk(Vec2i index) { m_mesh[index] = ChunkData(); }
 
-const Navmesh::ChunkData *Navmesh::getChunkFromIndex(Vec2i index) const
+const Navmesh::ChunkData *Navmesh::getChunkDataFromIndex(Vec2i index) const
 {
     auto it = m_mesh.find(index);
     if (it == m_mesh.end())

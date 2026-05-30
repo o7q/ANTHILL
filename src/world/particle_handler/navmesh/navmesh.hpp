@@ -17,7 +17,7 @@ class Navmesh
 
     void update(const Particle *p, Vec2i index);
     void resetChunk(Vec2i index);
-    const ChunkData *getChunkFromIndex(Vec2i index) const;
+    const ChunkData *getChunkDataFromIndex(Vec2i index) const;
     Vec2i getIndexFromWorldPosition(Vec2i pos) const;
     Vec2u getResolution() const { return m_resolution; }
 

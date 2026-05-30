@@ -47,7 +47,7 @@ class Particle
     }
     MaterialDescriptor getMaterialDescriptor() const { return m_materialDescriptor; }
 
-    bool isBlank() const { return m_color.a == 0; }
+    bool isAir() const { return m_matterType == MatterType::Gas && m_physicsType == PhysicsType::None; }
     bool isSolid() const { return m_matterType == MatterType::Solid; }
     bool isLiquid() const { return m_matterType == MatterType::Liquid; }
     bool isGas() const { return m_matterType == MatterType::Gas; }
@@ -56,9 +56,7 @@ class Particle
     float getRestitution() const { return m_restitution; }
 
     VerletBody &getVerlet() { return m_verletBody; }
-
-    void setUpdateSwapID(bool updateSwapID) { m_updateSwapID = updateSwapID; }
-    bool getUpdateSwapID() const { return m_updateSwapID; }
+    const VerletBody &getVerlet() const { return m_verletBody; }
 
     bool isMoving() const
     {
@@ -82,6 +80,4 @@ class Particle
     float m_mass        = 1.0f;
 
     int m_hardness = 0;
-
-    bool m_updateSwapID = 0;
 };

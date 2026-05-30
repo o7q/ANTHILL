@@ -11,6 +11,13 @@ class Assets;
 struct PositionalSpawnData
 {
     Particle particle;
-    std::function<std::vector<std::unique_ptr<Entity>>(Vec2i, const Assets &)> entities;
     Color backgroundColor;
+    std::function<std::vector<std::unique_ptr<Entity>>(Vec2i, const Assets &)> entities;
+};
+
+struct StructurePositionalSpawnData : public PositionalSpawnData
+{
+    bool overwriteTerrainParticle   = false;
+    bool overwriteTerrainBackground = false;
+    bool overwriteTerrainEntities   = false;
 };
