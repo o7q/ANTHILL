@@ -1,10 +1,9 @@
-#include "core/math/geometry/triangle.hpp"
-#include "core/math/graph.hpp"
-#include "core/math/line.hpp"
-#include "core/math/mesh.hpp"
-#include "level_generator/layout_generator.hpp"
 #include "world_generator.hpp"
 
+#include "core/math/geometry/triangle.hpp"
+#include "core/math/graph.hpp"
+#include "core/math/mesh.hpp"
+#include "level_generator/layout_generator.hpp"
 #include "world_generator/spawn_data.hpp"
 #include <vector>
 

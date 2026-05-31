@@ -1,15 +1,15 @@
 #include "particle_lookup.hpp"
 #include <optional>
 
-std::optional<Particle> lookupParticleFromColor(Color color)
+std::optional<Particle> createParticlePreset(ParticlePresetID preset)
 {
-    switch (color.embed())
+    switch (preset)
     {
-    case 4294967295: // (255, 255, 255), air
+    case ParticlePresetID::Air:
     {
         return Particle{};
     }
-    case 4278190335: // (255, 0, 0), basic solid
+    case ParticlePresetID::BasicSolid:
     {
         Particle p;
         p.setMatterType(Particle::MatterType::Solid);
@@ -19,7 +19,7 @@ std::optional<Particle> lookupParticleFromColor(Color color)
         p.setMass(1000000);
         return p;
     }
+    default:
+        return std::nullopt;
     }
-
-    return std::nullopt;
 }

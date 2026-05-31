@@ -29,7 +29,7 @@ void Room::init(InitConfig config)
             Color lookupPixel     = lookupTexture.getPixel(Vec2u(x, y));
             Color backgroundPixel = backgroundTexture.getPixel(Vec2u(x, y));
 
-            std::optional<Particle> lookup = lookupParticleFromColor(lookupPixel);
+            std::optional<Particle> lookup = createParticlePresetFromColor(lookupPixel);
 
             if (lookup.has_value())
             {

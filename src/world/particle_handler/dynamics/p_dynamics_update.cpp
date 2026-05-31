@@ -1,14 +1,15 @@
-#include "core/math/geometry/rectangle.hpp"
 #include "p_dynamics_handler.hpp"
 
+#include "core/math/geometry/rectangle.hpp"
 #include "core/math/verlet/verlet.hpp"
 #include "world/particle_handler/particle.hpp"
 #include <limits>
 
-void PDynamicsHandler::update(TimeHandler::Info timeInfo, Rectangle_i updateRect)
+void PDynamicsHandler::update(TimeHandler::Info timeInfo, Vec2i origin)
 {
     Vec2i lastNavmeshChunkIndex = {std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
 
+    Rectangle_i updateRect(origin, m_updateSize);
     Vec2i a = updateRect.getA();
     Vec2i b = updateRect.getB();
 
@@ -34,7 +35,7 @@ void PDynamicsHandler::update(TimeHandler::Info timeInfo, Rectangle_i updateRect
                 continue;
             }
 
-            Vec2i chunkIndex = r_navmesh.getIndexFromWorldPosition({x, y});
+            Vec2i chunkIndex = r_navmesh.getIndexFromWorldPosition(pos);
             if (chunkIndex != lastNavmeshChunkIndex)
             {
                 r_navmesh.resetChunk(chunkIndex);
@@ -46,7 +47,7 @@ void PDynamicsHandler::update(TimeHandler::Info timeInfo, Rectangle_i updateRect
                 continue;
             }
 
-            ParticleObject po{p, {x, y}};
+            ParticleObject po{p, pos};
             update_particle(po, timeInfo.dt);
         }
     }

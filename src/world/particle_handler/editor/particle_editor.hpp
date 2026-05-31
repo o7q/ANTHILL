@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/data_structures/chunk_map.hpp"
+#include "core/math/geometry/circle.hpp"
 #include "core/math/random.hpp"
 #include "core/texture/texture.hpp"
 #include "world/particle_handler/biome.hpp"
@@ -41,18 +42,10 @@ class ParticleEditor
         r_particles.set(pos, p);
     }
 
-    void setRadius(Vec2i pos, Particle p, int radius = 5)
+    void setRadius(Vec2i position, Particle p, int radius = 5)
     {
-        for (int ry = -radius; ry <= radius; ++ry)
-        {
-            for (int rx = -radius; rx <= radius; ++rx)
-            {
-                if (rx * rx + ry * ry <= radius * radius)
-                {
-                    set(pos + Vec2i(rx, ry), p);
-                }
-            }
-        }
+        Circle_i circle{position, radius};
+        circle.rasterize([&](Vec2i pos) { set(pos, p); });
     }
 
     void setBackground(Vec2i pos, Color color) { r_background.set(pos, color); }

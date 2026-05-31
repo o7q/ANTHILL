@@ -8,11 +8,11 @@
 #include <memory>
 #include <unordered_map>
 
-void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::Info time,
-                           Rectangle_i updateRect, EventPoolRefs eventPoolRefs)
+void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::Info time, Vec2i origin,
+                           EventPoolRefs eventPoolRefs)
 {
     const Player *currentPlayer = getCurrentPlayer();
-    Rectangle_i killBox(updateRect.getPosition(), m_globalKillRadius);
+    Rectangle_i killBox(origin, m_globalKillRadius);
 
     for (auto &[id, entity] : m_entities)
     {

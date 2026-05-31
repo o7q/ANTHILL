@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/data_structures/chunk_map.hpp"
-#include "core/math/geometry/rectangle.hpp"
 #include "core/time/time_handler.hpp"
 #include "world/particle_handler/navmesh/navmesh.hpp"
 #include "world/particle_handler/particle.hpp"
@@ -22,7 +21,7 @@ class PDynamicsHandler
     {
     }
 
-    void update(TimeHandler::Info timeInfo, Rectangle_i updateRect);
+    void update(TimeHandler::Info timeInfo, Vec2i origin);
 
     void setGravity(float gravity) { m_gravity = gravity; }
     void addGravity(float gravity) { m_gravity += gravity; }
@@ -54,4 +53,6 @@ class PDynamicsHandler
     uint8_t m_globalSwapState = 0;
 
     float m_gravity = 0.1f;
+
+    const Vec2i m_updateSize = {280 + 50, 210 + 50};
 };

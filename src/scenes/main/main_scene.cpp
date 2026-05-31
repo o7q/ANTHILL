@@ -68,10 +68,9 @@ void MainScene::onTick()
     }
     if (r_window.getInput().getInput(InputID::AltAction5)->isDown())
     {
-        m_world.getParticleHandler().getDynamics().applyForce(worldMousePos, 200, 10);
-        // auto entity = std::make_unique<Wuskkogel>(r_assets);
-        // entity->getBody().setPosition(worldMousePos);
-        // m_world.getEntityHandler().addEntity(std::move(entity));
+        auto entity = std::make_unique<Wuskkogel>(r_assets);
+        entity->getBody().setPosition(worldMousePos);
+        m_world.getEntityHandler().addEntity(std::move(entity));
     }
 
     Vec2i updatePos;
@@ -82,7 +81,7 @@ void MainScene::onTick()
     }
 
     m_generator.generate(updatePos.toInt(), {10, 10});
-    m_world.update(r_window.getTime().getInfo(), {updatePos, {280 + 50, 210 + 50}}, m_events);
+    m_world.update(r_window.getTime().getInfo(), updatePos, m_events);
 
     if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
     {

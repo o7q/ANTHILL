@@ -2,7 +2,7 @@
 
 #include "events/particle/events.hpp"
 
-void ParticleHandler::update(TimeHandler::Info time, Rectangle_i updateRect)
+void ParticleHandler::update(TimeHandler::Info time, Vec2i origin)
 {
     for (auto &event : m_events.getEvents())
     {
@@ -23,5 +23,5 @@ void ParticleHandler::update(TimeHandler::Info time, Rectangle_i updateRect)
         }
     }
     m_events.flush();
-    m_dynamicsHandler.update(time, updateRect);
+    m_dynamicsHandler.update(time, origin);
 }
