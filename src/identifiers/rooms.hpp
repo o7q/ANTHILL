@@ -2,5 +2,8 @@
 
 enum class RoomID
 {
-    SandSmall
+    TestSquare,
+    TestSquareBig,
+    TestTall,
+    TestLong
 };

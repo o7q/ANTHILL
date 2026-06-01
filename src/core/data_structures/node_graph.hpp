@@ -1,9 +1,11 @@
 #pragma once
 
 #include "core/logger/logger.hpp"
+#include "core/math/geometry/segment.hpp"
 #include "core/math/geometry/vec.hpp"
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 template <typename T> struct Node
 {
@@ -59,6 +61,42 @@ template <typename T> class NodeGraph
         {
             node.connections.clear();
         }
+    }
+
+    void merge(const NodeGraph<T> &other)
+    {
+        for (auto &[index, node] : other.getNodes())
+        {
+            set(index, node);
+        }
+    }
+
+    std::vector<Vec2i> generatePositions() const
+    {
+        std::vector<Vec2i> out;
+        out.reserve(m_nodes.size());
+        for (auto &[index, _] : m_nodes)
+        {
+            out.push_back(index);
+        }
+        return out;
+    }
+
+    std::unordered_set<Segment_i, SegmentHash<int>> generateConnections() const
+    {
+        auto normalize = [&](Vec2i a, Vec2i b) { return a < b ? Segment_i{a, b} : Segment_i{b, a}; };
+
+        std::unordered_set<Segment_i, SegmentHash<int>> out;
+
+        for (auto &[index, node] : m_nodes)
+        {
+            for (Vec2i connection : node.connections)
+            {
+                out.insert(normalize(index, connection));
+            }
+        }
+
+        return out;
     }
 
     void reserve(size_t size) { m_nodes.reserve(size); }

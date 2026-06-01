@@ -6,8 +6,9 @@
 
 enum class ParticlePresetID : uint32_t
 {
-    Air        = 4294967295, // (255, 255, 255)
-    BasicSolid = 4278190335  // (255, 0, 0)
+    // ids embedded rgba colors
+    Air   = 4294967295, // (255, 255, 255)
+    Stone = 1684301055  // (100, 100, 100)
 };
 
 std::optional<Particle> createParticlePreset(ParticlePresetID id);

@@ -2,10 +2,10 @@
 
 #include "room/room.hpp"
 
-class SandSmallRoom : public Room
+class TestTallRoom : public Room
 {
   public:
-    SandSmallRoom();
+    TestTallRoom();
 
     void writeToLayer(Vec2i worldTopLeft, ChunkMap<StructurePositionalSpawnData> &dataOut) const override;
 };

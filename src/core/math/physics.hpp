@@ -1,7 +1,5 @@
 #pragma once
 
-namespace Utils
-{
 namespace Math
 {
 namespace Physics
@@ -20,4 +18,3 @@ inline float elasticCollisionVelocityB(float mA, float mB, float velA, float vel
 }
 } // namespace Physics
 } // namespace Math
-} // namespace Utils

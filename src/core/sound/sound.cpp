@@ -10,13 +10,13 @@ Sound::Sound(const std::filesystem::path &path)
     ma_decoder decoder;
     if (ma_decoder_init_file(pathString.c_str(), &decoderConfig, &decoder) != MA_SUCCESS)
     {
-        Logger::error("Sound::Sound()", "Failed to decode: " + pathString);
+        Logger::error("Sound::Sound()", "Failed to decode: \"" + pathString + '\"');
         return;
     }
 
     if (ma_decoder_get_length_in_pcm_frames(&decoder, &m_frameCount) != MA_SUCCESS)
     {
-        Logger::error("Sound::Sound()", "Failed to get frame count: " + pathString);
+        Logger::error("Sound::Sound()", "Failed to get frame count: \"" + pathString + '\"');
         ma_decoder_uninit(&decoder);
         return;
     }
@@ -27,7 +27,7 @@ Sound::Sound(const std::filesystem::path &path)
     p_data = (void *)malloc(m_frameCount * bytesPerFrame);
     if (ma_decoder_read_pcm_frames(&decoder, p_data, m_frameCount, NULL) != MA_SUCCESS)
     {
-        Logger::error("Sound::Sound()", "Failed to read pcm frames: " + pathString);
+        Logger::error("Sound::Sound()", "Failed to read pcm frames: \"" + pathString + '\"');
         if (p_data)
         {
             free(p_data);
@@ -39,7 +39,7 @@ Sound::Sound(const std::filesystem::path &path)
 
     ma_decoder_uninit(&decoder);
 
-    Logger::info("Sound::Sound()", "Successfully loaded: " + pathString);
+    Logger::info("Sound::Sound()", "Successfully loaded: \"" + pathString + '\"');
 }
 Sound::~Sound()
 {

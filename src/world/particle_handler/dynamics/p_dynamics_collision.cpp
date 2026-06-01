@@ -92,13 +92,13 @@ void PDynamicsHandler::resolve_particle_collision_against_other(ParticleObject p
 
     if (hitDirection.x != 0)
     {
-        newVelA.x = Utils::Math::Physics::elasticCollisionVelocityA(mA, mB, velA.x, velB.x) * restitution;
-        newVelB.x = Utils::Math::Physics::elasticCollisionVelocityB(mA, mB, velA.x, velB.x) * restitution;
+        newVelA.x = Math::Physics::elasticCollisionVelocityA(mA, mB, velA.x, velB.x) * restitution;
+        newVelB.x = Math::Physics::elasticCollisionVelocityB(mA, mB, velA.x, velB.x) * restitution;
     }
     if (hitDirection.y != 0)
     {
-        newVelA.y = Utils::Math::Physics::elasticCollisionVelocityA(mA, mB, velA.y, velB.y) * restitution;
-        newVelB.y = Utils::Math::Physics::elasticCollisionVelocityB(mA, mB, velA.y, velB.y) * restitution;
+        newVelA.y = Math::Physics::elasticCollisionVelocityA(mA, mB, velA.y, velB.y) * restitution;
+        newVelB.y = Math::Physics::elasticCollisionVelocityB(mA, mB, velA.y, velB.y) * restitution;
     }
 
     constexpr float threshold = 0.25f;

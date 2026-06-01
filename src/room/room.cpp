@@ -8,7 +8,8 @@ void Room::init(InitConfig config)
 {
     Texture colorTexture(config.colorPath);
     Texture lookupTexture(config.lookupPath);
-    Texture backgroundTexture(config.backgroundPath);
+    Texture backgroundTexture =
+        config.backgroundPath == "" ? Texture(colorTexture.getSize()) : Texture(config.backgroundPath);
 
     if (!(colorTexture.getSize() == lookupTexture.getSize() &&
           lookupTexture.getSize() == backgroundTexture.getSize()))

@@ -1,10 +1,17 @@
 #include "world_generator.hpp"
 
+#include "core/data_structures/node_graph.hpp"
+#include "core/math/geometry/circle.hpp"
+#include "core/math/geometry/rectangle.hpp"
+#include "core/math/geometry/segment.hpp"
 #include "core/math/geometry/triangle.hpp"
 #include "core/math/graph.hpp"
+#include "core/math/line.hpp"
 #include "core/math/mesh.hpp"
 #include "level_generator/layout_generator.hpp"
+#include "world/particle_handler/particle_lookup.hpp"
 #include "world_generator/spawn_data.hpp"
+#include <unordered_set>
 #include <vector>
 
 void WorldGenerator::generate(Vec2i origin, Vec2i radius)
@@ -17,32 +24,57 @@ void WorldGenerator::generate_prepare_structures()
 {
     if (!m_structureGenerated)
     {
-        LevelLayoutGenerator::Config config;
-        config.bounds                    = {{0, 2500}, {5000, 5000}};
-        config.initialRoomPlacementCount = 1000;
-        config.roomPool.push_back({&r_assets.rooms().get(RoomID::SandSmall), 1});
-        config.roomSpread     = {500, 500};
-        config.roomMinSpacing = {0, 0};
+        NodeGraph<const Room *> masterLayout;
 
-        LevelLayoutGenerator generator;
-        generator.setConfig(config);
-        NodeGraph<const Room *> roomGraph = generator.generate(m_seed);
+        masterLayout.set({0, 0}, {&r_assets.rooms().get(RoomID::TestSquare)});
 
-        std::vector<Vec2i> positions;
-
-        for (auto &[index, node] : roomGraph.getNodes())
         {
-            positions.push_back(index);
+            LevelLayoutGenerator::Config config;
+            config.bounds                    = {{0, 500}, {1000, 1000}};
+            config.initialRoomPlacementCount = 1000;
+            config.roomPool.push_back({&r_assets.rooms().get(RoomID::TestSquare), 1});
+            config.roomPool.push_back({&r_assets.rooms().get(RoomID::TestSquareBig), 1});
+            config.roomPool.push_back({&r_assets.rooms().get(RoomID::TestTall), 1});
+            config.roomPool.push_back({&r_assets.rooms().get(RoomID::TestLong), 1});
+            config.roomSpread     = {500, 500};
+            config.roomMinSpacing = {0, 0};
+
+            LevelLayoutGenerator generator;
+            generator.setConfig(config);
+            masterLayout.merge(generator.generate(m_seed));
         }
 
-        std::vector<Triangle_i> triangulation = Math::Mesh::generateTriangulation(positions);
-        roomGraph = Math::Graph::connectNodesFromTriangulation(triangulation, roomGraph);
-
-        for (auto &[index, node] : roomGraph.getNodes())
+        for (auto &[index, node] : masterLayout.getNodes())
         {
-            Rectangle_i roomRect(index, node.value->getSize());
-            Vec2i a = roomRect.getA();
-            node.value->writeToLayer(a, m_structureLayer);
+            Rectangle_i dummyRect(index, node.value->getSize());
+            node.value->writeToLayer(dummyRect.getA(), m_structureLayer);
+        }
+
+        std::vector<Triangle_i> triangulation =
+            Math::Mesh::generateTriangulation(masterLayout.generatePositions());
+
+        masterLayout = Math::Graph::connectNodesFromTriangulation(triangulation, masterLayout);
+        masterLayout = Math::Graph::minimumSpanningTree(masterLayout);
+
+        std::unordered_set<Segment_i, SegmentHash<int>> connections = masterLayout.generateConnections();
+
+        for (Segment_i s : connections)
+        {
+            Math::Line::bresenhamLine(s.a, s.b,
+                                      [&](Vec2i pos)
+                                      {
+                                          Circle_i circ{pos, 15};
+
+                                          circ.rasterize(
+                                              [&](Vec2i pos2)
+                                              {
+                                                  StructurePositionalSpawnData dat;
+                                                  dat.overwriteTerrainParticle = true;
+                                                  dat.particle                 = Particle();
+                                                  m_structureLayer.set(pos2, dat);
+                                              });
+                                          return false;
+                                      });
         }
     }
 
@@ -83,18 +115,25 @@ void WorldGenerator::generate_set_in_world(Vec2i origin, Vec2i radius)
 void WorldGenerator::generate_set_in_world_at_pos(Vec2i pos)
 {
     PositionalSpawnData biomeData;
-    BiomeID biomeID = get_biome(pos);
-    switch (biomeID)
+    // BiomeID biomeID = get_biome(pos);
+    // switch (biomeID)
+    // {
+    // case BiomeID::Void:
+    //     break;
+    // case BiomeID::DesertLayer1:
+    //     biomeData = generate_desert_layer1(pos);
+    //     break;
+    // case BiomeID::DesertLayer2:
+    //     biomeData = generate_desert_layer2(pos);
+    //     break;
+    // }
+    if (pos.y > 0)
     {
-    case BiomeID::Void:
-        break;
-    case BiomeID::DesertLayer1:
-        biomeData = generate_desert_layer1(pos);
-        break;
-    case BiomeID::DesertLayer2:
-        biomeData = generate_desert_layer2(pos);
-        break;
+        Particle stone = createParticlePreset(ParticlePresetID::Stone).value();
+        stone.setColor(Color(100, 100, 100));
+        biomeData.particle = stone;
     }
+
     const StructurePositionalSpawnData *structureData = m_structureLayer.get(pos);
 
     PositionalSpawnData finalData;
@@ -122,5 +161,5 @@ void WorldGenerator::generate_set_in_world_at_pos(Vec2i pos)
 
     r_world.getParticleHandler().getEditor().set(pos, finalData.particle);
     r_world.getParticleHandler().getEditor().setBackground(pos, finalData.backgroundColor);
-    r_world.getParticleHandler().getEditor().setBiome(pos, biomeID);
+    // r_world.getParticleHandler().getEditor().setBiome(pos, biomeID);
 }

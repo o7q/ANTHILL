@@ -9,12 +9,12 @@ std::optional<Particle> createParticlePreset(ParticlePresetID preset)
     {
         return Particle{};
     }
-    case ParticlePresetID::BasicSolid:
+    case ParticlePresetID::Stone:
     {
         Particle p;
         p.setMatterType(Particle::MatterType::Solid);
         p.setPhysicsType(Particle::PhysicsType::None);
-        p.setHardness(2);
+        p.setHardness(1);
         p.setRestitution(1.0f);
         p.setMass(1000000);
         return p;

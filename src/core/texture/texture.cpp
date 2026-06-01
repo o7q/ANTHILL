@@ -28,7 +28,7 @@ Texture::Texture(const std::filesystem::path &path)
 
     if (!data)
     {
-        Logger::error("Texture::Texture()", "Failed to load: " + pathString);
+        Logger::error("Texture::Texture()", "Failed to load: \"" + pathString + '\"');
 
         initNull();
         return;
@@ -53,7 +53,7 @@ Texture::Texture(const std::filesystem::path &path)
 
     stbi_image_free(data);
 
-    Logger::info("Texture::Texture()", "Successfully loaded: " + pathString);
+    Logger::info("Texture::Texture()", "Successfully loaded: \"" + pathString + '\"');
 }
 
 void Texture::setPixel(Vec2u pos, Color color)

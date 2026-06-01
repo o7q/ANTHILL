@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/math/numbers.hpp"
+#include "core/utils/hash.hpp"
 #include <algorithm>
 #include <cmath>
 #include <functional>
@@ -17,6 +18,8 @@ template <typename T> struct Vec2
     Vec2 operator*(const Vec2 &v) const { return {x * v.x, y * v.y}; }
     Vec2 operator/(const Vec2 &v) const { return {x / v.x, y / v.y}; }
     Vec2 operator%(const Vec2 &v) const { return {x % v.x, y % v.y}; }
+    bool operator<(const Vec2 &v) const { return x != v.x ? x < v.x : y < v.y; }
+    bool operator>(const Vec2 &v) const { return x != v.x ? x > v.x : y > v.y; }
 
     Vec2 operator+(T s) const { return {x + s, y + s}; }
     Vec2 operator-(T s) const { return {x - s, y - s}; }
@@ -125,19 +128,11 @@ using Vec2u = Vec2<unsigned int>;
 using Vec2f = Vec2<float>;
 using Vec2d = Vec2<double>;
 
-// https://stackoverflow.com/a/20602159
 template <typename T> struct Vec2Hash
 {
   public:
     std::size_t operator()(const Vec2<T> &v) const
     {
-        return hash_combine(std::hash<T>()(v.x), std::hash<T>()(v.y));
-    }
-
-  private:
-    // https://stackoverflow.com/a/27952689
-    size_t hash_combine(size_t lhs, size_t rhs) const
-    {
-        return lhs ^ (rhs + 0x9e3779b9 + (lhs << 6) + (lhs >> 2));
+        return Utils::Hash::hashCombine(std::hash<T>()(v.x), std::hash<T>()(v.y));
     }
 };
