@@ -1,9 +1,9 @@
+#include "wuskkogel.hpp"
+
 #include "core/math/random.hpp"
 #include "entities/wuskkogel/ai/states.hpp"
 #include "events/entity/events.hpp"
 #include "events/external/events.hpp"
-#include "events/particle/events.hpp"
-#include "wuskkogel.hpp"
 #include <memory>
 
 void Wuskkogel::update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
@@ -13,19 +13,6 @@ void Wuskkogel::update(const EntityUpdateContext &context, EventPool<EntityEvent
 
     for (DamageSource dd : m_damageSources)
     {
-        auto pBleedEvent = std::make_unique<ParticleSetRadiusEvent>();
-        Particle blood;
-        blood.setMatterType(Particle::MatterType::Liquid);
-        blood.setPhysicsType(Particle::PhysicsType::Water);
-        blood.setColor(Color(255, 0, 0, 220));
-        blood.getVerlet().setVelocity(dd.direction * 10, context.time.dt);
-        pBleedEvent->particle = blood;
-        pBleedEvent->radius   = 10;
-        pBleedEvent->position = dd.position;
-
-        auto eBleedEvent = std::make_unique<EntityParticleEvent>(context.id, std::move(pBleedEvent));
-        eventsOut.emit(std::move(eBleedEvent));
-
         m_health -= dd.amount;
     }
 

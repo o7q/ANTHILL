@@ -1,3 +1,4 @@
+#include "core/math/random.hpp"
 #include "world_generator.hpp"
 
 #include "core/data_structures/node_graph.hpp"
@@ -30,14 +31,14 @@ void WorldGenerator::generate_prepare_structures()
 
         {
             LevelLayoutGenerator::Config config;
-            config.bounds                    = {{0, 500}, {1000, 1000}};
+            config.bounds                    = {{0, 1500}, {3000, 3000}};
             config.initialRoomPlacementCount = 1000;
             config.roomPool.push_back({&r_assets.rooms().get(RoomID::TestSquare), 1});
             config.roomPool.push_back({&r_assets.rooms().get(RoomID::TestSquareBig), 1});
             config.roomPool.push_back({&r_assets.rooms().get(RoomID::TestTall), 1});
             config.roomPool.push_back({&r_assets.rooms().get(RoomID::TestLong), 1});
             config.roomSpread     = {500, 500};
-            config.roomMinSpacing = {0, 0};
+            config.roomMinSpacing = {5, 5};
 
             LevelLayoutGenerator generator;
             generator.setConfig(config);
@@ -130,7 +131,8 @@ void WorldGenerator::generate_set_in_world_at_pos(Vec2i pos)
     if (pos.y > 0)
     {
         Particle stone = createParticlePreset(ParticlePresetID::Stone).value();
-        stone.setColor(Color(100, 100, 100));
+        float rand     = Math::Random::seededRandomInt(90, 100, m_seed + pos.x * pos.y) / 100.0f;
+        stone.setColor(Color(100 * rand, 100 * rand, 100 * rand));
         biomeData.particle = stone;
     }
 

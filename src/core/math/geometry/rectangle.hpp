@@ -41,7 +41,7 @@ template <typename T> class Rectangle
     {
         m_size = size;
         m_area = size.x * size.y;
-        if constexpr (std::is_floating_point<T>())
+        if constexpr (std::is_floating_point<T>::value)
         {
             m_halfSize = m_size / 2.0f;
         }

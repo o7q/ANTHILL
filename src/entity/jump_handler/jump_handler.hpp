@@ -23,10 +23,15 @@ class JumpHandler
     float getJumpPower() const { return m_jumpPower; }
     bool canApplyJumpPower() const { return m_holdTimer.active(); }
 
+    void setJumpPower(float jumpPower) { m_jumpPower = jumpPower; }
+    void setCoyoteTime(float coyoteTime) { m_coyoteTimer.setDurationInSeconds(coyoteTime); }
+    void setHoldLength(float holdLength) { m_holdTimer.setDurationInSeconds(holdLength); }
+    void setBufferTime(float bufferTime) { m_bufferTimer.setDurationInSeconds(bufferTime); }
+
   private:
     bool m_jumped = false;
 
-    float m_jumpPower    = 4.5f;
+    float m_jumpPower    = 5.0f;
     bool m_jumpRequested = false;
 
     Timer m_holdTimer;

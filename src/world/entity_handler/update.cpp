@@ -1,7 +1,7 @@
-#include "core/math/geometry/rectangle.hpp"
 #include "entity_handler.hpp"
 
 #include "core/math/distance.hpp"
+#include "core/math/geometry/rectangle.hpp"
 #include "events/event_pool.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 #include <cstdint>
@@ -11,7 +11,6 @@
 void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::Info time, Vec2i origin,
                            EventPoolRefs eventPoolRefs)
 {
-    const Player *currentPlayer = getCurrentPlayer();
     Rectangle_i killBox(origin, m_globalKillRadius);
 
     for (auto &[id, entity] : m_entities)
@@ -21,8 +20,10 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
             continue;
         }
 
-        EventPool<EntityEvent> events;
+        std::unordered_map<uint64_t, const Entity *> otherEntities;
+        get_other_entities(otherEntities, id);
 
+        const Player *currentPlayer   = getCurrentPlayer();
         float distanceToCurrentPlayer = 0.0f;
         Vec2f vectorTowardsCurrentPlayer;
 
@@ -35,9 +36,6 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
                     .normalize();
         }
 
-        std::unordered_map<uint64_t, const Entity *> otherEntities;
-        get_other_entities(otherEntities, id);
-
         EntityUpdateContext context{id,
                                     time,
                                     particleHandler,
@@ -47,6 +45,7 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
                                     distanceToCurrentPlayer,
                                     vectorTowardsCurrentPlayer};
 
+        EventPool<EntityEvent> events;
         entity->update(context, events);
 
         Vec2i pos = entity->getBody().getPosition();

@@ -7,7 +7,7 @@
 class LevelTestScene : public Scene
 {
   public:
-    LevelTestScene(Window &window, const Assets &assets) : Scene(window, assets) {}
+    LevelTestScene(Window &window) : Scene(window) {}
 
   protected:
     void onStart() override;

@@ -1,4 +1,6 @@
 #include "game.hpp"
+#include "identifiers/scene.hpp"
+#include <optional>
 
 void Game::update_loop()
 {
@@ -7,12 +9,12 @@ void Game::update_loop()
         return;
     }
 
-    Scene::Result result = m_scene->update();
+    std::optional<SceneID> result = m_scene->update();
 
-    if (!result.load || !result.id.has_value())
+    if (!result.has_value())
     {
         return;
     }
 
-    load_scene(result.id.value());
+    load_scene(result.value());
 }

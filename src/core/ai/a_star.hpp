@@ -1,6 +1,5 @@
 #pragma once
 
-#include "a_star_neighbors.hpp"
 #include "core/ai/a_star_node.hpp"
 #include "core/math/geometry/vec.hpp"
 #include <cstdlib>
@@ -64,8 +63,8 @@ class AStarSolver
 
             for (int i = 0; i < 8; ++i)
             {
-                Vec2i neighborIndex = {m_current.index.x + NEIGHBOR_INDICES[i].x,
-                                       m_current.index.y + NEIGHBOR_INDICES[i].y};
+                Vec2i neighborIndex = {m_current.index.x + m_neighbor_indices[i].x,
+                                       m_current.index.y + m_neighbor_indices[i].y};
 
                 if (!checkFunction(neighborIndex.x, neighborIndex.y))
                 {
@@ -118,4 +117,8 @@ class AStarSolver
 
     int m_iterationCount = 0;
     bool m_pathFound     = false;
+
+    static inline const std::array<Vec2i, 8> m_neighbor_indices = {Vec2i{-1, -1}, Vec2i{0, -1}, Vec2i{1, -1},
+                                                                   Vec2i{-1, 0},  Vec2i{1, 0},  Vec2i{-1, 1},
+                                                                   Vec2i{0, 1},   Vec2i{1, 1}};
 };

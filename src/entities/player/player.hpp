@@ -3,12 +3,9 @@
 #include "assets/assets.hpp"
 #include "core/input/input_handler.hpp"
 #include "core/math/angle.hpp"
-#include "core/math/geometry/rectangle.hpp"
 #include "core/viewport/render_command.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entities/player/gun/player_gun.hpp"
-#include "entities/player/sound/player_sound.hpp"
-#include "entities/player/sprite/player_sprite.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
 #include "entity/jump_handler/jump_handler.hpp"
@@ -49,22 +46,17 @@ class Player : public Entity
   private:
     InputHandler &r_input;
     const Assets &r_assets;
+    
     BodyUpdateHandler m_bodyHandler;
     JumpHandler m_jumpHandler;
-
-    int m_energy = 0;
-
-    PlayerSprite m_sprite;
-    PlayerSound m_sound;
     PlayerGun m_gun;
     PlayerDash m_dash;
+    
+    int m_energy = 0;
 
     Vec2i m_aimPos;
     Angle m_angle;
     Vec2i m_relativeHeadPosition = {0, -6};
 
-    std::optional<Rectangle_i> m_dashTarget;
-
-    Timer m_comboTimer;
-    int m_comboCounter = 0;
+    bool m_dashJumpRequested = false;
 };

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/math/angle.hpp"
 #include "core/timer/timer.hpp"
 #include "entity/update_context.hpp"
+#include <unordered_map>
 
 class PlayerDash
 {
@@ -10,15 +10,27 @@ class PlayerDash
     enum class State
     {
         Idle,
-        Charging,
         Dashing
+    };
+
+    enum class Direction
+    {
+        Up,
+        Down,
+        Left,
+        Right,
+
+        UpLeft,
+        UpRight,
+        DownLeft,
+        DownRight
     };
 
   public:
     PlayerDash();
 
-    void start(Angle angle);
-    void stop();
+    void dash(Direction direction);
+    void stop() { m_state = State::Idle; }
 
     void update(const EntityUpdateContext &context);
 
@@ -26,14 +38,16 @@ class PlayerDash
     Vec2f getDashVelocity() const { return m_dashVelocity; }
 
   private:
-    void dash_update_velocity();
-
-  private:
     State m_state = State::Idle;
     Vec2f m_dashVelocity;
 
-    Timer m_startTimer;
     Timer m_dashTimer;
 
-    float m_dashAngle;
+    Direction m_currentDirection = Direction::Left;
+
+    static inline const std::unordered_map<Direction, Vec2i> m_directions = {
+        {Direction::Up, Vec2i{0, -1}},       {Direction::Down, Vec2i{0, 1}},
+        {Direction::Left, Vec2i{-1, 0}},     {Direction::Right, Vec2i{1, 0}},
+        {Direction::UpLeft, Vec2i{-1, -1}},  {Direction::UpRight, Vec2i{1, -1}},
+        {Direction::DownLeft, Vec2i{-1, 1}}, {Direction::DownRight, Vec2i{1, 1}}};
 };

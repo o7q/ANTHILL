@@ -1,42 +1,54 @@
 #include "player.hpp"
 
-#include "core/math/geometry/rectangle.hpp"
-#include "core/math/random.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entity/world_interaction/against.hpp"
 #include "events/entity/base.hpp"
-#include "events/entity/events.hpp"
-#include "events/external/events.hpp"
-#include <memory>
 
 void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
-    update_entity_interaction(context, eventsOut);
-
     if (r_input.getInput(InputID::Dash)->wasPressed())
     {
-        if (m_dashTarget.has_value())
+        bool up    = r_input.getInput(InputID::Up)->isDown();
+        bool down  = r_input.getInput(InputID::Down)->isDown();
+        bool left  = r_input.getInput(InputID::Left)->isDown();
+        bool right = r_input.getInput(InputID::Right)->isDown();
+
+        PlayerDash::Direction direction = PlayerDash::Direction::Left;
+
+        if (up)
         {
-            Vec2i pos = m_dashTarget.value().getPosition();
-            m_dash.start(Math::Angle::vectorsToAngle(m_body.getPositionFloat(), pos.toFloat()));
+            direction = PlayerDash::Direction::Up;
         }
-        else
+        if (down)
         {
-            m_dash.start(Math::Angle::vectorsToAngle(m_body.getPositionFloat(), m_aimPos.toFloat()));
+            direction = PlayerDash::Direction::Down;
+        }
+        if (left)
+        {
+            direction = PlayerDash::Direction::Left;
+        }
+        if (right)
+        {
+            direction = PlayerDash::Direction::Right;
+        }
+        if (up && left)
+        {
+            direction = PlayerDash::Direction::UpLeft;
+        }
+        if (up && right)
+        {
+            direction = PlayerDash::Direction::UpRight;
+        }
+        if (down && left)
+        {
+            direction = PlayerDash::Direction::DownLeft;
+        }
+        if (down && right)
+        {
+            direction = PlayerDash::Direction::DownRight;
         }
 
-        SoundID dashSounds[3] = {SoundID::SumiDash1, SoundID::SumiDash2, SoundID::SumiDash3};
-
-        auto dashSoundEvent             = std::make_unique<ExternalPlaySoundEvent>();
-        dashSoundEvent->soundID         = dashSounds[Math::Random::unseededRandomInt(0, 3)];
-        dashSoundEvent->settings.volume = 0.1f;
-        dashSoundEvent->settings.pitch  = Math::Random::unseededRandomInt(180, 200) / 100.0f;
-        eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(dashSoundEvent)));
-    }
-
-    if (r_input.getInput(InputID::Dash)->wasUnpressed())
-    {
-        m_dash.stop();
+        m_dash.dash(direction);
     }
 
     m_dash.update(context);
@@ -44,43 +56,33 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
     if (m_dash.getState() == PlayerDash::State::Dashing)
     {
         m_body.setVelocity(m_dash.getDashVelocity());
+
+        if (r_input.getInput(InputID::Jump)->wasPressed())
+        {
+            m_dashJumpRequested = true;
+        }
     }
     else
     {
         update_movement_and_jump(context);
     }
 
+    bool onGround = EntityWorldInteraction::againstSolidSurface(
+        m_body.getPosition(), m_collider, context.particleHandler, RectangleSide::Bottom);
+
+    if (m_dashJumpRequested && onGround)
+    {
+        m_dash.stop();
+        m_body.setVelocityY(-m_body.getVelocity().y * 1.5f);
+        m_dashJumpRequested = false;
+    }
+
     if (r_input.getInput(InputID::Shoot)->isDown())
     {
         m_gun.shoot(m_body.getPosition(), m_angle, context.id, eventsOut);
     }
+
     m_gun.update(context.time.dt);
 
     m_bodyHandler.update(context);
-
-    m_sprite.update({m_body, m_dash, m_angle}, context.time.dt);
-    m_sound.update(
-        context,
-        {m_body, EntityWorldInteraction::againstSolidSurface(m_body.getPosition(), m_collider,
-                                                             context.particleHandler, RectangleSide::Bottom)},
-        eventsOut);
-
-    m_comboTimer.update(context.time.dt);
-
-    if (m_comboTimer.completed())
-    {
-        m_comboCounter = 0;
-    }
-
-    if (m_comboCounter >= 3)
-    {
-        auto slowmoEvent                  = std::make_unique<ExternalChangeSpeedEvent>();
-        slowmoEvent->settings.startLength = 0.0f;
-        slowmoEvent->settings.holdLength  = 0.5f;
-        slowmoEvent->settings.holdSpeed   = 0.3f;
-        slowmoEvent->settings.endLength   = 0.5f;
-
-        eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(slowmoEvent)));
-        m_comboCounter = 0;
-    }
 }

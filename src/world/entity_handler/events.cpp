@@ -27,7 +27,6 @@ void EntityHandler::handle_events(EventPool<EntityEvent> &events, EventPoolRefs 
             }
 
             Entity *entity = it->second.get();
-
             entity->damage(e->source);
 
             if (entity->getHealth() <= 0)

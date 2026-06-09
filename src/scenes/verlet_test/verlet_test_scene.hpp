@@ -8,10 +8,7 @@
 class VerletTestScene : public Scene
 {
   public:
-    VerletTestScene(Window &window, const Assets &assets) : Scene(window, assets)
-    {
-        m_drawTex = Texture(r_window.getViewport().getSize());
-    }
+    VerletTestScene(Window &window) : Scene(window) { m_drawTex = Texture(r_window.getViewport().getSize()); }
 
   protected:
     void onStart() override;

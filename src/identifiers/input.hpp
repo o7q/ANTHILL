@@ -8,6 +8,8 @@ enum class InputID
     Down,
 
     Jump,
+    Slam,
+
     Reload,
 
     Shoot,

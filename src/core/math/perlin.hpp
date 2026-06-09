@@ -1,20 +1,23 @@
 #pragma once
 
+#include "core/math/geometry/vec.hpp"
 #include "core/math/interpolation.hpp"
 #include "core/math/random.hpp"
-#include "core/math/geometry/vec.hpp"
 #include <algorithm>
+#include <array>
 #include <cstdint>
 
 namespace Math
 {
 namespace Perlin
 {
-inline const Vec2f gradients[16] = {
-    {1.0000f, 0.0000f},   {0.9239f, 0.3827f},   {0.7071f, 0.7071f},   {0.3827f, 0.9239f},
-    {-0.0000f, 1.0000f},  {-0.3827f, 0.9239f},  {-0.7071f, 0.7071f},  {-0.9239f, 0.3827f},
-    {-1.0000f, -0.0000f}, {-0.9239f, -0.3827f}, {-0.7071f, -0.7071f}, {-0.3827f, -0.9239f},
-    {0.0000f, -1.0000f},  {0.3827f, -0.9239f},  {0.7071f, -0.7071f},  {0.9239f, -0.3827f},
+inline static const std::array<Vec2f, 16> gradients = {
+    Vec2f{1.0000f, 0.0000f},   Vec2f{0.9239f, 0.3827f},   Vec2f{0.7071f, 0.7071f},
+    Vec2f{0.3827f, 0.9239f},   Vec2f{-0.0000f, 1.0000f},  Vec2f{-0.3827f, 0.9239f},
+    Vec2f{-0.7071f, 0.7071f},  Vec2f{-0.9239f, 0.3827f},  Vec2f{-1.0000f, -0.0000f},
+    Vec2f{-0.9239f, -0.3827f}, Vec2f{-0.7071f, -0.7071f}, Vec2f{-0.3827f, -0.9239f},
+    Vec2f{0.0000f, -1.0000f},  Vec2f{0.3827f, -0.9239f},  Vec2f{0.7071f, -0.7071f},
+    Vec2f{0.9239f, -0.3827f},
 };
 
 inline Vec2f randomGradient(Vec2i index, uint32_t seed)

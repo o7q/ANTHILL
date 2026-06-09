@@ -25,12 +25,12 @@ template <typename T> struct Triangle
         return matches == 3;
     }
 
-    Circle<double> generateCircumcircle()
+    Circle_d generateCircumcircle()
     {
         // https://en.wikipedia.org/wiki/Circumcircle#Cartesian_coordinates_2
-        Vec2<double> a = verts[0].toDouble();
-        Vec2<double> b = verts[1].toDouble();
-        Vec2<double> c = verts[2].toDouble();
+        Vec2d a = verts[0].toDouble();
+        Vec2d b = verts[1].toDouble();
+        Vec2d c = verts[2].toDouble();
 
         double axsq = a.x * a.x;
         double aysq = a.y * a.y;
@@ -49,8 +49,8 @@ template <typename T> struct Triangle
         double dy = y - a.y;
         double r  = std::sqrt(dx * dx + dy * dy);
 
-        Circle<double> out;
-        out.pos    = Vec2<double>(x, y);
+        Circle_d out;
+        out.pos    = Vec2d{x, y};
         out.radius = r;
         return out;
     }

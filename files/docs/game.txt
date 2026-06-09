@@ -53,3 +53,11 @@ Upgrades and augments
 
 Minimap
 - Have a minimap that subtly guides the player where to go
+
+Movement & Weaponry
+- Left Arm: Upgradable gun
+- Right Arm: Drill arm -- melee
+- Have a jetpack burst that acts as a dash
+- You can combine a dash with a melee to do a melee dash
+- Wall jump and wall sliding
+- Ultrakill-like ground slam

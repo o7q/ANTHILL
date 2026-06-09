@@ -9,7 +9,7 @@ void MainScene::onStart()
 {
     m_world.getEntityHandler().addPlayer(std::make_unique<Player>(r_window.getInput(), r_assets));
     m_world.getEntityHandler().getCurrentPlayer()->getBody().setPosition({-50, -20});
-    // r_window.getSound().playSound(r_assets.sounds().get(SoundID::MusicAction), {0.2f});
+    // r_window.getSound().playSound(r_assets.sounds().get(SoundID::MusicAction), {0.5f});
 }
 
 void MainScene::onTick()
@@ -95,5 +95,6 @@ void MainScene::onTick()
 
     renderText(renderCommands);
 
+    handle_events();
     r_window.getViewport().render(renderCommands);
 }
