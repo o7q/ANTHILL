@@ -1,3 +1,0 @@
-- SDL 3.4.8
-- stb_image 2.30
-- miniaudio 0.11.25
