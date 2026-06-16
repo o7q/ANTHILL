@@ -1,5 +1,7 @@
 #!/bin/bash
 
-rm -f "./ANTHILL"
+NAME=ANTHILL
+
+rm -f "./$NAME"
 rm -rf "./build"
 rm -rf "./package"
