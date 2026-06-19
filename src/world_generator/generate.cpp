@@ -1,15 +1,15 @@
-#include "core/math/random.hpp"
+#include "px/math/random.hpp"
 #include "world_generator.hpp"
 
-#include "core/data_structures/node_graph.hpp"
-#include "core/math/geometry/circle.hpp"
-#include "core/math/geometry/rectangle.hpp"
-#include "core/math/geometry/segment.hpp"
-#include "core/math/geometry/triangle.hpp"
-#include "core/math/graph.hpp"
-#include "core/math/line.hpp"
-#include "core/math/mesh.hpp"
 #include "level_generator/layout_generator.hpp"
+#include "px/data_structures/node_graph.hpp"
+#include "px/math/geometry/circle.hpp"
+#include "px/math/geometry/rectangle.hpp"
+#include "px/math/geometry/segment.hpp"
+#include "px/math/geometry/triangle.hpp"
+#include "px/math/graph.hpp"
+#include "px/math/line.hpp"
+#include "px/math/triangulation.hpp"
 #include "world/particle_handler/particle_lookup.hpp"
 #include "world_generator/spawn_data.hpp"
 #include <unordered_set>
@@ -52,7 +52,7 @@ void WorldGenerator::generate_prepare_structures()
         }
 
         std::vector<Triangle_i> triangulation =
-            Math::Mesh::generateTriangulation(masterLayout.generatePositions());
+            Math::Triangulation::generateTriangulation(masterLayout.generatePositions());
 
         masterLayout = Math::Graph::connectNodesFromTriangulation(triangulation, masterLayout);
         masterLayout = Math::Graph::minimumSpanningTree(masterLayout);

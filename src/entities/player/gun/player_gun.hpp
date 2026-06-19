@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/math/angle.hpp"
-#include "core/math/geometry/vec.hpp"
-#include "core/timer/timer.hpp"
+#include "px/math/angle.hpp"
+#include "px/math/geometry/vec.hpp"
+#include "px/timer/timer.hpp"
 #include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
 

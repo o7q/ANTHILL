@@ -1,6 +1,6 @@
 #include "entity_body.hpp"
 
-#include "core/math/numbers.hpp"
+#include "px/math/numbers.hpp"
 
 void EntityBody::update(float dt)
 {

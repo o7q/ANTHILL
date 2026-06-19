@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/data_structures/chunk_map.hpp"
+#include "px/data_structures/chunk_map.hpp"
 #include "world/world.hpp"
 #include "world_generator/spawn_data.hpp"
 #include <unordered_set>

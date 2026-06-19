@@ -1,7 +1,7 @@
 #include "entity_handler.hpp"
 
-#include "core/math/distance.hpp"
-#include "core/math/geometry/rectangle.hpp"
+#include "px/math/distance.hpp"
+#include "px/math/geometry/rectangle.hpp"
 #include "events/event_pool.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 #include <cstdint>

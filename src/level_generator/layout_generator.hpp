@@ -1,9 +1,9 @@
 #pragma once
 
-#include "core/data_structures/node_graph.hpp"
-#include "core/math/geometry/rectangle.hpp"
-#include "core/math/geometry/vec.hpp"
-#include "core/math/random.hpp"
+#include "px/data_structures/node_graph.hpp"
+#include "px/math/geometry/rectangle.hpp"
+#include "px/math/geometry/vec.hpp"
+#include "px/math/random.hpp"
 #include "room/room.hpp"
 #include <vector>
 

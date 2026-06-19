@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/ai/a_star.hpp"
+#include "px/ai/a_star.hpp"
 #include "entity/update_context.hpp"
 #include <functional>
 

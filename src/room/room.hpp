@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/data_structures/chunk_map.hpp"
-#include "core/math/geometry/rectangle.hpp"
-#include "core/math/geometry/vec.hpp"
+#include "px/data_structures/chunk_map.hpp"
+#include "px/math/geometry/rectangle.hpp"
+#include "px/math/geometry/vec.hpp"
 #include "world_generator/spawn_data.hpp"
 #include <string>
 #include <unordered_map>

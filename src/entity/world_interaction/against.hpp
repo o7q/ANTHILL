@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/math/geometry/rectangle.hpp"
-#include "core/math/geometry/vec.hpp"
+#include "px/math/geometry/rectangle.hpp"
+#include "px/math/geometry/vec.hpp"
 #include "entity/collider/entity_collider.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 

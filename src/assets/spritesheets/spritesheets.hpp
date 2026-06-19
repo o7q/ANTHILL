@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/asset_pool/asset_pool.hpp"
-#include "core/math/geometry/vec.hpp"
-#include "core/sprite_sheet/sprite_sheet.hpp"
+#include "px/asset_pool/asset_pool.hpp"
+#include "px/math/geometry/vec.hpp"
+#include "px/sprite_sheet/sprite_sheet.hpp"
 #include "identifiers/spritesheet.hpp"
 #include <string>
 

@@ -1,7 +1,7 @@
 #include "player_projectile.hpp"
 
-#include "core/math/line.hpp"
-#include "core/math/random.hpp"
+#include "px/math/line.hpp"
+#include "px/math/random.hpp"
 #include "events/entity/events.hpp"
 #include "events/external/events.hpp"
 #include "events/particle/events.hpp"

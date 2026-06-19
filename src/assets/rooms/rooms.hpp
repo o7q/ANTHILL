@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/asset_pool/asset_pool.hpp"
+#include "px/asset_pool/asset_pool.hpp"
 #include "identifiers/rooms.hpp"
 #include "room/room.hpp"
 

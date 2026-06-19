@@ -1,9 +1,9 @@
 #pragma once
 
 #include "assets/assets.hpp"
-#include "core/input/input_handler.hpp"
-#include "core/math/angle.hpp"
-#include "core/viewport/render_command.hpp"
+#include "px/input/input_handler.hpp"
+#include "px/math/angle.hpp"
+#include "px/viewport/render_command.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entities/player/gun/player_gun.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/math/geometry/vec.hpp"
+#include "px/math/geometry/vec.hpp"
 
 enum class ParticleEventType
 {

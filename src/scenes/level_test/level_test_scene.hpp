@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/data_structures/node_graph.hpp"
+#include "px/data_structures/node_graph.hpp"
 #include "room/room.hpp"
 #include "scene/scene.hpp"
 

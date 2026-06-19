@@ -1,6 +1,6 @@
 #include "world_generator/world_generator.hpp"
 
-#include "core/math/perlin.hpp"
+#include "px/math/perlin.hpp"
 #include "entities/wuskkogel/wuskkogel.hpp"
 #include "world/particle_handler/particle.hpp"
 #include "world_generator/spawn_data.hpp"

@@ -1,7 +1,7 @@
 #include "verlet_test_scene.hpp"
 
-#include "core/texture/texture.hpp"
-#include "core/viewport/render_command.hpp"
+#include "px/texture/texture.hpp"
+#include "px/viewport/render_command.hpp"
 
 void VerletTestScene::onStart() {}
 

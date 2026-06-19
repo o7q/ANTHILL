@@ -1,6 +1,6 @@
 #include "player_gun.hpp"
 
-#include "core/math/random.hpp"
+#include "px/math/random.hpp"
 #include "entities/player_projectile/player_projectile.hpp"
 #include "events/entity/events.hpp"
 #include "events/external/events.hpp"

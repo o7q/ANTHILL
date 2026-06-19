@@ -1,8 +1,8 @@
 #include "world_generator.hpp"
 
-#include "core/math/perlin.hpp"
-#include "core/math/random.hpp"
-#include "core/math/voronoi.hpp"
+#include "px/math/perlin.hpp"
+#include "px/math/random.hpp"
+#include "px/math/voronoi.hpp"
 #include "world/particle_handler/biome.hpp"
 
 BiomeID WorldGenerator::get_biome(Vec2i pos)

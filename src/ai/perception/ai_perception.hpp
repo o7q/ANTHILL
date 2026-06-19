@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/math/angle.hpp"
-#include "core/math/line.hpp"
+#include "px/math/angle.hpp"
+#include "px/math/line.hpp"
 #include <vector>
 
 class AIPerception

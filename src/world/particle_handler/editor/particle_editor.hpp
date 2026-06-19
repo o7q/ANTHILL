@@ -1,9 +1,9 @@
 #pragma once
 
-#include "core/data_structures/chunk_map.hpp"
-#include "core/math/geometry/circle.hpp"
-#include "core/math/random.hpp"
-#include "core/texture/texture.hpp"
+#include "px/data_structures/chunk_map.hpp"
+#include "px/math/geometry/circle.hpp"
+#include "px/math/random.hpp"
+#include "px/texture/texture.hpp"
 #include "world/particle_handler/biome.hpp"
 #include "world/particle_handler/particle.hpp"
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/asset_pool/asset_pool.hpp"
-#include "core/texture/texture.hpp"
+#include "px/asset_pool/asset_pool.hpp"
+#include "px/texture/texture.hpp"
 #include "identifiers/textures.hpp"
 #include <string>
 

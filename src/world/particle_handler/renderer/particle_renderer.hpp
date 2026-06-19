@@ -2,9 +2,9 @@
 
 #include "assets/assets.hpp"
 #include "camera/camera.hpp"
-#include "core/data_structures/chunk_map.hpp"
-#include "core/math/color.hpp"
-#include "core/viewport/render_command.hpp"
+#include "px/data_structures/chunk_map.hpp"
+#include "px/math/color.hpp"
+#include "px/viewport/render_command.hpp"
 #include "world/particle_handler/biome.hpp"
 #include "world/particle_handler/particle.hpp"
 

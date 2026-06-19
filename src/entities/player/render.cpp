@@ -1,7 +1,7 @@
 #include "debug/renderers.hpp"
 #include "player.hpp"
 
-#include "core/viewport/render_command.hpp"
+#include "px/viewport/render_command.hpp"
 
 void Player::render(const Camera &camera, std::vector<RenderCommand> &commandsOut)
 {

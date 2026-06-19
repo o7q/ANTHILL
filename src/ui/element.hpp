@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/math/geometry/vec.hpp"
-#include "core/viewport/render_command.hpp"
+#include "px/math/geometry/vec.hpp"
+#include "px/viewport/render_command.hpp"
 #include <vector>
 
 struct ElementUpdateContext

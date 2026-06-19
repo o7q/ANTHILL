@@ -1,5 +1,5 @@
 #include "player_dash.hpp"
-#include "core/math/interpolation.hpp"
+#include "px/math/interpolation.hpp"
 
 PlayerDash::PlayerDash() { m_dashTimer.setDurationInMilliseconds(200); }
 

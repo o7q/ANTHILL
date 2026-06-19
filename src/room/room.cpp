@@ -1,7 +1,7 @@
 #include "room.hpp"
 
-#include "core/logger/logger.hpp"
-#include "core/texture/texture.hpp"
+#include "px/logger/logger.hpp"
+#include "px/texture/texture.hpp"
 #include "world/particle_handler/particle_lookup.hpp"
 
 void Room::init(InitConfig config)

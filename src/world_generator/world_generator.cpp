@@ -1,7 +1,7 @@
 #include "world_generator.hpp"
 
-#include "core/data_structures/chunk_map.hpp"
-#include "core/math/random.hpp"
+#include "px/data_structures/chunk_map.hpp"
+#include "px/math/random.hpp"
 #include "world_generator/spawn_data.hpp"
 
 WorldGenerator::WorldGenerator(World &world, const Assets &assets)

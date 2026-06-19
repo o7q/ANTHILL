@@ -1,6 +1,6 @@
 #include "wuskkogel.hpp"
 
-#include "core/math/random.hpp"
+#include "px/math/random.hpp"
 #include "entities/wuskkogel/ai/states.hpp"
 #include "events/entity/events.hpp"
 #include "events/external/events.hpp"

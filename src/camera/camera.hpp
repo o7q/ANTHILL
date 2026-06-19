@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/math/angle.hpp"
-#include "core/math/geometry/vec.hpp"
-#include "core/time/time_handler.hpp"
+#include "px/math/angle.hpp"
+#include "px/math/geometry/vec.hpp"
+#include "px/time/time_handler.hpp"
 
 class Camera
 {

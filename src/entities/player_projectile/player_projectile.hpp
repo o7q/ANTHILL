@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/math/angle.hpp"
-#include "core/viewport/render_command.hpp"
+#include "px/math/angle.hpp"
+#include "px/viewport/render_command.hpp"
 #include "entity/entity.hpp"
 #include "entity/metadata.hpp"
 

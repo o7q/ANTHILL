@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/math/rectangle.hpp"
-#include "core/viewport/render_command.hpp"
+#include "px/math/rectangle.hpp"
+#include "px/viewport/render_command.hpp"
 #include "ui/element.hpp"
 #include <functional>
 

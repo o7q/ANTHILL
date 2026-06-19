@@ -1,6 +1,6 @@
 #include "p_dynamics_handler.hpp"
 
-#include "core/math/geometry/rectangle.hpp"
+#include "px/math/geometry/rectangle.hpp"
 
 bool PDynamicsHandler::can_solid_occupy(const Particle *p)
 {

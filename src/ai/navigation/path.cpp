@@ -1,6 +1,6 @@
 #include "ai_navigation.hpp"
 
-#include "core/math/distance.hpp"
+#include "px/math/distance.hpp"
 
 void AINavigation::update_path(Vec2i currentPos, const EntityUpdateContext &context)
 {

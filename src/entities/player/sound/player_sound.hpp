@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/math/random.hpp"
-#include "core/timer/timer.hpp"
+#include "px/math/random.hpp"
+#include "px/timer/timer.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/update_context.hpp"
 #include "events/entity/base.hpp"

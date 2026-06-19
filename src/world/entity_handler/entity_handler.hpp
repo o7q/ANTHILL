@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/time/time_handler.hpp"
-#include "core/viewport/render_command.hpp"
+#include "px/time/time_handler.hpp"
+#include "px/viewport/render_command.hpp"
 #include "entities/player/player.hpp"
 #include "entity/entity.hpp"
 #include "events/event_pool.hpp"

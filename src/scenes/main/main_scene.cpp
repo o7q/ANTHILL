@@ -1,8 +1,8 @@
 #include "main_scene.hpp"
 
-#include "core/math/random.hpp"
-#include "core/time/time_handler.hpp"
-#include "core/viewport/render_command.hpp"
+#include "px/math/random.hpp"
+#include "px/time/time_handler.hpp"
+#include "px/viewport/render_command.hpp"
 #include "entities/wuskkogel/wuskkogel.hpp"
 
 void MainScene::onStart()

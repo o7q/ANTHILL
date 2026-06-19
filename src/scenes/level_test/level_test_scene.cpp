@@ -1,11 +1,11 @@
 #include "level_test_scene.hpp"
 
-#include "core/math/geometry/rectangle.hpp"
-#include "core/math/geometry/triangle.hpp"
-#include "core/math/graph.hpp"
-#include "core/math/mesh.hpp"
-#include "core/math/random.hpp"
-#include "core/viewport/render_command.hpp"
+#include "px/math/geometry/rectangle.hpp"
+#include "px/math/geometry/triangle.hpp"
+#include "px/math/graph.hpp"
+#include "px/math/random.hpp"
+#include "px/math/triangulation.hpp"
+#include "px/viewport/render_command.hpp"
 #include "level_generator/layout_generator.hpp"
 #include "room/room.hpp"
 #include <vector>
@@ -73,7 +73,7 @@ void LevelTestScene::onTick()
             positions.push_back(id);
         }
 
-        std::vector<Triangle_i> triangulation = Math::Mesh::generateTriangulation(positions);
+        std::vector<Triangle_i> triangulation = Math::Triangulation::generateTriangulation(positions);
         m_roomGraph = Math::Graph::connectNodesFromTriangulation(triangulation, m_roomGraph);
         m_roomGraph = Math::Graph::minimumSpanningTree(m_roomGraph);
     }

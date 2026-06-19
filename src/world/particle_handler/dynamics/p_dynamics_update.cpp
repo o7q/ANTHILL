@@ -1,7 +1,7 @@
 #include "p_dynamics_handler.hpp"
 
-#include "core/math/geometry/rectangle.hpp"
-#include "core/math/verlet/verlet.hpp"
+#include "px/math/geometry/rectangle.hpp"
+#include "px/math/verlet/verlet.hpp"
 #include "world/particle_handler/particle.hpp"
 #include <limits>
 
