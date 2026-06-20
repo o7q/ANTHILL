@@ -18,7 +18,7 @@ void ParticleRenderer::render(const RenderData &data, std::vector<px::RenderComm
         {
             m_texture.setPixel({x, y}, {});
 
-            px::Vec2i worldPos = data.camera.viewportToCamera(px::Vec2i(x, y));
+            px::Vec2i worldPos = data.camera.viewportToCamera(px::Vec2u{x, y}.toInt());
 
             const Particle *p                = data.particles.get(worldPos);
             const px::Color *backgroundColor = data.background.get(worldPos);

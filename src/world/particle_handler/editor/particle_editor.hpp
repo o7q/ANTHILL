@@ -61,10 +61,10 @@ class ParticleEditor
         {
             for (int x = 0; x < size.x; ++x)
             {
-                px::Color col = texture.getPixel(px::Vec2u(x, y));
+                px::Color col = texture.getPixel(px::Vec2i{x, y}.toUnsignedInt());
                 particleBase.setColor(col);
 
-                set(pos + px::Vec2i(x, y) - halfSize, particleBase);
+                set(pos + px::Vec2i{x, y} - halfSize, particleBase);
             }
         }
     }

@@ -106,7 +106,7 @@ void WorldGenerator::generate_set_in_world(px::Vec2i origin, px::Vec2i radius)
             {
                 for (unsigned int x = 0; x < chunkSize.x; ++x)
                 {
-                    px::Vec2i pos = chunkPos * chunkSize.toInt() + px::Vec2i(x, y);
+                    px::Vec2i pos = chunkPos * chunkSize.toInt() + px::Vec2u{x, y}.toInt();
                     generate_set_in_world_at_pos(pos);
                 }
             }

@@ -12,7 +12,7 @@ class PlayerProjectile : public Entity
     {
         m_body.setPosition(startPos);
         m_constantVelocity =
-            px::Vec2f(std::cosf(startAngle.radians()), std::sinf(startAngle.radians())) * speed;
+            px::Vec2f{std::cosf(startAngle.radians()), std::sinf(startAngle.radians())} * speed;
 
         m_collider.addRect({}, {3, 3});
 

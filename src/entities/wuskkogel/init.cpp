@@ -37,10 +37,10 @@ Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
         px::Vec2i a = m_collider.getPrimary().getA();
         px::Vec2i b = m_collider.getPrimary().getB();
 
-        px::Vec2i topLeft     = pos + px::Vec2i(a.x, a.y);
-        px::Vec2i topRight    = pos + px::Vec2i(b.x, a.y);
-        px::Vec2i bottomLeft  = pos + px::Vec2i(a.x, b.y);
-        px::Vec2i bottomRight = pos + px::Vec2i(b.x, b.y);
+        px::Vec2i topLeft     = pos + px::Vec2i{a.x, a.y};
+        px::Vec2i topRight    = pos + px::Vec2i{b.x, a.y};
+        px::Vec2i bottomLeft  = pos + px::Vec2i{a.x, b.y};
+        px::Vec2i bottomRight = pos + px::Vec2i{b.x, b.y};
 
         bool impassible = false;
 

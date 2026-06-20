@@ -26,9 +26,9 @@ void Room::init(InitConfig config)
         {
             StructurePositionalSpawnData data;
 
-            px::Color colorPixel      = colorTexture.getPixel(px::Vec2u(x, y));
-            px::Color lookupPixel     = lookupTexture.getPixel(px::Vec2u(x, y));
-            px::Color backgroundPixel = backgroundTexture.getPixel(px::Vec2u(x, y));
+            px::Color colorPixel      = colorTexture.getPixel(px::Vec2i{x, y}.toUnsignedInt());
+            px::Color lookupPixel     = lookupTexture.getPixel(px::Vec2i{x, y}.toUnsignedInt());
+            px::Color backgroundPixel = backgroundTexture.getPixel(px::Vec2i{x, y}.toUnsignedInt());
 
             std::optional<Particle> lookup = createParticlePresetFromColor(lookupPixel);
 

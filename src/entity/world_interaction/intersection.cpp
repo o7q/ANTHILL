@@ -16,7 +16,7 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(px::Vec2i pos, const Enti
     {
         for (int x = 0; x < size.x; ++x)
         {
-            px::Vec2i worldPos = topLeft + px::Vec2i(x, y);
+            px::Vec2i worldPos = topLeft + px::Vec2i{x, y};
 
             const Particle *p = particleHandler.getParticles().get(worldPos);
             if (!p || (p->isSolid() && !p->isMoving()))
@@ -36,7 +36,7 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(px::Vec2i pos, const Enti
     response.right      = intersection[1];
     response.bottom     = intersection[2];
     response.left       = intersection[3];
-    response.moveVector = px::Vec2i(0, 0);
+    response.moveVector = px::Vec2i{0, 0};
 
     if (!collisionOccurred)
     {
@@ -58,16 +58,16 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(px::Vec2i pos, const Enti
     switch (side)
     {
     case 0:
-        response.moveVector = px::Vec2i(0, lowest);
+        response.moveVector = px::Vec2i{0, lowest};
         break;
     case 1:
-        response.moveVector = px::Vec2i(-lowest, 0);
+        response.moveVector = px::Vec2i{-lowest, 0};
         break;
     case 2:
-        response.moveVector = px::Vec2i(0, -lowest);
+        response.moveVector = px::Vec2i{0, -lowest};
         break;
     case 3:
-        response.moveVector = px::Vec2i(lowest, 0);
+        response.moveVector = px::Vec2i{lowest, 0};
         break;
     }
 
@@ -82,14 +82,14 @@ px::Vec2f EntityWorldInteraction::calculateWorldIntersection_averageDirection(
     const px::Vec2i size    = collider.getPrimary().getSize();
     const px::Vec2i topLeft = pos + collider.getPrimary().getA();
 
-    px::Vec2i sum = px::Vec2i(0, 0);
-    int count = 0;
+    px::Vec2i sum = px::Vec2i{0, 0};
+    int count     = 0;
 
     for (int y = 0; y < size.y; ++y)
     {
         for (int x = 0; x < size.x; ++x)
         {
-            px::Vec2i worldPos = topLeft + px::Vec2i(x, y);
+            px::Vec2i worldPos = topLeft + px::Vec2i{x, y};
 
             const Particle *p = particleHandler.getParticles().get(worldPos);
             if (!p || (p->isSolid() && !p->isMoving()))
@@ -102,7 +102,7 @@ px::Vec2f EntityWorldInteraction::calculateWorldIntersection_averageDirection(
 
     if (count == 0)
     {
-        return px::Vec2f(0, 0);
+        return px::Vec2f{0, 0};
     }
 
     return (sum.toFloat() / count).normalize();

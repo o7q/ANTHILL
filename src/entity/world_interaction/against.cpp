@@ -23,29 +23,29 @@ bool EntityWorldInteraction::againstSolidSurface(px::Vec2i pos, const EntityColl
     {
     case px::RectangleSide::Top:
     {
-        const px::Vec2i start = px::Vec2i(topLeft.x, topLeft.y - 1);
-        const px::Vec2i end   = px::Vec2i(topLeft.x + size.x - 1, topLeft.y - 1);
+        const px::Vec2i start = px::Vec2i{topLeft.x, topLeft.y - 1};
+        const px::Vec2i end   = px::Vec2i{topLeft.x + size.x - 1, topLeft.y - 1};
         particleHandler.query(start, end, query, false);
     }
     break;
     case px::RectangleSide::Right:
     {
-        const px::Vec2i start = px::Vec2i(topLeft.x + size.x, topLeft.y);
-        const px::Vec2i end   = px::Vec2i(topLeft.x + size.x, topLeft.y + size.y - 1);
+        const px::Vec2i start = px::Vec2i{topLeft.x + size.x, topLeft.y};
+        const px::Vec2i end   = px::Vec2i{topLeft.x + size.x, topLeft.y + size.y - 1};
         particleHandler.query(start, end, query, false);
     }
     break;
     case px::RectangleSide::Bottom:
     {
-        const px::Vec2i start = px::Vec2i(topLeft.x, topLeft.y + size.y);
-        const px::Vec2i end   = px::Vec2i(topLeft.x + size.x - 1, topLeft.y + size.y);
+        const px::Vec2i start = px::Vec2i{topLeft.x, topLeft.y + size.y};
+        const px::Vec2i end   = px::Vec2i{topLeft.x + size.x - 1, topLeft.y + size.y};
         particleHandler.query(start, end, query, false);
     }
     break;
     case px::RectangleSide::Left:
     {
-        const px::Vec2i start = px::Vec2i(topLeft.x - 1, topLeft.y);
-        const px::Vec2i end   = px::Vec2i(topLeft.x - 1, topLeft.y + size.y - 1);
+        const px::Vec2i start = px::Vec2i{topLeft.x - 1, topLeft.y};
+        const px::Vec2i end   = px::Vec2i{topLeft.x - 1, topLeft.y + size.y - 1};
         particleHandler.query(start, end, query, false);
     }
     break;

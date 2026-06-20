@@ -28,8 +28,8 @@ EntityWorldInteraction::calculateStep(px::Vec2i resolvedPosition, px::Vec2i orig
         MTVIntersectionResponse downwardsCheck =
             calculateWorldIntersection_MTV(downwardsCheckPos, collider, particleHandler);
 
-        px::Vec2i upwardsNextPos   = upwardsCheckPos + px::Vec2i(0, -upwardsCheck.bottom);
-        px::Vec2i downwardsNextPos = downwardsCheckPos + px::Vec2i(0, downwardsCheck.top);
+        px::Vec2i upwardsNextPos   = upwardsCheckPos + px::Vec2i{0, -upwardsCheck.bottom};
+        px::Vec2i downwardsNextPos = downwardsCheckPos + px::Vec2i{0, downwardsCheck.top};
 
         if (upwardsCheck.bottom <= maxStepAmount &&
             calculateWorldIntersection_MTV(upwardsNextPos, collider, particleHandler).resolveDistance == 0)
