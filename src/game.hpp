@@ -1,15 +1,18 @@
 #pragma once
 
 #include "assets/assets.hpp"
-#include "px/math/geometry/vec.hpp"
-#include "px/window/window.hpp"
+#include "px/basic_types/vec.hpp"
+#include "px/instance/instance.hpp"
 #include "scene/scene.hpp"
 #include <memory>
 
 class Game
 {
   public:
-    Game(Vec2u windowSize, Vec2u viewportSize) : m_window("ANTHILL", windowSize, viewportSize) { start(); }
+    Game(px::Vec2u windowSize, px::Vec2u viewportSize) : m_instance("ANTHILL", windowSize, viewportSize)
+    {
+        start();
+    }
     ~Game();
     Game(const Game &other)            = delete;
     Game &operator=(const Game &other) = delete;
@@ -24,6 +27,6 @@ class Game
 
   private:
     Assets m_assets;
-    Window m_window;
+    px::Instance m_instance;
     std::unique_ptr<Scene> m_scene = nullptr;
 };

@@ -3,7 +3,6 @@
 #include "ai/navigation/ai_navigation.hpp"
 #include "ai/perception/ai_perception.hpp"
 #include "assets/assets.hpp"
-#include "px/viewport/render_command.hpp"
 #include "entities/player_point/player_point.hpp"
 #include "entities/wuskkogel/ai/state_machine.hpp"
 #include "entity/body/entity_body.hpp"
@@ -13,6 +12,7 @@
 #include "events/entity/base.hpp"
 #include "events/entity/events.hpp"
 #include "events/event_pool.hpp"
+#include "px/window/render_command.hpp"
 #include "sprite/sprite_animator.hpp"
 #include <memory>
 
@@ -23,11 +23,11 @@ class Wuskkogel : public Entity
 
     void update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) override;
 
-    void render(const Camera &camera, std::vector<RenderCommand> &commandsOut) override
+    void render(const Camera &camera, std::vector<px::RenderCommand> &commandsOut) override
     {
-        TextureRenderCommandData data;
+        px::TextureRenderCommandData data;
         data.texture  = m_animator.getCurrentFrame();
-        data.position = camera.cameraToViewport(m_body.getPosition());
+        data.position = camera.cameraToRenderer(m_body.getPosition());
         data.flipX    = m_body.getVelocity().x < 0;
 
         commandsOut.push_back({1, data});
@@ -50,10 +50,10 @@ class Wuskkogel : public Entity
     AIPerception m_aiPerception;
     AINavigation m_aiNavigation;
 
-    float m_lookAngle = 0.0f;
-    Vec2i m_headPos   = {0, -5};
+    float m_lookAngle   = 0.0f;
+    px::Vec2i m_headPos = {0, -5};
 
     std::vector<DamageSource> m_damageSources;
 
-    Timer m_idleSoundTimer;
+    px::Timer m_idleSoundTimer;
 };

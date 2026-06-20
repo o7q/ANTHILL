@@ -1,6 +1,6 @@
 #include "player.hpp"
 
-Player::Player(InputHandler &input, const Assets &assets)
+Player::Player(px::InputHandler &input, const Assets &assets)
     : r_input(input), r_assets(assets), m_bodyHandler(m_body, m_collider)
 {
     m_collider.addRect({}, {3, 21});

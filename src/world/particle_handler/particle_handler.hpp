@@ -1,9 +1,9 @@
 #pragma once
 
-#include "px/data_structures/chunk_map.hpp"
-#include "px/time/time_handler.hpp"
 #include "events/event_pool.hpp"
 #include "events/particle/base.hpp"
+#include "px/data_structures/chunk_map.hpp"
+#include "px/time/time_handler.hpp"
 #include "world/particle_handler/biome.hpp"
 #include "world/particle_handler/dynamics/p_dynamics_handler.hpp"
 #include "world/particle_handler/editor/particle_editor.hpp"
@@ -14,18 +14,18 @@
 class ParticleHandler
 {
   public:
-    ParticleHandler(Vec2u chunkSize)
+    ParticleHandler(px::Vec2u chunkSize)
         : m_particles(chunkSize), m_biomeMarkers(chunkSize), m_background(chunkSize),
           m_dynamicsHandler(m_particles, m_navmesh), m_editor(m_particles, m_biomeMarkers, m_background),
           m_navmesh({8, 8})
     {
     }
 
-    void update(TimeHandler::Info time, Vec2i origin);
+    void update(px::TimeHandler::Info time, px::Vec2i origin);
 
-    const ChunkMap<Particle> &getParticles() const { return m_particles; }
-    const ChunkMap<BiomeID> &getBiomeMarkers() const { return m_biomeMarkers; }
-    const ChunkMap<Color> &getBackground() const { return m_background; }
+    const px::ChunkMap<Particle> &getParticles() const { return m_particles; }
+    const px::ChunkMap<BiomeID> &getBiomeMarkers() const { return m_biomeMarkers; }
+    const px::ChunkMap<px::Color> &getBackground() const { return m_background; }
     const Navmesh &getNavmesh() const { return m_navmesh; }
 
     PDynamicsHandler &getDynamics() { return m_dynamicsHandler; }
@@ -35,7 +35,7 @@ class ParticleHandler
     EventPool<ParticleEvent> &getEvents() { return m_events; }
 
     template <typename QueryFunction>
-    void query(Vec2i start, Vec2i end, QueryFunction &&query, bool skipNull = true) const
+    void query(px::Vec2i start, px::Vec2i end, QueryFunction &&query, bool skipNull = true) const
     {
         for (int y = start.y; y <= end.y; ++y)
         {
@@ -57,9 +57,9 @@ class ParticleHandler
     }
 
   private:
-    ChunkMap<Particle> m_particles;
-    ChunkMap<BiomeID> m_biomeMarkers;
-    ChunkMap<Color> m_background;
+    px::ChunkMap<Particle> m_particles;
+    px::ChunkMap<BiomeID> m_biomeMarkers;
+    px::ChunkMap<px::Color> m_background;
 
     PDynamicsHandler m_dynamicsHandler;
     ParticleEditor m_editor;

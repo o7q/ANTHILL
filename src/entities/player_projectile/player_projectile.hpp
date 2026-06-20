@@ -1,17 +1,18 @@
 #pragma once
 
-#include "px/math/angle.hpp"
-#include "px/viewport/render_command.hpp"
 #include "entity/entity.hpp"
 #include "entity/metadata.hpp"
+#include "px/basic_types/angle.hpp"
+#include "px/window/render_command.hpp"
 
 class PlayerProjectile : public Entity
 {
   public:
-    PlayerProjectile(uint64_t parent, Vec2i startPos, Angle startAngle, float speed) : Entity(parent)
+    PlayerProjectile(uint64_t parent, px::Vec2i startPos, px::Angle startAngle, float speed) : Entity(parent)
     {
         m_body.setPosition(startPos);
-        m_constantVelocity = Vec2f(std::cosf(startAngle.radians()), std::sinf(startAngle.radians())) * speed;
+        m_constantVelocity =
+            px::Vec2f(std::cosf(startAngle.radians()), std::sinf(startAngle.radians())) * speed;
 
         m_collider.addRect({}, {3, 3});
 
@@ -21,15 +22,15 @@ class PlayerProjectile : public Entity
 
     void update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) override;
 
-    void render(const Camera &camera, std::vector<RenderCommand> &commandsOut) override
+    void render(const Camera &camera, std::vector<px::RenderCommand> &commandsOut) override
     {
-        PointsRenderCommandData data;
-        data.points = {camera.cameraToViewport(m_body.getPosition())};
-        data.color  = Color(71, 255, 212);
+        px::PointsRenderCommandData data;
+        data.points = {camera.cameraToRenderer(m_body.getPosition())};
+        data.color  = px::Color(71, 255, 212);
 
         commandsOut.push_back({1, data});
     }
 
   private:
-    Vec2f m_constantVelocity;
+    px::Vec2f m_constantVelocity;
 };

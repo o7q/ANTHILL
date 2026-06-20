@@ -1,5 +1,5 @@
 #include "player_dash.hpp"
-#include "px/math/interpolation.hpp"
+#include "px/utils/interpolation.hpp"
 
 PlayerDash::PlayerDash() { m_dashTimer.setDurationInMilliseconds(200); }
 
@@ -19,8 +19,8 @@ void PlayerDash::update(const EntityUpdateContext &context)
     {
     case State::Dashing:
     {
-        Vec2i dir      = m_directions.at(m_currentDirection);
-        float vel      = Math::Interpolation::lerp(10.0f, 2.0f, m_dashTimer.getProgress());
+        px::Vec2i dir  = m_directions.at(m_currentDirection);
+        float vel      = px::Utils::Interpolation::lerp(10.0f, 2.0f, m_dashTimer.getProgress());
         m_dashVelocity = dir.toFloat() * vel;
 
         m_dashTimer.update(context.time.dt);

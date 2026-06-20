@@ -1,12 +1,12 @@
 #include "level_test_scene.hpp"
 
-#include "px/math/geometry/rectangle.hpp"
-#include "px/math/geometry/triangle.hpp"
-#include "px/math/graph.hpp"
-#include "px/math/random.hpp"
-#include "px/math/triangulation.hpp"
-#include "px/viewport/render_command.hpp"
 #include "level_generator/layout_generator.hpp"
+#include "px/basic_types/rectangle.hpp"
+#include "px/basic_types/triangle.hpp"
+#include "px/utils/graph.hpp"
+#include "px/utils/random.hpp"
+#include "px/utils/triangulation.hpp"
+#include "px/window/render_command.hpp"
 #include "room/room.hpp"
 #include <vector>
 
@@ -14,14 +14,14 @@ void LevelTestScene::onStart() {}
 
 void LevelTestScene::onTick()
 {
-    std::vector<RenderCommand> renderCommands;
+    std::vector<px::RenderCommand> renderCommands;
 
-    if (r_window.getInput().getInput(InputID::Shoot)->isDown())
+    if (r_instance.input().getInput("shoot")->isDown())
     {
         m_roomGraph.clear();
 
         {
-            Rectangle_i bounds;
+            px::Rectangle_i bounds;
             bounds.setPosition({60, 60});
             bounds.setSize({100, 100});
 
@@ -35,7 +35,8 @@ void LevelTestScene::onTick()
             LevelLayoutGenerator generator;
             generator.setConfig(config);
 
-            NodeGraph<const Room *> rooms = generator.generate(Math::Random::unseededRandomInt(0, 100000));
+            px::NodeGraph<const Room *> rooms =
+                generator.generate(px::Utils::Random::unseededRandomInt(0, 100000));
 
             for (auto &[id, node] : rooms.getNodes())
             {
@@ -44,7 +45,7 @@ void LevelTestScene::onTick()
         }
 
         {
-            Rectangle_i bounds;
+            px::Rectangle_i bounds;
             bounds.setPosition({190, 170});
             bounds.setSize({90, 90});
 
@@ -59,7 +60,8 @@ void LevelTestScene::onTick()
             LevelLayoutGenerator generator;
             generator.setConfig(config);
 
-            NodeGraph<const Room *> rooms = generator.generate(Math::Random::unseededRandomInt(0, 100000));
+            px::NodeGraph<const Room *> rooms =
+                generator.generate(px::Utils::Random::unseededRandomInt(0, 100000));
 
             for (auto &[id, node] : rooms.getNodes())
             {
@@ -67,36 +69,35 @@ void LevelTestScene::onTick()
             }
         }
 
-        std::vector<Vec2i> positions;
+        std::vector<px::Vec2i> positions;
         for (auto &[id, node] : m_roomGraph.getNodes())
         {
             positions.push_back(id);
         }
 
-        std::vector<Triangle_i> triangulation = Math::Triangulation::generateTriangulation(positions);
-        m_roomGraph = Math::Graph::connectNodesFromTriangulation(triangulation, m_roomGraph);
-        m_roomGraph = Math::Graph::minimumSpanningTree(m_roomGraph);
+        std::vector<px::Triangle_i> triangulation =
+            px::Utils::Triangulation::generateTriangulation(positions);
+        m_roomGraph = px::Utils::Graph::connectNodesFromTriangulation(triangulation, m_roomGraph);
+        m_roomGraph = px::Utils::Graph::minimumSpanningTree(m_roomGraph);
     }
 
     for (auto &[index, node] : m_roomGraph.getNodes())
     {
-        Rectangle_i rect(index, node.value->getSize());
+        px::Rectangle_i rect(index, node.value->getSize());
 
-        RectangleRenderCommandData rdata;
-        rdata.a     = rect.getA();
-        rdata.b     = rect.getB();
-        rdata.color = Color(255, 255, 0);
+        px::RectangleRenderCommandData rdata;
+        rdata.rectangle = rect;
+        rdata.color     = px::Color(255, 255, 0);
         renderCommands.push_back({1, rdata});
 
-        for (Vec2i connection : node.connections)
+        for (px::Vec2i connection : node.connections)
         {
-            SegmentRenderCommandData sdata;
-            sdata.a     = index;
-            sdata.b     = connection;
-            sdata.color = Color(255, 255, 255);
+            px::SegmentRenderCommandData sdata;
+            sdata.segment = {index, connection};
+            sdata.color   = px::Color(255, 255, 255);
             renderCommands.push_back({0, sdata});
         }
     }
 
-    r_window.getViewport().render(renderCommands);
+    r_instance.window().renderCommandQueue(renderCommands);
 }

@@ -1,20 +1,20 @@
 #include "trajectory.hpp"
 
-#include "px/math/line.hpp"
+#include "px/utils/line.hpp"
 
 EntityWorldInteraction::TrajectoryCollisionResponse EntityWorldInteraction::calculateCollisionFromTrajectory(
-    Vec2i start, Vec2i end, const EntityCollider &collider, const ParticleHandler &particleHandler)
+    px::Vec2i start, px::Vec2i end, const EntityCollider &collider, const ParticleHandler &particleHandler)
 {
-    bool collided     = false;
-    Vec2i currentPos  = start;
-    Vec2i previousPos = start;
+    bool collided         = false;
+    px::Vec2i currentPos  = start;
+    px::Vec2i previousPos = start;
 
-    auto check = [&](Vec2i pos)
+    auto check = [&](px::Vec2i pos)
     {
         currentPos = pos;
 
-        Vec2i a = collider.getPrimary().getA() + pos;
-        Vec2i b = collider.getPrimary().getB() + pos;
+        px::Vec2i a = collider.getPrimary().getA() + pos;
+        px::Vec2i b = collider.getPrimary().getB() + pos;
 
         bool collidedThisIteration = false;
         auto query                 = [&](const Particle *p)
@@ -40,7 +40,7 @@ EntityWorldInteraction::TrajectoryCollisionResponse EntityWorldInteraction::calc
         return false;
     };
 
-    Math::Line::bresenhamLine(start, end, check);
+    px::Utils::Lines::bresenhamLine({start, end}, check);
 
     TrajectoryCollisionResponse response;
     response.collided        = collided;
@@ -50,7 +50,7 @@ EntityWorldInteraction::TrajectoryCollisionResponse EntityWorldInteraction::calc
 }
 
 EntityWorldInteraction::TrajectoryCollisionResponse
-EntityWorldInteraction::calculateCollisionFromTrajectorySlide(Vec2i start, Vec2i end,
+EntityWorldInteraction::calculateCollisionFromTrajectorySlide(px::Vec2i start, px::Vec2i end,
                                                               const EntityCollider &collider,
                                                               const ParticleHandler &particleHandler)
 {
@@ -63,14 +63,14 @@ EntityWorldInteraction::calculateCollisionFromTrajectorySlide(Vec2i start, Vec2i
     if (xy_response.collided)
     {
         // horizontal axis
-        Vec2i end_x = {end.x, xy_response.resolvePosition.y};
+        px::Vec2i end_x = {end.x, xy_response.resolvePosition.y};
         TrajectoryCollisionResponse x_response =
             calculateCollisionFromTrajectory(xy_response.resolvePosition, end_x, collider, particleHandler);
 
         if (x_response.collided)
         {
             // vertical axis
-            Vec2i end_y                            = {xy_response.resolvePosition.x, end.y};
+            px::Vec2i end_y                        = {xy_response.resolvePosition.x, end.y};
             TrajectoryCollisionResponse y_response = calculateCollisionFromTrajectory(
                 xy_response.resolvePosition, end_y, collider, particleHandler);
 

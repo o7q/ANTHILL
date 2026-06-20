@@ -1,15 +1,15 @@
+#include "px/basic_types/angle.hpp"
 #include "wuskkogel.hpp"
 
-#include "px/math/random.hpp"
 #include "entities/wuskkogel/ai/states.hpp"
 #include "events/entity/events.hpp"
 #include "events/external/events.hpp"
+#include "px/utils/random.hpp"
 #include <memory>
 
 void Wuskkogel::update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
-    m_lookAngle =
-        Math::Angle::vectorsToAngle(m_body.getLastPositionFloat(), m_body.getPositionFloat()).degrees();
+    m_lookAngle = px::Angle(m_body.getLastPositionFloat(), m_body.getPositionFloat()).degrees();
 
     for (DamageSource dd : m_damageSources)
     {
@@ -31,14 +31,14 @@ void Wuskkogel::update(const EntityUpdateContext &context, EventPool<EntityEvent
                                  SoundID::WuskkogelChirp4};
 
         auto soundEvent             = std::make_unique<ExternalPlaySoundEvent>();
-        soundEvent->soundID         = idleSounds[Math::Random::unseededRandomInt(0, 5)];
+        soundEvent->soundID         = idleSounds[px::Utils::Random::unseededRandomInt(0, 5)];
         soundEvent->settings.volume = 0.1f;
-        soundEvent->settings.pitch  = Math::Random::unseededRandomInt(95, 100) / 100.0f;
+        soundEvent->settings.pitch  = px::Utils::Random::unseededRandomInt(95, 100) / 100.0f;
         soundEvent->settings.position =
             context.vectorTowardsCurrentPlayer * -(context.distanceToCurrentPlayer / 100.0f);
         eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(soundEvent)));
 
-        m_idleSoundTimer.setDurationInSeconds(Math::Random::unseededRandomInt(5, 10));
+        m_idleSoundTimer.setDurationInSeconds(px::Utils::Random::unseededRandomInt(5, 10));
         m_idleSoundTimer.restart();
     }
 

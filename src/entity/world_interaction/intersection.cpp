@@ -1,11 +1,11 @@
 #include "intersection.hpp"
 
 EntityWorldInteraction::MTVIntersectionResponse
-EntityWorldInteraction::calculateWorldIntersection_MTV(Vec2i pos, const EntityCollider &collider,
+EntityWorldInteraction::calculateWorldIntersection_MTV(px::Vec2i pos, const EntityCollider &collider,
                                                        const ParticleHandler &particleHandler)
 {
-    const Vec2i size    = collider.getPrimary().getSize().toGrid();
-    const Vec2i topLeft = collider.getPrimary().getA() + pos;
+    const px::Vec2i size    = collider.getPrimary().getSize().toGrid();
+    const px::Vec2i topLeft = collider.getPrimary().getA() + pos;
 
     //    0
     // 3 [-] 1
@@ -16,7 +16,7 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(Vec2i pos, const EntityCo
     {
         for (int x = 0; x < size.x; ++x)
         {
-            Vec2i worldPos = topLeft + Vec2i(x, y);
+            px::Vec2i worldPos = topLeft + px::Vec2i(x, y);
 
             const Particle *p = particleHandler.getParticles().get(worldPos);
             if (!p || (p->isSolid() && !p->isMoving()))
@@ -36,7 +36,7 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(Vec2i pos, const EntityCo
     response.right      = intersection[1];
     response.bottom     = intersection[2];
     response.left       = intersection[3];
-    response.moveVector = Vec2i(0, 0);
+    response.moveVector = px::Vec2i(0, 0);
 
     if (!collisionOccurred)
     {
@@ -58,16 +58,16 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(Vec2i pos, const EntityCo
     switch (side)
     {
     case 0:
-        response.moveVector = Vec2i(0, lowest);
+        response.moveVector = px::Vec2i(0, lowest);
         break;
     case 1:
-        response.moveVector = Vec2i(-lowest, 0);
+        response.moveVector = px::Vec2i(-lowest, 0);
         break;
     case 2:
-        response.moveVector = Vec2i(0, -lowest);
+        response.moveVector = px::Vec2i(0, -lowest);
         break;
     case 3:
-        response.moveVector = Vec2i(lowest, 0);
+        response.moveVector = px::Vec2i(lowest, 0);
         break;
     }
 
@@ -76,20 +76,20 @@ EntityWorldInteraction::calculateWorldIntersection_MTV(Vec2i pos, const EntityCo
     return response;
 }
 
-Vec2f EntityWorldInteraction::calculateWorldIntersection_averageDirection(
-    Vec2i pos, const EntityCollider &collider, const ParticleHandler &particleHandler)
+px::Vec2f EntityWorldInteraction::calculateWorldIntersection_averageDirection(
+    px::Vec2i pos, const EntityCollider &collider, const ParticleHandler &particleHandler)
 {
-    const Vec2i size    = collider.getPrimary().getSize();
-    const Vec2i topLeft = pos + collider.getPrimary().getA();
+    const px::Vec2i size    = collider.getPrimary().getSize();
+    const px::Vec2i topLeft = pos + collider.getPrimary().getA();
 
-    Vec2i sum = Vec2i(0, 0);
+    px::Vec2i sum = px::Vec2i(0, 0);
     int count = 0;
 
     for (int y = 0; y < size.y; ++y)
     {
         for (int x = 0; x < size.x; ++x)
         {
-            Vec2i worldPos = topLeft + Vec2i(x, y);
+            px::Vec2i worldPos = topLeft + px::Vec2i(x, y);
 
             const Particle *p = particleHandler.getParticles().get(worldPos);
             if (!p || (p->isSolid() && !p->isMoving()))
@@ -102,7 +102,7 @@ Vec2f EntityWorldInteraction::calculateWorldIntersection_averageDirection(
 
     if (count == 0)
     {
-        return Vec2f(0, 0);
+        return px::Vec2f(0, 0);
     }
 
     return (sum.toFloat() / count).normalize();

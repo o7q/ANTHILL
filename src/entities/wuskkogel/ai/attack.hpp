@@ -14,5 +14,5 @@ class WuskkogelAttackState : public State<WuskkogelStateID, UpdateContext>
   private:
     bool m_attacked = false;
 
-    Timer m_attackTimer;
+    px::Timer m_attackTimer;
 };

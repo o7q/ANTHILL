@@ -1,6 +1,6 @@
 #include "attack.hpp"
 
-#include "px/math/random.hpp"
+#include "px/utils/random.hpp"
 #include "entities/player/player.hpp"
 #include "events/entity/events.hpp"
 #include "events/external/events.hpp"
@@ -15,7 +15,7 @@ WuskkogelStateID WuskkogelAttackState::update(const UpdateContext &context)
         return WuskkogelStateID::Roam;
     }
 
-    Vec2f vec = context.context.vectorTowardsCurrentPlayer * 8.0f;
+    px::Vec2f vec = context.context.vectorTowardsCurrentPlayer * 8.0f;
 
     if (!m_attackTimer.active())
     {
@@ -28,9 +28,9 @@ WuskkogelStateID WuskkogelAttackState::update(const UpdateContext &context)
                                  SoundID::WuskkogelAttack5};
 
         auto soundEvent             = std::make_unique<ExternalPlaySoundEvent>();
-        soundEvent->soundID         = biteSounds[Math::Random::unseededRandomInt(0, 5)];
+        soundEvent->soundID         = biteSounds[px::Utils::Random::unseededRandomInt(0, 5)];
         soundEvent->settings.volume = 0.1f;
-        soundEvent->settings.pitch  = Math::Random::unseededRandomInt(95, 100) / 100.0f;
+        soundEvent->settings.pitch  = px::Utils::Random::unseededRandomInt(95, 100) / 100.0f;
         soundEvent->settings.position =
             context.context.vectorTowardsCurrentPlayer * -(context.context.distanceToCurrentPlayer / 100.0f);
         context.events.emit(std::make_unique<EntityExternalEvent>(context.context.id, std::move(soundEvent)));

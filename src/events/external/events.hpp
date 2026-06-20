@@ -1,10 +1,10 @@
 #pragma once
 
-#include "px/sound/sound_handler.hpp"
-#include "px/time/speed_changer.hpp"
 #include "events/external/base.hpp"
-#include "identifiers/sounds.hpp"
 #include "identifiers/scene.hpp"
+#include "identifiers/sounds.hpp"
+#include "px/sound/sound_handler.hpp"
+#include "px/time/time_handler.hpp"
 
 struct ExternalPlaySoundEvent : public ExternalEvent
 {
@@ -12,7 +12,7 @@ struct ExternalPlaySoundEvent : public ExternalEvent
     virtual ~ExternalPlaySoundEvent() = default;
 
     SoundID soundID;
-    SoundPlaySettings settings;
+    px::SoundPlaySettings settings;
 };
 
 struct ExternalChangeSpeedEvent : public ExternalEvent
@@ -20,7 +20,7 @@ struct ExternalChangeSpeedEvent : public ExternalEvent
     ExternalChangeSpeedEvent() : ExternalEvent(ExternalEventType::ChangeSpeed) {}
     virtual ~ExternalChangeSpeedEvent() = default;
 
-    SpeedChanger::Settings settings;
+    px::TimeHandler::SpeedChanger::Settings settings;
 };
 
 struct ExternalLoadSceneEvent : public ExternalEvent

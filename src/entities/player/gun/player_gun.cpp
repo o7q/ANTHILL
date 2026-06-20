@@ -1,6 +1,6 @@
 #include "player_gun.hpp"
 
-#include "px/math/random.hpp"
+#include "px/utils/random.hpp"
 #include "entities/player_projectile/player_projectile.hpp"
 #include "events/entity/events.hpp"
 #include "events/external/events.hpp"
@@ -13,7 +13,7 @@ PlayerGun::PlayerGun()
 
 void PlayerGun::update(float dt) { m_shootCooldown.update(dt); }
 
-void PlayerGun::shoot(Vec2i pos, Angle aimPos, uint64_t id, EventPool<EntityEvent> &eventsOut)
+void PlayerGun::shoot(px::Vec2i pos, px::Angle aimPos, uint64_t id, EventPool<EntityEvent> &eventsOut)
 {
     if (m_shootCooldown.completed())
     {
@@ -24,7 +24,7 @@ void PlayerGun::shoot(Vec2i pos, Angle aimPos, uint64_t id, EventPool<EntityEven
         auto soundEvent             = std::make_unique<ExternalPlaySoundEvent>();
         soundEvent->soundID         = SoundID::SumiShoot1;
         soundEvent->settings.volume = 0.3f;
-        soundEvent->settings.pitch  = Math::Random::unseededRandomInt(95, 100) / 100.0f;
+        soundEvent->settings.pitch  = px::Utils::Random::unseededRandomInt(95, 100) / 100.0f;
         eventsOut.emit(std::make_unique<EntityExternalEvent>(id, std::move(soundEvent)));
 
         m_shootCooldown.restart();

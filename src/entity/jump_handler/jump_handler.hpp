@@ -34,9 +34,9 @@ class JumpHandler
     float m_jumpPower    = 5.0f;
     bool m_jumpRequested = false;
 
-    Timer m_holdTimer;
-    Timer m_bufferTimer;
+    px::Timer m_holdTimer;
+    px::Timer m_bufferTimer;
 
-    Timer m_coyoteTimer;
+    px::Timer m_coyoteTimer;
     bool m_allowCoyoteJump = false;
 };

@@ -1,12 +1,12 @@
 #include "p_dynamics_handler.hpp"
 
-#include "px/math/random.hpp"
+#include "px/utils/random.hpp"
 
 void PDynamicsHandler::update_sandstone_particle(ParticleObject po, float dt)
 {
-    VerletBody &verlet = po.particle->getVerlet();
+    px::VerletBody &verlet = po.particle->getVerlet();
 
-    Vec2f start = verlet.getPosition();
+    px::Vec2f start = verlet.getPosition();
 
     Particle *up    = r_particles.get({po.pos.x, po.pos.y - 1});
     Particle *left  = r_particles.get({po.pos.x - 1, po.pos.y});
@@ -18,17 +18,17 @@ void PDynamicsHandler::update_sandstone_particle(ParticleObject po, float dt)
     {
         if (!can_solid_occupy(left))
         {
-            canDown = Math::Random::unseededRandomInt(0, 10) == 0;
+            canDown = px::Utils::Random::unseededRandomInt(0, 10) == 0;
         }
 
         if (!can_solid_occupy(right))
         {
-            canDown = Math::Random::unseededRandomInt(0, 10) == 0;
+            canDown = px::Utils::Random::unseededRandomInt(0, 10) == 0;
         }
 
         if (!can_solid_occupy(up))
         {
-            canDown = Math::Random::unseededRandomInt(0, 500) == 0;
+            canDown = px::Utils::Random::unseededRandomInt(0, 500) == 0;
         }
     }
     else
@@ -44,7 +44,7 @@ void PDynamicsHandler::update_sandstone_particle(ParticleObject po, float dt)
 
     verlet.integrate(dt);
 
-    Vec2f end = verlet.getPosition();
+    px::Vec2f end = verlet.getPosition();
 
     handle_particle_trajectory(po, start, end, dt);
     finalize_particle(po);

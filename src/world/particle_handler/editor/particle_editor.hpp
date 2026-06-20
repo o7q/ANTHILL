@@ -1,22 +1,23 @@
 #pragma once
 
+#include "px/basic_types/circle.hpp"
 #include "px/data_structures/chunk_map.hpp"
-#include "px/math/geometry/circle.hpp"
-#include "px/math/random.hpp"
 #include "px/texture/texture.hpp"
+#include "px/utils/circle.hpp"
+#include "px/utils/random.hpp"
 #include "world/particle_handler/biome.hpp"
 #include "world/particle_handler/particle.hpp"
 
 class ParticleEditor
 {
   public:
-    ParticleEditor(ChunkMap<Particle> &particles, ChunkMap<BiomeID> &biomeMarkers,
-                   ChunkMap<Color> &background)
+    ParticleEditor(px::ChunkMap<Particle> &particles, px::ChunkMap<BiomeID> &biomeMarkers,
+                   px::ChunkMap<px::Color> &background)
         : r_particles(particles), r_biomeMarkers(biomeMarkers), r_background(background)
     {
     }
 
-    void set(Vec2i pos, Particle p, bool force = false)
+    void set(px::Vec2i pos, Particle p, bool force = false)
     {
         const Particle *existing = r_particles.get(pos);
         if (existing)
@@ -26,7 +27,7 @@ class ParticleEditor
 
             if (hardness != 0 && !force)
             {
-                if (hardness <= -1 || Math::Random::unseededRandomInt(0, hardness + 1) != 0)
+                if (hardness <= -1 || px::Utils::Random::unseededRandomInt(0, hardness + 1) != 0)
                 {
                     canSet = false;
                 }
@@ -42,34 +43,34 @@ class ParticleEditor
         r_particles.set(pos, p);
     }
 
-    void setRadius(Vec2i position, Particle p, int radius = 5)
+    void setRadius(px::Vec2i position, Particle p, int radius = 5)
     {
-        Circle_i circle{position, radius};
-        circle.rasterize([&](Vec2i pos) { set(pos, p); });
+        px::Circle_i circle{position, radius};
+        px::Utils::Circles::fill(circle, [&](px::Vec2i pos) { set(pos, p); });
     }
 
-    void setBackground(Vec2i pos, Color color) { r_background.set(pos, color); }
-    void setBiome(Vec2i pos, BiomeID biome) { r_biomeMarkers.set(pos, biome); }
+    void setBackground(px::Vec2i pos, px::Color color) { r_background.set(pos, color); }
+    void setBiome(px::Vec2i pos, BiomeID biome) { r_biomeMarkers.set(pos, biome); }
 
-    void textureToParticles(const Texture &texture, Vec2i pos, Particle particleBase)
+    void textureToParticles(const px::Texture &texture, px::Vec2i pos, Particle particleBase)
     {
-        Vec2i size     = texture.getSize().toInt();
-        Vec2i halfSize = texture.getSize().toInt() / 2;
+        px::Vec2i size     = texture.getSize().toInt();
+        px::Vec2i halfSize = texture.getSize().toInt() / 2;
 
         for (int y = 0; y < size.y; ++y)
         {
             for (int x = 0; x < size.x; ++x)
             {
-                Color col = texture.getPixel(Vec2u(x, y));
+                px::Color col = texture.getPixel(px::Vec2u(x, y));
                 particleBase.setColor(col);
 
-                set(pos + Vec2i(x, y) - halfSize, particleBase);
+                set(pos + px::Vec2i(x, y) - halfSize, particleBase);
             }
         }
     }
 
   private:
-    ChunkMap<Particle> &r_particles;
-    ChunkMap<BiomeID> &r_biomeMarkers;
-    ChunkMap<Color> &r_background;
+    px::ChunkMap<Particle> &r_particles;
+    px::ChunkMap<BiomeID> &r_biomeMarkers;
+    px::ChunkMap<px::Color> &r_background;
 };

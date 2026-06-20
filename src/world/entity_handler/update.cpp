@@ -1,17 +1,17 @@
 #include "entity_handler.hpp"
 
-#include "px/math/distance.hpp"
-#include "px/math/geometry/rectangle.hpp"
 #include "events/event_pool.hpp"
+#include "px/basic_types/rectangle.hpp"
+#include "px/utils/distance.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 #include <cstdint>
 #include <memory>
 #include <unordered_map>
 
-void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::Info time, Vec2i origin,
-                           EventPoolRefs eventPoolRefs)
+void EntityHandler::update(const ParticleHandler &particleHandler, px::TimeHandler::Info time,
+                           px::Vec2i origin, EventPoolRefs eventPoolRefs)
 {
-    Rectangle_i killBox(origin, m_globalKillRadius);
+    px::Rectangle_i killBox(origin, m_globalKillRadius);
 
     for (auto &[id, entity] : m_entities)
     {
@@ -25,12 +25,12 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
 
         const Player *currentPlayer   = getCurrentPlayer();
         float distanceToCurrentPlayer = 0.0f;
-        Vec2f vectorTowardsCurrentPlayer;
+        px::Vec2f vectorTowardsCurrentPlayer;
 
         if (currentPlayer)
         {
-            distanceToCurrentPlayer = Math::Distance::euclidian(currentPlayer->getBody().getPositionFloat(),
-                                                                entity->getBody().getPositionFloat());
+            distanceToCurrentPlayer = px::Utils::Distance::euclidian(
+                currentPlayer->getBody().getPositionFloat(), entity->getBody().getPositionFloat());
             vectorTowardsCurrentPlayer =
                 (currentPlayer->getBody().getPositionFloat() - entity->getBody().getPositionFloat())
                     .normalize();
@@ -48,7 +48,7 @@ void EntityHandler::update(const ParticleHandler &particleHandler, TimeHandler::
         EventPool<EntityEvent> events;
         entity->update(context, events);
 
-        Vec2i pos = entity->getBody().getPosition();
+        px::Vec2i pos = entity->getBody().getPosition();
 
         if (entity->getHealth() <= 0 || !killBox.pointInside(pos) || !particleHandler.getParticles().get(pos))
         {

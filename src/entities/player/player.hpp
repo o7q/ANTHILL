@@ -1,29 +1,28 @@
 #pragma once
 
 #include "assets/assets.hpp"
-#include "px/input/input_handler.hpp"
-#include "px/math/angle.hpp"
-#include "px/viewport/render_command.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entities/player/gun/player_gun.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
 #include "entity/jump_handler/jump_handler.hpp"
+#include "px/basic_types/angle.hpp"
+#include "px/input/input_handler.hpp"
+#include "px/window/render_command.hpp"
 
 class Player : public Entity
 {
   public:
-    Player(InputHandler &input, const Assets &assets);
+    Player(px::InputHandler &input, const Assets &assets);
     virtual ~Player() = default;
 
     void update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) override;
-    void render(const Camera &camera, std::vector<RenderCommand> &commandsOut) override;
+    void render(const Camera &camera, std::vector<px::RenderCommand> &commandsOut) override;
 
-    void updateAimPosition(Vec2i aimPos)
+    void updateAimPosition(px::Vec2i aimPos)
     {
         m_aimPos = aimPos;
-        m_angle  = Math::Angle::vectorsToAngle((m_body.getPosition() + m_relativeHeadPosition).toFloat(),
-                                               aimPos.toFloat());
+        m_angle  = px::Angle((m_body.getPosition() + m_relativeHeadPosition).toFloat(), aimPos.toFloat());
     }
 
     void damage(DamageSource source) override
@@ -44,19 +43,19 @@ class Player : public Entity
     void update_movement_and_jump(const EntityUpdateContext &context);
 
   private:
-    InputHandler &r_input;
+    px::InputHandler &r_input;
     const Assets &r_assets;
-    
+
     BodyUpdateHandler m_bodyHandler;
     JumpHandler m_jumpHandler;
     PlayerGun m_gun;
     PlayerDash m_dash;
-    
+
     int m_energy = 0;
 
-    Vec2i m_aimPos;
-    Angle m_angle;
-    Vec2i m_relativeHeadPosition = {0, -6};
+    px::Vec2i m_aimPos;
+    px::Angle m_angle;
+    px::Vec2i m_relativeHeadPosition = {0, -6};
 
     bool m_dashJumpRequested = false;
 };

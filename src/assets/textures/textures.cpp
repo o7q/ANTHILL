@@ -1,6 +1,6 @@
 #include "textures.hpp"
 
-void initTextures(AssetPool<TextureID, Texture> &assets)
+void initTextures(px::AssetPool<TextureID, px::Texture> &assets)
 {
     std::unordered_map<TextureID, TextureLoadData> v;
 
@@ -8,6 +8,6 @@ void initTextures(AssetPool<TextureID, Texture> &assets)
 
     for (auto &[id, data] : v)
     {
-        assets.add(id, std::make_unique<Texture>(data.path));
+        assets.add(id, std::make_unique<px::Texture>(data.path));
     }
 }

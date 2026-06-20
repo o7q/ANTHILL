@@ -12,29 +12,29 @@ class PDynamicsHandler
     struct ParticleObject
     {
         Particle *particle = nullptr;
-        Vec2i pos;
+        px::Vec2i pos;
     };
 
   public:
-    PDynamicsHandler(ChunkMap<Particle> &particles, Navmesh &navmesh)
+    PDynamicsHandler(px::ChunkMap<Particle> &particles, Navmesh &navmesh)
         : r_particles(particles), r_navmesh(navmesh), m_swapStates({32, 32})
     {
     }
 
-    void update(TimeHandler::Info timeInfo, Vec2i origin);
+    void update(px::TimeHandler::Info timeInfo, px::Vec2i origin);
 
     void setGravity(float gravity) { m_gravity = gravity; }
     void addGravity(float gravity) { m_gravity += gravity; }
     float getGravity() const { return m_gravity; }
 
-    void applyForce(Vec2i origin, int radius, float power);
+    void applyForce(px::Vec2i origin, int radius, float power);
 
   private:
     void update_particle(ParticleObject po, float dt);
-    void handle_particle_trajectory(ParticleObject po, Vec2f start, Vec2f end, float dt);
+    void handle_particle_trajectory(ParticleObject po, px::Vec2f start, px::Vec2f end, float dt);
     void resolve_particle_collision_against_other(ParticleObject po, Particle *hitParticle,
-                                                  Vec2i currentCheck, Vec2i previousCheck, float dt);
-    void resolve_particle_collision_against_null(ParticleObject po, Vec2i previousCheck);
+                                                  px::Vec2i currentCheck, px::Vec2i previousCheck, float dt);
+    void resolve_particle_collision_against_null(ParticleObject po, px::Vec2i previousCheck);
     void finalize_particle(ParticleObject po);
 
     bool can_solid_occupy(const Particle *p);
@@ -47,12 +47,12 @@ class PDynamicsHandler
     void update_smoke_particle(ParticleObject po, float dt);
 
   private:
-    ChunkMap<Particle> &r_particles;
+    px::ChunkMap<Particle> &r_particles;
     Navmesh &r_navmesh;
-    ChunkMap<uint8_t> m_swapStates;
+    px::ChunkMap<uint8_t> m_swapStates;
     uint8_t m_globalSwapState = 0;
 
     float m_gravity = 0.1f;
 
-    const Vec2i m_updateSize = {280 + 50, 210 + 50};
+    const px::Vec2i m_updateSize = {280 + 50, 210 + 50};
 };

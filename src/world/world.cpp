@@ -1,16 +1,15 @@
 #include "world.hpp"
 
-#include "px/viewport/render_command.hpp"
 #include "events/external/base.hpp"
+#include "px/window/render_command.hpp"
 
-void World::update(TimeHandler::Info time, Vec2i origin, EventPool<ExternalEvent> &externalEvents)
+void World::update(px::TimeHandler::Info time, px::Vec2i origin, EventPool<ExternalEvent> &externalEvents)
 {
     m_particleHandler.update(time, origin);
-    m_entityHandler.update(m_particleHandler, time, origin,
-                           {externalEvents, m_particleHandler.getEvents()});
+    m_entityHandler.update(m_particleHandler, time, origin, {externalEvents, m_particleHandler.getEvents()});
 }
 
-void World::render(const Camera &camera, const Assets &assets, std::vector<RenderCommand> &commandsOut)
+void World::render(const Camera &camera, const Assets &assets, std::vector<px::RenderCommand> &commandsOut)
 {
     m_particleHandler.getRenderer().render({m_particleHandler.getParticles(),
                                             m_particleHandler.getBiomeMarkers(),

@@ -1,16 +1,16 @@
 #include "p_dynamics_handler.hpp"
 
-#include "px/math/line.hpp"
-#include "px/math/physics.hpp"
+#include "px/utils/line.hpp"
+#include "px/utils/physics.hpp"
 
-void PDynamicsHandler::handle_particle_trajectory(ParticleObject po, Vec2f start, Vec2f end, float dt)
+void PDynamicsHandler::handle_particle_trajectory(ParticleObject po, px::Vec2f start, px::Vec2f end, float dt)
 {
-    Vec2i currentCheck    = start.toGrid();
-    Vec2i previousCheck   = start.toGrid();
-    Particle *hitParticle = nullptr;
-    bool hit              = false;
+    px::Vec2i currentCheck  = start.toGrid();
+    px::Vec2i previousCheck = start.toGrid();
+    Particle *hitParticle   = nullptr;
+    bool hit                = false;
 
-    auto function = [&](Vec2i pos)
+    auto function = [&](px::Vec2i pos)
     {
         currentCheck = pos;
 
@@ -53,7 +53,7 @@ void PDynamicsHandler::handle_particle_trajectory(ParticleObject po, Vec2f start
         return false;
     };
 
-    Math::Line::bresenhamLine(start.toGrid(), end.toGrid(), function);
+    px::Utils::Lines::bresenhamLine({start.toGrid(), end.toGrid()}, function);
 
     if (!hit)
     {
@@ -71,34 +71,34 @@ void PDynamicsHandler::handle_particle_trajectory(ParticleObject po, Vec2f start
 }
 
 void PDynamicsHandler::resolve_particle_collision_against_other(ParticleObject po, Particle *hitParticle,
-                                                                Vec2i currentCheck, Vec2i previousCheck,
-                                                                float dt)
+                                                                px::Vec2i currentCheck,
+                                                                px::Vec2i previousCheck, float dt)
 {
-    Vec2i hitDirection = currentCheck - previousCheck;
+    px::Vec2i hitDirection = currentCheck - previousCheck;
 
-    VerletBody &verletA = po.particle->getVerlet();
-    VerletBody &verletB = hitParticle->getVerlet();
+    px::VerletBody &verletA = po.particle->getVerlet();
+    px::VerletBody &verletB = hitParticle->getVerlet();
 
-    Vec2f velA = verletA.getVelocity(dt);
-    Vec2f velB = verletB.getVelocity(dt);
+    px::Vec2f velA = verletA.getVelocity(dt);
+    px::Vec2f velB = verletB.getVelocity(dt);
 
     float restitution = std::min(po.particle->getRestitution(), hitParticle->getRestitution());
 
-    Vec2f newVelA = velA;
-    Vec2f newVelB = velB;
+    px::Vec2f newVelA = velA;
+    px::Vec2f newVelB = velB;
 
     float mA = po.particle->getMass();
     float mB = hitParticle->getMass();
 
     if (hitDirection.x != 0)
     {
-        newVelA.x = Math::Physics::elasticCollisionVelocityA(mA, mB, velA.x, velB.x) * restitution;
-        newVelB.x = Math::Physics::elasticCollisionVelocityB(mA, mB, velA.x, velB.x) * restitution;
+        newVelA.x = px::Utils::Physics::elasticCollisionVelocityA(mA, mB, velA.x, velB.x) * restitution;
+        newVelB.x = px::Utils::Physics::elasticCollisionVelocityB(mA, mB, velA.x, velB.x) * restitution;
     }
     if (hitDirection.y != 0)
     {
-        newVelA.y = Math::Physics::elasticCollisionVelocityA(mA, mB, velA.y, velB.y) * restitution;
-        newVelB.y = Math::Physics::elasticCollisionVelocityB(mA, mB, velA.y, velB.y) * restitution;
+        newVelA.y = px::Utils::Physics::elasticCollisionVelocityA(mA, mB, velA.y, velB.y) * restitution;
+        newVelB.y = px::Utils::Physics::elasticCollisionVelocityB(mA, mB, velA.y, velB.y) * restitution;
     }
 
     constexpr float threshold = 0.25f;
@@ -124,7 +124,7 @@ void PDynamicsHandler::resolve_particle_collision_against_other(ParticleObject p
     verletB.setVelocity(newVelB, dt);
 }
 
-void PDynamicsHandler::resolve_particle_collision_against_null(ParticleObject po, Vec2i previousCheck)
+void PDynamicsHandler::resolve_particle_collision_against_null(ParticleObject po, px::Vec2i previousCheck)
 {
     po.particle->getVerlet().setPosition(previousCheck.toFloat());
 }

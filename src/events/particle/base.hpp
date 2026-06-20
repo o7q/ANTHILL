@@ -1,6 +1,6 @@
 #pragma once
 
-#include "px/math/geometry/vec.hpp"
+#include "px/basic_types/vec.hpp"
 
 enum class ParticleEventType
 {
@@ -14,5 +14,5 @@ struct ParticleEvent
     virtual ~ParticleEvent() = default;
 
     const ParticleEventType type;
-    Vec2i position;
+    px::Vec2i position;
 };

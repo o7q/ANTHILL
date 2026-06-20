@@ -10,16 +10,16 @@ void Game::load_scene(SceneID id)
     switch (id)
     {
     case SceneID::Main:
-        m_scene = std::make_unique<MainScene>(m_window, m_assets);
+        m_scene = std::make_unique<MainScene>(m_instance, m_assets);
         break;
     case SceneID::VerletTest:
-        m_scene = std::make_unique<VerletTestScene>(m_window);
+        m_scene = std::make_unique<VerletTestScene>(m_instance);
         break;
     case SceneID::LevelTest:
-        m_scene = std::make_unique<LevelTestScene>(m_window);
+        m_scene = std::make_unique<LevelTestScene>(m_instance);
         break;
     default:
-        Logger::error("Game::update_loop()", "Recieved unsupported scene change!");
+        px::Logger::error("Game::update_loop()", "Recieved unsupported scene change!");
         break;
     }
 }

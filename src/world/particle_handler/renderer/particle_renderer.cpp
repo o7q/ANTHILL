@@ -1,11 +1,11 @@
 #include "particle_renderer.hpp"
 
 #include "camera/camera.hpp"
-#include "px/viewport/render_command.hpp"
+#include "px/window/render_command.hpp"
 
-void ParticleRenderer::render(const RenderData &data, std::vector<RenderCommand> &commandsOut)
+void ParticleRenderer::render(const RenderData &data, std::vector<px::RenderCommand> &commandsOut)
 {
-    Vec2u size = data.camera.getViewSize();
+    px::Vec2u size = data.camera.getViewSize();
 
     if (m_texture.getSize() != size)
     {
@@ -16,16 +16,16 @@ void ParticleRenderer::render(const RenderData &data, std::vector<RenderCommand>
     {
         for (unsigned int x = 0; x < size.x; ++x)
         {
-            m_texture.setPixel({x, y}, Color());
+            m_texture.setPixel({x, y}, {});
 
-            Vec2i worldPos = data.camera.viewportToCamera(Vec2i(x, y));
+            px::Vec2i worldPos = data.camera.viewportToCamera(px::Vec2i(x, y));
 
-            const Particle *p            = data.particles.get(worldPos);
-            const Color *backgroundColor = data.background.get(worldPos);
+            const Particle *p                = data.particles.get(worldPos);
+            const px::Color *backgroundColor = data.background.get(worldPos);
 
             if (!p)
             {
-                m_texture.setPixel({x, y}, Color(20, 0, 0));
+                m_texture.setPixel({x, y}, px::Color(20, 0, 0));
             }
             else if (p->getColor().a != 0)
             {
@@ -37,25 +37,25 @@ void ParticleRenderer::render(const RenderData &data, std::vector<RenderCommand>
             }
             else
             {
-                Vec2i cameraPos = data.camera.getPosition();
+                px::Vec2i cameraPos = data.camera.getPosition();
                 render_biome(data.biomeMarkers, data.assets, worldPos, cameraPos, {x, y});
             }
         }
     }
 
-    TextureRenderCommandData renderData;
+    px::TextureRenderCommandData renderData;
     renderData.texture = &m_texture;
     renderData.origin  = {0, 0};
 
-    RenderCommand command;
+    px::RenderCommand command;
     command.index = 0;
     command.data  = renderData;
 
     commandsOut.push_back(command);
 }
 
-void ParticleRenderer::render_biome(const ChunkMap<BiomeID> &biomeMarkers, const Assets &assets,
-                                    Vec2i worldPos, Vec2i cameraPos, Vec2u screenPos)
+void ParticleRenderer::render_biome(const px::ChunkMap<BiomeID> &biomeMarkers, const Assets &assets,
+                                    px::Vec2i worldPos, px::Vec2i cameraPos, px::Vec2u screenPos)
 {
     const BiomeID *biomeMarker = biomeMarkers.get(worldPos);
 
@@ -64,8 +64,8 @@ void ParticleRenderer::render_biome(const ChunkMap<BiomeID> &biomeMarkers, const
         return;
     }
 
-    const Texture *texture = nullptr;
-    float amount           = 0.0f;
+    const px::Texture *texture = nullptr;
+    float amount               = 0.0f;
     switch (*biomeMarker)
     {
     case BiomeID::DesertLayer1:
@@ -85,8 +85,9 @@ void ParticleRenderer::render_biome(const ChunkMap<BiomeID> &biomeMarkers, const
         return;
     }
 
-    Vec2u parallax = (worldPos.toFloat() - cameraPos.toFloat() * amount).toUnsignedInt() % texture->getSize();
+    px::Vec2u parallax =
+        (worldPos.toFloat() - cameraPos.toFloat() * amount).toUnsignedInt() % texture->getSize();
 
-    Color c = texture->getPixel(parallax);
+    px::Color c = texture->getPixel(parallax);
     m_texture.setPixel(screenPos, c);
 }

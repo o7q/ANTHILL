@@ -2,9 +2,9 @@
 
 #include "assets/assets.hpp"
 #include "camera/camera.hpp"
+#include "px/basic_types/color.hpp"
 #include "px/data_structures/chunk_map.hpp"
-#include "px/math/color.hpp"
-#include "px/viewport/render_command.hpp"
+#include "px/window/render_command.hpp"
 #include "world/particle_handler/biome.hpp"
 #include "world/particle_handler/particle.hpp"
 
@@ -13,9 +13,9 @@ class ParticleRenderer
   public:
     struct RenderData
     {
-        const ChunkMap<Particle> &particles;
-        const ChunkMap<BiomeID> &biomeMarkers;
-        const ChunkMap<Color> &background;
+        const px::ChunkMap<Particle> &particles;
+        const px::ChunkMap<BiomeID> &biomeMarkers;
+        const px::ChunkMap<px::Color> &background;
         const Camera &camera;
         const Assets &assets;
     };
@@ -23,13 +23,13 @@ class ParticleRenderer
   public:
     ParticleRenderer() = default;
 
-    void render(const RenderData &data, std::vector<RenderCommand> &commandsOut);
+    void render(const RenderData &data, std::vector<px::RenderCommand> &commandsOut);
 
   private:
-    void reconstruct_texture(Vec2u size) { m_texture = Texture(size); }
-    void render_biome(const ChunkMap<BiomeID> &biomeMarkers, const Assets &assets, Vec2i worldPos,
-                      Vec2i cameraPos, Vec2u screenPos);
+    void reconstruct_texture(px::Vec2u size) { m_texture = px::Texture(size); }
+    void render_biome(const px::ChunkMap<BiomeID> &biomeMarkers, const Assets &assets, px::Vec2i worldPos,
+                      px::Vec2i cameraPos, px::Vec2u screenPos);
 
   private:
-    Texture m_texture;
+    px::Texture m_texture;
 };

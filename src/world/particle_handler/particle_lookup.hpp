@@ -12,7 +12,7 @@ enum class ParticlePresetID : uint32_t
 };
 
 std::optional<Particle> createParticlePreset(ParticlePresetID id);
-inline std::optional<Particle> createParticlePresetFromColor(Color color)
+inline std::optional<Particle> createParticlePresetFromColor(px::Color color)
 {
     return createParticlePreset(static_cast<ParticlePresetID>(color.embed()));
 }

@@ -1,21 +1,22 @@
-#include "px/math/random.hpp"
 #include "world_generator.hpp"
 
 #include "level_generator/layout_generator.hpp"
+#include "px/basic_types/circle.hpp"
+#include "px/basic_types/rectangle.hpp"
+#include "px/basic_types/segment.hpp"
+#include "px/basic_types/triangle.hpp"
 #include "px/data_structures/node_graph.hpp"
-#include "px/math/geometry/circle.hpp"
-#include "px/math/geometry/rectangle.hpp"
-#include "px/math/geometry/segment.hpp"
-#include "px/math/geometry/triangle.hpp"
-#include "px/math/graph.hpp"
-#include "px/math/line.hpp"
-#include "px/math/triangulation.hpp"
+#include "px/utils/circle.hpp"
+#include "px/utils/graph.hpp"
+#include "px/utils/line.hpp"
+#include "px/utils/random.hpp"
+#include "px/utils/triangulation.hpp"
 #include "world/particle_handler/particle_lookup.hpp"
 #include "world_generator/spawn_data.hpp"
 #include <unordered_set>
 #include <vector>
 
-void WorldGenerator::generate(Vec2i origin, Vec2i radius)
+void WorldGenerator::generate(px::Vec2i origin, px::Vec2i radius)
 {
     generate_prepare_structures();
     generate_set_in_world(origin, radius);
@@ -25,7 +26,7 @@ void WorldGenerator::generate_prepare_structures()
 {
     if (!m_structureGenerated)
     {
-        NodeGraph<const Room *> masterLayout;
+        px::NodeGraph<const Room *> masterLayout;
 
         masterLayout.set({0, 0}, {&r_assets.rooms().get(RoomID::TestSquare)});
 
@@ -47,51 +48,53 @@ void WorldGenerator::generate_prepare_structures()
 
         for (auto &[index, node] : masterLayout.getNodes())
         {
-            Rectangle_i dummyRect(index, node.value->getSize());
+            px::Rectangle_i dummyRect(index, node.value->getSize());
             node.value->writeToLayer(dummyRect.getA(), m_structureLayer);
         }
 
-        std::vector<Triangle_i> triangulation =
-            Math::Triangulation::generateTriangulation(masterLayout.generatePositions());
+        std::vector<px::Triangle_i> triangulation =
+            px::Utils::Triangulation::generateTriangulation(masterLayout.generatePositions());
 
-        masterLayout = Math::Graph::connectNodesFromTriangulation(triangulation, masterLayout);
-        masterLayout = Math::Graph::minimumSpanningTree(masterLayout);
+        masterLayout = px::Utils::Graph::connectNodesFromTriangulation(triangulation, masterLayout);
+        masterLayout = px::Utils::Graph::minimumSpanningTree(masterLayout);
 
-        std::unordered_set<Segment_i, SegmentHash<int>> connections = masterLayout.generateConnections();
+        std::unordered_set<px::Segment_i, px::SegmentHash<int>> connections =
+            masterLayout.generateConnections();
 
-        for (Segment_i s : connections)
+        for (px::Segment_i s : connections)
         {
-            Math::Line::bresenhamLine(s.a, s.b,
-                                      [&](Vec2i pos)
-                                      {
-                                          Circle_i circ{pos, 15};
+            px::Utils::Lines::bresenhamLine({s.a, s.b},
+                                            [&](px::Vec2i pos)
+                                            {
+                                                px::Circle_i circ{pos, 15};
 
-                                          circ.rasterize(
-                                              [&](Vec2i pos2)
-                                              {
-                                                  StructurePositionalSpawnData dat;
-                                                  dat.overwriteTerrainParticle = true;
-                                                  dat.particle                 = Particle();
-                                                  m_structureLayer.set(pos2, dat);
-                                              });
-                                          return false;
-                                      });
+                                                px::Utils::Circles::fill(circ,
+                                                                         [&](px::Vec2i pos2)
+                                                                         {
+                                                                             StructurePositionalSpawnData dat;
+                                                                             dat.overwriteTerrainParticle =
+                                                                                 true;
+                                                                             dat.particle = Particle();
+                                                                             m_structureLayer.set(pos2, dat);
+                                                                         });
+                                                return false;
+                                            });
         }
     }
 
     m_structureGenerated = true;
 }
 
-void WorldGenerator::generate_set_in_world(Vec2i origin, Vec2i radius)
+void WorldGenerator::generate_set_in_world(px::Vec2i origin, px::Vec2i radius)
 {
-    Vec2i chunkOrigin = r_world.getParticleHandler().getParticles().getChunkIndex(origin);
-    Vec2u chunkSize   = r_world.getParticleHandler().getParticles().getChunkSize();
+    px::Vec2i chunkOrigin = r_world.getParticleHandler().getParticles().getChunkIndex(origin);
+    px::Vec2u chunkSize   = r_world.getParticleHandler().getParticles().getChunkSize();
 
     for (int cy = chunkOrigin.y - radius.y; cy <= chunkOrigin.y + radius.y; ++cy)
     {
         for (int cx = chunkOrigin.x - radius.x; cx <= chunkOrigin.x + radius.x; ++cx)
         {
-            Vec2i chunkPos = {cx, cy};
+            px::Vec2i chunkPos = {cx, cy};
             if (m_generatedChunkMarkers.find(chunkPos) != m_generatedChunkMarkers.end())
             {
                 continue;
@@ -103,7 +106,7 @@ void WorldGenerator::generate_set_in_world(Vec2i origin, Vec2i radius)
             {
                 for (unsigned int x = 0; x < chunkSize.x; ++x)
                 {
-                    Vec2i pos = chunkPos * chunkSize.toInt() + Vec2i(x, y);
+                    px::Vec2i pos = chunkPos * chunkSize.toInt() + px::Vec2i(x, y);
                     generate_set_in_world_at_pos(pos);
                 }
             }
@@ -113,7 +116,7 @@ void WorldGenerator::generate_set_in_world(Vec2i origin, Vec2i radius)
     }
 }
 
-void WorldGenerator::generate_set_in_world_at_pos(Vec2i pos)
+void WorldGenerator::generate_set_in_world_at_pos(px::Vec2i pos)
 {
     PositionalSpawnData biomeData;
     // BiomeID biomeID = get_biome(pos);
@@ -131,8 +134,8 @@ void WorldGenerator::generate_set_in_world_at_pos(Vec2i pos)
     if (pos.y > 0)
     {
         Particle stone = createParticlePreset(ParticlePresetID::Stone).value();
-        float rand     = Math::Random::seededRandomInt(90, 100, m_seed + pos.x * pos.y) / 100.0f;
-        stone.setColor(Color(100 * rand, 100 * rand, 100 * rand));
+        float rand     = px::Utils::Random::seededRandomInt(90, 100, m_seed + pos.x * pos.y) / 100.0f;
+        stone.setColor(px::Color(100 * rand, 100 * rand, 100 * rand));
         biomeData.particle = stone;
     }
 

@@ -3,15 +3,15 @@
 void Game::start()
 {
     init_binds();
-    m_window.getTime().setMaxFPS(60);
+    m_instance.time().setMaxFPS(60);
 
     load_scene(SceneID::Main);
 
-    while (m_window.isRunning())
+    while (m_instance.isRunning())
     {
-        m_window.frameStart();
+        m_instance.frameStart();
         update_loop();
-        m_window.frameEnd();
+        m_instance.frameEnd();
     }
 }
 

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "px/math/angle.hpp"
-#include "px/math/geometry/vec.hpp"
-#include "px/timer/timer.hpp"
 #include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
+#include "px/basic_types/angle.hpp"
+#include "px/basic_types/vec.hpp"
+#include "px/timer/timer.hpp"
 
 class PlayerGun
 {
@@ -12,8 +12,8 @@ class PlayerGun
     PlayerGun();
 
     void update(float dt);
-    void shoot(Vec2i pos, Angle aimPos, uint64_t id, EventPool<EntityEvent> &eventsOut);
+    void shoot(px::Vec2i pos, px::Angle aimPos, uint64_t id, EventPool<EntityEvent> &eventsOut);
 
   private:
-    Timer m_shootCooldown;
+    px::Timer m_shootCooldown;
 };

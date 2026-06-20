@@ -6,7 +6,7 @@
 class SpriteAnimator
 {
   public:
-    SpriteAnimator(const SpriteSheet &spriteSheet, int fps = 10);
+    SpriteAnimator(const px::SpriteSheet &spriteSheet, int fps = 10);
 
     void update(float dt);
 
@@ -20,15 +20,15 @@ class SpriteAnimator
 
     void seek(unsigned int frame) { m_currentFrame = frame; }
 
-    const Texture *getCurrentFrame() const { return getFrame(m_currentFrame); }
-    const Texture *getFrame(unsigned int frame) const { return r_spriteSheet.getSprite(frame); }
+    const px::Texture *getCurrentFrame() const { return getFrame(m_currentFrame); }
+    const px::Texture *getFrame(unsigned int frame) const { return r_spriteSheet.getSprite(frame); }
     int getCurrentFrameIndex() const { return m_currentFrame; }
 
   private:
-    const SpriteSheet &r_spriteSheet;
+    const px::SpriteSheet &r_spriteSheet;
     const unsigned int m_frames = 0;
 
-    Timer m_timer;
+    px::Timer m_timer;
     unsigned int m_currentFrame = 0;
     bool m_loop                 = true;
 };

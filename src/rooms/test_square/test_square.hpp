@@ -7,5 +7,6 @@ class TestSquareRoom : public Room
   public:
     TestSquareRoom();
 
-    void writeToLayer(Vec2i worldTopLeft, ChunkMap<StructurePositionalSpawnData> &dataOut) const override;
+    void writeToLayer(px::Vec2i worldTopLeft,
+                      px::ChunkMap<StructurePositionalSpawnData> &dataOut) const override;
 };

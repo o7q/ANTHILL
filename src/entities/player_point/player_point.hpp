@@ -1,18 +1,18 @@
 #pragma once
 
-#include "px/viewport/render_command.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
 #include "entity/metadata.hpp"
 #include "entity/update_context.hpp"
 #include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
+#include "px/window/render_command.hpp"
 #include <vector>
 
 class PlayerPoint : public Entity
 {
   public:
-    PlayerPoint(Vec2i pos) : m_bodyHandler(m_body, m_collider)
+    PlayerPoint(px::Vec2i pos) : m_bodyHandler(m_body, m_collider)
     {
         m_body.setPosition(pos);
         m_collider.addRect({}, {4, 4});
@@ -25,12 +25,12 @@ class PlayerPoint : public Entity
         m_bodyHandler.update(context);
     }
 
-    void render(const Camera &camera, std::vector<RenderCommand> &commandsOut)
+    void render(const Camera &camera, std::vector<px::RenderCommand> &commandsOut)
     {
-        RectangleRenderCommandData data;
-        data.a     = camera.cameraToViewport(m_body.getPosition() + m_collider.getPrimary().getA());
-        data.b     = camera.cameraToViewport(m_body.getPosition() + m_collider.getPrimary().getB());
-        data.color = Color(31, 255, 191);
+        px::RectangleRenderCommandData data;
+        data.rectangle = m_collider.getPrimary();
+        data.rectangle.setPosition(camera.cameraToRenderer(m_body.getPosition()));
+        data.color = px::Color(31, 255, 191);
         data.fill  = true;
         commandsOut.push_back({3, data});
     }

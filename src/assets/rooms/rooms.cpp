@@ -6,7 +6,7 @@
 #include "rooms/test_tall/test_tall.hpp"
 #include <memory>
 
-void initRooms(AssetPool<RoomID, Room> &assets)
+void initRooms(px::AssetPool<RoomID, Room> &assets)
 {
     std::unordered_map<RoomID, std::unique_ptr<Room>> v;
 

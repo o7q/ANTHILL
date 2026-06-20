@@ -6,15 +6,15 @@
 
 void Room::init(InitConfig config)
 {
-    Texture colorTexture(config.colorPath);
-    Texture lookupTexture(config.lookupPath);
-    Texture backgroundTexture =
-        config.backgroundPath == "" ? Texture(colorTexture.getSize()) : Texture(config.backgroundPath);
+    px::Texture colorTexture(config.colorPath);
+    px::Texture lookupTexture(config.lookupPath);
+    px::Texture backgroundTexture = config.backgroundPath == "" ? px::Texture(colorTexture.getSize())
+                                                                : px::Texture(config.backgroundPath);
 
     if (!(colorTexture.getSize() == lookupTexture.getSize() &&
           lookupTexture.getSize() == backgroundTexture.getSize()))
     {
-        Logger::error("Room::Room()", "Error configuring room! Mismatch between textures!");
+        px::Logger::error("Room::Room()", "Error configuring room! Mismatch between textures!");
         return;
     }
 
@@ -26,9 +26,9 @@ void Room::init(InitConfig config)
         {
             StructurePositionalSpawnData data;
 
-            Color colorPixel      = colorTexture.getPixel(Vec2u(x, y));
-            Color lookupPixel     = lookupTexture.getPixel(Vec2u(x, y));
-            Color backgroundPixel = backgroundTexture.getPixel(Vec2u(x, y));
+            px::Color colorPixel      = colorTexture.getPixel(px::Vec2u(x, y));
+            px::Color lookupPixel     = lookupTexture.getPixel(px::Vec2u(x, y));
+            px::Color backgroundPixel = backgroundTexture.getPixel(px::Vec2u(x, y));
 
             std::optional<Particle> lookup = createParticlePresetFromColor(lookupPixel);
 

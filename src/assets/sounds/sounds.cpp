@@ -1,6 +1,6 @@
 #include "sounds.hpp"
 
-void initSounds(AssetPool<SoundID, Sound> &assets)
+void initSounds(px::AssetPool<SoundID, px::Sound> &assets)
 {
     std::unordered_map<SoundID, SoundLoadData> v;
 
@@ -33,6 +33,6 @@ void initSounds(AssetPool<SoundID, Sound> &assets)
 
     for (auto &[id, data] : v)
     {
-        assets.add(id, std::make_unique<Sound>(data.path));
+        assets.add(id, std::make_unique<px::Sound>(data.path));
     }
 }

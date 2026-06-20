@@ -1,10 +1,11 @@
 #include "against.hpp"
 
-bool EntityWorldInteraction::againstSolidSurface(Vec2i pos, const EntityCollider &collider,
-                                                 const ParticleHandler &particleHandler, RectangleSide side)
+bool EntityWorldInteraction::againstSolidSurface(px::Vec2i pos, const EntityCollider &collider,
+                                                 const ParticleHandler &particleHandler,
+                                                 px::RectangleSide side)
 {
-    const Vec2i size    = collider.getPrimary().getSize();
-    const Vec2i topLeft = pos + collider.getPrimary().getA();
+    const px::Vec2i size    = collider.getPrimary().getSize();
+    const px::Vec2i topLeft = pos + collider.getPrimary().getA();
 
     bool collided = false;
 
@@ -20,31 +21,31 @@ bool EntityWorldInteraction::againstSolidSurface(Vec2i pos, const EntityCollider
 
     switch (side)
     {
-    case RectangleSide::Top:
+    case px::RectangleSide::Top:
     {
-        const Vec2i start = Vec2i(topLeft.x, topLeft.y - 1);
-        const Vec2i end   = Vec2i(topLeft.x + size.x - 1, topLeft.y - 1);
+        const px::Vec2i start = px::Vec2i(topLeft.x, topLeft.y - 1);
+        const px::Vec2i end   = px::Vec2i(topLeft.x + size.x - 1, topLeft.y - 1);
         particleHandler.query(start, end, query, false);
     }
     break;
-    case RectangleSide::Right:
+    case px::RectangleSide::Right:
     {
-        const Vec2i start = Vec2i(topLeft.x + size.x, topLeft.y);
-        const Vec2i end   = Vec2i(topLeft.x + size.x, topLeft.y + size.y - 1);
+        const px::Vec2i start = px::Vec2i(topLeft.x + size.x, topLeft.y);
+        const px::Vec2i end   = px::Vec2i(topLeft.x + size.x, topLeft.y + size.y - 1);
         particleHandler.query(start, end, query, false);
     }
     break;
-    case RectangleSide::Bottom:
+    case px::RectangleSide::Bottom:
     {
-        const Vec2i start = Vec2i(topLeft.x, topLeft.y + size.y);
-        const Vec2i end   = Vec2i(topLeft.x + size.x - 1, topLeft.y + size.y);
+        const px::Vec2i start = px::Vec2i(topLeft.x, topLeft.y + size.y);
+        const px::Vec2i end   = px::Vec2i(topLeft.x + size.x - 1, topLeft.y + size.y);
         particleHandler.query(start, end, query, false);
     }
     break;
-    case RectangleSide::Left:
+    case px::RectangleSide::Left:
     {
-        const Vec2i start = Vec2i(topLeft.x - 1, topLeft.y);
-        const Vec2i end   = Vec2i(topLeft.x - 1, topLeft.y + size.y - 1);
+        const px::Vec2i start = px::Vec2i(topLeft.x - 1, topLeft.y);
+        const px::Vec2i end   = px::Vec2i(topLeft.x - 1, topLeft.y + size.y - 1);
         particleHandler.query(start, end, query, false);
     }
     break;
@@ -53,17 +54,17 @@ bool EntityWorldInteraction::againstSolidSurface(Vec2i pos, const EntityCollider
     return collided;
 }
 
-bool EntityWorldInteraction::againstSolidCorner(Vec2i pos, const EntityCollider &collider,
+bool EntityWorldInteraction::againstSolidCorner(px::Vec2i pos, const EntityCollider &collider,
                                                 const ParticleHandler &particleHandler,
-                                                RectangleCorner corner)
+                                                px::RectangleCorner corner)
 {
-    const Vec2i size    = collider.getPrimary().getSize().toInt();
-    const Vec2i topLeft = pos + collider.getPrimary().getA();
+    const px::Vec2i size    = collider.getPrimary().getSize().toInt();
+    const px::Vec2i topLeft = pos + collider.getPrimary().getA();
 
     bool collided = false;
     switch (corner)
     {
-    case RectangleCorner::TopLeft:
+    case px::RectangleCorner::TopLeft:
     {
         const Particle *p = particleHandler.getParticles().get({topLeft.x + size.x, topLeft.y - 1});
         if (!p || (p->isSolid() && !p->isMoving()))
@@ -72,7 +73,7 @@ bool EntityWorldInteraction::againstSolidCorner(Vec2i pos, const EntityCollider 
         }
     }
     break;
-    case RectangleCorner::TopRight:
+    case px::RectangleCorner::TopRight:
     {
         const Particle *p = particleHandler.getParticles().get({topLeft.x - 1, topLeft.y - 1});
         if (!p || (p->isSolid() && !p->isMoving()))
@@ -81,7 +82,7 @@ bool EntityWorldInteraction::againstSolidCorner(Vec2i pos, const EntityCollider 
         }
     }
     break;
-    case RectangleCorner::BottomLeft:
+    case px::RectangleCorner::BottomLeft:
     {
         const Particle *p = particleHandler.getParticles().get({topLeft.x - 1, topLeft.y + size.y});
         if (!p || (p->isSolid() && !p->isMoving()))
@@ -90,7 +91,7 @@ bool EntityWorldInteraction::againstSolidCorner(Vec2i pos, const EntityCollider 
         }
     }
     break;
-    case RectangleCorner::BottomRight:
+    case px::RectangleCorner::BottomRight:
     {
         const Particle *p = particleHandler.getParticles().get({topLeft.x + size.x, topLeft.y + size.y});
         if (!p || (p->isSolid() && !p->isMoving()))

@@ -1,6 +1,6 @@
 #include "fonts.hpp"
 
-void initFonts(AssetPool<FontID, Font> &assets)
+void initFonts(px::AssetPool<FontID, px::Font> &assets)
 {
     std::unordered_map<FontID, FontLoadData> v;
 
@@ -8,6 +8,6 @@ void initFonts(AssetPool<FontID, Font> &assets)
 
     for (auto &[id, data] : v)
     {
-        assets.add(id, std::make_unique<Font>(data.path));
+        assets.add(id, std::make_unique<px::Font>(data.path));
     }
 }

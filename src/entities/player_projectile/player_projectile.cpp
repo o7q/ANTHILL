@@ -1,10 +1,10 @@
 #include "player_projectile.hpp"
 
-#include "px/math/line.hpp"
-#include "px/math/random.hpp"
 #include "events/entity/events.hpp"
 #include "events/external/events.hpp"
 #include "events/particle/events.hpp"
+#include "px/utils/line.hpp"
+#include "px/utils/random.hpp"
 #include "world/particle_handler/particle.hpp"
 #include <memory>
 
@@ -12,20 +12,20 @@ void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<Enti
 {
     m_body.setVelocity(m_constantVelocity);
 
-    Vec2i start = m_body.getPosition();
+    px::Vec2i start = m_body.getPosition();
     m_body.update(context.time.dt);
-    Vec2i end = m_body.getPosition();
+    px::Vec2i end = m_body.getPosition();
 
-    Math::Line::bresenhamLine(
-        start, end,
-        [&](Vec2i pos)
+    px::Utils::Lines::bresenhamLine(
+        {start, end},
+        [&](px::Vec2i pos)
         {
             const Particle *p = context.particleHandler.getParticles().get(pos);
             if (p && p->isSolid())
             {
                 auto setEvent      = std::make_unique<ParticleSetRadiusEvent>();
                 setEvent->position = pos;
-                setEvent->radius   = Math::Random::unseededRandomInt(3, 6);
+                setEvent->radius   = px::Utils::Random::unseededRandomInt(3, 6);
                 setEvent->particle = Particle{};
                 eventsOut.emit(std::make_unique<EntityParticleEvent>(context.id, std::move(setEvent)));
 

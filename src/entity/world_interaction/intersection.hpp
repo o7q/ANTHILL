@@ -1,6 +1,6 @@
 #pragma once
 
-#include "px/math/geometry/vec.hpp"
+#include "px/basic_types/vec.hpp"
 #include "entity/collider/entity_collider.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 
@@ -15,12 +15,12 @@ struct MTVIntersectionResponse
 
     int resolveDistance = 0;
 
-    Vec2i moveVector;
+    px::Vec2i moveVector;
 };
 
-MTVIntersectionResponse calculateWorldIntersection_MTV(Vec2i pos, const EntityCollider &collider,
+MTVIntersectionResponse calculateWorldIntersection_MTV(px::Vec2i pos, const EntityCollider &collider,
                                                        const ParticleHandler &particleHandler);
 
-Vec2f calculateWorldIntersection_averageDirection(Vec2i pos, const EntityCollider &collider,
+px::Vec2f calculateWorldIntersection_averageDirection(px::Vec2i pos, const EntityCollider &collider,
                                                   const ParticleHandler &particleHandler);
 } // namespace EntityWorldInteraction

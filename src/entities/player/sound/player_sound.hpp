@@ -1,6 +1,6 @@
 #pragma once
 
-#include "px/math/random.hpp"
+#include "px/utils/random.hpp"
 #include "px/timer/timer.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/update_context.hpp"
@@ -23,7 +23,7 @@ class PlayerSound
   public:
     PlayerSound()
     {
-        m_strideTimer.setMode(Timer::Mode::Repeat);
+        m_strideTimer.setMode(px::Timer::Mode::Repeat);
         m_strideTimer.setDurationInMilliseconds(300);
         m_strideTimer.restart();
 
@@ -47,7 +47,7 @@ class PlayerSound
                 SoundID ids[6] = {SoundID::WalkSound1, SoundID::WalkSound2, SoundID::WalkSound3,
                                   SoundID::WalkSound4, SoundID::WalkSound5, SoundID::WalkSound6};
 
-                soundEvent->soundID         = ids[Math::Random::unseededRandomInt(0, 6)];
+                soundEvent->soundID         = ids[px::Utils::Random::unseededRandomInt(0, 6)];
                 soundEvent->settings.volume = 0.1f;
 
                 eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(soundEvent)));
@@ -63,6 +63,6 @@ class PlayerSound
     }
 
   private:
-    Timer m_groundTimer;
-    Timer m_strideTimer;
+    px::Timer m_groundTimer;
+    px::Timer m_strideTimer;
 };

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "px/math/angle.hpp"
-#include "px/math/line.hpp"
+#include "px/basic_types/angle.hpp"
+#include "px/utils/line.hpp"
 #include <vector>
 
 class AIPerception
@@ -10,7 +10,7 @@ class AIPerception
     AIPerception()          = default;
     virtual ~AIPerception() = default;
 
-    template <typename CheckFunction> void scan(Vec2i headPos, float headAngle, CheckFunction &&function)
+    template <typename CheckFunction> void scan(px::Vec2i headPos, float headAngle, CheckFunction &&function)
     {
         m_sightPoints.clear();
 
@@ -20,11 +20,11 @@ class AIPerception
 
         for (int i = 0; i < m_sightRayAmount; ++i)
         {
-            Angle angle = Degrees(angleTop + i * increment);
+            px::Angle angle = px::Degrees(angleTop + i * increment);
 
-            Math::Line::bresenhamRaycast(
+            px::Utils::Lines::bresenhamRaycast(
                 headPos, angle,
-                [&](Vec2i pos)
+                [&](px::Vec2i pos)
                 {
                     if (function(pos))
                     {
@@ -44,10 +44,10 @@ class AIPerception
     void setSightDistance(int distance) { m_sightDistance = distance; }
     void setSightRayAmount(int amount) { m_sightRayAmount = amount; }
 
-    const std::vector<Vec2i> &getSightPoints() const { return m_sightPoints; }
+    const std::vector<px::Vec2i> &getSightPoints() const { return m_sightPoints; }
 
   private:
-    std::vector<Vec2i> m_sightPoints;
+    std::vector<px::Vec2i> m_sightPoints;
 
     float m_detectionRadius = 0.0f;
     float m_sightFOV        = 90.0f;

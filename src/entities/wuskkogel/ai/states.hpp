@@ -22,5 +22,5 @@ struct UpdateContext
     AIPerception &perception;
     AINavigation &navigation;
     float &lookAngle;
-    Vec2i &headPos;
+    px::Vec2i &headPos;
 };

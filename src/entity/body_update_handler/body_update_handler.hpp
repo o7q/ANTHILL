@@ -1,6 +1,6 @@
 #pragma once
 
-#include "px/math/geometry/vec.hpp"
+#include "px/basic_types/vec.hpp"
 #include "entity/body/entity_body.hpp"
 #include "entity/collider/entity_collider.hpp"
 #include "entity/update_context.hpp"
@@ -16,8 +16,8 @@ class BodyUpdateHandler
     void update(const EntityUpdateContext &context);
 
   private:
-    void apply_external_forces(Vec2i startPos, const EntityUpdateContext &context);
-    void prevent_world_collision(Vec2f startPos, Vec2f updatedPos, const EntityUpdateContext &context);
+    void apply_external_forces(px::Vec2i startPos, const EntityUpdateContext &context);
+    void prevent_world_collision(px::Vec2f startPos, px::Vec2f updatedPos, const EntityUpdateContext &context);
 
   private:
     EntityBody &r_body;

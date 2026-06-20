@@ -1,6 +1,6 @@
 #pragma once
 
-#include "px/math/geometry/vec.hpp"
+#include "px/basic_types/vec.hpp"
 #include "world/particle_handler/particle.hpp"
 #include <unordered_map>
 
@@ -13,15 +13,15 @@ class Navmesh
     };
 
   public:
-    Navmesh(Vec2u resolution) { m_resolution = resolution; }
+    Navmesh(px::Vec2u resolution) { m_resolution = resolution; }
 
-    void update(const Particle *p, Vec2i index);
-    void resetChunk(Vec2i index);
-    const ChunkData *getChunkDataFromIndex(Vec2i index) const;
-    Vec2i getIndexFromWorldPosition(Vec2i pos) const;
-    Vec2u getResolution() const { return m_resolution; }
+    void update(const Particle *p, px::Vec2i index);
+    void resetChunk(px::Vec2i index);
+    const ChunkData *getChunkDataFromIndex(px::Vec2i index) const;
+    px::Vec2i getIndexFromWorldPosition(px::Vec2i pos) const;
+    px::Vec2u getResolution() const { return m_resolution; }
 
   private:
-    std::unordered_map<Vec2i, ChunkData, Vec2Hash<int>> m_mesh;
-    Vec2u m_resolution;
+    std::unordered_map<px::Vec2i, ChunkData, px::Vec2Hash<int>> m_mesh;
+    px::Vec2u m_resolution;
 };

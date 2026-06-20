@@ -1,11 +1,11 @@
 #pragma once
 
-#include "px/time/time_handler.hpp"
-#include "px/viewport/render_command.hpp"
 #include "entities/player/player.hpp"
 #include "entity/entity.hpp"
 #include "events/event_pool.hpp"
 #include "events/external/base.hpp"
+#include "px/time/time_handler.hpp"
+#include "px/window/render_command.hpp"
 #include "world/entity_handler/id.hpp"
 #include <cstdint>
 #include <memory>
@@ -27,10 +27,10 @@ class EntityHandler
     EntityHandler &operator=(const EntityHandler &other) = delete;
     virtual ~EntityHandler()                             = default;
 
-    void update(const ParticleHandler &world, TimeHandler::Info time, Vec2i origin,
+    void update(const ParticleHandler &world, px::TimeHandler::Info time, px::Vec2i origin,
                 EventPoolRefs eventPoolRefs);
 
-    void render(const Camera &camera, std::vector<RenderCommand> &commandsOut);
+    void render(const Camera &camera, std::vector<px::RenderCommand> &commandsOut);
 
     uint64_t addEntity(std::unique_ptr<Entity> entity);
     uint64_t addPlayer(std::unique_ptr<Player> player);
@@ -53,5 +53,5 @@ class EntityHandler
     std::unordered_map<uint64_t, std::unique_ptr<Entity>> m_entities;
     std::vector<std::unique_ptr<Entity>> m_entitiesToAdd;
 
-    Vec2i m_globalKillRadius = {2000, 2000};
+    px::Vec2i m_globalKillRadius = {2000, 2000};
 };

@@ -16,5 +16,5 @@ class WuskkogelFollowState : public State<WuskkogelStateID, UpdateContext>
     WuskkogelStateID update(const UpdateContext &context);
 
   private:
-    Timer m_targetLostTimer;
+    px::Timer m_targetLostTimer;
 };

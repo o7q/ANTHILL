@@ -1,8 +1,8 @@
 #include "player_sprite.hpp"
 #include "sprite/sprite_system.hpp"
 
-void PlayerSprite::render(Vec2i pos, Vec2i aimPos, const Camera &camera,
-                          std::vector<RenderCommand> &commandsOut)
+void PlayerSprite::render(px::Vec2i pos, px::Vec2i aimPos, const Camera &camera,
+                          std::vector<px::RenderCommand> &commandsOut)
 {
     const SpriteAnimatorPositional *head  = m_head.getCurrentAnimator();
     const SpriteAnimatorPositional *torso = m_torso.getCurrentAnimator();
@@ -12,9 +12,9 @@ void PlayerSprite::render(Vec2i pos, Vec2i aimPos, const Camera &camera,
 
     if (head)
     {
-        TextureRenderCommandData spriteData;
+        px::TextureRenderCommandData spriteData;
         spriteData.texture  = head->getAnimator().getCurrentFrame();
-        spriteData.position = camera.cameraToViewport(pos + head->getOffset());
+        spriteData.position = camera.cameraToRenderer(pos + head->getOffset());
         spriteData.origin   = head->getOrigin();
         spriteData.flipX    = flipX;
         commandsOut.push_back({4, spriteData});
@@ -22,9 +22,9 @@ void PlayerSprite::render(Vec2i pos, Vec2i aimPos, const Camera &camera,
 
     if (torso)
     {
-        TextureRenderCommandData spriteData;
+        px::TextureRenderCommandData spriteData;
         spriteData.texture  = torso->getAnimator().getCurrentFrame();
-        spriteData.position = camera.cameraToViewport(pos + torso->getOffset());
+        spriteData.position = camera.cameraToRenderer(pos + torso->getOffset());
         spriteData.origin   = torso->getOrigin();
         spriteData.flipX    = flipX;
         commandsOut.push_back({3, spriteData});
@@ -32,9 +32,9 @@ void PlayerSprite::render(Vec2i pos, Vec2i aimPos, const Camera &camera,
 
     if (legs)
     {
-        TextureRenderCommandData spriteData;
+        px::TextureRenderCommandData spriteData;
         spriteData.texture  = legs->getAnimator().getCurrentFrame();
-        spriteData.position = camera.cameraToViewport(pos + legs->getOffset());
+        spriteData.position = camera.cameraToRenderer(pos + legs->getOffset());
         spriteData.origin   = legs->getOrigin();
         spriteData.flipX    = flipX;
         commandsOut.push_back({2, spriteData});

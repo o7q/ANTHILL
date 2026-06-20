@@ -1,7 +1,7 @@
 #include "query.hpp"
 
 EntityWorldInteraction::LocalWorldQuery
-EntityWorldInteraction::generateLocalWorldQuery(Vec2i pos, const EntityCollider &collider,
+EntityWorldInteraction::generateLocalWorldQuery(px::Vec2i pos, const EntityCollider &collider,
                                                 const ParticleHandler &particleHandler)
 {
     LocalWorldQuery out;

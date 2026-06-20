@@ -1,31 +1,31 @@
 #include "renderers.hpp"
 
-void Debug::Render::renderBoundingBox(Vec2i pos, const EntityCollider &collider, const Camera &camera,
-                                      std::vector<RenderCommand> &commandsOut, Color color,
+void Debug::Render::renderBoundingBox(px::Vec2i pos, const EntityCollider &collider, const Camera &camera,
+                                      std::vector<px::RenderCommand> &commandsOut, px::Color color,
                                       unsigned int index)
 {
-    for (const Rectangle_i &rect : collider.getAll())
+    for (const px::Rectangle_i &rect : collider.getAll())
     {
-        RectangleRenderCommandData data;
-        data.a     = camera.cameraToViewport(rect.getA() + pos);
-        data.b     = camera.cameraToViewport(rect.getB() + pos);
+        px::RectangleRenderCommandData data;
+        data.rectangle = rect;
+        data.rectangle.setPosition(camera.cameraToRenderer(pos + rect.getPosition()));
         data.color = color;
         commandsOut.push_back({index, data});
     }
 }
 
 void Debug::Render::renderAISightPoints(const AIPerception &perception, const Camera &camera,
-                                        std::vector<RenderCommand> &commandsOut, Color color,
+                                        std::vector<px::RenderCommand> &commandsOut, px::Color color,
                                         unsigned int index)
 {
-    std::vector<Vec2i> points = perception.getSightPoints();
+    std::vector<px::Vec2i> points = perception.getSightPoints();
 
-    for (Vec2i &p : points)
+    for (px::Vec2i &p : points)
     {
-        p = camera.cameraToViewport(p);
+        p = camera.cameraToRenderer(p);
     }
 
-    PointsRenderCommandData data;
+    px::PointsRenderCommandData data;
     data.points = points;
     data.color  = color;
 
@@ -33,18 +33,18 @@ void Debug::Render::renderAISightPoints(const AIPerception &perception, const Ca
 }
 
 void Debug::Render::renderAINavigation(const AINavigation &navigation, const Camera &camera,
-                                       std::vector<RenderCommand> &commandsOut, Color color,
+                                       std::vector<px::RenderCommand> &commandsOut, px::Color color,
                                        unsigned int index)
 {
     std::vector<AINavigation::Checkpoint> checkpoints = navigation.getCheckpoints();
-    std::vector<Vec2i> points;
+    std::vector<px::Vec2i> points;
 
     for (AINavigation::Checkpoint &checkpoint : checkpoints)
     {
-        points.push_back(camera.cameraToViewport(checkpoint.pos));
+        points.push_back(camera.cameraToRenderer(checkpoint.pos));
     }
 
-    PointsRenderCommandData data;
+    px::PointsRenderCommandData data;
     data.points = points;
     data.color  = color;
 

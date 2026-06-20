@@ -1,9 +1,9 @@
 #include "sprite_animator.hpp"
 
-SpriteAnimator::SpriteAnimator(const SpriteSheet &spriteSheet, int fps)
+SpriteAnimator::SpriteAnimator(const px::SpriteSheet &spriteSheet, int fps)
     : r_spriteSheet(spriteSheet), m_frames(spriteSheet.getSpriteCount())
 {
-    m_timer.setMode(Timer::Mode::Repeat);
+    m_timer.setMode(px::Timer::Mode::Repeat);
     setFPS(fps);
     restart();
 }

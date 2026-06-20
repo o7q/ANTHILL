@@ -1,6 +1,6 @@
 #include "spritesheets.hpp"
 
-void initSpriteSheets(AssetPool<SpriteSheetID, SpriteSheet> &assets)
+void initSpriteSheets(px::AssetPool<SpriteSheetID, px::SpriteSheet> &assets)
 {
     std::unordered_map<SpriteSheetID, SpriteSheetLoadData> v;
 
@@ -9,6 +9,6 @@ void initSpriteSheets(AssetPool<SpriteSheetID, SpriteSheet> &assets)
 
     for (auto &[id, data] : v)
     {
-        assets.add(id, std::make_unique<SpriteSheet>(data.path, data.size));
+        assets.add(id, std::make_unique<px::SpriteSheet>(data.path, data.size));
     }
 }

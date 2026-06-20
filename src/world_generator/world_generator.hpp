@@ -17,24 +17,25 @@ class WorldGenerator
   public:
     WorldGenerator(World &world, const Assets &assets);
 
-    void generate(Vec2i origin, Vec2i radius);
+    void generate(px::Vec2i origin, px::Vec2i radius);
 
   private:
     void generate_prepare_structures();
-    void generate_set_in_world(Vec2i origin, Vec2i radius);
-    void generate_set_in_world_at_pos(Vec2i pos);
+    void generate_set_in_world(px::Vec2i origin, px::Vec2i radius);
+    void generate_set_in_world_at_pos(px::Vec2i pos);
 
-    BiomeID get_biome(Vec2i pos);
-    void get_biome_candidates(Vec2i pos, std::vector<Math::Random::WeightedValue<BiomeID>> &candidates);
+    BiomeID get_biome(px::Vec2i pos);
+    void get_biome_candidates(px::Vec2i pos,
+                              std::vector<px::Utils::Random::WeightedValue<BiomeID>> &candidates);
 
-    PositionalSpawnData generate_desert_layer1(Vec2i pos);
-    PositionalSpawnData generate_desert_layer2(Vec2i pos);
+    PositionalSpawnData generate_desert_layer1(px::Vec2i pos);
+    PositionalSpawnData generate_desert_layer2(px::Vec2i pos);
 
   private:
     World &r_world;
     const Assets &r_assets;
-    ChunkMap<StructurePositionalSpawnData> m_structureLayer;
-    std::unordered_set<Vec2i, Vec2Hash<int>> m_generatedChunkMarkers;
+    px::ChunkMap<StructurePositionalSpawnData> m_structureLayer;
+    std::unordered_set<px::Vec2i, px::Vec2Hash<int>> m_generatedChunkMarkers;
 
     bool m_structureGenerated = false;
 

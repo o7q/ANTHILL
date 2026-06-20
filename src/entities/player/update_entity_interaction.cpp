@@ -1,8 +1,8 @@
 #include "player.hpp"
 
-#include "px/math/line.hpp"
 #include "events/entity/events.hpp"
 #include "events/external/events.hpp"
+#include "px/utils/line.hpp"
 
 void Player::update_entity_interaction(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
@@ -12,9 +12,9 @@ void Player::update_entity_interaction(const EntityUpdateContext &context, Event
         const Entity *entity    = e.second;
         EntityMetadata metadata = entity->getMetadata();
 
-        Math::Line::bresenhamLine(
-            m_body.getLastPosition(), m_body.getPosition(),
-            [&](Vec2i p)
+        px::Utils::Lines::bresenhamLine(
+            {m_body.getLastPosition(), m_body.getPosition()},
+            [&](px::Vec2i p)
             {
                 if (m_collider.overlappingAny(p, entity->getBody().getPosition(), entity->getCollider()))
                 {
@@ -31,7 +31,7 @@ void Player::update_entity_interaction(const EntityUpdateContext &context, Event
                             entityKillSoundEvent->soundID = SoundID::SumiDashKill1;
                             entityKillSoundEvent->settings.volume = 0.2f;
                             entityKillSoundEvent->settings.pitch =
-                                Math::Random::unseededRandomInt(90, 100) / 100.0f;
+                                px::Utils::Random::unseededRandomInt(90, 100) / 100.0f;
                             eventsOut.emit(std::make_unique<EntityExternalEvent>(
                                 context.id, std::move(entityKillSoundEvent)));
                         }

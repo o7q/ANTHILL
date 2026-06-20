@@ -8,7 +8,7 @@ class SpriteAnimatorPositional
 {
   public:
     SpriteAnimatorPositional(SpriteAnimator animator,
-                             std::pair<std::optional<int>, std::optional<int>> origin, Vec2i offset)
+                             std::pair<std::optional<int>, std::optional<int>> origin, px::Vec2i offset)
         : m_animator(animator)
     {
         m_origin = origin;
@@ -19,13 +19,13 @@ class SpriteAnimatorPositional
     const SpriteAnimator &getAnimator() const { return m_animator; }
 
     std::pair<std::optional<int>, std::optional<int>> getOrigin() const { return m_origin; }
-    Vec2i getOffset() const { return m_offset; }
+    px::Vec2i getOffset() const { return m_offset; }
 
   private:
     SpriteAnimator m_animator;
 
     std::pair<std::optional<int>, std::optional<int>> m_origin;
-    Vec2i m_offset;
+    px::Vec2i m_offset;
 };
 
 template <typename AnimationID> class SpriteSystem

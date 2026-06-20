@@ -11,8 +11,8 @@ class Assets;
 struct PositionalSpawnData
 {
     Particle particle;
-    Color backgroundColor;
-    std::function<std::vector<std::unique_ptr<Entity>>(Vec2i, const Assets &)> entities;
+    px::Color backgroundColor;
+    std::function<std::vector<std::unique_ptr<Entity>>(px::Vec2i, const Assets &)> entities;
 };
 
 struct StructurePositionalSpawnData : public PositionalSpawnData

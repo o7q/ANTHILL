@@ -1,11 +1,11 @@
 
 #include "layout_generator.hpp"
+#include "px/basic_types/rectangle.hpp"
 #include "px/data_structures/node_graph.hpp"
-#include "px/math/geometry/rectangle.hpp"
-#include "px/math/random.hpp"
+#include "px/utils/random.hpp"
 #include <vector>
 
-NodeGraph<const Room *> LevelLayoutGenerator::generate(uint32_t seed)
+px::NodeGraph<const Room *> LevelLayoutGenerator::generate(uint32_t seed)
 {
     std::vector<RoomPlaceholder> rooms;
 
@@ -18,11 +18,11 @@ NodeGraph<const Room *> LevelLayoutGenerator::generate(uint32_t seed)
     generate_fix_room_intersection(rooms, seed);
     generate_purge_bad_rooms(rooms);
 
-    NodeGraph<const Room *> roomGraph;
+    px::NodeGraph<const Room *> roomGraph;
     roomGraph.reserve(rooms.size());
     for (RoomPlaceholder room : rooms)
     {
-        Node<const Room *> roomNode;
+        px::Node<const Room *> roomNode;
         roomNode.value = room.room;
         roomGraph.set(room.pos, roomNode);
     }
@@ -34,11 +34,11 @@ void LevelLayoutGenerator::generate_place_rooms(std::vector<RoomPlaceholder> &ro
 {
     for (int i = 0; i < m_config.initialRoomPlacementCount; ++i)
     {
-        int biasX = Math::Random::seededRandomInt(-m_config.roomSpread.x, m_config.roomSpread.x, seed++);
-        int biasY = Math::Random::seededRandomInt(-m_config.roomSpread.y, m_config.roomSpread.y, seed++);
+        int biasX = px::Utils::Random::seededRandomInt(-m_config.roomSpread.x, m_config.roomSpread.x, seed++);
+        int biasY = px::Utils::Random::seededRandomInt(-m_config.roomSpread.y, m_config.roomSpread.y, seed++);
 
-        const Room *room = Math::Random::weightedSelect(m_config.roomPool, seed++);
-        Vec2i pos        = {m_config.bounds.getPosition().x + biasX, m_config.bounds.getPosition().y + biasY};
+        const Room *room = px::Utils::Random::weightedSelect(m_config.roomPool, seed++);
+        px::Vec2i pos    = {m_config.bounds.getPosition().x + biasX, m_config.bounds.getPosition().y + biasY};
         roomsOut.push_back({room, pos});
     }
 }
@@ -57,7 +57,7 @@ void LevelLayoutGenerator::generate_fix_room_intersection(std::vector<RoomPlaceh
                 continue;
             }
 
-            Rectangle_i dummy_rect_a(room_a.pos, room_a.room->getSize());
+            px::Rectangle_i dummy_rect_a(room_a.pos, room_a.room->getSize());
             for (size_t k = 0; k < roomsOut.size(); ++k)
             {
                 if (j == k)
@@ -66,9 +66,9 @@ void LevelLayoutGenerator::generate_fix_room_intersection(std::vector<RoomPlaceh
                 }
 
                 RoomPlaceholder room_b = roomsOut[k];
-                Rectangle_i dummy_rect_b(room_b.pos, room_b.room->getSize());
+                px::Rectangle_i dummy_rect_b(room_b.pos, room_b.room->getSize());
 
-                Rectangle_i::OverlapResult result = dummy_rect_a.overlapping(dummy_rect_b);
+                px::Rectangle_i::OverlapResult result = dummy_rect_a.overlapping(dummy_rect_b);
                 if (result.overlapping)
                 {
                     if (result.amount.x < result.amount.y)
@@ -99,7 +99,7 @@ void LevelLayoutGenerator::generate_purge_bad_rooms(std::vector<RoomPlaceholder>
 
         if (!room.special)
         {
-            Rectangle_i dummy_rect_a(room.pos, room.room->getSize());
+            px::Rectangle_i dummy_rect_a(room.pos, room.room->getSize());
 
             for (size_t i = 0; i < roomsOut.size(); ++i)
             {
@@ -109,9 +109,10 @@ void LevelLayoutGenerator::generate_purge_bad_rooms(std::vector<RoomPlaceholder>
                 }
 
                 RoomPlaceholder room_b = roomsOut[i];
-                Rectangle_i dummy_rect_b(room_b.pos, room_b.room->getSize());
+                px::Rectangle_i dummy_rect_b(room_b.pos, room_b.room->getSize());
 
-                Vec2i overlapping = dummy_rect_a.overlapping(dummy_rect_b).amount + m_config.roomMinSpacing;
+                px::Vec2i overlapping =
+                    dummy_rect_a.overlapping(dummy_rect_b).amount + m_config.roomMinSpacing;
 
                 if ((overlapping.x > 0 && overlapping.y > 0) || !m_config.bounds.contains(dummy_rect_a, true))
                 {

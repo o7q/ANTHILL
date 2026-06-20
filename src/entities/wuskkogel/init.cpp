@@ -27,20 +27,20 @@ Wuskkogel::Wuskkogel(const Assets &assets, uint64_t id)
     cfg.checkpointEatRadius        = 10;
     cfg.astar.endCutoffAmount      = 5;
     cfg.astar.maxIterations        = 100000;
-    cfg.astarNeighborCheckFunction = [&](const EntityUpdateContext &context, Vec2i index)
+    cfg.astarNeighborCheckFunction = [&](const EntityUpdateContext &context, px::Vec2i index)
     {
         const Navmesh::ChunkData *chunkData =
             context.particleHandler.getNavmesh().getChunkDataFromIndex(index);
 
-        Vec2i pos = index * context.particleHandler.getNavmesh().getResolution().toInt();
+        px::Vec2i pos = index * context.particleHandler.getNavmesh().getResolution().toInt();
 
-        Vec2i a = m_collider.getPrimary().getA();
-        Vec2i b = m_collider.getPrimary().getB();
+        px::Vec2i a = m_collider.getPrimary().getA();
+        px::Vec2i b = m_collider.getPrimary().getB();
 
-        Vec2i topLeft     = pos + Vec2i(a.x, a.y);
-        Vec2i topRight    = pos + Vec2i(b.x, a.y);
-        Vec2i bottomLeft  = pos + Vec2i(a.x, b.y);
-        Vec2i bottomRight = pos + Vec2i(b.x, b.y);
+        px::Vec2i topLeft     = pos + px::Vec2i(a.x, a.y);
+        px::Vec2i topRight    = pos + px::Vec2i(b.x, a.y);
+        px::Vec2i bottomLeft  = pos + px::Vec2i(a.x, b.y);
+        px::Vec2i bottomRight = pos + px::Vec2i(b.x, b.y);
 
         bool impassible = false;
 

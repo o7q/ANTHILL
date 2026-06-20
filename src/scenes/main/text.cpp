@@ -1,38 +1,40 @@
 #include "main_scene.hpp"
 
-void MainScene::renderText(std::vector<RenderCommand> &renderCommands)
+void MainScene::renderText(std::vector<px::RenderCommand> &renderCommands)
 {
     Player *player = m_world.getEntityHandler().getCurrentPlayer();
 
     if (player)
     {
-        m_healthText = r_assets.fonts()
-                         .get(FontID::Default)
-                         .generateTexture({std::to_string((int)player->getHealth()), Color(255, 100, 100)});
+        m_healthText =
+            r_assets.fonts()
+                .get(FontID::Default)
+                .generateTexture({std::to_string((int)player->getHealth()), px::Color(255, 100, 100)});
 
-        TextureRenderCommandData healthRenderData;
+        px::TextureRenderCommandData healthRenderData;
         healthRenderData.texture  = &m_healthText;
         healthRenderData.position = {5, 25};
         healthRenderData.origin   = {0, 0};
         renderCommands.push_back({1000, healthRenderData});
     }
 
-    m_fpsText = r_assets.fonts()
-                  .get(FontID::Default)
-                  .generateTexture({std::to_string((int)r_window.getTime().getInfo().fps), Color(0, 255, 0)});
+    m_fpsText =
+        r_assets.fonts()
+            .get(FontID::Default)
+            .generateTexture({std::to_string((int)r_instance.time().getInfo().fps), px::Color(0, 255, 0)});
 
-    TextureRenderCommandData fpsRenderData;
+    px::TextureRenderCommandData fpsRenderData;
     fpsRenderData.texture  = &m_fpsText;
     fpsRenderData.position = {5, 5};
     fpsRenderData.origin   = {0, 0};
     renderCommands.push_back({1000, fpsRenderData});
 
     m_entitiesText = r_assets.fonts()
-                       .get(FontID::Default)
-                       .generateTexture({std::to_string(m_world.getEntityHandler().getEntityCount()),
-                                         Color(255, 100, 255)});
+                         .get(FontID::Default)
+                         .generateTexture({std::to_string(m_world.getEntityHandler().getEntityCount()),
+                                           px::Color(255, 100, 255)});
 
-    TextureRenderCommandData entitiesRenderData;
+    px::TextureRenderCommandData entitiesRenderData;
     entitiesRenderData.texture  = &m_entitiesText;
     entitiesRenderData.position = {5, 15};
     entitiesRenderData.origin   = {0, 0};
@@ -41,10 +43,10 @@ void MainScene::renderText(std::vector<RenderCommand> &renderCommands)
         r_assets.fonts()
             .get(FontID::Default)
             .generateTexture({std::to_string(m_world.getParticleHandler().getParticles().getChunks().size()),
-                              Color(255, 100, 0)});
+                              px::Color(255, 100, 0)});
     renderCommands.push_back({1000, entitiesRenderData});
 
-    TextureRenderCommandData chunkRenderData;
+    px::TextureRenderCommandData chunkRenderData;
     chunkRenderData.texture  = &m_chunksText;
     chunkRenderData.position = {5, 35};
     chunkRenderData.origin   = {0, 0};

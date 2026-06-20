@@ -1,13 +1,13 @@
 #pragma once
 
-#include "px/window/window.hpp"
 #include "identifiers/scene.hpp"
+#include "px/instance/instance.hpp"
 #include <optional>
 
 class Scene
 {
   public:
-    Scene(Window &window) : r_window(window) {}
+    Scene(px::Instance &instance) : r_instance(instance) {}
     Scene(const Scene &other)            = delete;
     Scene &operator=(const Scene &other) = delete;
     virtual ~Scene()                     = default;
@@ -21,7 +21,7 @@ class Scene
     void changeScene(SceneID id) { m_result = id; }
 
   protected:
-    Window &r_window;
+    px::Instance &r_instance;
 
   private:
     bool m_firstTick = true;

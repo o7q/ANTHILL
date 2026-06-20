@@ -18,10 +18,10 @@ WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
         return WuskkogelStateID::Roam;
     }
 
-    Vec2i targetPos = player->getBody().getPosition();
+    px::Vec2i targetPos = player->getBody().getPosition();
 
     context.perception.scan(context.body.getPosition() + context.headPos, context.lookAngle,
-                            [&](Vec2i pos)
+                            [&](px::Vec2i pos)
                             {
                                 if (player->getCollider().pointInsideAny(targetPos, pos))
                                 {
@@ -48,11 +48,11 @@ WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
 
     if (result.has_value())
     {
-        context.body.setVelocityTargetX(Math::Numbers::sign(result->x) * 2.5f);
-        context.body.setVelocityTargetY(Math::Numbers::sign(result->y) * 2);
+        context.body.setVelocityTargetX(px::Utils::Numbers::sign(result->x) * 2.5f);
+        context.body.setVelocityTargetY(px::Utils::Numbers::sign(result->y) * 2);
     }
 
-    Vec2i myPos = context.body.getPosition();
+    px::Vec2i myPos = context.body.getPosition();
 
     int dx = std::abs(myPos.x - targetPos.x);
     int dy = std::abs(myPos.y - targetPos.y);

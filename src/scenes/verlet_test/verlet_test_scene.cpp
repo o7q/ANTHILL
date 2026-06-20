@@ -1,20 +1,20 @@
 #include "verlet_test_scene.hpp"
 
 #include "px/texture/texture.hpp"
-#include "px/viewport/render_command.hpp"
+#include "px/window/render_command.hpp"
 
 void VerletTestScene::onStart() {}
 
 void VerletTestScene::onTick()
 {
-    std::vector<RenderCommand> renderCommands;
+    std::vector<px::RenderCommand> renderCommands;
 
-    Vec2i viewportMousePos =
-        r_window.getViewport().windowToViewportPosition(r_window.getInput().getMousePosition());
+    px::Vec2i viewportMousePos =
+        r_instance.window().windowToViewportPosition(r_instance.input().getMousePosition());
 
-    if (r_window.getInput().getInput(InputID::AltAction1)->isDown())
+    if (r_instance.input().getInput("jump")->isDown())
     {
-        VerletBody body;
+        px::VerletBody body;
         body.setPosition(viewportMousePos.toFloat());
         m_bodies.push_back(body);
 
@@ -23,7 +23,7 @@ void VerletTestScene::onTick()
             int i1 = m_bodies.size() - 2;
             int i2 = m_bodies.size() - 1;
 
-            VerletLink link(i1, i2);
+            px::VerletLink link(i1, i2);
 
             if (i1 == 0)
             {
@@ -35,11 +35,11 @@ void VerletTestScene::onTick()
         }
     }
 
-    if (r_window.getInput().getInput(InputID::Shoot)->isDown())
+    if (r_instance.input().getInput("shoot")->isDown())
     {
-        VerletBody &body = m_bodies[m_bodies.size() - 1];
+        px::VerletBody &body = m_bodies[m_bodies.size() - 1];
 
-        Vec2f vel = (viewportMousePos.toFloat() - body.getPosition()).normalize() * 70.0f;
+        px::Vec2f vel = (viewportMousePos.toFloat() - body.getPosition()).normalize() * 70.0f;
 
         body.addForce(vel);
     }
@@ -55,34 +55,34 @@ void VerletTestScene::onTick()
 
     for (size_t i = 0; i < m_bodies.size(); ++i)
     {
-        m_bodies[i].integrate(r_window.getTime().getInfo().dt);
+        m_bodies[i].integrate(r_instance.time().getInfo().dt);
     }
 
     for (int i = 0; i < 100; ++i)
     {
-        for (VerletLink &link : m_links)
+        for (px::VerletLink &link : m_links)
         {
             link.update(m_bodies[link.getI1()], m_bodies[link.getI2()]);
         }
     }
 
-    for (VerletBody &body : m_bodies)
+    for (px::VerletBody &body : m_bodies)
     {
-        m_drawTex.setPixel(body.getPosition().toGrid().toUnsignedInt(), Color(255, 255, 255));
+        m_drawTex.setPixel(body.getPosition().toGrid().toUnsignedInt(), px::Color(255, 255, 255));
     }
 
-    TextureRenderCommandData data;
+    px::TextureRenderCommandData data;
     data.texture = &m_drawTex;
     data.origin  = {0, 0};
     renderCommands.push_back({0, data});
 
-    r_window.getViewport().render(renderCommands);
+    r_instance.window().renderCommandQueue(renderCommands);
 
     for (unsigned int y = 0; y < m_drawTex.getSize().y; ++y)
     {
         for (unsigned int x = 0; x < m_drawTex.getSize().x; ++x)
         {
-            Color col = m_drawTex.getPixel({x, y});
+            px::Color col = m_drawTex.getPixel({x, y});
             col.r *= 0.7;
             col.g *= 0.8;
             col.b *= 0.9;

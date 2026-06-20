@@ -1,7 +1,7 @@
 #pragma once
 
-#include "px/math/color.hpp"
-#include "px/math/verlet/verlet.hpp"
+#include "px/basic_types/color.hpp"
+#include "px/verlet/verlet.hpp"
 
 class Particle
 {
@@ -32,8 +32,8 @@ class Particle
   public:
     Particle() = default;
 
-    void setColor(Color color) { m_color = color; }
-    Color getColor() const { return m_color; }
+    void setColor(px::Color color) { m_color = color; }
+    px::Color getColor() const { return m_color; }
 
     void setPhysicsType(PhysicsType physicsType) { m_physicsType = physicsType; }
     PhysicsType getPhysicsType() const { return m_physicsType; }
@@ -55,8 +55,8 @@ class Particle
     void setRestitution(float restitution) { m_restitution = restitution; }
     float getRestitution() const { return m_restitution; }
 
-    VerletBody &getVerlet() { return m_verletBody; }
-    const VerletBody &getVerlet() const { return m_verletBody; }
+    px::VerletBody &getVerlet() { return m_verletBody; }
+    const px::VerletBody &getVerlet() const { return m_verletBody; }
 
     bool isMoving() const
     {
@@ -70,12 +70,12 @@ class Particle
     int getHardness() const { return m_hardness; }
 
   private:
-    Color m_color;
+    px::Color m_color;
     PhysicsType m_physicsType               = PhysicsType::None;
     MatterType m_matterType                 = MatterType::Gas;
     MaterialDescriptor m_materialDescriptor = MaterialDescriptor::None;
 
-    VerletBody m_verletBody;
+    px::VerletBody m_verletBody;
     float m_restitution = 0.0f;
     float m_mass        = 1.0f;
 

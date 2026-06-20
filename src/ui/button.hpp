@@ -1,7 +1,7 @@
 #pragma once
 
-#include "px/math/rectangle.hpp"
-#include "px/viewport/render_command.hpp"
+#include "px/utils/rectangle.hpp"
+#include "px/renderer/render_command.hpp"
 #include "ui/element.hpp"
 #include <functional>
 
@@ -26,7 +26,7 @@ class UIButton : public UIElement
         RectangleRenderCommandData data;
         data.a     = m_rect.getA();
         data.b     = m_rect.getB();
-        data.color = m_hovering ? Color(255, 255, 0) : Color(0, 255, 0);
+        data.px::Color = m_hovering ? Color(255, 255, 0) : Color(0, 255, 0);
         data.fill  = true;
 
         commandsOut.push_back({10000, data});
@@ -34,13 +34,13 @@ class UIButton : public UIElement
 
     void setOnClickFunction(std::function<void()> onClickFunction) { m_onClickFunction = onClickFunction; }
 
-    void setRect(Rectangle_i rect) { m_rect = rect; }
+    void setRect(px::Rectangle_i rect) { m_rect = rect; }
 
   protected:
     virtual void update_internal() {}
 
   private:
-    Rectangle_i m_rect;
+    px::Rectangle_i m_rect;
 
     bool m_clicked  = false;
     bool m_hovering = false;

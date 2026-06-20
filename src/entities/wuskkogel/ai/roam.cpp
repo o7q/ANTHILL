@@ -1,14 +1,14 @@
 #include "roam.hpp"
 
-#include "px/math/random.hpp"
+#include "px/utils/random.hpp"
 #include "entities/player/player.hpp"
 
 WuskkogelStateID WuskkogelRoamState::update(const UpdateContext &context)
 {
     if (m_roamMoveTimer.completed())
     {
-        m_randomMoveDirection.x = Math::Random::unseededRandomInt(-1, 2);
-        m_randomMoveDirection.y = Math::Random::unseededRandomInt(-1, 2);
+        m_randomMoveDirection.x = px::Utils::Random::unseededRandomInt(-1, 2);
+        m_randomMoveDirection.y = px::Utils::Random::unseededRandomInt(-1, 2);
     }
 
     context.body.setVelocityTarget(m_randomMoveDirection.toFloat());
@@ -24,7 +24,7 @@ WuskkogelStateID WuskkogelRoamState::update(const UpdateContext &context)
     WuskkogelStateID scanResultID = WuskkogelStateID::Roam;
     context.perception.scan(
         context.body.getPosition() + context.headPos, context.lookAngle,
-        [&](Vec2i pos)
+        [&](px::Vec2i pos)
         {
             if (player->getCollider().pointInsideAny(player->getBody().getPosition(), pos))
             {

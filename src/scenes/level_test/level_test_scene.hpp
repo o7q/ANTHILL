@@ -7,7 +7,7 @@
 class LevelTestScene : public Scene
 {
   public:
-    LevelTestScene(Window &window) : Scene(window) {}
+    LevelTestScene(px::Instance &instance) : Scene(instance) {}
 
   protected:
     void onStart() override;
@@ -17,5 +17,5 @@ class LevelTestScene : public Scene
     Room m_testRoom1 = Room({10, 10});
     Room m_testRoom2 = Room({20, 20});
     Room m_testRoom3 = Room({70, 70});
-    NodeGraph<const Room *> m_roomGraph;
+    px::NodeGraph<const Room *> m_roomGraph;
 };

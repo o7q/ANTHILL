@@ -1,12 +1,12 @@
 #include "p_dynamics_handler.hpp"
 
-#include "px/math/random.hpp"
+#include "px/utils/random.hpp"
 
 void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
 {
-    VerletBody &verlet = po.particle->getVerlet();
+    px::VerletBody &verlet = po.particle->getVerlet();
 
-    Vec2f start = verlet.getPosition();
+    px::Vec2f start = verlet.getPosition();
 
     Particle *left  = r_particles.get({po.pos.x - 1, po.pos.y});
     Particle *right = r_particles.get({po.pos.x + 1, po.pos.y});
@@ -36,7 +36,7 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
 
     if (canLeft && canRight)
     {
-        switch (Math::Random::unseededRandomInt(0, 2))
+        switch (px::Utils::Random::unseededRandomInt(0, 2))
         {
         case 0:
             verlet.addVelocity({-0.3f, 0.0f}, dt);
@@ -59,7 +59,7 @@ void PDynamicsHandler::update_water_particle(ParticleObject po, float dt)
 
     verlet.integrate(dt);
 
-    Vec2f end = verlet.getPosition();
+    px::Vec2f end = verlet.getPosition();
 
     handle_particle_trajectory(po, start, end, dt);
     finalize_particle(po);
