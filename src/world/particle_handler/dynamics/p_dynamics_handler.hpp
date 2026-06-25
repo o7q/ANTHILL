@@ -21,7 +21,7 @@ class PDynamicsHandler
     {
     }
 
-    void update(px::TimeHandler::Info timeInfo, px::Vec2i origin);
+    void update(const px::TimeHandler& time, px::Vec2i origin);
 
     void setGravity(float gravity) { m_gravity = gravity; }
     void addGravity(float gravity) { m_gravity += gravity; }

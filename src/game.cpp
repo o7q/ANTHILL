@@ -3,7 +3,7 @@
 void Game::start()
 {
     init_binds();
-    m_instance.time().setMaxFPS(60);
+    m_instance.time().setFramerateTarget(60);
 
     load_scene(SceneID::Main);
 

@@ -6,7 +6,7 @@
 #include "px/utils/graph.hpp"
 #include "px/utils/random.hpp"
 #include "px/utils/triangulation.hpp"
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 #include "room/room.hpp"
 #include <vector>
 
@@ -14,9 +14,9 @@ void LevelTestScene::onStart() {}
 
 void LevelTestScene::onTick()
 {
-    std::vector<px::RenderCommand> renderCommands;
+    std::vector<px::DrawCommand> renderCommands;
 
-    if (r_instance.input().getInput("shoot")->isDown())
+    if (r_instance.input().getInput("shoot").isDown())
     {
         m_roomGraph.clear();
 
@@ -85,19 +85,19 @@ void LevelTestScene::onTick()
     {
         px::Rectangle_i rect(index, node.value->getSize());
 
-        px::RectangleRenderCommandData rdata;
+        px::RectangleDrawConfig rdata;
         rdata.rectangle = rect;
         rdata.color     = px::Color(255, 255, 0);
         renderCommands.push_back({1, rdata});
 
         for (px::Vec2i connection : node.connections)
         {
-            px::SegmentRenderCommandData sdata;
+            px::SegmentDrawConfig sdata;
             sdata.segment = {index, connection};
             sdata.color   = px::Color(255, 255, 255);
             renderCommands.push_back({0, sdata});
         }
     }
 
-    r_instance.window().renderCommandQueue(renderCommands);
+    r_instance.window().drawCommandQueue(renderCommands);
 }

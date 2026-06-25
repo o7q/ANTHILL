@@ -4,7 +4,7 @@
 #include "camera/camera.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entity/body/entity_body.hpp"
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 #include "sprite/sprite_system.hpp"
 
 class PlayerSprite
@@ -44,7 +44,7 @@ class PlayerSprite
     {
         const EntityBody &body;
         const PlayerDash &dash;
-        px::Angle lookAngle;
+        px::Angle_f lookAngle;
     };
 
   public:
@@ -52,12 +52,12 @@ class PlayerSprite
 
     void update(UpdateData data, float dt);
     void render(px::Vec2i pos, px::Vec2i aimPos, const Camera &camera,
-                std::vector<px::RenderCommand> &commandsOut);
+                std::vector<px::DrawCommand> &commandsOut);
 
   private:
     State determine_state(const EntityBody &body);
 
-    void update_head(State state, px::Angle lookAngle, float dt);
+    void update_head(State state, px::Angle_f lookAngle, float dt);
     void update_torso(State state, float dt);
     void update_legs(State state, float dt);
 

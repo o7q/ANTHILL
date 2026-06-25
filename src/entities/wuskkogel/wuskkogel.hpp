@@ -12,7 +12,7 @@
 #include "events/entity/base.hpp"
 #include "events/entity/events.hpp"
 #include "events/event_pool.hpp"
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 #include "sprite/sprite_animator.hpp"
 #include <memory>
 
@@ -23,9 +23,9 @@ class Wuskkogel : public Entity
 
     void update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) override;
 
-    void render(const Camera &camera, std::vector<px::RenderCommand> &commandsOut) override
+    void render(const Camera &camera, std::vector<px::DrawCommand> &commandsOut) override
     {
-        px::TextureRenderCommandData data;
+        px::TextureDrawConfig data;
         data.texture  = m_animator.getCurrentFrame();
         data.position = camera.cameraToRenderer(m_body.getPosition());
         data.flipX    = m_body.getVelocity().x < 0;

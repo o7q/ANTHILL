@@ -6,12 +6,12 @@
 
 void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut)
 {
-    if (r_input.getInput("dash")->wasPressed())
+    if (r_input.getInput("dash").wasPressed())
     {
-        bool up    = r_input.getInput("up")->isDown();
-        bool down  = r_input.getInput("down")->isDown();
-        bool left  = r_input.getInput("left")->isDown();
-        bool right = r_input.getInput("right")->isDown();
+        bool up    = r_input.getInput("up").isDown();
+        bool down  = r_input.getInput("down").isDown();
+        bool left  = r_input.getInput("left").isDown();
+        bool right = r_input.getInput("right").isDown();
 
         PlayerDash::Direction direction = PlayerDash::Direction::Left;
 
@@ -57,7 +57,7 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
     {
         m_body.setVelocity(m_dash.getDashVelocity());
 
-        if (r_input.getInput("jump")->wasPressed())
+        if (r_input.getInput("jump").wasPressed())
         {
             m_dashJumpRequested = true;
         }
@@ -77,12 +77,12 @@ void Player::update(const EntityUpdateContext &context, EventPool<EntityEvent> &
         m_dashJumpRequested = false;
     }
 
-    if (r_input.getInput("shoot")->isDown())
+    if (r_input.getInput("shoot").isDown())
     {
         m_gun.shoot(m_body.getPosition(), m_angle, context.id, eventsOut);
     }
 
-    m_gun.update(context.time.dt);
+    m_gun.update(context.time.getDeltaTime());
 
     m_bodyHandler.update(context);
 }

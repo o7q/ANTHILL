@@ -1,7 +1,7 @@
 #pragma once
 
 #include "entity/update_context.hpp"
-#include "px/ai/a_star.hpp"
+#include "px/a_star/a_star.hpp"
 #include <functional>
 
 class AINavigation

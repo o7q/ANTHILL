@@ -3,12 +3,13 @@
 #include "entity/entity.hpp"
 #include "entity/metadata.hpp"
 #include "px/basic_types/angle.hpp"
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 
 class PlayerProjectile : public Entity
 {
   public:
-    PlayerProjectile(uint64_t parent, px::Vec2i startPos, px::Angle startAngle, float speed) : Entity(parent)
+    PlayerProjectile(uint64_t parent, px::Vec2i startPos, px::Angle_f startAngle, float speed)
+        : Entity(parent)
     {
         m_body.setPosition(startPos);
         m_constantVelocity =
@@ -22,9 +23,9 @@ class PlayerProjectile : public Entity
 
     void update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) override;
 
-    void render(const Camera &camera, std::vector<px::RenderCommand> &commandsOut) override
+    void render(const Camera &camera, std::vector<px::DrawCommand> &commandsOut) override
     {
-        px::PointsRenderCommandData data;
+        px::PointsDrawConfig data;
         data.points = {camera.cameraToRenderer(m_body.getPosition())};
         data.color  = px::Color(71, 255, 212);
 

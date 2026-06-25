@@ -14,7 +14,7 @@ void Room::init(InitConfig config)
     if (!(colorTexture.getSize() == lookupTexture.getSize() &&
           lookupTexture.getSize() == backgroundTexture.getSize()))
     {
-        px::Logger::error("Room::Room()", "Error configuring room! Mismatch between textures!");
+        px::Log::error("Room::Room()", "Error configuring room! Mismatch between textures!");
         return;
     }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "px/renderer/render_command.hpp"
+#include "px/renderer/draw_command.hpp"
 #include "ui/element.hpp"
 #include <memory>
 #include <vector>
@@ -15,7 +15,7 @@ class UI
             element->update(context);
         }
     }
-    void render(std::vector<RenderCommand> &commandsOut)
+    void render(std::vector<DrawCommand> &commandsOut)
     {
         for (auto &element : m_elements)
         {

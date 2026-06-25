@@ -9,5 +9,5 @@ void AINavigation::update(px::Vec2i currentPos, const EntityUpdateContext &conte
         update_movement(currentPos);
     }
 
-    m_stuckTimer.update(context.time.dt);
+    m_stuckTimer.update(context.time.getDeltaTime());
 }

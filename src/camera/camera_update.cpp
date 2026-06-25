@@ -1,6 +1,6 @@
 #include "camera.hpp"
 
-void Camera::update(px::TimeHandler::Info time)
+void Camera::update(const px::TimeHandler &time)
 {
     if (!m_goalSet)
     {
@@ -9,8 +9,8 @@ void Camera::update(px::TimeHandler::Info time)
 
     px::Vec2f diff = m_goal.toFloat().floor() - m_position.floor();
 
-    m_position.x += diff.x * 0.1f * time.dt;
-    m_position.y += diff.y * 0.1f * time.dt;
+    m_position.x += diff.x * 0.1f * time.getDeltaTime();
+    m_position.y += diff.y * 0.1f * time.getDeltaTime();
 
     int threshold = 29;
 

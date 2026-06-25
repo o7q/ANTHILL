@@ -1,4 +1,5 @@
 #include "px/basic_types/angle.hpp"
+#include "px/basic_types/vec.hpp"
 #include "wuskkogel.hpp"
 
 #include "entities/wuskkogel/ai/states.hpp"
@@ -23,7 +24,7 @@ void Wuskkogel::update(const EntityUpdateContext &context, EventPool<EntityEvent
     m_stateMachine.update(updateContext);
 
     m_bodyHandler.update(context);
-    m_animator.update(context.time.dt);
+    m_animator.update(context.time.getDeltaTime());
 
     if (m_idleSoundTimer.completed() && m_stateMachine.getCurrentStateID() != WuskkogelStateID::Attack)
     {
@@ -34,13 +35,15 @@ void Wuskkogel::update(const EntityUpdateContext &context, EventPool<EntityEvent
         soundEvent->soundID         = idleSounds[px::Utils::Random::unseededRandomInt(0, 5)];
         soundEvent->settings.volume = 0.1f;
         soundEvent->settings.pitch  = px::Utils::Random::unseededRandomInt(95, 100) / 100.0f;
-        soundEvent->settings.position =
+        px::Vec2f direction =
             context.vectorTowardsCurrentPlayer * -(context.distanceToCurrentPlayer / 100.0f);
+        soundEvent->settings.position = {direction.x, direction.y, -1.0f};
+
         eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(soundEvent)));
 
         m_idleSoundTimer.setDurationInSeconds(px::Utils::Random::unseededRandomInt(5, 10));
         m_idleSoundTimer.restart();
     }
 
-    m_idleSoundTimer.update(context.time.dt);
+    m_idleSoundTimer.update(context.time.getDeltaTime());
 }

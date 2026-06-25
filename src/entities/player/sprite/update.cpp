@@ -23,7 +23,7 @@ void PlayerSprite::update(UpdateData data, float dt)
     m_lastState = state;
 }
 
-void PlayerSprite::update_head(State state, px::Angle lookAngle, float dt)
+void PlayerSprite::update_head(State state, px::Angle_f lookAngle, float dt)
 {
     const bool lookingUp45   = std::abs(lookAngle.degrees() + 90.0f) < 65.0f;
     const bool lookingDown45 = std::abs(lookAngle.degrees() - 90.0f) < 65.0f;

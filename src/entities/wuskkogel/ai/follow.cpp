@@ -9,7 +9,7 @@ WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
         return WuskkogelStateID::Roam;
     }
 
-    m_targetLostTimer.update(context.context.time.dt);
+    m_targetLostTimer.update(context.context.time.getDeltaTime());
 
     const Player *player = context.context.currentPlayer;
 

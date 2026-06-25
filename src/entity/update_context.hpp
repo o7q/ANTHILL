@@ -11,7 +11,7 @@ class Player;
 struct EntityUpdateContext
 {
     const uint64_t id = 0;
-    const px::TimeHandler::Info time;
+    const px::TimeHandler &time;
     const ParticleHandler &particleHandler;
     const std::unordered_map<uint64_t, const Entity *> &otherEntities;
     uint64_t currentPlayerID    = 0;

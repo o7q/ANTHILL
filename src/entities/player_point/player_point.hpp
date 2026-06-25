@@ -6,7 +6,7 @@
 #include "entity/update_context.hpp"
 #include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 #include <vector>
 
 class PlayerPoint : public Entity
@@ -25,9 +25,9 @@ class PlayerPoint : public Entity
         m_bodyHandler.update(context);
     }
 
-    void render(const Camera &camera, std::vector<px::RenderCommand> &commandsOut)
+    void render(const Camera &camera, std::vector<px::DrawCommand> &commandsOut)
     {
-        px::RectangleRenderCommandData data;
+        px::RectangleDrawConfig data;
         data.rectangle = m_collider.getPrimary();
         data.rectangle.setPosition(camera.cameraToRenderer(m_body.getPosition()));
         data.color = px::Color(31, 255, 191);

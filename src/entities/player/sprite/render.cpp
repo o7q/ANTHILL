@@ -1,8 +1,9 @@
 #include "player_sprite.hpp"
+#include "px/window/draw_types.hpp"
 #include "sprite/sprite_system.hpp"
 
 void PlayerSprite::render(px::Vec2i pos, px::Vec2i aimPos, const Camera &camera,
-                          std::vector<px::RenderCommand> &commandsOut)
+                          std::vector<px::DrawCommand> &commandsOut)
 {
     const SpriteAnimatorPositional *head  = m_head.getCurrentAnimator();
     const SpriteAnimatorPositional *torso = m_torso.getCurrentAnimator();
@@ -12,7 +13,7 @@ void PlayerSprite::render(px::Vec2i pos, px::Vec2i aimPos, const Camera &camera,
 
     if (head)
     {
-        px::TextureRenderCommandData spriteData;
+        px::TextureDrawConfig spriteData;
         spriteData.texture  = head->getAnimator().getCurrentFrame();
         spriteData.position = camera.cameraToRenderer(pos + head->getOffset());
         spriteData.origin   = head->getOrigin();
@@ -22,7 +23,7 @@ void PlayerSprite::render(px::Vec2i pos, px::Vec2i aimPos, const Camera &camera,
 
     if (torso)
     {
-        px::TextureRenderCommandData spriteData;
+        px::TextureDrawConfig spriteData;
         spriteData.texture  = torso->getAnimator().getCurrentFrame();
         spriteData.position = camera.cameraToRenderer(pos + torso->getOffset());
         spriteData.origin   = torso->getOrigin();
@@ -32,7 +33,7 @@ void PlayerSprite::render(px::Vec2i pos, px::Vec2i aimPos, const Camera &camera,
 
     if (legs)
     {
-        px::TextureRenderCommandData spriteData;
+        px::TextureDrawConfig spriteData;
         spriteData.texture  = legs->getAnimator().getCurrentFrame();
         spriteData.position = camera.cameraToRenderer(pos + legs->getOffset());
         spriteData.origin   = legs->getOrigin();

@@ -9,7 +9,7 @@ void BodyUpdateHandler::update(const EntityUpdateContext &context)
 {
     px::Vec2f currentPos = r_body.getPositionFloat();
     apply_external_forces(currentPos.toGrid(), context);
-    r_body.update(context.time.dt);
+    r_body.update(context.time.getDeltaTime());
     px::Vec2f updatedPos = r_body.getPositionFloat();
 
     prevent_world_collision(currentPos, updatedPos, context);

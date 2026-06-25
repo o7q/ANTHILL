@@ -10,7 +10,7 @@ class Camera
     Camera()          = default;
     virtual ~Camera() = default;
 
-    void update(px::TimeHandler::Info time);
+    void update(const px::TimeHandler &time);
 
     void setGoal(px::Vec2i pos)
     {
@@ -29,7 +29,7 @@ class Camera
     px::Vec2i viewportToCamera(px::Vec2i pos) const;
     px::Vec2i cameraToRenderer(px::Vec2i pos) const;
 
-    void jerk(px::Angle angle, float amount);
+    void jerk(px::Angle_f angle, float amount);
 
   private:
     px::Vec2f m_position;

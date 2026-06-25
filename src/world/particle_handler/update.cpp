@@ -2,7 +2,7 @@
 
 #include "events/particle/events.hpp"
 
-void ParticleHandler::update(px::TimeHandler::Info time, px::Vec2i origin)
+void ParticleHandler::update(const px::TimeHandler& time, px::Vec2i origin)
 {
     for (auto &event : m_events.getEvents())
     {

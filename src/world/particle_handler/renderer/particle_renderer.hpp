@@ -4,7 +4,7 @@
 #include "camera/camera.hpp"
 #include "px/basic_types/color.hpp"
 #include "px/data_structures/chunk_map.hpp"
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 #include "world/particle_handler/biome.hpp"
 #include "world/particle_handler/particle.hpp"
 
@@ -23,7 +23,7 @@ class ParticleRenderer
   public:
     ParticleRenderer() = default;
 
-    void render(const RenderData &data, std::vector<px::RenderCommand> &commandsOut);
+    void render(const RenderData &data, std::vector<px::DrawCommand> &commandsOut);
 
   private:
     void reconstruct_texture(px::Vec2u size) { m_texture = px::Texture(size); }

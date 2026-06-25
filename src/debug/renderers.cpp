@@ -1,21 +1,22 @@
 #include "renderers.hpp"
+#include "px/window/draw_types.hpp"
 
 void Debug::Render::renderBoundingBox(px::Vec2i pos, const EntityCollider &collider, const Camera &camera,
-                                      std::vector<px::RenderCommand> &commandsOut, px::Color color,
+                                      std::vector<px::DrawCommand> &commandsOut, px::Color color,
                                       unsigned int index)
 {
     for (const px::Rectangle_i &rect : collider.getAll())
     {
-        px::RectangleRenderCommandData data;
-        data.rectangle = rect;
-        data.rectangle.setPosition(camera.cameraToRenderer(pos + rect.getPosition()));
-        data.color = color;
-        commandsOut.push_back({index, data});
+        px::RectangleDrawConfig config;
+        config.rectangle = rect;
+        config.rectangle.setPosition(camera.cameraToRenderer(pos + rect.getPosition()));
+        config.color = color;
+        commandsOut.push_back({index, config});
     }
 }
 
 void Debug::Render::renderAISightPoints(const AIPerception &perception, const Camera &camera,
-                                        std::vector<px::RenderCommand> &commandsOut, px::Color color,
+                                        std::vector<px::DrawCommand> &commandsOut, px::Color color,
                                         unsigned int index)
 {
     std::vector<px::Vec2i> points = perception.getSightPoints();
@@ -25,15 +26,15 @@ void Debug::Render::renderAISightPoints(const AIPerception &perception, const Ca
         p = camera.cameraToRenderer(p);
     }
 
-    px::PointsRenderCommandData data;
-    data.points = points;
-    data.color  = color;
+    px::PointsDrawConfig config;
+    config.points = points;
+    config.color  = color;
 
-    commandsOut.push_back({index, data});
+    commandsOut.push_back({index, config});
 }
 
 void Debug::Render::renderAINavigation(const AINavigation &navigation, const Camera &camera,
-                                       std::vector<px::RenderCommand> &commandsOut, px::Color color,
+                                       std::vector<px::DrawCommand> &commandsOut, px::Color color,
                                        unsigned int index)
 {
     std::vector<AINavigation::Checkpoint> checkpoints = navigation.getCheckpoints();
@@ -44,9 +45,9 @@ void Debug::Render::renderAINavigation(const AINavigation &navigation, const Cam
         points.push_back(camera.cameraToRenderer(checkpoint.pos));
     }
 
-    px::PointsRenderCommandData data;
-    data.points = points;
-    data.color  = color;
+    px::PointsDrawConfig config;
+    config.points = points;
+    config.color  = color;
 
-    commandsOut.push_back({index, data});
+    commandsOut.push_back({index, config});
 }

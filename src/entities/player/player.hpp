@@ -8,7 +8,7 @@
 #include "entity/jump_handler/jump_handler.hpp"
 #include "px/basic_types/angle.hpp"
 #include "px/input/input_handler.hpp"
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 
 class Player : public Entity
 {
@@ -17,7 +17,7 @@ class Player : public Entity
     virtual ~Player() = default;
 
     void update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) override;
-    void render(const Camera &camera, std::vector<px::RenderCommand> &commandsOut) override;
+    void render(const Camera &camera, std::vector<px::DrawCommand> &commandsOut) override;
 
     void updateAimPosition(px::Vec2i aimPos)
     {
@@ -54,7 +54,7 @@ class Player : public Entity
     int m_energy = 0;
 
     px::Vec2i m_aimPos;
-    px::Angle m_angle;
+    px::Angle_f m_angle;
     px::Vec2i m_relativeHeadPosition = {0, -6};
 
     bool m_dashJumpRequested = false;

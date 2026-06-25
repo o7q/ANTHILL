@@ -6,7 +6,7 @@
 #include "entity/update_context.hpp"
 #include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 
 class Entity
 {
@@ -26,7 +26,7 @@ class Entity
     virtual ~Entity() = default;
 
     virtual void update(const EntityUpdateContext &context, EventPool<EntityEvent> &eventsOut) = 0;
-    virtual void render(const Camera &camera, std::vector<px::RenderCommand> &commandsOut)     = 0;
+    virtual void render(const Camera &camera, std::vector<px::DrawCommand> &commandsOut)       = 0;
 
     void kill() { m_health = 0; }
     virtual void damage(DamageSource source) { m_health -= source.amount; }

@@ -13,7 +13,7 @@ void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<Enti
     m_body.setVelocity(m_constantVelocity);
 
     px::Vec2i start = m_body.getPosition();
-    m_body.update(context.time.dt);
+    m_body.update(context.time.getDeltaTime());
     px::Vec2i end = m_body.getPosition();
 
     px::Utils::Lines::bresenhamLine(

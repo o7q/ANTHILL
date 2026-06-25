@@ -19,7 +19,7 @@ void Game::load_scene(SceneID id)
         m_scene = std::make_unique<LevelTestScene>(m_instance);
         break;
     default:
-        px::Logger::error("Game::update_loop()", "Recieved unsupported scene change!");
+        px::Log::error("Game::update_loop()", "Recieved unsupported scene change!");
         break;
     }
 }

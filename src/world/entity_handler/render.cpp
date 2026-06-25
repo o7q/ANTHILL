@@ -1,8 +1,8 @@
 #include "entity_handler.hpp"
 
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 
-void EntityHandler::render(const Camera &camera, std::vector<px::RenderCommand> &commandsOut)
+void EntityHandler::render(const Camera &camera, std::vector<px::DrawCommand> &commandsOut)
 {
     for (auto &entityPair : m_entities)
     {

@@ -13,7 +13,7 @@ PlayerGun::PlayerGun()
 
 void PlayerGun::update(float dt) { m_shootCooldown.update(dt); }
 
-void PlayerGun::shoot(px::Vec2i pos, px::Angle aimPos, uint64_t id, EventPool<EntityEvent> &eventsOut)
+void PlayerGun::shoot(px::Vec2i pos, px::Angle_f aimPos, uint64_t id, EventPool<EntityEvent> &eventsOut)
 {
     if (m_shootCooldown.completed())
     {

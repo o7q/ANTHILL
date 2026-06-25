@@ -5,21 +5,21 @@
 void Player::update_movement_and_jump(const EntityUpdateContext &context)
 {
     float velocityX = 0.0f;
-    if (r_input.getInput("left")->isDown())
+    if (r_input.getInput("left").isDown())
     {
         velocityX -= 3.0f;
     }
-    if (r_input.getInput("right")->isDown())
+    if (r_input.getInput("right").isDown())
     {
         velocityX += 3.0f;
     }
     m_body.setVelocityTargetX(velocityX);
 
-    if (r_input.getInput("jump")->wasPressed())
+    if (r_input.getInput("jump").wasPressed())
     {
         m_jumpHandler.requestJump();
     }
-    if (!r_input.getInput("jump")->isDown())
+    if (!r_input.getInput("jump").isDown())
     {
         m_jumpHandler.cancelJump();
     }
@@ -27,7 +27,7 @@ void Player::update_movement_and_jump(const EntityUpdateContext &context)
     bool onGround = EntityWorldInteraction::againstSolidSurface(
         m_body.getPosition(), m_collider, context.particleHandler, px::RectangleSide::Bottom);
 
-    m_jumpHandler.update(context.time.dt, onGround);
+    m_jumpHandler.update(context.time.getDeltaTime(), onGround);
 
     if (m_jumpHandler.canApplyJumpPower())
     {

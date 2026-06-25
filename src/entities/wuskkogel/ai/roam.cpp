@@ -12,7 +12,7 @@ WuskkogelStateID WuskkogelRoamState::update(const UpdateContext &context)
     }
 
     context.body.setVelocityTarget(m_randomMoveDirection.toFloat());
-    m_roamMoveTimer.update(context.context.time.dt);
+    m_roamMoveTimer.update(context.context.time.getDeltaTime());
 
     const Player *player = context.context.currentPlayer;
 

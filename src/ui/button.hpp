@@ -1,7 +1,7 @@
 #pragma once
 
 #include "px/utils/rectangle.hpp"
-#include "px/renderer/render_command.hpp"
+#include "px/renderer/draw_command.hpp"
 #include "ui/element.hpp"
 #include <functional>
 
@@ -21,9 +21,9 @@ class UIButton : public UIElement
         update_internal();
     }
 
-    virtual void render(std::vector<RenderCommand> &commandsOut) override
+    virtual void render(std::vector<DrawCommand> &commandsOut) override
     {
-        RectangleRenderCommandData data;
+        RectangleDrawCommandData data;
         data.a     = m_rect.getA();
         data.b     = m_rect.getB();
         data.px::Color = m_hovering ? Color(255, 255, 0) : Color(0, 255, 0);

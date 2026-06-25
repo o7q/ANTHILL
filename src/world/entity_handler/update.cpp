@@ -8,7 +8,7 @@
 #include <memory>
 #include <unordered_map>
 
-void EntityHandler::update(const ParticleHandler &particleHandler, px::TimeHandler::Info time,
+void EntityHandler::update(const ParticleHandler &particleHandler, const px::TimeHandler& time,
                            px::Vec2i origin, EventPoolRefs eventPoolRefs)
 {
     px::Rectangle_i killBox(origin, m_globalKillRadius);

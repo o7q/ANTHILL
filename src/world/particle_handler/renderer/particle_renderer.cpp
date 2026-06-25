@@ -1,9 +1,9 @@
 #include "particle_renderer.hpp"
 
 #include "camera/camera.hpp"
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 
-void ParticleRenderer::render(const RenderData &data, std::vector<px::RenderCommand> &commandsOut)
+void ParticleRenderer::render(const RenderData &data, std::vector<px::DrawCommand> &commandsOut)
 {
     px::Vec2u size = data.camera.getViewSize();
 
@@ -43,11 +43,11 @@ void ParticleRenderer::render(const RenderData &data, std::vector<px::RenderComm
         }
     }
 
-    px::TextureRenderCommandData renderData;
+    px::TextureDrawConfig renderData;
     renderData.texture = &m_texture;
     renderData.origin  = {0, 0};
 
-    px::RenderCommand command;
+    px::DrawCommand command;
     command.index = 0;
     command.data  = renderData;
 

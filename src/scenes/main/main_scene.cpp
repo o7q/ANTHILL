@@ -1,7 +1,7 @@
 #include "main_scene.hpp"
 
 #include "px/time/time_handler.hpp"
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 
 void MainScene::onStart()
 {
@@ -12,7 +12,7 @@ void MainScene::onStart()
 
 void MainScene::onTick()
 {
-    std::vector<px::RenderCommand> renderCommands;
+    std::vector<px::DrawCommand> renderCommands;
 
     m_camera.setViewSize(r_instance.window().getViewportSize());
 
@@ -32,13 +32,13 @@ void MainScene::onTick()
     }
 
     m_generator.generate(updatePos.toInt(), {10, 10});
-    m_world.update(r_instance.time().getInfo(), updatePos, m_events);
+    m_world.update(r_instance.time(), updatePos, m_events);
 
     if (Player *player = m_world.getEntityHandler().getCurrentPlayer())
     {
         m_camera.setGoal(player->getBody().getPosition() +
                          (viewportMousePosCenterNormalized * 60.0f).toGrid());
-        m_camera.update(r_instance.time().getInfo());
+        m_camera.update(r_instance.time());
     }
 
     m_world.render(m_camera, r_assets, renderCommands);
@@ -46,5 +46,5 @@ void MainScene::onTick()
     renderText(renderCommands);
 
     handle_events();
-    r_instance.window().renderCommandQueue(renderCommands);
+    r_instance.window().drawCommandQueue(renderCommands);
 }

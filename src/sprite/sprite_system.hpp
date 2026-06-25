@@ -1,5 +1,6 @@
 #pragma once
 
+#include "px/basic_types/vec.hpp"
 #include "sprite/sprite_animator.hpp"
 #include <optional>
 #include <unordered_map>
@@ -7,8 +8,7 @@
 class SpriteAnimatorPositional
 {
   public:
-    SpriteAnimatorPositional(SpriteAnimator animator,
-                             std::pair<std::optional<int>, std::optional<int>> origin, px::Vec2i offset)
+    SpriteAnimatorPositional(SpriteAnimator animator, px::Vec2Opt_i origin, px::Vec2i offset)
         : m_animator(animator)
     {
         m_origin = origin;
@@ -18,13 +18,13 @@ class SpriteAnimatorPositional
     SpriteAnimator &getAnimator() { return m_animator; }
     const SpriteAnimator &getAnimator() const { return m_animator; }
 
-    std::pair<std::optional<int>, std::optional<int>> getOrigin() const { return m_origin; }
+    px::Vec2Opt_i getOrigin() const { return m_origin; }
     px::Vec2i getOffset() const { return m_offset; }
 
   private:
     SpriteAnimator m_animator;
 
-    std::pair<std::optional<int>, std::optional<int>> m_origin;
+    px::Vec2Opt_i m_origin;
     px::Vec2i m_offset;
 };
 

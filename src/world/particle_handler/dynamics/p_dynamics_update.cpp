@@ -5,7 +5,7 @@
 #include "world/particle_handler/particle.hpp"
 #include <limits>
 
-void PDynamicsHandler::update(px::TimeHandler::Info timeInfo, px::Vec2i origin)
+void PDynamicsHandler::update(const px::TimeHandler &time, px::Vec2i origin)
 {
     px::Vec2i lastNavmeshChunkIndex = {std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
 
@@ -48,7 +48,7 @@ void PDynamicsHandler::update(px::TimeHandler::Info timeInfo, px::Vec2i origin)
             }
 
             ParticleObject po{p, pos};
-            update_particle(po, timeInfo.dt);
+            update_particle(po, time.getDeltaTime());
         }
     }
 

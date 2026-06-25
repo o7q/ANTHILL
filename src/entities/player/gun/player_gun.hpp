@@ -12,7 +12,7 @@ class PlayerGun
     PlayerGun();
 
     void update(float dt);
-    void shoot(px::Vec2i pos, px::Angle aimPos, uint64_t id, EventPool<EntityEvent> &eventsOut);
+    void shoot(px::Vec2i pos, px::Angle_f aimPos, uint64_t id, EventPool<EntityEvent> &eventsOut);
 
   private:
     px::Timer m_shootCooldown;

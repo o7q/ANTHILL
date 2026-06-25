@@ -5,7 +5,7 @@
 #include "events/event_pool.hpp"
 #include "events/external/base.hpp"
 #include "px/time/time_handler.hpp"
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 #include "world/entity_handler/id.hpp"
 #include <cstdint>
 #include <memory>
@@ -27,10 +27,10 @@ class EntityHandler
     EntityHandler &operator=(const EntityHandler &other) = delete;
     virtual ~EntityHandler()                             = default;
 
-    void update(const ParticleHandler &world, px::TimeHandler::Info time, px::Vec2i origin,
+    void update(const ParticleHandler &world, const px::TimeHandler &time, px::Vec2i origin,
                 EventPoolRefs eventPoolRefs);
 
-    void render(const Camera &camera, std::vector<px::RenderCommand> &commandsOut);
+    void render(const Camera &camera, std::vector<px::DrawCommand> &commandsOut);
 
     uint64_t addEntity(std::unique_ptr<Entity> entity);
     uint64_t addPlayer(std::unique_ptr<Player> player);

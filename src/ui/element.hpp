@@ -1,7 +1,7 @@
 #pragma once
 
 #include "px/basic_types/vec.hpp"
-#include "px/renderer/render_command.hpp"
+#include "px/renderer/draw_command.hpp"
 #include <vector>
 
 struct ElementUpdateContext
@@ -15,5 +15,5 @@ class UIElement
 {
   public:
     virtual void update(const ElementUpdateContext &context)     = 0;
-    virtual void render(std::vector<RenderCommand> &commandsOut) = 0;
+    virtual void render(std::vector<DrawCommand> &commandsOut) = 0;
 };

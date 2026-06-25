@@ -1,18 +1,18 @@
 #include "verlet_test_scene.hpp"
 
 #include "px/texture/texture.hpp"
-#include "px/window/render_command.hpp"
+#include "px/window/draw_types.hpp"
 
 void VerletTestScene::onStart() {}
 
 void VerletTestScene::onTick()
 {
-    std::vector<px::RenderCommand> renderCommands;
+    std::vector<px::DrawCommand> renderCommands;
 
     px::Vec2i viewportMousePos =
         r_instance.window().windowToViewportPosition(r_instance.input().getMousePosition());
 
-    if (r_instance.input().getInput("jump")->isDown())
+    if (r_instance.input().getInput("jump").isDown())
     {
         px::VerletBody body;
         body.setPosition(viewportMousePos.toFloat());
@@ -27,7 +27,7 @@ void VerletTestScene::onTick()
 
             if (i1 == 0)
             {
-                link.pinI1(true);
+                link.pinVerlet1(true);
             }
 
             link.setDistance(1.0f);
@@ -35,7 +35,7 @@ void VerletTestScene::onTick()
         }
     }
 
-    if (r_instance.input().getInput("shoot")->isDown())
+    if (r_instance.input().getInput("shoot").isDown())
     {
         px::VerletBody &body = m_bodies[m_bodies.size() - 1];
 
@@ -55,14 +55,14 @@ void VerletTestScene::onTick()
 
     for (size_t i = 0; i < m_bodies.size(); ++i)
     {
-        m_bodies[i].integrate(r_instance.time().getInfo().dt);
+        m_bodies[i].integrate(r_instance.time().getDeltaTime());
     }
 
     for (int i = 0; i < 100; ++i)
     {
         for (px::VerletLink &link : m_links)
         {
-            link.update(m_bodies[link.getI1()], m_bodies[link.getI2()]);
+            link.update(m_bodies[link.getVerletID1()], m_bodies[link.getVerletID2()]);
         }
     }
 
@@ -71,12 +71,12 @@ void VerletTestScene::onTick()
         m_drawTex.setPixel(body.getPosition().toGrid().toUnsignedInt(), px::Color(255, 255, 255));
     }
 
-    px::TextureRenderCommandData data;
+    px::TextureDrawConfig data;
     data.texture = &m_drawTex;
     data.origin  = {0, 0};
     renderCommands.push_back({0, data});
 
-    r_instance.window().renderCommandQueue(renderCommands);
+    r_instance.window().drawCommandQueue(renderCommands);
 
     for (unsigned int y = 0; y < m_drawTex.getSize().y; ++y)
     {

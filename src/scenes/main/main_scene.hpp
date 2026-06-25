@@ -20,7 +20,7 @@ class MainScene : public Scene
     void onStart() override;
     void onTick() override;
 
-    void renderText(std::vector<px::RenderCommand> &renderCommands);
+    void renderText(std::vector<px::DrawCommand> &renderCommands);
 
     void handle_events();
 

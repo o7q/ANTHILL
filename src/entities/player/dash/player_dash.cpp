@@ -23,7 +23,7 @@ void PlayerDash::update(const EntityUpdateContext &context)
         float vel      = px::Utils::Interpolation::lerp(10.0f, 2.0f, m_dashTimer.getProgress());
         m_dashVelocity = dir.toFloat() * vel;
 
-        m_dashTimer.update(context.time.dt);
+        m_dashTimer.update(context.time.getDeltaTime());
 
         if (m_dashTimer.completed())
         {

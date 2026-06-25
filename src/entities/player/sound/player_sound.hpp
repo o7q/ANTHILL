@@ -58,8 +58,8 @@ class PlayerSound
             m_strideTimer.restart();
         }
 
-        m_strideTimer.update(context.time.dt);
-        m_groundTimer.update(context.time.dt);
+        m_strideTimer.update(context.time.getDeltaTime());
+        m_groundTimer.update(context.time.getDeltaTime());
     }
 
   private:
