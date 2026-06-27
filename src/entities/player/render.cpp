@@ -1,7 +1,7 @@
 #include "player.hpp"
 
 #include "debug/renderers.hpp"
-#include "px/window/draw_types.hpp"
+#include "px/canvas/draw_types.hpp"
 
 void Player::render(const Camera &camera, std::vector<px::DrawCommand> &commandsOut)
 {

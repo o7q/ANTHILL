@@ -3,10 +3,11 @@
 #include "level_generator/layout_generator.hpp"
 #include "px/basic_types/rectangle.hpp"
 #include "px/basic_types/triangle.hpp"
+#include "px/canvas/canvas.hpp"
+#include "px/canvas/draw_types.hpp"
 #include "px/utils/graph.hpp"
 #include "px/utils/random.hpp"
 #include "px/utils/triangulation.hpp"
-#include "px/window/draw_types.hpp"
 #include "room/room.hpp"
 #include <vector>
 
@@ -14,6 +15,10 @@ void LevelTestScene::onStart() {}
 
 void LevelTestScene::onTick()
 {
+    m_renderTexture.clear();
+
+    px::Canvas canvas(m_renderTexture);
+
     std::vector<px::DrawCommand> renderCommands;
 
     if (r_instance.input().getInput("shoot").isDown())
@@ -35,8 +40,7 @@ void LevelTestScene::onTick()
             LevelLayoutGenerator generator;
             generator.setConfig(config);
 
-            px::NodeGraph<const Room *> rooms =
-                generator.generate(px::Utils::Random::unseededRandomInt(0, 100000));
+            px::NodeGraph<const Room *> rooms = generator.generate(px::Random::unseededRandomInt(0, 100000));
 
             for (auto &[id, node] : rooms.getNodes())
             {
@@ -60,8 +64,7 @@ void LevelTestScene::onTick()
             LevelLayoutGenerator generator;
             generator.setConfig(config);
 
-            px::NodeGraph<const Room *> rooms =
-                generator.generate(px::Utils::Random::unseededRandomInt(0, 100000));
+            px::NodeGraph<const Room *> rooms = generator.generate(px::Random::unseededRandomInt(0, 100000));
 
             for (auto &[id, node] : rooms.getNodes())
             {
@@ -75,10 +78,9 @@ void LevelTestScene::onTick()
             positions.push_back(id);
         }
 
-        std::vector<px::Triangle_i> triangulation =
-            px::Utils::Triangulation::generateTriangulation(positions);
-        m_roomGraph = px::Utils::Graph::connectNodesFromTriangulation(triangulation, m_roomGraph);
-        m_roomGraph = px::Utils::Graph::minimumSpanningTree(m_roomGraph);
+        std::vector<px::Triangle_i> triangulation = px::Triangulation::generateTriangulation(positions);
+        m_roomGraph = px::Graph::connectNodesFromTriangulation(triangulation, m_roomGraph);
+        m_roomGraph = px::Graph::minimumSpanningTree(m_roomGraph);
     }
 
     for (auto &[index, node] : m_roomGraph.getNodes())
@@ -99,5 +101,7 @@ void LevelTestScene::onTick()
         }
     }
 
-    r_instance.window().drawCommandQueue(renderCommands);
+    canvas.drawCommandQueue(renderCommands);
+
+    r_instance.window().render(m_renderTexture);
 }

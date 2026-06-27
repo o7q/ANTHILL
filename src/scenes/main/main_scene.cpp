@@ -1,7 +1,8 @@
 #include "main_scene.hpp"
 
-#include "px/time/time_handler.hpp"
-#include "px/window/draw_types.hpp"
+#include "px/canvas/canvas.hpp"
+#include "px/canvas/draw_types.hpp"
+#include "px/texture/texture.hpp"
 
 void MainScene::onStart()
 {
@@ -12,15 +13,23 @@ void MainScene::onStart()
 
 void MainScene::onTick()
 {
+    m_renderTexture.clear();
+
+    if (r_instance.input().getInput("shoot").wasPressed())
+    {
+        m_renderTexture = px::Texture(m_renderTexture.getSize());
+    }
+
+    px::Canvas canvas(m_renderTexture);
     std::vector<px::DrawCommand> renderCommands;
 
-    m_camera.setViewSize(r_instance.window().getViewportSize());
+    m_camera.setViewSize(m_renderTexture.getSize());
 
-    px::Vec2i viewportMousePos =
-        r_instance.window().windowToViewportPosition(r_instance.input().getMousePosition());
+    px::Vec2i viewportMousePos = r_instance.window().windowToRenderPosition(
+        r_instance.input().getMousePosition(), m_renderTexture.getSize());
     px::Vec2f viewportMousePosCenterNormalized =
-        (viewportMousePos - r_instance.window().getViewportSize().toInt() / 2).toFloat() /
-        r_instance.window().getViewportSize().toFloat();
+        (viewportMousePos - m_renderTexture.getSize().toInt() / 2).toFloat() /
+        m_renderTexture.getSize().toFloat();
 
     px::Vec2i worldMousePos = m_camera.viewportToCamera(viewportMousePos);
 
@@ -46,5 +55,7 @@ void MainScene::onTick()
     renderText(renderCommands);
 
     handle_events();
-    r_instance.window().drawCommandQueue(renderCommands);
+    canvas.drawCommandQueue(renderCommands);
+
+    r_instance.window().render(m_renderTexture);
 }

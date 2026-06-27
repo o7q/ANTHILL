@@ -4,7 +4,7 @@
 #include "camera/camera.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entity/body/entity_body.hpp"
-#include "px/window/draw_types.hpp"
+#include "px/canvas/draw_types.hpp"
 #include "sprite/sprite_system.hpp"
 
 class PlayerSprite

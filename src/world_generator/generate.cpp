@@ -53,22 +53,22 @@ void WorldGenerator::generate_prepare_structures()
         }
 
         std::vector<px::Triangle_i> triangulation =
-            px::Utils::Triangulation::generateTriangulation(masterLayout.generatePositions());
+            px::Triangulation::generateTriangulation(masterLayout.generatePositions());
 
-        masterLayout = px::Utils::Graph::connectNodesFromTriangulation(triangulation, masterLayout);
-        masterLayout = px::Utils::Graph::minimumSpanningTree(masterLayout);
+        masterLayout = px::Graph::connectNodesFromTriangulation(triangulation, masterLayout);
+        masterLayout = px::Graph::minimumSpanningTree(masterLayout);
 
         std::unordered_set<px::Segment_i, px::SegmentHash<int>> connections =
             masterLayout.generateConnections();
 
         for (px::Segment_i s : connections)
         {
-            px::Utils::Lines::bresenhamLine({s.a, s.b},
+            px::Lines::bresenhamLine({s.a, s.b},
                                             [&](px::Vec2i pos)
                                             {
                                                 px::Circle_i circ{pos, 15};
 
-                                                px::Utils::Circles::fill(circ,
+                                                px::Circles::fill(circ,
                                                                          [&](px::Vec2i pos2)
                                                                          {
                                                                              StructurePositionalSpawnData dat;
@@ -134,7 +134,7 @@ void WorldGenerator::generate_set_in_world_at_pos(px::Vec2i pos)
     if (pos.y > 0)
     {
         Particle stone = createParticlePreset(ParticlePresetID::Stone).value();
-        float rand     = px::Utils::Random::seededRandomInt(90, 100, m_seed + pos.x * pos.y) / 100.0f;
+        float rand     = px::Random::seededRandomInt(90, 100, m_seed + pos.x * pos.y) / 100.0f;
         stone.setColor(px::Color(100 * rand, 100 * rand, 100 * rand));
         biomeData.particle = stone;
     }

@@ -53,7 +53,7 @@ void PDynamicsHandler::handle_particle_trajectory(ParticleObject po, px::Vec2f s
         return false;
     };
 
-    px::Utils::Lines::bresenhamLine({start.toGrid(), end.toGrid()}, function);
+    px::Lines::bresenhamLine({start.toGrid(), end.toGrid()}, function);
 
     if (!hit)
     {
@@ -92,13 +92,13 @@ void PDynamicsHandler::resolve_particle_collision_against_other(ParticleObject p
 
     if (hitDirection.x != 0)
     {
-        newVelA.x = px::Utils::Physics::elasticCollisionVelocityA(mA, mB, velA.x, velB.x) * restitution;
-        newVelB.x = px::Utils::Physics::elasticCollisionVelocityB(mA, mB, velA.x, velB.x) * restitution;
+        newVelA.x = px::Physics::elasticCollisionVelocityA(mA, mB, velA.x, velB.x) * restitution;
+        newVelB.x = px::Physics::elasticCollisionVelocityB(mA, mB, velA.x, velB.x) * restitution;
     }
     if (hitDirection.y != 0)
     {
-        newVelA.y = px::Utils::Physics::elasticCollisionVelocityA(mA, mB, velA.y, velB.y) * restitution;
-        newVelB.y = px::Utils::Physics::elasticCollisionVelocityB(mA, mB, velA.y, velB.y) * restitution;
+        newVelA.y = px::Physics::elasticCollisionVelocityA(mA, mB, velA.y, velB.y) * restitution;
+        newVelB.y = px::Physics::elasticCollisionVelocityB(mA, mB, velA.y, velB.y) * restitution;
     }
 
     constexpr float threshold = 0.25f;

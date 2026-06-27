@@ -47,8 +47,8 @@ class PlayerSound
                 SoundID ids[6] = {SoundID::WalkSound1, SoundID::WalkSound2, SoundID::WalkSound3,
                                   SoundID::WalkSound4, SoundID::WalkSound5, SoundID::WalkSound6};
 
-                soundEvent->soundID         = ids[px::Utils::Random::unseededRandomInt(0, 6)];
-                soundEvent->settings.volume = 0.1f;
+                soundEvent->soundID         = ids[px::Random::unseededRandomInt(0, 6)];
+                soundEvent->config.volume = 0.1f;
 
                 eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(soundEvent)));
             }

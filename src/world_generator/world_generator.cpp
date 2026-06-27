@@ -7,5 +7,5 @@
 WorldGenerator::WorldGenerator(World &world, const Assets &assets)
     : r_world(world), r_assets(assets), m_structureLayer({32, 32})
 {
-    m_seed = px::Utils::Random::unseededRandomInt(0, 1000000);
+    m_seed = px::Random::unseededRandomInt(0, 1000000);
 }

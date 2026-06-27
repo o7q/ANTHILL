@@ -3,8 +3,8 @@
 #include "assets/assets.hpp"
 #include "camera/camera.hpp"
 #include "px/basic_types/color.hpp"
+#include "px/canvas/draw_types.hpp"
 #include "px/data_structures/chunk_map.hpp"
-#include "px/window/draw_types.hpp"
 #include "world/particle_handler/biome.hpp"
 #include "world/particle_handler/particle.hpp"
 

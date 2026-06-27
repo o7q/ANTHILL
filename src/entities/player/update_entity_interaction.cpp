@@ -12,7 +12,7 @@ void Player::update_entity_interaction(const EntityUpdateContext &context, Event
         const Entity *entity    = e.second;
         EntityMetadata metadata = entity->getMetadata();
 
-        px::Utils::Lines::bresenhamLine(
+        px::Lines::bresenhamLine(
             {m_body.getLastPosition(), m_body.getPosition()},
             [&](px::Vec2i p)
             {
@@ -27,11 +27,11 @@ void Player::update_entity_interaction(const EntityUpdateContext &context, Event
                         entityDamageEvent->source.direction = m_body.getVelocity();
                         if (entity->getHealth() <= 50)
                         {
-                            auto entityKillSoundEvent     = std::make_unique<ExternalPlaySoundEvent>();
-                            entityKillSoundEvent->soundID = SoundID::SumiDashKill1;
-                            entityKillSoundEvent->settings.volume = 0.2f;
-                            entityKillSoundEvent->settings.pitch =
-                                px::Utils::Random::unseededRandomInt(90, 100) / 100.0f;
+                            auto entityKillSoundEvent           = std::make_unique<ExternalPlaySoundEvent>();
+                            entityKillSoundEvent->soundID       = SoundID::SumiDashKill1;
+                            entityKillSoundEvent->config.volume = 0.2f;
+                            entityKillSoundEvent->config.pitch =
+                                px::Random::unseededRandomInt(90, 100) / 100.0f;
                             eventsOut.emit(std::make_unique<EntityExternalEvent>(
                                 context.id, std::move(entityKillSoundEvent)));
                         }

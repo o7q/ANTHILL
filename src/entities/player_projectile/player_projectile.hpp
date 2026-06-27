@@ -3,7 +3,7 @@
 #include "entity/entity.hpp"
 #include "entity/metadata.hpp"
 #include "px/basic_types/angle.hpp"
-#include "px/window/draw_types.hpp"
+#include "px/canvas/draw_types.hpp"
 
 class PlayerProjectile : public Entity
 {

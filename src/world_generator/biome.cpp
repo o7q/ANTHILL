@@ -7,25 +7,25 @@
 
 BiomeID WorldGenerator::get_biome(px::Vec2i pos)
 {
-    const float voronoiSmear = px::Utils::Perlin::sampleEx(pos.toFloat(), {100.0f, 100.0f}, 2, m_seed) - 0.5f;
-    const px::Utils::Voronoi::Sample sample = px::Utils::Voronoi::sampleEx(
-        pos.toFloat() + voronoiSmear * 200.0f, {150.0f, 150.0f}, m_seed, px::Utils::Voronoi::Style::Normal);
+    const float voronoiSmear = px::Perlin::sampleEx(pos.toFloat(), {100.0f, 100.0f}, 2, m_seed) - 0.5f;
+    const px::Voronoi::Sample sample = px::Voronoi::sampleEx(
+        pos.toFloat() + voronoiSmear * 200.0f, {150.0f, 150.0f}, m_seed, px::Voronoi::Style::Normal);
 
-    std::vector<px::Utils::Random::WeightedValue<BiomeID>> candidates;
+    std::vector<px::Random::WeightedValue<BiomeID>> candidates;
     get_biome_candidates(pos, candidates);
 
-    const uint32_t hash = px::Utils::Random::hashFromPosition(sample.cell, m_seed);
-    return px::Utils::Random::weightedSelect(candidates, hash);
+    const uint32_t hash = px::Random::hashFromPosition(sample.cell, m_seed);
+    return px::Random::weightedSelect(candidates, hash);
 }
 
 void WorldGenerator::get_biome_candidates(px::Vec2i pos,
-                                          std::vector<px::Utils::Random::WeightedValue<BiomeID>> &candidates)
+                                          std::vector<px::Random::WeightedValue<BiomeID>> &candidates)
 {
     const float layerBlend_surface =
-        px::Utils::Perlin::sampleEx(pos.toFloat(), {100.0f, 100.0f}, 3, m_seed) - 0.5f;
+        px::Perlin::sampleEx(pos.toFloat(), {100.0f, 100.0f}, 3, m_seed) - 0.5f;
 
     const float layerBlend_intermediate =
-        px::Utils::Perlin::sampleEx(pos.toFloat(), {10.0f, 10.0f}, 1, m_seed) - 0.5f;
+        px::Perlin::sampleEx(pos.toFloat(), {10.0f, 10.0f}, 1, m_seed) - 0.5f;
 
     if (pos.y > 500 + layerBlend_intermediate * 30.0f)
     {

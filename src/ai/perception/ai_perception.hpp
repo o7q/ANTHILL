@@ -22,7 +22,7 @@ class AIPerception
         {
             px::Angle angle = px::Degrees(angleTop + i * increment);
 
-            px::Utils::Lines::bresenhamRaycast(
+            px::Lines::bresenhamRaycast(
                 headPos, angle,
                 [&](px::Vec2i pos)
                 {

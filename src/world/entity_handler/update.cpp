@@ -29,7 +29,7 @@ void EntityHandler::update(const ParticleHandler &particleHandler, const px::Tim
 
         if (currentPlayer)
         {
-            distanceToCurrentPlayer = px::Utils::Distance::euclidian(
+            distanceToCurrentPlayer = px::Distance::euclidian(
                 currentPlayer->getBody().getPositionFloat(), entity->getBody().getPositionFloat());
             vectorTowardsCurrentPlayer =
                 (currentPlayer->getBody().getPositionFloat() - entity->getBody().getPositionFloat())

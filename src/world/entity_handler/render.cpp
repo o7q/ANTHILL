@@ -1,6 +1,6 @@
 #include "entity_handler.hpp"
 
-#include "px/window/draw_types.hpp"
+#include "px/canvas/draw_types.hpp"
 
 void EntityHandler::render(const Camera &camera, std::vector<px::DrawCommand> &commandsOut)
 {

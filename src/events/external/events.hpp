@@ -4,7 +4,7 @@
 #include "identifiers/scene.hpp"
 #include "identifiers/sounds.hpp"
 #include "px/sound/sound_handler.hpp"
-#include "px/time/time_handler.hpp"
+#include "px/time/speed_changer.hpp"
 
 struct ExternalPlaySoundEvent : public ExternalEvent
 {
@@ -12,7 +12,7 @@ struct ExternalPlaySoundEvent : public ExternalEvent
     virtual ~ExternalPlaySoundEvent() = default;
 
     SoundID soundID;
-    px::SoundPlaySettings settings;
+    px::SoundPlayConfig config;
 };
 
 struct ExternalChangeSpeedEvent : public ExternalEvent
@@ -20,7 +20,7 @@ struct ExternalChangeSpeedEvent : public ExternalEvent
     ExternalChangeSpeedEvent() : ExternalEvent(ExternalEventType::ChangeSpeed) {}
     virtual ~ExternalChangeSpeedEvent() = default;
 
-    px::TimeHandler::SpeedChanger::Settings settings;
+    px::SpeedChanger::Transition transition;
 };
 
 struct ExternalLoadSceneEvent : public ExternalEvent

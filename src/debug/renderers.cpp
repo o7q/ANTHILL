@@ -1,5 +1,5 @@
 #include "renderers.hpp"
-#include "px/window/draw_types.hpp"
+#include "px/canvas/draw_types.hpp"
 
 void Debug::Render::renderBoundingBox(px::Vec2i pos, const EntityCollider &collider, const Camera &camera,
                                       std::vector<px::DrawCommand> &commandsOut, px::Color color,

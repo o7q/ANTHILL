@@ -21,7 +21,7 @@ void MainScene::renderText(std::vector<px::DrawCommand> &renderCommands)
     m_fpsText =
         r_assets.fonts()
             .get(FontID::Default)
-            .generateTexture({std::to_string((int)r_instance.time().getDeltaTime()), px::Color(0, 255, 0)});
+            .generateTexture({std::to_string(r_instance.time().getFramerate()), px::Color(0, 255, 0)});
 
     px::TextureDrawConfig fpsRenderData;
     fpsRenderData.texture  = &m_fpsText;

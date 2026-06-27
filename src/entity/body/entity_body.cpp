@@ -15,20 +15,20 @@ void EntityBody::update(float dt)
 
 void EntityBody::haltMotionInDirection(px::Vec2i dir)
 {
-    if (px::Utils::Numbers::sign(m_velocity.x) == px::Utils::Numbers::sign(dir.x))
+    if (px::Numbers::sign(m_velocity.x) == px::Numbers::sign(dir.x))
     {
         m_velocity.x = 0.0f;
     }
-    if (px::Utils::Numbers::sign(m_velocity.y) == px::Utils::Numbers::sign(dir.y))
+    if (px::Numbers::sign(m_velocity.y) == px::Numbers::sign(dir.y))
     {
         m_velocity.y = 0.0f;
     }
 
-    if (px::Utils::Numbers::sign(m_velocityTarget.x) == px::Utils::Numbers::sign(dir.x))
+    if (px::Numbers::sign(m_velocityTarget.x) == px::Numbers::sign(dir.x))
     {
         m_velocityTarget.x = 0.0f;
     }
-    if (px::Utils::Numbers::sign(m_velocityTarget.y) == px::Utils::Numbers::sign(dir.y))
+    if (px::Numbers::sign(m_velocityTarget.y) == px::Numbers::sign(dir.y))
     {
         m_velocityTarget.y = 0.0f;
     }

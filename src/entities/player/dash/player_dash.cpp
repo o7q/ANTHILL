@@ -20,7 +20,7 @@ void PlayerDash::update(const EntityUpdateContext &context)
     case State::Dashing:
     {
         px::Vec2i dir  = m_directions.at(m_currentDirection);
-        float vel      = px::Utils::Interpolation::lerp(10.0f, 2.0f, m_dashTimer.getProgress());
+        float vel      = px::Interpolation::lerp(10.0f, 2.0f, m_dashTimer.getProgress());
         m_dashVelocity = dir.toFloat() * vel;
 
         m_dashTimer.update(context.time.getDeltaTime());

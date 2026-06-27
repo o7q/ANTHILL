@@ -23,8 +23,8 @@ void PlayerGun::shoot(px::Vec2i pos, px::Angle_f aimPos, uint64_t id, EventPool<
 
         auto soundEvent             = std::make_unique<ExternalPlaySoundEvent>();
         soundEvent->soundID         = SoundID::SumiShoot1;
-        soundEvent->settings.volume = 0.3f;
-        soundEvent->settings.pitch  = px::Utils::Random::unseededRandomInt(95, 100) / 100.0f;
+        soundEvent->config.volume = 0.3f;
+        soundEvent->config.pitch  = px::Random::unseededRandomInt(95, 100) / 100.0f;
         eventsOut.emit(std::make_unique<EntityExternalEvent>(id, std::move(soundEvent)));
 
         m_shootCooldown.restart();

@@ -7,8 +7,8 @@ WuskkogelStateID WuskkogelRoamState::update(const UpdateContext &context)
 {
     if (m_roamMoveTimer.completed())
     {
-        m_randomMoveDirection.x = px::Utils::Random::unseededRandomInt(-1, 2);
-        m_randomMoveDirection.y = px::Utils::Random::unseededRandomInt(-1, 2);
+        m_randomMoveDirection.x = px::Random::unseededRandomInt(-1, 2);
+        m_randomMoveDirection.y = px::Random::unseededRandomInt(-1, 2);
     }
 
     context.body.setVelocityTarget(m_randomMoveDirection.toFloat());

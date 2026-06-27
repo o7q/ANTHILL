@@ -27,7 +27,7 @@ class ParticleEditor
 
             if (hardness != 0 && !force)
             {
-                if (hardness <= -1 || px::Utils::Random::unseededRandomInt(0, hardness + 1) != 0)
+                if (hardness <= -1 || px::Random::unseededRandomInt(0, hardness + 1) != 0)
                 {
                     canSet = false;
                 }
@@ -46,7 +46,7 @@ class ParticleEditor
     void setRadius(px::Vec2i position, Particle p, int radius = 5)
     {
         px::Circle_i circle{position, radius};
-        px::Utils::Circles::fill(circle, [&](px::Vec2i pos) { set(pos, p); });
+        px::Circles::fill(circle, [&](px::Vec2i pos) { set(pos, p); });
     }
 
     void setBackground(px::Vec2i pos, px::Color color) { r_background.set(pos, color); }

@@ -16,7 +16,7 @@ void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<Enti
     m_body.update(context.time.getDeltaTime());
     px::Vec2i end = m_body.getPosition();
 
-    px::Utils::Lines::bresenhamLine(
+    px::Lines::bresenhamLine(
         {start, end},
         [&](px::Vec2i pos)
         {
@@ -25,7 +25,7 @@ void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<Enti
             {
                 auto setEvent      = std::make_unique<ParticleSetRadiusEvent>();
                 setEvent->position = pos;
-                setEvent->radius   = px::Utils::Random::unseededRandomInt(3, 6);
+                setEvent->radius   = px::Random::unseededRandomInt(3, 6);
                 setEvent->particle = Particle{};
                 eventsOut.emit(std::make_unique<EntityParticleEvent>(context.id, std::move(setEvent)));
 
@@ -37,7 +37,7 @@ void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<Enti
 
                 auto soundEvent             = std::make_unique<ExternalPlaySoundEvent>();
                 soundEvent->soundID         = SoundID::SumiHitmarker1;
-                soundEvent->settings.volume = 0.6f;
+                soundEvent->config.volume = 0.6f;
                 eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(soundEvent)));
 
                 kill();
@@ -59,7 +59,7 @@ void PlayerProjectile::update(const EntityUpdateContext &context, EventPool<Enti
 
                     auto soundEvent             = std::make_unique<ExternalPlaySoundEvent>();
                     soundEvent->soundID         = SoundID::SumiHitmarker1;
-                    soundEvent->settings.volume = 0.6f;
+                    soundEvent->config.volume = 0.6f;
                     eventsOut.emit(std::make_unique<EntityExternalEvent>(context.id, std::move(soundEvent)));
 
                     kill();

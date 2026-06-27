@@ -7,7 +7,7 @@
 class Scene
 {
   public:
-    Scene(px::Instance &instance) : r_instance(instance) {}
+    Scene(px::Instance &instance, px::Vec2u renderSize) : r_instance(instance), m_renderTexture(renderSize) {}
     Scene(const Scene &other)            = delete;
     Scene &operator=(const Scene &other) = delete;
     virtual ~Scene()                     = default;
@@ -22,6 +22,7 @@ class Scene
 
   protected:
     px::Instance &r_instance;
+    px::Texture m_renderTexture;
 
   private:
     bool m_firstTick = true;

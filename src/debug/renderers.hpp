@@ -4,7 +4,7 @@
 #include "ai/perception/ai_perception.hpp"
 #include "camera/camera.hpp"
 #include "entity/collider/entity_collider.hpp"
-#include "px/window/draw_types.hpp"
+#include "px/canvas/draw_types.hpp"
 #include <vector>
 
 namespace Debug

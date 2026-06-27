@@ -36,7 +36,7 @@ void PDynamicsHandler::update_smoke_particle(ParticleObject po, float dt)
 
     if (canLeft && canRight)
     {
-        switch (px::Utils::Random::unseededRandomInt(0, 2))
+        switch (px::Random::unseededRandomInt(0, 2))
         {
         case 0:
             verlet.addForce({-0.03f, 0.0f});

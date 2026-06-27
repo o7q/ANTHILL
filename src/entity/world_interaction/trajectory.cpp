@@ -40,7 +40,7 @@ EntityWorldInteraction::TrajectoryCollisionResponse EntityWorldInteraction::calc
         return false;
     };
 
-    px::Utils::Lines::bresenhamLine({start, end}, check);
+    px::Lines::bresenhamLine({start, end}, check);
 
     TrajectoryCollisionResponse response;
     response.collided        = collided;

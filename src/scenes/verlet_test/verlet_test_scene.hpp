@@ -8,10 +8,7 @@
 class VerletTestScene : public Scene
 {
   public:
-    VerletTestScene(px::Instance &instance) : Scene(instance)
-    {
-        m_drawTex = px::Texture(r_instance.window().getViewportSize());
-    }
+    VerletTestScene(px::Instance &instance) : Scene(instance, {280, 210}) {}
 
   protected:
     void onStart() override;
@@ -20,6 +17,4 @@ class VerletTestScene : public Scene
   private:
     std::vector<px::VerletBody> m_bodies;
     std::vector<px::VerletLink> m_links;
-
-    px::Texture m_drawTex;
 };

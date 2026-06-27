@@ -1,5 +1,5 @@
 #include "player_sprite.hpp"
-#include "px/window/draw_types.hpp"
+#include "px/canvas/draw_types.hpp"
 #include "sprite/sprite_system.hpp"
 
 void PlayerSprite::render(px::Vec2i pos, px::Vec2i aimPos, const Camera &camera,

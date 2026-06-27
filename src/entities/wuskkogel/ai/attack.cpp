@@ -28,13 +28,13 @@ WuskkogelStateID WuskkogelAttackState::update(const UpdateContext &context)
                                  SoundID::WuskkogelAttack3, SoundID::WuskkogelAttack4,
                                  SoundID::WuskkogelAttack5};
 
-        auto soundEvent             = std::make_unique<ExternalPlaySoundEvent>();
-        soundEvent->soundID         = biteSounds[px::Utils::Random::unseededRandomInt(0, 5)];
-        soundEvent->settings.volume = 0.1f;
-        soundEvent->settings.pitch  = px::Utils::Random::unseededRandomInt(95, 100) / 100.0f;
+        auto soundEvent           = std::make_unique<ExternalPlaySoundEvent>();
+        soundEvent->soundID       = biteSounds[px::Random::unseededRandomInt(0, 5)];
+        soundEvent->config.volume = 0.1f;
+        soundEvent->config.pitch  = px::Random::unseededRandomInt(95, 100) / 100.0f;
         px::Vec2f direction =
             context.context.vectorTowardsCurrentPlayer * -(context.context.distanceToCurrentPlayer / 100.0f);
-        soundEvent->settings.position = {direction.x, direction.y, -1.0f};
+        soundEvent->config.position = direction;
 
         context.events.emit(std::make_unique<EntityExternalEvent>(context.context.id, std::move(soundEvent)));
     }

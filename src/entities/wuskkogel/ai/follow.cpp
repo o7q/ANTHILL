@@ -48,8 +48,8 @@ WuskkogelStateID WuskkogelFollowState::update(const UpdateContext &context)
 
     if (result.has_value())
     {
-        context.body.setVelocityTargetX(px::Utils::Numbers::sign(result->x) * 2.5f);
-        context.body.setVelocityTargetY(px::Utils::Numbers::sign(result->y) * 2);
+        context.body.setVelocityTargetX(px::Numbers::sign(result->x) * 2.5f);
+        context.body.setVelocityTargetY(px::Numbers::sign(result->y) * 2);
     }
 
     px::Vec2i myPos = context.body.getPosition();

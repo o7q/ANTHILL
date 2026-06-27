@@ -12,8 +12,8 @@ PositionalSpawnData WorldGenerator::generate_desert_layer1(px::Vec2i pos)
 {
     PositionalSpawnData data;
 
-    float p0 = px::Utils::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, m_seed);
-    float p1 = px::Utils::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 9, m_seed);
+    float p0 = px::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, m_seed);
+    float p1 = px::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 9, m_seed);
 
     Particle::MatterType matterType   = Particle::MatterType::Solid;
     Particle::PhysicsType physicsType = Particle::PhysicsType::Sandstone;
@@ -37,7 +37,7 @@ PositionalSpawnData WorldGenerator::generate_desert_layer1(px::Vec2i pos)
         matterType = Particle::MatterType::Gas;
     }
 
-    if (p0 >= 0.67f && p0 < 0.68f && px::Utils::Random::unseededRandomInt(0, 10000) == 0)
+    if (p0 >= 0.67f && p0 < 0.68f && px::Random::unseededRandomInt(0, 10000) == 0)
     {
         data.entities = [](px::Vec2i position, const Assets &assets)
         {
@@ -60,7 +60,7 @@ PositionalSpawnData WorldGenerator::generate_desert_layer2(px::Vec2i pos)
 {
     PositionalSpawnData data;
 
-    float p0 = px::Utils::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, m_seed);
+    float p0 = px::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, m_seed);
 
     Particle::MatterType matterType = Particle::MatterType::Solid;
     px::Color color(255, 159, 0);
@@ -78,7 +78,7 @@ PositionalSpawnData WorldGenerator::generate_desert_layer2(px::Vec2i pos)
         color      = {};
     }
 
-    if (p0 > 0.65f && p0 < 0.70f && px::Utils::Random::unseededRandomInt(0, 10000) == 0)
+    if (p0 > 0.65f && p0 < 0.70f && px::Random::unseededRandomInt(0, 10000) == 0)
     {
         data.entities = [](px::Vec2i position, const Assets &assets)
         {

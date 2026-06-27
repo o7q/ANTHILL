@@ -12,7 +12,7 @@ class MainScene : public Scene
 {
   public:
     MainScene(px::Instance &instance, const Assets &assets)
-        : Scene(instance), r_assets(assets), m_world({32, 32}), m_generator(m_world, r_assets)
+        : Scene(instance, {280, 210}), r_assets(assets), m_world({32, 32}), m_generator(m_world, r_assets)
     {
     }
 

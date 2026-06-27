@@ -21,7 +21,7 @@ class LevelLayoutGenerator
     {
         px::Rectangle_i bounds;
 
-        std::vector<px::Utils::Random::WeightedValue<const Room *>> roomPool;
+        std::vector<px::Random::WeightedValue<const Room *>> roomPool;
         std::vector<RoomPlaceholder> specialRooms;
 
         px::Vec2i roomSpread = {20, 20};

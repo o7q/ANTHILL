@@ -26,7 +26,7 @@ class WorldGenerator
 
     BiomeID get_biome(px::Vec2i pos);
     void get_biome_candidates(px::Vec2i pos,
-                              std::vector<px::Utils::Random::WeightedValue<BiomeID>> &candidates);
+                              std::vector<px::Random::WeightedValue<BiomeID>> &candidates);
 
     PositionalSpawnData generate_desert_layer1(px::Vec2i pos);
     PositionalSpawnData generate_desert_layer2(px::Vec2i pos);

@@ -5,7 +5,7 @@
 #include "events/event_pool.hpp"
 #include "events/external/base.hpp"
 #include "px/time/time_handler.hpp"
-#include "px/window/draw_types.hpp"
+#include "px/canvas/draw_types.hpp"
 #include "world/entity_handler/id.hpp"
 #include <cstdint>
 #include <memory>

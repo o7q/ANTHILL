@@ -8,7 +8,7 @@ EntityWorldInteraction::calculateStep(px::Vec2i resolvedPosition, px::Vec2i orig
     StepResponse response;
 
     const int amount = originalEnd.x - resolvedPosition.x;
-    const int dir    = px::Utils::Numbers::sign(amount);
+    const int dir    = px::Numbers::sign(amount);
 
     const int maxStepAmount = 4;
 

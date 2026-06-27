@@ -1,16 +1,21 @@
 #include "verlet_test_scene.hpp"
 
+#include "px/canvas/canvas.hpp"
+#include "px/canvas/draw_types.hpp"
 #include "px/texture/texture.hpp"
-#include "px/window/draw_types.hpp"
 
 void VerletTestScene::onStart() {}
 
 void VerletTestScene::onTick()
 {
+    m_renderTexture.clear();
+
+    px::Canvas canvas(m_renderTexture);
+
     std::vector<px::DrawCommand> renderCommands;
 
-    px::Vec2i viewportMousePos =
-        r_instance.window().windowToViewportPosition(r_instance.input().getMousePosition());
+    px::Vec2i viewportMousePos = r_instance.window().windowToRenderPosition(
+        r_instance.input().getMousePosition(), m_renderTexture.getSize());
 
     if (r_instance.input().getInput("jump").isDown())
     {
@@ -68,25 +73,22 @@ void VerletTestScene::onTick()
 
     for (px::VerletBody &body : m_bodies)
     {
-        m_drawTex.setPixel(body.getPosition().toGrid().toUnsignedInt(), px::Color(255, 255, 255));
+        canvas.setPixel(body.getPosition().toGrid().toUnsignedInt(), px::Color(255, 255, 255));
     }
 
-    px::TextureDrawConfig data;
-    data.texture = &m_drawTex;
-    data.origin  = {0, 0};
-    renderCommands.push_back({0, data});
+    canvas.drawCommandQueue(renderCommands);
 
-    r_instance.window().drawCommandQueue(renderCommands);
+    r_instance.window().render(m_renderTexture);
 
-    for (unsigned int y = 0; y < m_drawTex.getSize().y; ++y)
+    for (unsigned int y = 0; y < m_renderTexture.getSize().y; ++y)
     {
-        for (unsigned int x = 0; x < m_drawTex.getSize().x; ++x)
+        for (unsigned int x = 0; x < m_renderTexture.getSize().x; ++x)
         {
-            px::Color col = m_drawTex.getPixel({x, y});
+            px::Color col = m_renderTexture.getPixel({x, y});
             col.r *= 0.7;
             col.g *= 0.8;
             col.b *= 0.9;
-            m_drawTex.setPixel({x, y}, col);
+            m_renderTexture.setPixel({x, y}, col);
         }
     }
 }

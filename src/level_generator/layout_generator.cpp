@@ -34,10 +34,10 @@ void LevelLayoutGenerator::generate_place_rooms(std::vector<RoomPlaceholder> &ro
 {
     for (int i = 0; i < m_config.initialRoomPlacementCount; ++i)
     {
-        int biasX = px::Utils::Random::seededRandomInt(-m_config.roomSpread.x, m_config.roomSpread.x, seed++);
-        int biasY = px::Utils::Random::seededRandomInt(-m_config.roomSpread.y, m_config.roomSpread.y, seed++);
+        int biasX = px::Random::seededRandomInt(-m_config.roomSpread.x, m_config.roomSpread.x, seed++);
+        int biasY = px::Random::seededRandomInt(-m_config.roomSpread.y, m_config.roomSpread.y, seed++);
 
-        const Room *room = px::Utils::Random::weightedSelect(m_config.roomPool, seed++);
+        const Room *room = px::Random::weightedSelect(m_config.roomPool, seed++);
         px::Vec2i pos    = {m_config.bounds.getPosition().x + biasX, m_config.bounds.getPosition().y + biasY};
         roomsOut.push_back({room, pos});
     }

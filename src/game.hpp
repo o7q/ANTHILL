@@ -1,7 +1,6 @@
 #pragma once
 
 #include "assets/assets.hpp"
-#include "px/basic_types/vec.hpp"
 #include "px/instance/instance.hpp"
 #include "scene/scene.hpp"
 #include <memory>
@@ -9,10 +8,7 @@
 class Game
 {
   public:
-    Game(px::Vec2u windowSize, px::Vec2u viewportSize) : m_instance("ANTHILL", windowSize, viewportSize)
-    {
-        start();
-    }
+    Game() : m_instance("ANTHILL", {1280, 720}) { start(); }
     ~Game();
     Game(const Game &other)            = delete;
     Game &operator=(const Game &other) = delete;
@@ -26,7 +22,7 @@ class Game
     void load_scene(SceneID id);
 
   private:
-    Assets m_assets;
     px::Instance m_instance;
+    Assets m_assets;
     std::unique_ptr<Scene> m_scene = nullptr;
 };

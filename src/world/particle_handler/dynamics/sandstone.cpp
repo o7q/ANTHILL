@@ -18,17 +18,17 @@ void PDynamicsHandler::update_sandstone_particle(ParticleObject po, float dt)
     {
         if (!can_solid_occupy(left))
         {
-            canDown = px::Utils::Random::unseededRandomInt(0, 10) == 0;
+            canDown = px::Random::unseededRandomInt(0, 10) == 0;
         }
 
         if (!can_solid_occupy(right))
         {
-            canDown = px::Utils::Random::unseededRandomInt(0, 10) == 0;
+            canDown = px::Random::unseededRandomInt(0, 10) == 0;
         }
 
         if (!can_solid_occupy(up))
         {
-            canDown = px::Utils::Random::unseededRandomInt(0, 500) == 0;
+            canDown = px::Random::unseededRandomInt(0, 500) == 0;
         }
     }
     else

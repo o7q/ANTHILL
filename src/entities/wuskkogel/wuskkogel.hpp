@@ -12,7 +12,7 @@
 #include "events/entity/base.hpp"
 #include "events/entity/events.hpp"
 #include "events/event_pool.hpp"
-#include "px/window/draw_types.hpp"
+#include "px/canvas/draw_types.hpp"
 #include "sprite/sprite_animator.hpp"
 #include <memory>
 

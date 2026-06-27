@@ -7,7 +7,7 @@
 class LevelTestScene : public Scene
 {
   public:
-    LevelTestScene(px::Instance &instance) : Scene(instance) {}
+    LevelTestScene(px::Instance &instance) : Scene(instance, {280, 210}) {}
 
   protected:
     void onStart() override;

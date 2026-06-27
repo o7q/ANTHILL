@@ -11,13 +11,13 @@ void MainScene::handle_events()
         case ExternalEventType::PlaySound:
         {
             auto event = static_cast<ExternalPlaySoundEvent *>(e.get());
-            r_instance.sound().playSound(r_assets.sounds().get(event->soundID), event->settings);
+            r_instance.sound().playSound(r_assets.sounds().get(event->soundID), event->config);
         }
         break;
         case ExternalEventType::ChangeSpeed:
         {
             auto event = static_cast<ExternalChangeSpeedEvent *>(e.get());
-            r_instance.time().getSpeedChanger().startTransition(event->settings);
+            r_instance.time().getSpeedChanger().startTransition(event->transition);
         }
         break;
         case ExternalEventType::LoadScene:

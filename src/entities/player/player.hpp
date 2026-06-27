@@ -7,8 +7,8 @@
 #include "entity/entity.hpp"
 #include "entity/jump_handler/jump_handler.hpp"
 #include "px/basic_types/angle.hpp"
+#include "px/canvas/draw_types.hpp"
 #include "px/input/input_handler.hpp"
-#include "px/window/draw_types.hpp"
 
 class Player : public Entity
 {

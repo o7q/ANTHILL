@@ -6,7 +6,7 @@
 #include "entity/update_context.hpp"
 #include "events/entity/base.hpp"
 #include "events/event_pool.hpp"
-#include "px/window/draw_types.hpp"
+#include "px/canvas/draw_types.hpp"
 #include <vector>
 
 class PlayerPoint : public Entity

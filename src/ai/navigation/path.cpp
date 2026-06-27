@@ -6,7 +6,7 @@ void AINavigation::update_path(px::Vec2i currentPos, const EntityUpdateContext &
 {
     px::Vec2i end = context.particleHandler.getNavmesh().getIndexFromWorldPosition(m_astarGoalPosition);
 
-    float goalDist = px::Utils::Distance::euclidian(currentPos.toFloat(), m_astarGoalPosition.toFloat());
+    float goalDist = px::Distance::euclidian(currentPos.toFloat(), m_astarGoalPosition.toFloat());
     if (end != m_astar.getEnd() || (m_stuckTimer.completed() && goalDist > m_config.satisfactoryDistance))
     {
         px::Vec2i start = context.particleHandler.getNavmesh().getIndexFromWorldPosition(currentPos);

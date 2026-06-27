@@ -1,7 +1,7 @@
 #include "particle_renderer.hpp"
 
 #include "camera/camera.hpp"
-#include "px/window/draw_types.hpp"
+#include "px/canvas/draw_types.hpp"
 
 void ParticleRenderer::render(const RenderData &data, std::vector<px::DrawCommand> &commandsOut)
 {
@@ -16,7 +16,7 @@ void ParticleRenderer::render(const RenderData &data, std::vector<px::DrawComman
     {
         for (unsigned int x = 0; x < size.x; ++x)
         {
-            m_texture.setPixel({x, y}, {});
+            m_texture.setPixel({x, y}, {0, 0, 0, 255});
 
             px::Vec2i worldPos = data.camera.viewportToCamera(px::Vec2u{x, y}.toInt());
 
