@@ -1,12 +1,10 @@
 #include "ai_navigation.hpp"
 
-#include "px/utils/distance.hpp"
-
 void AINavigation::update_path(px::Vec2i currentPos, const EntityUpdateContext &context)
 {
     px::Vec2i end = context.particleHandler.getNavmesh().getIndexFromWorldPosition(m_astarGoalPosition);
 
-    float goalDist = px::Distance::euclidian(currentPos.toFloat(), m_astarGoalPosition.toFloat());
+    float goalDist = (currentPos.toFloat() - m_astarGoalPosition.toFloat()).length();
     if (end != m_astar.getEnd() || (m_stuckTimer.completed() && goalDist > m_config.satisfactoryDistance))
     {
         px::Vec2i start = context.particleHandler.getNavmesh().getIndexFromWorldPosition(currentPos);

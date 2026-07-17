@@ -15,9 +15,8 @@ void LevelTestScene::onStart() {}
 
 void LevelTestScene::onTick()
 {
-    m_renderTexture.clear();
-
     px::Canvas canvas(m_renderTexture);
+    canvas.clear();
 
     std::vector<px::DrawCommand> renderCommands;
 

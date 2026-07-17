@@ -3,6 +3,7 @@
 #include "assets/assets.hpp"
 #include "entities/player/dash/player_dash.hpp"
 #include "entities/player/gun/player_gun.hpp"
+#include "entities/player/sprite/player_sprite.hpp"
 #include "entity/body_update_handler/body_update_handler.hpp"
 #include "entity/entity.hpp"
 #include "entity/jump_handler/jump_handler.hpp"
@@ -58,4 +59,6 @@ class Player : public Entity
     px::Vec2i m_relativeHeadPosition = {0, -6};
 
     bool m_dashJumpRequested = false;
+
+    PlayerSprite m_sprite;
 };

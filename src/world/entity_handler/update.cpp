@@ -2,13 +2,12 @@
 
 #include "events/event_pool.hpp"
 #include "px/basic_types/rectangle.hpp"
-#include "px/utils/distance.hpp"
 #include "world/particle_handler/particle_handler.hpp"
 #include <cstdint>
 #include <memory>
 #include <unordered_map>
 
-void EntityHandler::update(const ParticleHandler &particleHandler, const px::TimeHandler& time,
+void EntityHandler::update(const ParticleHandler &particleHandler, const px::TimeHandler &time,
                            px::Vec2i origin, EventPoolRefs eventPoolRefs)
 {
     px::Rectangle_i killBox(origin, m_globalKillRadius);
@@ -29,8 +28,8 @@ void EntityHandler::update(const ParticleHandler &particleHandler, const px::Tim
 
         if (currentPlayer)
         {
-            distanceToCurrentPlayer = px::Distance::euclidian(
-                currentPlayer->getBody().getPositionFloat(), entity->getBody().getPositionFloat());
+            distanceToCurrentPlayer =
+                (currentPlayer->getBody().getPositionFloat() - entity->getBody().getPositionFloat()).length();
             vectorTowardsCurrentPlayer =
                 (currentPlayer->getBody().getPositionFloat() - entity->getBody().getPositionFloat())
                     .normalize();

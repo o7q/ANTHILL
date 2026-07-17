@@ -1,15 +1,14 @@
 #include "world_generator.hpp"
 
-#include "px/utils/perlin.hpp"
+#include "px/utils/noise.hpp"
 #include "px/utils/random.hpp"
-#include "px/utils/voronoi.hpp"
 #include "world/particle_handler/biome.hpp"
 
 BiomeID WorldGenerator::get_biome(px::Vec2i pos)
 {
-    const float voronoiSmear = px::Perlin::sampleEx(pos.toFloat(), {100.0f, 100.0f}, 2, m_seed) - 0.5f;
-    const px::Voronoi::Sample sample = px::Voronoi::sampleEx(
-        pos.toFloat() + voronoiSmear * 200.0f, {150.0f, 150.0f}, m_seed, px::Voronoi::Style::Normal);
+    const float voronoiSmear = px::Noise::samplePerlinEx(pos.toFloat(), {100.0f, 100.0f}, 2, m_seed) - 0.5f;
+    const px::Noise::VoronoiSample sample = px::Noise::sampleVoronoiEx(
+        pos.toFloat() + voronoiSmear * 200.0f, {150.0f, 150.0f}, m_seed, px::Noise::VoronoiStyle::Normal);
 
     std::vector<px::Random::WeightedValue<BiomeID>> candidates;
     get_biome_candidates(pos, candidates);
@@ -22,10 +21,10 @@ void WorldGenerator::get_biome_candidates(px::Vec2i pos,
                                           std::vector<px::Random::WeightedValue<BiomeID>> &candidates)
 {
     const float layerBlend_surface =
-        px::Perlin::sampleEx(pos.toFloat(), {100.0f, 100.0f}, 3, m_seed) - 0.5f;
+        px::Noise::samplePerlinEx(pos.toFloat(), {100.0f, 100.0f}, 3, m_seed) - 0.5f;
 
     const float layerBlend_intermediate =
-        px::Perlin::sampleEx(pos.toFloat(), {10.0f, 10.0f}, 1, m_seed) - 0.5f;
+        px::Noise::samplePerlinEx(pos.toFloat(), {10.0f, 10.0f}, 1, m_seed) - 0.5f;
 
     if (pos.y > 500 + layerBlend_intermediate * 30.0f)
     {

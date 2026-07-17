@@ -13,14 +13,14 @@ void MainScene::onStart()
 
 void MainScene::onTick()
 {
-    m_renderTexture.clear();
-
     if (r_instance.input().getInput("shoot").wasPressed())
     {
         m_renderTexture = px::Texture(m_renderTexture.getSize());
     }
 
     px::Canvas canvas(m_renderTexture);
+    canvas.clear();
+
     std::vector<px::DrawCommand> renderCommands;
 
     m_camera.setViewSize(m_renderTexture.getSize());
@@ -38,6 +38,34 @@ void MainScene::onTick()
     {
         player->updateAimPosition(worldMousePos);
         updatePos = m_camera.getPosition();
+    }
+
+    if (r_instance.input().getInput("debug1").isDown())
+    {
+        Particle p;
+        p.setColor({255, 251, 189, 255});
+        p.setRestitution(0.1f);
+        p.setMatterType(Particle::MatterType::Solid);
+        p.setPhysicsType(Particle::PhysicsType::Sand);
+        m_world.getParticleHandler().getEditor().setRadius(worldMousePos, p);
+    }
+    if (r_instance.input().getInput("debug2").isDown())
+    {
+        Particle p;
+        p.setColor({0, 255, 255, 255});
+        p.setRestitution(0.9f);
+        p.setMatterType(Particle::MatterType::Solid);
+        p.setPhysicsType(Particle::PhysicsType::Sand);
+        m_world.getParticleHandler().getEditor().setRadius(worldMousePos, p);
+    }
+    if (r_instance.input().getInput("debug3").isDown())
+    {
+        Particle p;
+        p.setColor({158, 249, 255, 200});
+        p.setRestitution(0.4f);
+        p.setMatterType(Particle::MatterType::Liquid);
+        p.setPhysicsType(Particle::PhysicsType::Water);
+        m_world.getParticleHandler().getEditor().setRadius(worldMousePos, p);
     }
 
     m_generator.generate(updatePos.toInt(), {10, 10});

@@ -3,7 +3,7 @@
 #include "px/basic_types/circle.hpp"
 #include "px/data_structures/chunk_map.hpp"
 #include "px/texture/texture.hpp"
-#include "px/utils/circle.hpp"
+#include "px/utils/circles.hpp"
 #include "px/utils/random.hpp"
 #include "world/particle_handler/biome.hpp"
 #include "world/particle_handler/particle.hpp"

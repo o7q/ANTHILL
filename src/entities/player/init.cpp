@@ -1,7 +1,7 @@
 #include "player.hpp"
 
 Player::Player(px::InputHandler &input, const Assets &assets)
-    : r_input(input), r_assets(assets), m_bodyHandler(m_body, m_collider)
+    : r_input(input), r_assets(assets), m_bodyHandler(m_body, m_collider), m_sprite(assets)
 {
     m_collider.addRect({}, {3, 21});
     m_metadata.type = EntityType::Player;

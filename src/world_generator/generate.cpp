@@ -6,7 +6,7 @@
 #include "px/basic_types/segment.hpp"
 #include "px/basic_types/triangle.hpp"
 #include "px/data_structures/node_graph.hpp"
-#include "px/utils/circle.hpp"
+#include "px/utils/circles.hpp"
 #include "px/utils/graph.hpp"
 #include "px/utils/line.hpp"
 #include "px/utils/random.hpp"
@@ -64,21 +64,20 @@ void WorldGenerator::generate_prepare_structures()
         for (px::Segment_i s : connections)
         {
             px::Lines::bresenhamLine({s.a, s.b},
-                                            [&](px::Vec2i pos)
-                                            {
-                                                px::Circle_i circ{pos, 15};
+                                     [&](px::Vec2i pos)
+                                     {
+                                         px::Circle_i circ{pos, 15};
 
-                                                px::Circles::fill(circ,
-                                                                         [&](px::Vec2i pos2)
-                                                                         {
-                                                                             StructurePositionalSpawnData dat;
-                                                                             dat.overwriteTerrainParticle =
-                                                                                 true;
-                                                                             dat.particle = Particle();
-                                                                             m_structureLayer.set(pos2, dat);
-                                                                         });
-                                                return false;
-                                            });
+                                         px::Circles::fill(circ,
+                                                           [&](px::Vec2i pos2)
+                                                           {
+                                                               StructurePositionalSpawnData dat;
+                                                               dat.overwriteTerrainParticle = true;
+                                                               dat.particle                 = Particle();
+                                                               m_structureLayer.set(pos2, dat);
+                                                           });
+                                         return false;
+                                     });
         }
     }
 

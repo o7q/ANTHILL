@@ -1,7 +1,7 @@
 #include "world_generator/world_generator.hpp"
 
 #include "entities/wuskkogel/wuskkogel.hpp"
-#include "px/utils/perlin.hpp"
+#include "px/utils/noise.hpp"
 #include "world/particle_handler/particle.hpp"
 #include "world_generator/spawn_data.hpp"
 #include <functional>
@@ -12,8 +12,8 @@ PositionalSpawnData WorldGenerator::generate_desert_layer1(px::Vec2i pos)
 {
     PositionalSpawnData data;
 
-    float p0 = px::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, m_seed);
-    float p1 = px::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 9, m_seed);
+    float p0 = px::Noise::samplePerlinEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, m_seed);
+    float p1 = px::Noise::samplePerlinEx(pos.toFloat(), {1000.0f, 1000.0f}, 9, m_seed);
 
     Particle::MatterType matterType   = Particle::MatterType::Solid;
     Particle::PhysicsType physicsType = Particle::PhysicsType::Sandstone;
@@ -60,7 +60,7 @@ PositionalSpawnData WorldGenerator::generate_desert_layer2(px::Vec2i pos)
 {
     PositionalSpawnData data;
 
-    float p0 = px::Perlin::sampleEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, m_seed);
+    float p0 = px::Noise::samplePerlinEx(pos.toFloat(), {1000.0f, 1000.0f}, 6, m_seed);
 
     Particle::MatterType matterType = Particle::MatterType::Solid;
     px::Color color(255, 159, 0);

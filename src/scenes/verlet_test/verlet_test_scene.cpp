@@ -8,9 +8,8 @@ void VerletTestScene::onStart() {}
 
 void VerletTestScene::onTick()
 {
-    m_renderTexture.clear();
-
     px::Canvas canvas(m_renderTexture);
+    canvas.clear();
 
     std::vector<px::DrawCommand> renderCommands;
 
@@ -73,7 +72,7 @@ void VerletTestScene::onTick()
 
     for (px::VerletBody &body : m_bodies)
     {
-        canvas.setPixel(body.getPosition().toGrid().toUnsignedInt(), px::Color(255, 255, 255));
+        m_renderTexture.setPixel(body.getPosition().toGrid().toUnsignedInt(), px::Color(255, 255, 255));
     }
 
     canvas.drawCommandQueue(renderCommands);
